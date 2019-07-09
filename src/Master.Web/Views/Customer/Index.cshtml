@@ -1,0 +1,49 @@
+﻿@using Master.Web.Components
+@{
+	ViewData["Title"] = "Index";
+}
+
+<div class="layui-fluid" id="LAY-app-message">
+	<div class="layui-card">
+		<div class="layui-card-body">
+			<div class="LAY-app-message-btns" style="margin-bottom: 10px;">
+				<vc:module-button module-key="Customer"></vc:module-button>
+			</div>
+			<vc:module-table param="@(new ModuleTableViewParam() {ID="Customer",ModuleKey="Customer",Height="full-110" })"></vc:module-table>
+
+		</div>
+	</div>
+</div>
+
+@section scripts{
+	<script>
+        //layui加载完成后调用此方法，
+        config.ready = function () {
+            var element = layui.element;
+            var table = layui.table;
+
+            config.refresh();
+        }
+        //当检索窗体提交后会调用此方法
+        config.reloadTable = function () {
+            layui.table.reload('Customer', {
+                where: getWhere()
+
+            })
+        }
+        config.onTableDone = function () {
+
+        }
+        //当编辑或删除或添加表单提交后会调用此方法
+        config.refresh = function () {
+
+        }
+        function getWhere() {
+            var where = {};
+            where.searchCondition = func.buildSearchCondition('Customer');
+
+            return where;
+
+        }
+	</script>
+}

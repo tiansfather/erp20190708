@@ -1,0 +1,142 @@
+﻿@using Master.Web.Components
+@{
+    ViewData["Title"] = "Index";
+}
+<style>
+    #imgHtml {
+        width: 350px;
+        text-align: center;
+        display: none;
+    }
+
+        #imgHtml p {
+            font-size: 16px;
+            color: black;
+        }
+</style>
+@section MainBody{
+    <div id="imgHtml">
+        <img src="imgSrc" alt="二维码" />
+        <p>将二维码进行分享，扫描后即可快捷邀请加入</p>
+    </div>
+}
+<div class="layui-fluid" id="LAY-app-message">
+    <div class="layui-card">
+        <div class="layui-tab layui-tab-brief" lay-filter="userTab">
+            <ul class="layui-tab-title">
+                <li class="layui-this in">@L("在职员工")<span class="layui-badge">0</span></li>
+                <li class="off">@L("离职员工")<span class="layui-badge">0</span></li>
+                <li class="all">@L("全部员工")<span class="layui-badge">0</span></li>
+                <li class="account">@L("已启用账号")<span class="layui-badge">0</span></li>
+                <li class="toBeVerify">@L("待审核")<span class="layui-badge">0</span></li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="LAY-app-message-btns" style="margin-bottom: 10px;">
+                    <vc:module-button module-key="User"></vc:module-button>
+                    <input type="text" id="name-input" class="layui-input" style="width: 150px; display: inline-block;height: 30px;vertical-align: middle;" placeholder="输入名字检索" />
+                    <button class="layui-btn  layui-btn-sm" onclick="config.reloadTable()">搜索</button>
+                    <button class="layui-btn laydialog layui-btn-sm layui-btn-normal" url="#imgHtml" width="350px" height="350px">快捷邀请</button>
+                </div>
+                <vc:module-table param="@(new ModuleTableViewParam() {ID="User",ModuleKey=nameof(Master.Authentication.User),Height="full-200",Where="JobDateEnd=null and (Status==null or !Status.Contains(\"NotVerified\"))"})"></vc:module-table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        config.ready = function () {
+            var imgSrc = '/api/qrcode?url=' + encodeURIComponent(location.origin + "/weixin/register?tenantid=" + abp.session.tenantId);
+            $('#imgHtml img').attr('src', imgSrc);
+
+            function setBtn(index) {
+                var hideArr = [];
+                switch (index) {
+                    //离职员工页面不显示离职按钮
+                    //只有待审核页面显示通过按钮
+                    case 0:
+                        hideArr = ['Verify'];
+                        break;
+                    case 1:
+                        hideArr = ['Dimission', 'Verify'];
+                        break;
+                    case 2:
+                        hideArr = ['Verify'];
+                        break;
+                    case 3:
+                        hideArr = ['Verify'];
+                        break;
+                    case 4:
+                        hideArr = [];
+                        break;
+                    default:
+                        hideArr = [];
+                }
+                $("button[lay-event]").show();
+                hideArr.forEach(function (n, i) {
+                    $("button[lay-event='" + n + "']").hide();
+                })
+            }
+            setBtn(0);
+            var element = layui.element;
+            var table = layui.table;
+            //一些事件监听
+            element.on('tab(userTab)', function (data) {
+                setBtn(data.index)
+                config.reloadTable();
+            });
+            config.refresh();
+        }
+        //当检索窗体提交后会调用此方法
+        config.reloadTable = function () {
+            layui.table.reload('User', {
+                where: getWhere($(".layui-tab-title .layui-this").index())
+
+            })
+        }
+        config.onTableDoneExport = function () {
+            //console.log('a')
+        }
+        //当编辑或删除或添加表单提交后会调用此方法
+        config.refresh = function () {
+            //重新加载汇总数据
+            abp.services.app.user.getCountSummary()
+                .done(function (result) {
+                    $("li.in span").html(result.inCount);
+                    $("li.off span").html(result.offCount);
+                    $("li.all span").html(result.allCount);
+                    $("li.account span").html(result.accountCount);
+                    $("li.toBeVerify span").html(result.toBeVerifyCount);
+                });
+        }
+    function getWhere(index) {
+        console.log(index);
+            var where = {};
+            switch (index) {
+                case 0:
+                    where = { where: 'JobDateEnd=null and (Status==null or !Status.Contains(\"NotVerified\"))' };
+                    break;
+                case 1:
+                    where = { where: 'JobDateEnd!=null and (Status==null or !Status.Contains(\"NotVerified\"))' };
+                    break;
+                case 2:
+                    where = { where: '(Status==null or !Status.Contains(\"NotVerified\"))' };
+                    break;
+                case 3:
+                    where = { where: 'IsActive=true and (Status==null or !Status.Contains(\"NotVerified\"))' };
+                    break;
+                case 4:
+                    where = { where: 'Status.Contains(\"NotVerified\")' };
+                    break;
+            }
+            var value = $('#name-input').val();
+            if (value) {
+                where.where += " and Name.Contains(\"" + value + "\")"
+            }
+        where.searchCondition = func.buildSearchCondition('User');
+        //where_cache["User"].where = where.where;
+            return where;
+
+        }
+    </script>
+}

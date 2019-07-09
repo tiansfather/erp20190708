@@ -1,0 +1,261 @@
+﻿
+<script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@@handsontable/vue/dist/vue-handsontable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/handsontable/dist/languages/all.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" rel="stylesheet">
+<script src="~/keyvalue.js"></script>
+<div id="app" style="max-width:700px">
+    <hot-table ref='textHot' style="" :settings="hotSettings"></hot-table>
+</div>
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            hotSettings: {
+                startRows: 10, //初始行列数
+                startCols: 10,
+                minRows: 1, //最小行列
+                minCols: 1,
+                minSpareCols: 1, //列留白
+                // minSpareRows: 2, //行留白
+                className: "htCenter",
+                currentRowClassName: "currentRow", //为选中行添加类名，可以更改样式
+                currentColClassName: "currentCol", //为选中列添加类名
+                autoWrapRow: true, //自动换行
+                contextMenu: [
+                    "row_above",
+                    "row_below",
+                    //"col_left",
+                    //"col_right",
+                    "---------",
+                    "remove_row",
+                    //"remove_col",
+                    "---------",
+                    "alignment",
+                    //'make_read_only',
+                    //"borders",
+                    "copy",
+                    "cut"
+                ],
+                //右键效果
+                fillHandle: true, //选中拖拽复制 possible values: true, false, "horizontal", "vertical"
+                fixedColumnsLeft: 0, //固定左边列数
+                fixedRowsTop: 1, //固定上边行数
+                formulas: true,
+                colHeaders: ['模具编号', '供应商', '物料名称', '规格', '品牌', '数量', '单位', '单价', '总价','111','22222'],
+                columnSummary: [
+                    {
+                        destinationRow: 0,
+                        destinationColumn: 5,
+                        reversedRowCoords: true,
+                        type: 'sum'
+                    },
+                    {
+                        destinationRow: 0,
+                        destinationColumn: 8,
+                        reversedRowCoords: true,
+                        type: 'sum'
+                    }],//汇总行
+                columns: [
+                    
+                    {
+                        data: 'projectSN',
+                        type: 'autocomplete',
+                        source: function (query, process) {
+                            abp.services.app.project.getAll(query, 50).done(function (response) {
+                                process(response.map(o=>o.projectSN));
+                                //process(response);
+                            })
+                        },
+                        strict: true,
+                        //keyProperty: 'id',
+                        //valueProperty: 'projectSN',
+                        //showItems: [{
+                        //    data: 'projectSN',
+                        //    width:120
+                        //},{
+                        //    data: 'projectName',
+                        //    width:120
+                        //}]
+                    },
+                    {
+                        data: 'supplier',
+                        type: 'autocomplete',
+                        source: function (query, process) {
+                            abp.services.app.unit.getAllByUnitNature(2, query, 50).done(function (response) {
+                                process(response.map(o=>o.unitName));
+                            })
+                        },
+                        strict: true,
+                        //keyProperty: 'id',
+                        //valueProperty: 'unitName',
+                    },
+                    {
+                        data: 'partName',
+                        type: 'autocomplete',
+                        source: function (query, process) {
+                            abp.services.storage.material.getGroupedField("Name", query).done(function (response) {
+                                process(response);
+                            })
+                        },
+                        //source: function (query, process) {
+                        //    abp.services.storage.material.getPageResult({ page: 1, limit: 50, keyword: query }).done(function (response) {
+                        //        console.log(response.data);
+                        //        process(response.data);
+                        //    })
+                        //},
+                        strict: true,
+                        //keyProperty: 'id',
+                        //valueProperty: 'name',
+                        //showItems: [{
+                        //    data: 'name',
+                        //    width:100
+                        //},{
+                        //    data: 'specification',
+                        //    width:80
+                        //},{
+                        //    data: 'brand',
+                        //    width:60
+                        //}]
+                    },
+                    {
+                        data: 'partSpecification',
+                        type: 'autocomplete',
+                        source: function (query, process) {
+                            abp.services.storage.material.getGroupedField("Specification", query).done(function (response) {
+                                process(response);
+                            })
+                        },
+                    },
+                    {
+                        data: 'partBrand',
+                        type: 'text',
+                        //source: function (query, process) {
+                        //    abp.services.storage.material.getGroupedField("Brand", query).done(function (response) {
+                        //        process(response);
+                        //    })
+                        //},
+                    },
+                    {
+                        data: 'partNum',
+                        type: 'numeric',
+                        numericFormat: {
+                            pattern: '0.00'
+                        }
+                    },
+                    {
+                        data: 'unitName',
+                        editor: 'select',
+                        selectOptions: [],
+                        //source: function (query, process) {
+                        //    abp.services.storage.measureMent.getGroupedField("Name", query).done(function (response) {
+                        //        process(response);
+                        //    })
+                        //},
+                        //validator: function (value,callback) {
+                        //    callback(true);
+                        //},
+                        strict: true,
+                    },
+                    {
+                        data: 'price',
+                        type: 'numeric',
+                        numericFormat: {
+                            pattern: '0.00'
+                        }
+                    },
+                    {
+                        data: 'cost',
+                        type: 'numeric',
+                        readOnly: true,
+                        numericFormat: {
+                            pattern: '0.00'
+                        }
+                    },
+                    {
+                        data: 'a',
+                        type:'text'
+                    },
+                    {
+                        data: 'b',
+                        type:'text'
+                    }
+                ],
+                cells: function (row, column, prop) {
+                    const cellProperties = {};
+                    //const visualRowIndex = this.instance.toVisualRow(row);
+                    //const visualColIndex = this.instance.toVisualColumn(column);
+
+                    if (column === 6) {
+                        //cellProperties.source = [partName];
+                    }
+
+                    return cellProperties;
+                },
+                rowHeaders: true,
+                stretchH: 'all',
+                manualColumnResize: true,
+                manualRowResize: true,
+                licenseKey: 'non-commercial-and-evaluation',
+                language: 'zh-CN',
+                afterChange: function (changes, source) {
+
+                    var sourceData = this.getSourceData()
+                    if (changes) {
+                        changes.forEach(([row, prop, oldValue, newValue]) => {
+                            //当单价和数量发生变化时计算总价
+                            if (prop == "partNum" || prop == "price") {
+                                var cost = sourceData[row].partNum * sourceData[row].price;
+                                !isNaN(cost) && this.setDataAtRowProp(row, "cost", cost);
+                            }
+                            //当物料名称发生变化时设置单位的下拉
+                            else if (prop == "partName") {                                
+                                var partName = sourceData[row].partName;
+                                //更改规格列的来源
+                                this.setCellMeta(row, 3, 'source', function (query, process) {
+                                    abp.services.storage.material.getPageResult({ page: 1, limit: 100, where: 'name=\"' + partName + '\"' }).done(function (response) {
+                                        process(response.data.map(o=>o.specification));
+                                    })
+                                })
+                                //更改品牌列的来源
+                                this.setCellMeta(row, 4, 'source', function (query, process) {
+                                    abp.services.storage.material.getPageResult({ page: 1, limit: 100, where: 'name=\"' + partName + '\"' }).done(function (response) {
+                                        process(response.data.map(o=>o.brand));
+                                    })
+                                })
+                                //if (!partId) { return;}
+                                //var partData = JSON.parse(this.getCellMeta(row, 2)["selection"]);
+                                //this.setDataAtCell(row, 3, partData.specification);
+                                //this.setDataAtCell(row, 4, partData.brand);
+                                abp.services.storage.material.getMaterialInfoByName(partName).done(d => {
+
+                                    if (d) {
+                                         var source = d.measureMentUnitDtos.map(o => o.name);
+                                        this.setCellMeta(row, 6, "selectOptions", source)
+                                    }
+                                   
+                                })
+
+                            }
+
+                        })
+                    }
+
+                    //this.updateSettings({
+
+                    //})
+                },
+                data: [{}, {}, {}]
+            }
+        },
+        methods: {
+            getSourceData() {
+                return this.$refs["textHot"].hotInstance.getSourceData();
+            }
+        }
+        , components: {
+            HotTable: Handsontable.vue.HotTable
+        }
+    })
+</script>

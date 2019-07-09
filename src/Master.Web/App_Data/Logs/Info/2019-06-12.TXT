@@ -1,0 +1,9 @@
+INFO  2019-06-12 09:18:34,807 [chdog] Hangfire.Server.ServerWatchdog           - 1 servers were removed due to timeout
+INFO  2019-06-12 09:20:18,499 [141  ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:62777/api/services/app/Report/GetSummary application/json 
+INFO  2019-06-12 09:20:18,590 [150  ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2019-06-12 09:20:18,591 [150  ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetSummary", controller = "Report"}. Executing action Master.MES.Service.ReportAppService.GetSummary (Master.MES)
+INFO  2019-06-12 09:20:18,594 [150  ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Master.MES.Service.ReportAppService.GetSummary (Master.MES) - Validation state: Valid
+INFO  2019-06-12 09:20:18,877 [150  ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Master.MES.Service.ReportAppService.GetSummary (Master.MES), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 282.7548ms.
+INFO  2019-06-12 09:20:18,878 [150  ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2019-06-12 09:20:18,878 [150  ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Master.MES.Service.ReportAppService.GetSummary (Master.MES) in 286.4941ms
+INFO  2019-06-12 09:20:18,878 [150  ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 378.4216ms 200 application/json; charset=utf-8

@@ -1,0 +1,127 @@
+﻿
+@{
+    
+    @section styles{
+    <style>
+        .my-partName-img {
+            cursor: pointer;
+            padding: 12px;
+            border: 1px solid #ccc;
+            margin-left: 100px;
+        }
+
+        .my-partName-img img {
+            max-width: 300px;
+            max-height: 150px;
+        }
+        .upimg{
+            width:100px;
+        }
+    </style>
+    }
+
+}
+<div class="layui-fluid" id="LAY-app-message">
+	<div class="layui-card">
+		<div class="layui-card-header bold"><i class="layui-icon layui-icon-next"></i>@L("企业信息")</div>
+		<div class="layui-card-body layui-form layui-hide" id="app">
+
+			<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+				<ul class="layui-tab-title">
+					<li class="layui-this">@L("基本信息")</li>
+				</ul>
+				<div class="layui-tab-content">
+					<div class="layui-tab-item layui-show">
+                        <div style="display:flex;align-items:center;">
+                            <div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">@L("账套名")</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" :value="currentItem.tenant.name" autocomplete="off" class="layui-input" readonly>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">@L("企业名称")</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" :value="currentItem.tenant.tenancyName" autocomplete="off" class="layui-input" readonly>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">@L("版本")</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" :value="currentItem.tenant.editionName" autocomplete="off" class="layui-input" readonly>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item" v-if="currentItem.tenant.expireDate">
+                                    <label class="layui-form-label">@L("到期日期")</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" :value="currentItem.tenant.expireDate" autocomplete="off" class="layui-input" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="my-partName-img picupload" tips="@L("点击上传LOGO")">
+                                <img :src="currentItem.tenant.logo || '/assets/images/upImg1.png'" :class="{upimg:!currentItem.tenant.logo}" alt="@L("点击上传LOGO")" />
+                            </div>
+                        </div>
+						
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+</div>
+
+@section scripts{
+	<script>
+        func.renderUpload('.picupload', {
+            trigger: 'click', callback: function (res) {
+                var item = $(upload.element);
+                console.log(item);
+                console.log(res);
+                func.runAsync(abp.services.app.tenant.setTenantLogo(res.filePath).done(function () {
+                    app.currentItem.tenant.logo = res.filePath;
+                    //item.find('img').attr('src', res.filePath)
+                    //item.append("<img src='"+res.result.filePath+"'/>");
+                }));
+            }
+        })
+        var app;
+        config.ready = function () {
+            layui.form.on('submit', function () {
+
+
+            });
+            
+			app = new Vue({
+				el: '#app',
+				data: {
+					currentItem: {
+						tenant: {} }
+
+				},
+				methods: {
+					loadTenantInfo: function () {
+						var that = this;
+						func.runAsync(abp.services.app.session.getCurrentLoginInformations().done(function (data) {
+							that.currentItem = data;
+							$("#app").removeClass("layui-hide");
+						}));
+					}
+
+				},
+				mounted: function () {
+					this.loadTenantInfo();
+
+
+
+				}
+
+			});
+		}
+
+		
+	</script>
+
+}

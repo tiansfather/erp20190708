@@ -1,0 +1,131 @@
+﻿@using Master.Web.Components
+@inherits Master.Web.Components.MasterRazorPage<TModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Master.Web.Core
+@{
+    ViewData["Title"] = "Index";
+}
+<div>
+    <div id="bomTreeWrap">
+        <ul id="bomTree" class="ztree" style="padding: 2px; border: 1px solid #ddd; overflow: auto;"></ul>
+    </div>
+    <div id="flagsWrap">
+        <div class="layui-fluid" id="LAY-app-message">
+            <div class="layui-card">
+                <div id="app" class="layui-form layui-form-pane">
+                    <multi-data-add :items="items" :parts="parts">
+                        <template  v-slot:color="{part,item}">
+                            <el-color-picker v-model="part.color" size="mini"></el-color-picker>
+                            <span style="vertical-align: 15px;">{{part.color}}</span>
+                        </template>
+                    </multi-data-add>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <button class="layui-btn  " buttonname="添加" type="button" @@click="doSubmit">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        func.splitDrag($('#bomTreeWrap'), $('#flagsWrap'), { key: 'LabelsWidth' })
+        var app;
+        //layui加载完成后调用此方法，
+        config.ready = function () {
+            (function initZtree() {
+                var setting = {
+                    data: {
+                        simpleData: {
+                            enable: true,
+                        }
+                    },
+                    callback: {
+                        onClick: function (event, treeId, treeNode) {
+                            console.log(event, treeId, treeNode)
+                            app.typeName = treeNode.id;
+                            app.loadFlags();
+                        },
+                    }
+                };
+                var zNodes = [
+                    { id: 1, pId: 0, name: "根节点", open: true },
+                    { id: 'Master.Projects.Project', pId: 1, name: "模具列表/Master.Projects.Project" },
+                    { id: 'Master.MES.Part', pId: 1, name: "BOM零件/Master.MES.Part" },
+                    { id: 'Master.MES.ProcessTask', pId: 1, name: "生产任务/Master.MES.ProcessTask" },
+                    { id: 'Master.MultiTenancy.Tenant', pId: 1, name: "加工点标签/Master.MultiTenancy.Tenant" },
+                ];
+                var treeObj = $.fn.zTree.init($("#bomTree"), setting, zNodes);
+            })();
+            app = new Vue({
+                el: '#app',
+                data: {
+                    typeName: 'Master.MultiTenancy.Tenant',
+                    items: [
+                        {
+                            type: 'text', title: '标签名称', verify: '', key: 'name',                            
+                        },
+                        {type: 'text', title: '显示名称', verify: '', key: 'displayName'},
+                        { type: 'text', title: '简称', verify: '', key: 'briefName', },
+                        { type: 'text', title: '备注', verify: '', key: 'remarks', },
+                        {
+                            type: 'slot',slot:'color', title: 'color', verify: '', key: 'color',
+                        },
+                        {
+                            type: 'text', title: 'icon', verify: '', key: 'icon',
+                        },
+                        {
+                            type: 'select', title: '标签类型', key: 'identifier', options: [{ text: '管理', value: 'Host' }, {text: '用户', value: 'Tenant'}]
+                        }
+                    ],
+                    parts: [ ]
+                },
+                methods: {
+                    initFlags(data) {
+                        const arr = [
+                            { "name": "Inner", "briefName": "内", "displayName": "厂内", "remarks": null, "identifier": null, "icon": null, "color": "#006AFF", "image": null, "system": true },
+                            { "name": "Emergency", "briefName": "急", "displayName": "加急", "remarks": null, "identifier": null, "icon": null, "color": "#FF0000", "image": null, "system": true },
+                            { "name": "Cha", "briefName": "插", "displayName": "插单", "remarks": null, "identifier": null, "icon": null, "color": "#67C23A", "image": null, "system": true },
+                            { "name": "Xiu", "briefName": "修", "displayName": "修模", "remarks": null, "identifier": null, "icon": null, "color": "#909399", "image": null, "system": true },
+                            { "name": "Abnormal", "briefName": "异", "displayName": "异常", "remarks": null, "identifier": null, "icon": null, "color": "#CC1919", "image": null, "system": true }
+                        ]
+                        const arr1 = arr.map(el => el.name);
+                        let changed = false;
+                        arr1.forEach((el,index) => {
+                            var bol = data.map(el => el.name).indexOf(el) === -1
+                            if (bol) {
+                                data.push(arr[index]);
+                                changed = true;
+                            }
+                        })
+                        return changed;
+                    },
+                    loadFlags() {
+                        abp.services.app.resource.getFlagInfosByType(this.typeName).done((data) => {
+                            if (this.typeName == "Master.MES.ProcessTask") {
+                                if (this.initFlags(data)) {
+                                    abp.services.app.resource.setFlagInfosByType(this.typeName, data)
+                                }
+                            }
+                   
+                            this.parts = data;
+                        });
+                    },
+                    doSubmit: function () {
+                        func.runAsync(abp.services.app.resource.setFlagInfosByType(this.typeName, this.parts).done(function () {
+                            layer.msg("提交成功");
+                        }));
+                    }
+                }
+                , mounted: function () {
+                    this.loadFlags();
+                }
+            })
+        }
+
+    </script>
+}

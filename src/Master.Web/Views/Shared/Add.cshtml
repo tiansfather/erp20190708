@@ -1,0 +1,29 @@
+﻿@using Master.Web.Components
+@model ModuleFormViewParam
+@{
+    Layout = "~/Views/Shared/_LayoutDialog.cshtml";
+    var m = Model;
+    m.FormType = Master.Module.FormType.Add;
+}
+
+    <vc:module-form param="@m"></vc:module-form>
+
+@section scripts{ 
+	<script>
+        var app;
+        var formParam=@Html.Raw(Common.JSONConvert.SerializeCamelCase(m));
+		config.ready=function(){
+			app = new Vue({
+				el: '#app',
+				created: function () {
+					this.$nextTick(function () {
+                        layui.form.render();
+                        formScript && formScript();
+					})
+				}
+			});
+        }
+
+	</script>
+
+}

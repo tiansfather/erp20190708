@@ -1,0 +1,177 @@
+﻿@using Master.Web.Components
+@inherits Master.Web.Components.MasterRazorPage<TModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Master.Web.Core
+@{
+	ViewData["Title"] = "Index";
+}
+@section styles{
+    <style>
+        html{
+            background:#fff;
+        }
+        #app{
+            /*padding:20px ;*/
+        }
+        .layui-table, .layui-table-view{margin:0;}
+        .el-tabs--border-card > .el-tabs__content{padding:0;}
+    </style>
+}
+    <div id="app" class="layui-fluid" v-cloak>
+        <el-button @@click="addVisible = true;form.subjectTitle=activeName;" size="small" style="margin-bottom: 20px; margin-left: 20px;">添加</el-button>
+
+        <el-tabs v-model="activeName" @@tab-click="renderTable" type="border-card">
+            <el-tab-pane label="资产" name="0"></el-tab-pane>
+            <el-tab-pane label="负债" name="1"></el-tab-pane>
+            <el-tab-pane label="权益" name="2"></el-tab-pane>
+            <el-tab-pane label="成本" name="3"></el-tab-pane>
+            <el-tab-pane label="损益" name="4"></el-tab-pane>
+        </el-tabs>
+        <div style="box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)">
+            <table id="subject" lay-filter="subject"></table>
+        </div>
+
+        @*<div v-if="list.length">
+            <el-table :data="list[activeName]" border style="width: 100%">
+                <el-table-column prop="name" label="科目名称" width="180"> </el-table-column>
+            </el-table>
+        </div>*@
+
+        <el-dialog title="科目期初" :visible.sync="addVisible" append-to-body width="600px">
+            <el-form :model="form" label-width="100px">
+                <el-form-item label="科目代码">
+                    <el-input v-model="form.code" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="科目名称">
+                    <el-input v-model="form.name" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="上级科目">
+                    <el-select v-model="form.parentId" placeholder="上级科目" filterable>
+                        <el-option v-for="item in rawData" :label="item.name" :value="item.id" :key="item.id">
+                            <span style="float: left">{{ item.name }}</span>
+                            <span style="float: right; color: #8492a6; font-size: 13px">{{ item.code }}</span>
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="余额方向">
+                    <el-select v-model="form.banlanceDirection" placeholder="余额方向">
+                        <el-option label="借" value="0"></el-option>
+                        <el-option label="贷" value="1"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="科目类别">
+                    <el-select v-model="form.subjectTitle" placeholder="科目类别">
+                        <el-option label="资产" value="0"></el-option>
+                        <el-option label="负债" value="1"></el-option>
+                        <el-option label="权益" value="2"></el-option>
+                        <el-option label="成本" value="3"></el-option>
+                        <el-option label="损益" value="4"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="期初">
+                    <el-input v-model="form.oriFee" autocomplete="off"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @@click="addVisible = false">取 消</el-button>
+                <el-button type="primary" @@click="submit">确 定</el-button>
+            </div>
+        </el-dialog>
+    </div>
+
+@section scripts{
+    <script type="text/html" id="balanceDir">
+        <div>
+            <span>{{d.banlanceDirection}}</span>
+            <i class="icon-shezhi1 iconfont" onclick="changeDir(this, {{d.LAY_INDEX}})"></i>
+        </div>
+    </script>
+	<script>
+        function changeDir(ev,index) {
+            var $this = $(ev);
+            var dir = $this.prev().html();
+            var reverselyDir = dir == '借' ? '贷' : '借';
+
+            var data = layui.table.cache.subject[index];
+            data.banlanceDirection = app.aBanlanceDirection.indexOf(reverselyDir);
+            abp.services.finance.financeSubject.editSubject(data,{ abpHandleError: false, error: err => { console.log(err); layui.table.reload('subject') } }).done(res => {
+                $this.prev().html(reverselyDir)
+                layer.msg('修改成功')
+            })
+        }
+        //{
+        //    subjectTitle: '科目类别',
+        //    name: '科目名称',
+        //    code: '科目代码',
+        //    banlanceDirection: '余额方向',
+        //    level: '层级',
+        //    oriFee:'期初'
+        //}
+        config.ready = function () {
+            layui.table.on('edit(subject)', function (obj) { //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
+                console.log(obj.value); //得到修改后的值
+                console.log(obj.field); //当前编辑的字段名
+                console.log(obj.data); //所在行的所有相关数据  
+                var data = JSON.parse(JSON.stringify(obj.data));
+                data.banlanceDirection = app.aBanlanceDirection.indexOf(data.banlanceDirection);
+                abp.services.finance.financeSubject.editSubject(data, {abpHandleError: false, error: err => { console.log(err);layui.table.reload('subject')} } ).done(res => { layer.msg('修改成功') })
+            });
+            window.app = new Vue({
+                el: '#app',
+                data: {
+                    activeName: 0,
+                    subject: [],
+                    aBanlanceDirection:['借','贷'],
+                    form: { subjectTitle: '0', banlanceDirection:'0'},
+                    addVisible: false,
+                    rawData:[]
+                },
+                methods: {
+                    submit() {
+                        abp.services.finance.financeSubject.addSubject(this.form).done(res => {
+                            this.addVisible = false;
+                            this.loadData();
+                        })
+                      
+                    },
+                    renderTable() {
+                        layui.table.render({
+                            elem: '#subject'
+                            , limit: 50
+                            ,limits:[50,100,200,400]
+                            , cellMinWidth:130
+                            , height: 'full-150'
+                            , data: this.subject[this.activeName]
+                            , page: { theme: '#c00' }
+                            ,id:'subject'
+                            , cols: [[ //表头
+                                { align: 'center', type: 'checkbox', fixed: 'left', align: 'center'}
+                                , { field: 'code', title: '科目代码', sort: true, align: 'center' }
+                                , { field: 'name', title: '科目名称', sort: true, edit: 'text', align: 'center'}
+                                , { field: 'banlanceDirection', title: '余额方向', sort: true,  templet:'#balanceDir' ,align:'center'}
+                                //, { field: 'level', title: '层级', sort: true }
+                                , { field: 'oriFee', title: '期初', sort: true, align: 'center'}
+                                //, {title:'编辑',}
+                            ]]
+                        });
+                    },
+                    loadData() {
+                        abp.services.finance.financeSubject.getAllList().done(res => {
+                            this.rawData = res;
+                            res.forEach(elm => {
+                                elm.banlanceDirection = this.aBanlanceDirection[elm.banlanceDirection]
+                            })
+                            this.subject = [0, 1, 2, 3, 4].map(el => (res.filter(elm => elm.subjectTitle === el)))
+                            this.renderTable();
+                        })
+                    }
+                },
+                created() {
+                    this.loadData();
+
+                }
+            })
+        }
+
+	</script>
+}

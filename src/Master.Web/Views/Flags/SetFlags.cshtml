@@ -1,0 +1,222 @@
+﻿@section styles{
+    <style>
+        html{
+            background:#fff;
+        }
+        .flag-content {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+            .flag-content .layui-form-label {
+                font-size: 18px;
+            }
+            .flag-content .layui-form-label {
+                text-align:left;
+            }
+        .add-flag {
+            text-align: left;
+            margin-left: 40px;
+        }
+        .img-icon {
+            width: 40px;
+            height: 40px;
+            vertical-align: top;
+        }
+        .w-150 .el-input{
+            width:150px;
+        }
+        label.layui-form-label{width:120px;}
+        .layui-input-block {
+            margin-left: 150px;
+        }
+    </style>
+}
+@section MainBody{
+
+
+    <div id="app">
+        <div class="flag-content">
+            <ul class="layui-form" v-cloak>
+                <li v-for="flag,index in flags">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" :tips="flag.remarks">
+                            <img class="img-icon" :src="flag.image" :alt="flag.name" v-if="flag.image" />
+                            <i :class="['iconfont',flag.icon]" :style="{color:flag.color}" v-else-if="flag.icon"></i>
+                            <span class="layui-badge" :style="{'background-color':flag.color}" v-else-if="flag.briefName">{{flag.briefName[0]}}</span>
+                            <i class="iconfont icon-qizi" :style="{color:flag.color}" v-else></i>
+                            <span :style="{color:isChecked(flag.name)?flag.color:'#009688'}">{{flag.displayName}}</span>
+                        </label>
+                        <div class="layui-input-block">
+                            <input type="checkbox" :checked="isChecked(flag.name)" :data-name="flag.name" lay-skin="switch" :readonly="flag.system">
+                            <el-popover placement="top" width="160" v-model="aDeleteFlagVisibleArr[index]" v-if="!flag.system">
+                                <p>确定删除吗？删除后若想恢复只需要新增名称完全相同的标记即可！</p>
+                                <div style="text-align: right; margin: 0">
+                                    <el-button size="mini" type="text" @@click="$set(aDeleteFlagVisibleArr,index, false)">取消</el-button>
+                                    <el-button type="primary" size="mini" @@click="fDeleteConfirm(index)">确定</el-button>
+                                </div>
+                                <el-button type="danger" icon="el-icon-delete" circle slot="reference" size="mini" style="margin:6px 0 0 20px;"></el-button>
+                            </el-popover>
+                        </div>
+                    </div>
+                </li>
+                <li class="add-flag">
+                    <el-button @@click="dialogFormVisible = true;setForm();">新增标记</el-button>
+                    <el-dialog title="新增标记" :visible.sync="dialogFormVisible" width="600px">
+                        <el-form label-position="left" label-width="80px" :model="form" size="mini" :inline="true"  class="w-150">
+                            <el-form-item label="名称" prop="require">
+                                <el-input v-model.trim="form.displayName"></el-input>
+                            </el-form-item>
+                            <el-form-item label="简称">
+                                <el-input v-model.trim="form.briefName"></el-input>
+                            </el-form-item>
+                            <el-form-item label="备注">
+                                <el-input v-model.trim="form.remarks"></el-input>
+                            </el-form-item>
+                            <el-form-item label="排序">
+                                <el-input type="number" v-model="form.index"></el-input>
+                            </el-form-item>
+                            <el-form-item label="颜色">
+                                <div style="width:150px;">
+                                    <el-color-picker v-model="form.color"></el-color-picker>
+                                    <span style="vertical-align: top;">{{form.color}}</span>
+                                </div>
+                            </el-form-item>
+                            <el-form-item label="图片">
+                                <el-button id="uploadBtn">上传</el-button>
+                                <img :src="form.image" alt="图标" class="img-icon" v-show="form.image" />
+                            </el-form-item>
+                        </el-form>
+                        <div slot="footer" class="dialog-footer">
+                            <el-button @@click="dialogFormVisible = false" size="mini">取 消</el-button>
+                            <el-button type="primary" @@click="confirm" size="mini">确 定</el-button>
+                        </div>
+                    </el-dialog>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+}
+@section scripts{
+    <script>
+        function submit() {
+            app.fSetBindedFlags();
+        }
+        config.ready = function () {
+            window.app = new Vue({
+                el: '#app',
+                data() {
+                    return {
+                        visible: false,
+                        aDeleteFlagVisibleArr:[],
+                        formLabelWidth: 400,
+                        dialogFormVisible: false,
+                        form: {
+                            index:1,
+                            displayName: '',
+                            color: '',
+                            image:''
+                        },
+                        checkList: [],
+                        id:$.getUrlParam('data'),
+                        type: $.getUrlParam('type'),//|| 'Master.Projects.Project'
+                        flags: []
+                    }
+                },
+                watch: {
+                    'flags.length': function (val) {
+                        this.form.index = val + 1;
+                        console.log(val)
+                    }
+                },
+                methods: {
+                    fDeleteConfirm(index) {
+                        this.$set(this.aDeleteFlagVisibleArr, index, false)
+                        this.flags.splice(index, 1);
+                        this.fSetFlags();
+                    },
+                    setForm() {
+                        this.form = {
+                            index: this.flags.length+1,
+                            displayName: '',
+                            color: $.randomRGB(),
+                            image: ''
+                        }
+                    },
+                    async confirm() {
+                        if (this.flags.filter(el => el.name == this.form.displayName).length) {
+                            abp.message.error(`${this.form.displayName}已存在，无法提交`)
+                            return false;
+                        }
+                        this.flags.splice(this.form.index - 1, 0, this.form);
+                        await this.fSetFlags();
+                        this.dialogFormVisible = false;
+                    },
+                    async fSetFlags() {
+                        let data=this.flags.filter(el => !el.system)
+                        await abp.services.app.resource.setFlagInfosByType(this.type,data);
+                        await this.loadFlags();
+                        this.$message({
+                            message: '提交成功',
+                            type: 'success'
+                        });
+                    },
+                    isChecked(name) {
+                        return this.checkList.indexOf(name) != -1
+                    },
+                    loadFlags() {
+                        return abp.services.app.resource.getFlagInfosByType(this.type).done(res => {
+                            this.flags = res;
+                            Vue.nextTick(refresh);
+                        })
+                    },
+                    fSetBindedFlags() {
+                        abp.services.app.resource.setBindedFlags(this.id, this.type, this.checkList).done(res => {
+                            parent.layer.closeAll();
+                            parent.layer.msg('保存成功');
+                            parent.config.reloadTable();
+                        })
+
+                    },
+                    loadBindedFlags() {
+                        abp.services.app.resource.getBindedFlagNames(this.id,this.type).done(res => {
+                            this.checkList = res;
+                            Vue.nextTick(refresh);
+                        })
+                    }
+                },
+                mounted() {
+                    this.loadFlags();
+                    this.loadBindedFlags();
+                    Vue.nextTick(function () {
+                        //上传图片那地址
+                        func.renderUpload('#uploadBtn', {
+                            trigger: 'click',
+                            callback: function (res) {
+                                app.form.image = res.filePath;
+                            },
+                        })
+                    })
+                }
+            })
+            function refresh() {
+                var form = layui.form;
+                form.render();
+                form.on('switch()', function (data) {
+                    var val = $(data.elem).data('name')
+                    console.log(val)
+                    if (data.elem.checked) {
+                        app.checkList.push(val)
+                    } else {
+                        var index = app.checkList.indexOf(val)
+                        app.checkList.splice(index, 1);
+                    }
+                });
+            }
+        }
+
+    </script>
+}

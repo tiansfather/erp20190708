@@ -1,0 +1,477 @@
+﻿<div id="app">
+    <el-form :inline="true" size="mini">
+        <el-form-item label="采购类型">
+            <el-select v-model="currentItem.type" size="mini" style="margin-bottom:15px;" @change="handleType" :disabled="_formOption.readonly">
+                <el-option label="模料" value="1"></el-option>
+                <el-option label="配件" value="2"></el-option>
+            </el-select>
+        </el-form-item>
+        <el-form-item label="供应商" v-if="!_formOption.readonly">
+            <unit-select nature="2" :unit.sync="currentItem.unitName" :value-isid="false" size="mini" @change="handleUnit" style="margin-bottom:15px;" :disabled="_formOption.readonly"></unit-select>
+        </el-form-item>
+        <el-form-item label="模具编号" v-if="!_formOption.readonly">
+            <project-select :project.sync="currentItem.projectSN" size="mini" @change="handleProject" style="margin-bottom:15px;" :disabled="_formOption.readonly"></project-select>
+        </el-form-item>
+    </el-form>
+
+    <hot-table ref='textHot' style="width:100%;" :settings="hotSettings"></hot-table>
+</div>
+<script src="/lib/handsontable/handsontable.full.min.js"></script>
+<script src="/lib/handsontable/vue-handsontable.min.js"></script>
+<script src="/lib/handsontable/languages.all.js"></script>
+<link href="/lib/handsontable/handsontable.full.min.css" rel="stylesheet" />
+<script>
+    config.ready = function () {
+        app = new Vue({
+            el: "#app",
+            data: {
+                columns: [],
+                rCount: 0,
+                hotSettings: {
+                    readOnly: _formOption.readonly,
+                    startRows: 10, //初始行列数
+                    startCols: 10,
+                    minRows: 1, //最小行列
+                    minCols: 1,
+                    minSpareCols: 1, //列留白
+                    // minSpareRows: 2, //行留白
+                    className: "htCenter",
+                    currentRowClassName: "currentRow", //为选中行添加类名，可以更改样式
+                    currentColClassName: "currentCol", //为选中列添加类名
+                    autoWrapRow: true, //自动换行
+                    contextMenu: [
+                        "row_above",
+                        "row_below",
+                        //"col_left",
+                        //"col_right",
+                        "---------",
+                        "remove_row",
+                        //"remove_col",
+                        "---------",
+                        "alignment",
+                        //'make_read_only',
+                        //"borders",
+                        "copy",
+                        "cut"
+                    ],
+                    //右键效果
+                    fillHandle: true, //选中拖拽复制 possible values: true, false, "horizontal", "vertical"
+                    fixedColumnsLeft: 0, //固定左边列数
+                    fixedRowsTop: 0, //固定上边行数
+                    formulas: true,
+                    colHeaders: ['模具编号', '供应商', '物料名称', '规格', '品牌', '重量/Kg', '数量', '单位', '预计单价', '预计总价', '备注'],
+                    columns: [
+
+                        {
+                            data: 'projectSN',
+                            type: 'autocomplete',
+                            source: function (query, process) {
+                                abp.services.app.project.getAll(query, 50).done(function (response) {
+                                    process(response.map(o => o.projectSN));
+                                    //process(response);
+                                })
+                            },
+                            strict: true,
+                            width: 80,
+                        },
+                        {
+                            data: 'supplier',
+                            type: 'autocomplete',
+                            source: function (query, process) {
+                                abp.services.app.unit.getAllByUnitNature(2, query, 50).done(function (response) {
+                                    process(response.map(o => o.unitName));
+                                })
+                            },
+                            strict: true,
+                            width: 80,
+                        },
+                        {
+                            data: 'customName',
+                            type: 'autocomplete',
+                            source: function (query, process) {
+                                abp.services.storage.material.getGroupedField({ field: "Name", query: query }).done(function (response) {
+                                    process(response);
+                                })
+                            },
+                            strict: true,
+                            width: 80,
+                        },
+                        {
+                            data: 'partSpecification',
+                            type: 'autocomplete',
+                            source: function (query, process) {
+                                abp.services.storage.material.getGroupedField({ field: "Specification", query: query }).done(function (response) {
+                                    process(response);
+                                })
+                            },
+                            width: 80
+                        },
+                        {
+                            data: 'partBrand',
+                            type: 'autocomplete',
+                            source: function (query, process) {
+                                abp.services.storage.material.getGroupedField({ field: "Brand", query: query }).done(function (response) {
+                                    process(response);
+                                })
+                            },
+                            width: 80
+                        },
+                        {
+                            data: 'partNum',
+                            type: 'numeric',
+                            numericFormat: {
+                                pattern: '0.00'
+                            }
+                        },
+                        {
+                            data: 'unitName',
+                            width: 80,
+                            editor: 'select',
+                            selectOptions: [],
+                            strict: true,
+                        },
+                        {
+                            data: 'price',
+                            type: 'numeric',
+                            numericFormat: {
+                                pattern: '0.00'
+                            }
+                        },
+                        {
+                            data: 'cost',
+                            type: 'numeric',
+                            readOnly: true,
+                            numericFormat: {
+                                pattern: '0.00'
+                            }
+                        },
+                    ],
+                    cells: function (row, column, prop) {
+                        const cellProperties = {};
+                        //const visualRowIndex = this.instance.toVisualRow(row);
+                        //const visualColIndex = this.instance.toVisualColumn(column);
+
+                        if (column === 6) {
+                            //cellProperties.source = [partName];
+                        }
+
+                        return cellProperties;
+                    },
+                    rowHeaders: true,
+                    stretchH: 'all',
+                    manualColumnResize: true,
+                    manualRowResize: true,
+                    licenseKey: 'non-commercial-and-evaluation',
+                    language: 'zh-CN',
+                    afterChange: function (changes, source) {
+                        if (app.rCount) {
+                            app.rCount--;
+                            return;
+                        }
+                        var that = this;
+                        var sourceData = this.getSourceData()
+                        if (changes) {
+                            changes.forEach(([row, prop, oldValue, newValue]) => {
+                                function setCost() {
+                                    var cost = sourceData[row].partNum * sourceData[row].price;
+                                    if (sourceData[row].weight) {
+                                        cost = cost * sourceData[row].weight
+                                    }
+                                    if (!isNaN(cost)) {
+                                        that.setDataAtRowProp(row, "cost", cost);
+                                        app.rCount++;
+                                    }
+                                }
+                                //当预计单价和数量发生变化时计算预计总价
+                                if (prop == "partNum" || prop == "price" || prop == "weight") {
+                                    setCost();
+                                }
+                                //当总价改变的时候计算单价，通知price你别动了
+                                else if (prop == "cost") {
+                                    let price = newValue / (sourceData[row].partNum * (sourceData[row].weight || 1))
+                                    if (!isNaN(price)) {
+                                        that.setDataAtRowProp(row, "price", price)
+                                        app.rCount++;
+                                    }
+                                }
+                                //当物料名称发生变化时设置单位的下拉
+                                else if (prop == "material") {
+                                    this.setDataAtRowProp(row, "partNum", 1);
+                                    //var partName = sourceData[row].partName;
+                                    //更改规格列的来源
+                                    this.setCellMeta(row, app.getColHeader('partSpecification'), 'source', function (query, process) {
+                                        abp.services.storage.material.getGroupedField({ field: "Specification", query: query, where: 'name=\"' + newValue + '\"' }).done(function (response) {
+                                            process(response);
+                                        })
+                                    })
+                                    //更改品牌列的来源
+                                    this.setCellMeta(row, app.getColHeader('partBrand'), 'source', function (query, process) {
+                                        abp.services.storage.material.getGroupedField({ field: "Specification", query: query, where: 'name=\"' + newValue + '\"' }).done(function (response) {
+                                            process(response);
+                                        })
+                                    })
+
+                                    //if (!partId) { return;}
+                                    //var partData = JSON.parse(this.getCellMeta(row, 2)["selection"]);
+                                    //this.setDataAtCell(row, 3, partData.specification);
+                                    //this.setDataAtCell(row, 4, partData.brand);
+                                    //更改单位列的来源，更改密度
+                                    abp.services.storage.material.getMaterialInfoByName(newValue).done(d => {
+                                        if (d) {
+                                            this.setCellMeta(row, app.getColHeader('material'), "density", d.density);
+                                            if (d.density && app.currentItem.type == '1' && sourceData[row].partSpecification) {
+                                                this.setDataAtRowProp(row, "weight", $.calWeight(sourceData[row].partSpecification, d.density));
+                                                setCost();
+                                            }
+                                            let source = d.measureMentUnitDtos.map(o => o.name);
+                                            if (source[0]) {
+                                                this.setDataAtRowProp(row, "unitName", source[0])
+                                            }
+                                            this.setCellMeta(row, app.getColHeader('"unitName"'), "selectOptions", source)
+                                        }
+
+                                    })
+
+                                }
+                                else if (prop == "partSpecification") {
+                                    if (app.currentItem.type != '1') return;
+                                    //只有当类型是模料的时候，才去根据密度算重量/Kg
+                                    let density = this.getCellMeta(row, app.getColHeader('material')).density;
+
+                                    if (newValue && density) {
+                                        let weight = $.calWeight(newValue, density);
+                                        !isNaN(weight) && this.setDataAtRowProp(row, "weight", weight)
+                                    } else {
+                                        this.setDataAtRowProp(row, "weight", 0)
+                                    }
+                                    setCost();
+                                }
+
+                            })
+                        }
+                    },
+                    data: _formOption.formData ? _formOption.formData.layoutData.data : [{}, {}, {}]
+                },
+                currentItem: _formOption.formData ? _formOption.formData.layoutData : {
+                    unitName: '',
+                    projectSN: '',
+                    type: '1',
+                    data: []
+                },
+            },
+            methods: {
+                getColHeader(key, index) {
+                    //let colHeaders = {
+                    //    1: ['模具编号', '供应商', '零件名称', '物料名称', '规格', '品牌', '重量/Kg', '数量', '单位', '预计单价', '预计总价', '备注'],
+                    //    2: ['模具编号', '供应商', '物料名称', '规格', '品牌', '数量', '单位', '预计单价', '预计总价', '备注'],
+                    //};
+                    let colHeaders = {
+                        1: ['模具编号', '供应商', '零件名称(材料名称)', '物料名称(材质)', '规格(净尺寸)', '品牌', '重量/Kg', '数量', '单位', '预计单价', '预计总价', '备注'],
+                        2: ['模具编号', '供应商', '物料名称(配件名称)', '规格(配件规格)', '品牌', '数量', '单位', '预计单价', '预计总价', '备注'],
+                    };
+                    let col = this.customized(colHeaders[this.currentItem.type]);
+
+                    //return index ? col : col.indexOf(key);//第二个参数有的时候就不是拿第几个了，而是拿总的
+                    return index ? col : this.columns.map(el => el.data).indexOf(key);//第二个参数有的时候就不是拿第几个了，而是拿总的
+                },
+                customized(arr) {
+                    let indexArr = [];
+                    if (this.currentItem.type == '1') {
+                        indexArr = [0, 1, 2, 4, 3, 7, 9, 10, 11, 5, 6, 8];
+                    } else {
+                        indexArr = [0, 1, 2, 3, 4, 5, 7, 8, 9, 6];
+                    }
+                    arr = indexArr.map(el => arr[el]);
+                    return arr;
+                },
+                updateSetting() {
+                    var addData = [
+                        { data: 'customName', type: 'text', },
+                        //{ data: 'grassSpecification',type: 'text',},
+                        { data: 'weight', type: 'numeric', numericFormat: { pattern: '0.00' } }
+                    ]
+
+                    var columns = [
+                        {
+                            data: 'projectSN',
+                            type: 'autocomplete',
+                            source: function (query, process) {
+                                abp.services.app.project.getAll(query, 50).done(function (response) {
+                                    process(response.map(o => o.projectSN));
+                                    //process(response);
+                                })
+                            },
+                            strict: true,
+                            width: 80,
+                        },
+                        {
+                            data: 'supplier',
+                            type: 'autocomplete',
+                            source: function (query, process) {
+                                abp.services.app.unit.getAllByUnitNature(2, query, 50).done(function (response) {
+                                    process(response.map(o => o.unitName));
+                                })
+                            },
+                            strict: true,
+                            width: 80,
+                        },
+                        {
+                            data: 'material',
+                            type: 'autocomplete',
+                            source: function (query, process) {
+                                abp.services.storage.material.getGroupedField({ field: "Name", query: query, where: 'materialNature=' + (app.currentItem.type == 1 ? 1 : 0) }).done(function (response) {
+                                    process(response);
+                                })
+                            },
+                            width: 80,
+                            strict: true
+                        },
+                        {
+                            data: 'partSpecification',
+                            type: 'autocomplete',
+                            source: function (query, process) {
+                                abp.services.storage.material.getGroupedField({ field: "Specification", query: query }).done(function (response) {
+                                    process(response);
+                                })
+                            },
+                            width: 80
+                        },
+                        {
+                            data: 'partBrand',
+                            type: 'autocomplete',
+                            source: function (query, process) {
+                                abp.services.storage.material.getGroupedField({ field: "Brand", query: query }).done(function (response) {
+                                    process(response);
+                                })
+                            },
+                            width: 80
+                        },
+                        {
+                            data: 'partNum',
+                            type: 'numeric',
+                            numericFormat: {
+                                pattern: '0.00'
+                            }
+                        },
+                        {
+                            data: 'unitName',
+                            width: 80,
+                            editor: 'select',
+                            selectOptions: [],
+                            strict: true,
+                        },
+                        {
+                            data: 'price',
+                            type: 'numeric',
+                            numericFormat: {
+                                pattern: '0.00'
+                            }
+                        },
+                        {
+                            data: 'cost',
+                            type: 'numeric',
+                            numericFormat: {
+                                pattern: '0.00'
+                            }
+                        },
+                        {
+                            data: 'remarks',
+                            type: 'text'
+                        },
+                    ]
+                    if (this.currentItem.type == 1) {
+                        columns.splice(2, 0, addData[0]);
+                        //columns.splice(5, 0, addData[1]);
+                        columns.splice(6, 0, addData[1]);
+                    }
+                    columns = this.customized(columns);
+                    this.columns = columns;
+                    this.$refs.textHot.hotInstance.updateSettings({
+                        columns,
+                        colHeaders: this.getColHeader(null, true),
+                    });
+
+                },
+                handleType(type) {
+                    var bol = true;
+                    this.getData().forEach(el => {
+                        if (!$.isEmptyObject(el)) {
+                            bol = false;
+                        }
+                    })
+
+                    if (!bol) {
+                        abp.message.confirm('确认切换采购类型吗？之前修改的数据将被清除！', () => {
+                            this.updateSetting();
+
+                            this.$refs.textHot.hotInstance.updateSettings({
+                                data: [{}, {}, {}]
+                            })
+                        }, () => { this.currentItem.type = this.currentItem.type == 1 ? 2 : 1 })
+                    } else {
+                        this.updateSetting();
+
+                        this.$refs.textHot.hotInstance.updateSettings({
+                            data: [{}, {}, {}]
+                        })
+                    }
+                },
+                handleProject({ projectSN }) {
+
+                    this.getData().forEach((el, index) => {
+                        this.$refs.textHot.hotInstance.setDataAtCell(index, 0, projectSN)
+                    })
+
+                },
+                handleUnit({ id, unitName }) {
+                    this.getData().forEach((el, index) => {
+                        this.$refs.textHot.hotInstance.setDataAtCell(index, 1, unitName)
+                    })
+                },
+                getData() {
+                    return this.$refs.textHot.hotInstance.getSourceData()
+                }
+            },
+            mounted() {
+                this.updateSetting();
+            }
+            , components: {
+                HotTable: Handsontable.vue.HotTable
+            },
+
+        })
+    }
+
+    //模板中必须实现的方法，用于获取表单数据，返回一个对象，如果需要取消提交，可抛出一个异常
+    function getFormData() {
+        var data = app.currentItem.data = app.$refs.textHot.hotInstance.getSourceData().filter(o => Object.keys(o).length);
+        //验证
+        if (!data.length) {
+            throw "请至少录入一条采购物料";
+        }
+        for (var i = 0; i < data.length; i++) {
+            if (app.type == 1 && !data[i].customName) {
+                throw "行" + (i + 1) + "零件名称不能为空";
+            }
+            if (!data[i].material) {
+                throw "行" + (i + 1) + "物料名称不能为空";
+            }
+            if (!data[i].partNum) {
+                throw "行" + (i + 1) + "数量不能为空";
+            }
+            //if (!data[i].price) {
+            //    throw "行" + (i + 1) + "预计单价不能为空";
+            //}
+            if (!data[i].unitName) {
+                throw "行" + (i + 1) + "单位不能为空";
+            }
+        }
+        //约定，formData由两部分组成,一为layoutData,即用于表单呈现数据,另一部分是单据数据,用于后台进行数据处理,一般由呈现数据进行处理后得到
+        return {
+            layoutData: app.currentItem,
+            sheetData: {
+                header: {}, body: data
+            }
+        };
+    }
+</script>

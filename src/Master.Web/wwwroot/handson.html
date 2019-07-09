@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="lib/vue/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@handsontable/vue/dist/vue-handsontable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/languages/all.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <hot-table :data="data" :colHeaders="true" :rowHeaders="true" style="width:100%;height:500px" :settings="hotSettings"></hot-table>
+    </div>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                hotSettings: {
+                  startRows: 20,
+                    startCols: 20,
+                    colHeaders: ['模具编号', '供应商', '物料名称', '规格', '品牌', '数量', '单位', '单价', '总价'],
+                    columns: [
+                        {
+                          data: 'projectSN',
+                          type: 'text',
+                          width: 80
+                        },
+                        {
+                          data: 'supplier',
+                          type: 'text',
+                          width: 80
+                        },
+                        {
+                          data: 'partName',
+                          type: 'text',
+                          width: 80
+                        },
+                        {
+                          data: 'partSpecification',
+                          type: 'text',
+                          width: 80
+                        },
+                        {
+                          data: 'partBrand',
+                          type: 'text',
+                          width: 80
+                        },
+                        {
+                          data: 'partNum',
+                          type: 'numeric',
+                          numericFormat: {
+                            pattern: '0.00'
+                          }
+                        },
+                        {
+                          data: 'unitName',
+                          type: 'text',
+                          width: 80
+                        },
+                        {
+                          data: 'price',
+                          type: 'numeric',
+                          numericFormat: {
+                            pattern: '0.00'
+                          }
+                        },
+                        {
+                          data: 'cost',
+                          type: 'numeric',
+                          numericFormat: {
+                            pattern: '0.00'
+                          }
+                        },
+                    ],
+                  rowHeaders:true,
+                    stretchH: 'all',
+                    licenseKey: 'non-commercial-and-evaluation',
+                    language: 'zh-CN',
+                  contextMenu: true
+                },
+                data: [{
+                    projectSN:'bbbb'
+                }]
+            },components: {
+              HotTable:Handsontable.vue.HotTable
+            }
+        })
+    </script>
+</body>
+</html>

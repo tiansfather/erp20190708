@@ -1,0 +1,107 @@
+[
+	{
+		"name": "Admin",
+		"displayName": "行政",
+    "icon": "iconfont icon-xingzheng",
+    "order": 10,
+		"url": "",
+			"items": [
+                {
+                    "name": "Admin.Tenancy.Organization",
+                    "displayName": "组织架构",
+                    "icon": "iconfont icon-zuzhijiagou",
+                    "url": "/Organization"
+                },
+                {
+                    "name": "Admin.Tenancy.Role",
+                    "displayName": "角色管理",
+                    "icon": "iconfont icon-jiaoseguanli1",
+                    "url": "/Role"
+                },
+                {
+                    "name": "Admin.Tenancy.User",
+                    "displayName": "员工信息",
+                    "icon": "iconfont icon-yuangongxinxi2",
+                    "url": "/User"
+                },
+                {
+                  "name": "Admin.Tenancy.Unit",
+                  "displayName": "往来单位",
+                  "icon": "iconfont icon-jiaohusheji",
+                  "url": "/Unit"
+                },
+                {
+                  "name": "Admin.Host.Tenant",
+                  "displayName": "后台管理",
+                  "icon": "iconfont icon-houtaiguanli",
+                  "url": "/Host/Tenant"
+                }
+			]
+	},
+    {
+        "name": "Setting",
+        "displayName": "设置",
+      "icon": "iconfont icon-shezhi1",
+      "order": 100,
+        "url": "",
+      "items": [
+        {
+          "name": "Setting.Tenancy.BaseSetting",
+          "displayName": "基本设置",
+          "icon": "iconfont icon-shezhi1",
+          "url": "/Setting/"
+        },
+        {
+          "name": "Setting.Tenancy.ModuleSetting",
+          "displayName": "模块设置",
+          "icon": "iconfont icon-shezhi1",
+          "url": "/ModuleInfo"
+        },
+        {
+          "name": "Setting.Tenancy.MenuSetting",
+          "displayName": "菜单设置",
+          "icon": "iconfont icon-shezhi1",
+          "url": "/MenuSetting"
+        },
+        {
+          "name": "Setting.Tenancy.DictionarySetting",
+          "displayName": "字典设置",
+          "icon": "iconfont icon-shezhi1",
+          "url": "/Dictionary"
+        },
+
+        {
+          "name": "Logs",
+          "displayName": "日志",
+          "icon": "layui-icon layui-icon-zwrite-l",
+          "items": [
+            {
+              "name": "Setting.Host.SystemLog",
+              "displayName": "系统日志",
+              "icon": "layui-icon layui-icon-zwrite-l",
+              "url": "/Logs/System"
+            },
+            {
+              "name": "Setting.Host.LoginLog",
+              "displayName": "登录日志",
+              "icon": "layui-icon layui-icon-zwrite-l",
+              "url": "/Logs/Login"
+            },
+            {
+              "name": "Setting.Host.OperationLog",
+              "displayName": "操作日志",
+              "icon": "layui-icon layui-icon-zwrite-l",
+              "url": "/Logs/Operations"
+            }
+          ]
+        },
+        {
+          "name": "Admin.Host.Language",
+          "displayName": "语言包管理",
+          "icon": "iconfont icon-houtaiguanli",
+          "url": "/Host/Language"
+        }
+      ]
+    }
+
+]

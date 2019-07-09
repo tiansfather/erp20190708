@@ -1,0 +1,101 @@
+﻿@using Master.Web.Components
+@using Master.Application.Editions
+@inherits Master.Web.Components.MasterRazorPage<TModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Master.Web.Core
+@*@inject EditionManager EditionManager*@
+@{
+    //这是Host管理Language
+}
+<div class="layui-fluid" id="LAY-app-message">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <form class="layui-form layui-form-pane" onsubmit="return doSearch();">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">@L("名称")</label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="name" name="name" autocomplete="off" class="layui-input">
+                        </div>
+                        <button class="layui-btn layui-btn-primary" type="button" onclick="doSearch()">@L("搜索")</button>
+                        <button class="layui-btn  " buttonname="@L("添加")" type="button" onclick="addLanguage()">@L("添加")</button>
+                    </div>
+                </div>
+            </form>
+            <table autoevent="1" id="Language" lay-filter="Language" class="layui-table " lay-data="{cellMinWidth:'80',height:'full-170',limit:20, url:'/api/services/app/language/GetPageResult', page:true, id:'Language',  even: true,done:config.onTableDone,initSort:{field:'Id',type:'desc'}}" @*lay-size="sm" *@>
+                <thead>
+                    <tr>
+                        <th lay-data="{field:'key',edit:'text'}">@L("中文名称")</th>
+                        <th lay-data="{field:'value',edit:'text'}">@L("英文名称")</th>
+                        <th lay-data="{align:'center', toolbar: '#toolbar'}">@L("操作")</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    <script type="text/html" id="toolbar">
+        <a dataid="{{d.id}}" buttonname="删除" modulekey="Language" class="layui-btn layui-btn-xs layui-btn-danger" lay-event="Edit" confirmmsg="确认删除此翻译?" buttonactiontype="Ajax" buttonactionurl="abp.services.app.language.deleteEntity" onclick="func.callModuleButtonEvent()">删除</a>
+        
+    </script>
+    <script>
+        var app;
+        var currentFilter = {};
+        config.ready = function () {
+            
+            layui.table.on('edit(Language)', function (obj) {
+                var value = obj.value //得到修改后的值
+                    , data = obj.data //得到所在行所有键值
+                    , field = obj.field; //得到字段
+                //layer.msg('[ID: ' + data.id + '] ' + field + ' 字段更改为：' + value);
+                if (!value.trim()) {
+                    layer.msg("输入不能为空", { icon: 5, anim: 6 });
+                    return false;
+                }
+                abp.message.confirm(L('确认修改?'), function () {
+                    func.runAsync(abp.services.app.language.updateField(data.id, field, value, {
+                        error: function () {
+                            layui.table.reload('Language');
+                        }
+                    }).done(function () {
+                        layer.msg('更新成功');
+                    }));
+                })
+
+            });
+        };
+        config.reloadTable = function () {
+            layui.table.reload('Language');
+            }
+        function doSearch() {
+            var where = {where:'1=1'};
+            var name = $("#name").val();
+            if (name) {
+                where.where += " and Key.Contains(\"" + name + "\") ";
+
+            }
+            layui.table.reload('Language', {
+                where: where
+
+            })
+
+            return false;
+		}
+    function addLanguage() {
+        layer.prompt({ title: '@L("请输入语言翻译,例'中文:英文',多个换行隔开")', formType: 2 }, function (text, index) {
+                layer.close(index);
+                func.runAsync(abp.services.app.language.addText(text).done(function (data) {
+                    layer.msg('@L("提交成功")');
+                    config.reloadTable(); 
+
+                }));
+            });
+
+
+        }
+    </script>
+
+}

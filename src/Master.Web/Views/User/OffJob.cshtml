@@ -1,0 +1,69 @@
+﻿@using Master.Web.Components
+@using Master.Module
+@model List<string>
+@{
+	Layout = "~/Views/Shared/_LayoutDialog.cshtml";
+
+	var columnInfo = (await ModuleInfoManager.GetModuleInfo("User")).ColumnInfos.Where(o => o.ColumnKey == "JobDateEnd").Single();
+	var curColumnInfo = Common.ObjectTrans<ColumnInfo, ColumnInfo>.Trans(columnInfo);
+	curColumnInfo.DefaultValue = "\"" + DateTime.Now.ToString("yyyy-MM-dd") + "\"";
+	curColumnInfo.VerifyRules = "required";
+}
+<div id="app">
+	<blockquote class="layui-elem-quote">
+		对以下人员进行离职处理:<strong>@(string.Join(",", Model))</strong>
+	</blockquote>
+	<form class="layui-form">
+		<input type="hidden" name="ids" value="@ViewData["data"]" />
+
+		<vc:module-form-item param="@(new ModuleFormItemViewParam(){ColumnInfo=curColumnInfo,FormType=FormType.Add} )"></vc:module-form-item>
+		@*<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">离职日期</label>
+					<div class="layui-input-inline">
+						<input type="text" name="offJobDate" id="offJobDate" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input" value="@DateTime.Now.ToString("yyyy-MM-dd")">
+
+					</div>
+				</div>
+			</div>*@
+		<vc:module-form-submit param="@(new ModuleFormSubmitViewParam() { ModuleKey="User",ButtonKey="OffJob"})"></vc:module-form-submit>
+		@*<div class="layui-form-item">
+				<div class="layui-input-block">
+					<button class="layui-btn" type="button" lay-submit="" lay-filter="submit">提交</button>
+				</div>
+			</div>*@
+	</form>
+</div>
+
+@section scripts{
+	<script>
+		var app;
+		config.ready = function () {
+			app = new Vue({
+				el: '#app',
+				created: function () {
+					this.$nextTick(function () {
+						layui.form.render();
+						layui.laydate.render({
+							elem: '#JobDateEnd'
+						});
+					})
+				}
+			})
+				
+				//layui.form.on("submit(submit)", function (data) {
+				//	var dataparam = data.field;
+				//	func.runAsync(abp.services.app.staff.offJob(dataparam.data, dataparam.offJobDate)
+				//		.done(function () {
+				//			parent.abp.message.success("提交成功");
+				//			parent.layer.closeAll("iframe");
+				//			parent.func.reload("Staff");
+				//			parent.config.refresh();
+				//		}));
+
+				//});
+
+			}
+		</script>
+
+}

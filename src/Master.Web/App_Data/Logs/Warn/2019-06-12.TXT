@@ -1,0 +1,11 @@
+WARN  2019-06-12 09:18:24,854 [93   ] Microsoft.AspNetCore.Server.Kestrel      - Heartbeat took longer than "00:00:01" at "06/12/2019 01:18:23 +00:00".
+WARN  2019-06-12 09:18:24,854 [140  ] Microsoft.AspNetCore.Server.Kestrel      - Heartbeat took longer than "00:00:01" at "06/12/2019 01:18:22 +00:00".
+WARN  2019-06-12 09:18:24,854 [141  ] Microsoft.AspNetCore.Server.Kestrel      - Heartbeat took longer than "00:00:01" at "06/12/2019 01:18:24 +00:00".
+WARN  2019-06-12 09:20:18,585 [150  ] oft.AspNetCore.Session.SessionMiddleware - Error unprotecting the session cookie.
+System.Security.Cryptography.CryptographicException: The payload was invalid.
+   at Microsoft.AspNetCore.DataProtection.Cng.CbcAuthenticatedEncryptor.DecryptImpl(Byte* pbCiphertext, UInt32 cbCiphertext, Byte* pbAdditionalAuthenticatedData, UInt32 cbAdditionalAuthenticatedData)
+   at Microsoft.AspNetCore.DataProtection.Cng.Internal.CngAuthenticatedEncryptorBase.Decrypt(ArraySegment`1 ciphertext, ArraySegment`1 additionalAuthenticatedData)
+   at Microsoft.AspNetCore.DataProtection.KeyManagement.KeyRingBasedDataProtector.UnprotectCore(Byte[] protectedData, Boolean allowOperationsOnRevokedKeys, UnprotectStatus& status)
+   at Microsoft.AspNetCore.DataProtection.KeyManagement.KeyRingBasedDataProtector.DangerousUnprotect(Byte[] protectedData, Boolean ignoreRevocationErrors, Boolean& requiresMigration, Boolean& wasRevoked)
+   at Microsoft.AspNetCore.DataProtection.KeyManagement.KeyRingBasedDataProtector.Unprotect(Byte[] protectedData)
+   at Microsoft.AspNetCore.Session.CookieProtection.Unprotect(IDataProtector protector, String protectedText, ILogger logger)
