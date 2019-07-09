@@ -15,5 +15,7 @@ namespace Master.Models.TokenAuth
         [Required]
         public string Password { get; set; }
         public string TenancyName { get; set; }
+        [Required]
+        public string VerifyCode { get; set; }
     }
 }

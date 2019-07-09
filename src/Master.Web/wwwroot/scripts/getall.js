@@ -71,9 +71,17 @@ abp.services = abp.services || {};
     };
 
     // action 'getGroupedField'
-    abp.services.app.file.getGroupedField = function(key, ajaxParams) {
+    abp.services.app.file.getGroupedField = function(requestGroupFieldPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/File/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
+        url: abp.appPath + 'api/services/app/File/GetGroupedField' + abp.utils.buildQueryString([{ name: 'field', value: requestGroupFieldPageDto.field }, { name: 'query', value: requestGroupFieldPageDto.query }, { name: 'limit', value: requestGroupFieldPageDto.limit }, { name: 'page', value: requestGroupFieldPageDto.page }, { name: 'where', value: requestGroupFieldPageDto.where }, { name: 'tableFilter', value: requestGroupFieldPageDto.tableFilter }, { name: 'filterField', value: requestGroupFieldPageDto.filterField }, { name: 'filterKey', value: requestGroupFieldPageDto.filterKey }, { name: 'filterColumns', value: requestGroupFieldPageDto.filterColumns }, { name: 'searchCondition', value: requestGroupFieldPageDto.searchCondition }, { name: 'filterSos', value: requestGroupFieldPageDto.filterSos }, { name: 'searchKeys', value: requestGroupFieldPageDto.searchKeys }, { name: 'keyword', value: requestGroupFieldPageDto.keyword }, { name: 'orderField', value: requestGroupFieldPageDto.orderField }, { name: 'orderType', value: requestGroupFieldPageDto.orderType }, { name: 'moduleKey', value: requestGroupFieldPageDto.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getAllByKeyword'
+    abp.services.app.file.getAllByKeyword = function(keyword, take, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/File/GetAllByKeyword' + abp.utils.buildQueryString([{ name: 'keyword', value: keyword }, { name: 'take', value: take }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -104,6 +112,23 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'setPropertyValue'
+    abp.services.app.file.setPropertyValue = function(propertySetDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/File/SetPropertyValue',
+        type: 'POST',
+        data: JSON.stringify(propertySetDto)
+      }, ajaxParams));;
+    };
+
+    // action 'getPropertyValue'
+    abp.services.app.file.getPropertyValue = function(primaries, propertyName, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/File/GetPropertyValue' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }, { name: 'propertyName', value: propertyName }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
   })();
 
   // controller 'tokenAuth'
@@ -111,18 +136,10 @@ abp.services = abp.services || {};
 
     abp.services.app.tokenAuth = abp.services.app.tokenAuth || {};
 
-    // action 'simulateAuthenicate'
-    abp.services.app.tokenAuth.simulateAuthenicate = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/TokenAuth/SimulateAuthenicate' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
     // action 'authenticate'
     abp.services.app.tokenAuth.authenticate = function(model, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/TokenAuth/Authenticate' + abp.utils.buildQueryString([{ name: 'userName', value: model.userName }, { name: 'password', value: model.password }, { name: 'tenancyName', value: model.tenancyName }]) + '',
+        url: abp.appPath + 'api/TokenAuth/Authenticate' + abp.utils.buildQueryString([{ name: 'userName', value: model.userName }, { name: 'password', value: model.password }, { name: 'tenancyName', value: model.tenancyName }, { name: 'verifyCode', value: model.verifyCode }]) + '',
         type: 'POST'
       }, ajaxParams));;
     };
@@ -172,45 +189,6 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/qrcode' + abp.utils.buildQueryString([{ name: 'url', value: url }, { name: 'pixel', value: pixel }]) + '',
         type: 'GET',
         dataType: null
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'mES'
-  (function(){
-
-    abp.services.app.mES = abp.services.app.mES || {};
-
-    // action 'index'
-    abp.services.app.mES.index = function(page, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'MES/Index/' + page + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'receiptAudit'
-    abp.services.app.mES.receiptAudit = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'MES/wechat/ReceiptAudit',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'profileEquipment'
-    abp.services.app.mES.profileEquipment = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'MES/process/ProfileEquipment',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'profile'
-    abp.services.app.mES.profile = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'MES/process/Profile',
-        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -334,9 +312,17 @@ abp.services = abp.services || {};
     };
 
     // action 'getGroupedField'
-    abp.services.app.test.getGroupedField = function(key, ajaxParams) {
+    abp.services.app.test.getGroupedField = function(requestGroupFieldPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Test/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
+        url: abp.appPath + 'api/services/app/Test/GetGroupedField' + abp.utils.buildQueryString([{ name: 'field', value: requestGroupFieldPageDto.field }, { name: 'query', value: requestGroupFieldPageDto.query }, { name: 'limit', value: requestGroupFieldPageDto.limit }, { name: 'page', value: requestGroupFieldPageDto.page }, { name: 'where', value: requestGroupFieldPageDto.where }, { name: 'tableFilter', value: requestGroupFieldPageDto.tableFilter }, { name: 'filterField', value: requestGroupFieldPageDto.filterField }, { name: 'filterKey', value: requestGroupFieldPageDto.filterKey }, { name: 'filterColumns', value: requestGroupFieldPageDto.filterColumns }, { name: 'searchCondition', value: requestGroupFieldPageDto.searchCondition }, { name: 'filterSos', value: requestGroupFieldPageDto.filterSos }, { name: 'searchKeys', value: requestGroupFieldPageDto.searchKeys }, { name: 'keyword', value: requestGroupFieldPageDto.keyword }, { name: 'orderField', value: requestGroupFieldPageDto.orderField }, { name: 'orderType', value: requestGroupFieldPageDto.orderType }, { name: 'moduleKey', value: requestGroupFieldPageDto.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getAllByKeyword'
+    abp.services.app.test.getAllByKeyword = function(keyword, take, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Test/GetAllByKeyword' + abp.utils.buildQueryString([{ name: 'keyword', value: keyword }, { name: 'take', value: take }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -364,6 +350,23 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/Test/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
         type: 'POST',
         data: JSON.stringify(primaries)
+      }, ajaxParams));;
+    };
+
+    // action 'setPropertyValue'
+    abp.services.app.test.setPropertyValue = function(propertySetDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Test/SetPropertyValue',
+        type: 'POST',
+        data: JSON.stringify(propertySetDto)
+      }, ajaxParams));;
+    };
+
+    // action 'getPropertyValue'
+    abp.services.app.test.getPropertyValue = function(primaries, propertyName, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Test/GetPropertyValue' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }, { name: 'propertyName', value: propertyName }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -539,9 +542,17 @@ abp.services = abp.services || {};
     };
 
     // action 'getGroupedField'
-    abp.services.app.user.getGroupedField = function(key, ajaxParams) {
+    abp.services.app.user.getGroupedField = function(requestGroupFieldPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/User/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
+        url: abp.appPath + 'api/services/app/User/GetGroupedField' + abp.utils.buildQueryString([{ name: 'field', value: requestGroupFieldPageDto.field }, { name: 'query', value: requestGroupFieldPageDto.query }, { name: 'limit', value: requestGroupFieldPageDto.limit }, { name: 'page', value: requestGroupFieldPageDto.page }, { name: 'where', value: requestGroupFieldPageDto.where }, { name: 'tableFilter', value: requestGroupFieldPageDto.tableFilter }, { name: 'filterField', value: requestGroupFieldPageDto.filterField }, { name: 'filterKey', value: requestGroupFieldPageDto.filterKey }, { name: 'filterColumns', value: requestGroupFieldPageDto.filterColumns }, { name: 'searchCondition', value: requestGroupFieldPageDto.searchCondition }, { name: 'filterSos', value: requestGroupFieldPageDto.filterSos }, { name: 'searchKeys', value: requestGroupFieldPageDto.searchKeys }, { name: 'keyword', value: requestGroupFieldPageDto.keyword }, { name: 'orderField', value: requestGroupFieldPageDto.orderField }, { name: 'orderType', value: requestGroupFieldPageDto.orderType }, { name: 'moduleKey', value: requestGroupFieldPageDto.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getAllByKeyword'
+    abp.services.app.user.getAllByKeyword = function(keyword, take, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/User/GetAllByKeyword' + abp.utils.buildQueryString([{ name: 'keyword', value: keyword }, { name: 'take', value: take }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -560,6 +571,23 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/User/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
         type: 'POST',
         data: JSON.stringify(primaries)
+      }, ajaxParams));;
+    };
+
+    // action 'setPropertyValue'
+    abp.services.app.user.setPropertyValue = function(propertySetDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/User/SetPropertyValue',
+        type: 'POST',
+        data: JSON.stringify(propertySetDto)
+      }, ajaxParams));;
+    };
+
+    // action 'getPropertyValue'
+    abp.services.app.user.getPropertyValue = function(primaries, propertyName, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/User/GetPropertyValue' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }, { name: 'propertyName', value: propertyName }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -644,9 +672,17 @@ abp.services = abp.services || {};
     };
 
     // action 'getGroupedField'
-    abp.services.app.unit.getGroupedField = function(key, ajaxParams) {
+    abp.services.app.unit.getGroupedField = function(requestGroupFieldPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Unit/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
+        url: abp.appPath + 'api/services/app/Unit/GetGroupedField' + abp.utils.buildQueryString([{ name: 'field', value: requestGroupFieldPageDto.field }, { name: 'query', value: requestGroupFieldPageDto.query }, { name: 'limit', value: requestGroupFieldPageDto.limit }, { name: 'page', value: requestGroupFieldPageDto.page }, { name: 'where', value: requestGroupFieldPageDto.where }, { name: 'tableFilter', value: requestGroupFieldPageDto.tableFilter }, { name: 'filterField', value: requestGroupFieldPageDto.filterField }, { name: 'filterKey', value: requestGroupFieldPageDto.filterKey }, { name: 'filterColumns', value: requestGroupFieldPageDto.filterColumns }, { name: 'searchCondition', value: requestGroupFieldPageDto.searchCondition }, { name: 'filterSos', value: requestGroupFieldPageDto.filterSos }, { name: 'searchKeys', value: requestGroupFieldPageDto.searchKeys }, { name: 'keyword', value: requestGroupFieldPageDto.keyword }, { name: 'orderField', value: requestGroupFieldPageDto.orderField }, { name: 'orderType', value: requestGroupFieldPageDto.orderType }, { name: 'moduleKey', value: requestGroupFieldPageDto.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getAllByKeyword'
+    abp.services.app.unit.getAllByKeyword = function(keyword, take, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Unit/GetAllByKeyword' + abp.utils.buildQueryString([{ name: 'keyword', value: keyword }, { name: 'take', value: take }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -665,6 +701,23 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/Unit/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
         type: 'POST',
         data: JSON.stringify(primaries)
+      }, ajaxParams));;
+    };
+
+    // action 'setPropertyValue'
+    abp.services.app.unit.setPropertyValue = function(propertySetDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Unit/SetPropertyValue',
+        type: 'POST',
+        data: JSON.stringify(propertySetDto)
+      }, ajaxParams));;
+    };
+
+    // action 'getPropertyValue'
+    abp.services.app.unit.getPropertyValue = function(primaries, propertyName, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Unit/GetPropertyValue' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }, { name: 'propertyName', value: propertyName }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -766,9 +819,17 @@ abp.services = abp.services || {};
     };
 
     // action 'getGroupedField'
-    abp.services.app.tenant.getGroupedField = function(key, ajaxParams) {
+    abp.services.app.tenant.getGroupedField = function(requestGroupFieldPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Tenant/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
+        url: abp.appPath + 'api/services/app/Tenant/GetGroupedField' + abp.utils.buildQueryString([{ name: 'field', value: requestGroupFieldPageDto.field }, { name: 'query', value: requestGroupFieldPageDto.query }, { name: 'limit', value: requestGroupFieldPageDto.limit }, { name: 'page', value: requestGroupFieldPageDto.page }, { name: 'where', value: requestGroupFieldPageDto.where }, { name: 'tableFilter', value: requestGroupFieldPageDto.tableFilter }, { name: 'filterField', value: requestGroupFieldPageDto.filterField }, { name: 'filterKey', value: requestGroupFieldPageDto.filterKey }, { name: 'filterColumns', value: requestGroupFieldPageDto.filterColumns }, { name: 'searchCondition', value: requestGroupFieldPageDto.searchCondition }, { name: 'filterSos', value: requestGroupFieldPageDto.filterSos }, { name: 'searchKeys', value: requestGroupFieldPageDto.searchKeys }, { name: 'keyword', value: requestGroupFieldPageDto.keyword }, { name: 'orderField', value: requestGroupFieldPageDto.orderField }, { name: 'orderType', value: requestGroupFieldPageDto.orderType }, { name: 'moduleKey', value: requestGroupFieldPageDto.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getAllByKeyword'
+    abp.services.app.tenant.getAllByKeyword = function(keyword, take, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Tenant/GetAllByKeyword' + abp.utils.buildQueryString([{ name: 'keyword', value: keyword }, { name: 'take', value: take }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -796,6 +857,23 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/Tenant/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
         type: 'POST',
         data: JSON.stringify(primaries)
+      }, ajaxParams));;
+    };
+
+    // action 'setPropertyValue'
+    abp.services.app.tenant.setPropertyValue = function(propertySetDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Tenant/SetPropertyValue',
+        type: 'POST',
+        data: JSON.stringify(propertySetDto)
+      }, ajaxParams));;
+    };
+
+    // action 'getPropertyValue'
+    abp.services.app.tenant.getPropertyValue = function(primaries, propertyName, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Tenant/GetPropertyValue' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }, { name: 'propertyName', value: propertyName }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -881,9 +959,17 @@ abp.services = abp.services || {};
     };
 
     // action 'getGroupedField'
-    abp.services.app.template.getGroupedField = function(key, ajaxParams) {
+    abp.services.app.template.getGroupedField = function(requestGroupFieldPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Template/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
+        url: abp.appPath + 'api/services/app/Template/GetGroupedField' + abp.utils.buildQueryString([{ name: 'field', value: requestGroupFieldPageDto.field }, { name: 'query', value: requestGroupFieldPageDto.query }, { name: 'limit', value: requestGroupFieldPageDto.limit }, { name: 'page', value: requestGroupFieldPageDto.page }, { name: 'where', value: requestGroupFieldPageDto.where }, { name: 'tableFilter', value: requestGroupFieldPageDto.tableFilter }, { name: 'filterField', value: requestGroupFieldPageDto.filterField }, { name: 'filterKey', value: requestGroupFieldPageDto.filterKey }, { name: 'filterColumns', value: requestGroupFieldPageDto.filterColumns }, { name: 'searchCondition', value: requestGroupFieldPageDto.searchCondition }, { name: 'filterSos', value: requestGroupFieldPageDto.filterSos }, { name: 'searchKeys', value: requestGroupFieldPageDto.searchKeys }, { name: 'keyword', value: requestGroupFieldPageDto.keyword }, { name: 'orderField', value: requestGroupFieldPageDto.orderField }, { name: 'orderType', value: requestGroupFieldPageDto.orderType }, { name: 'moduleKey', value: requestGroupFieldPageDto.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getAllByKeyword'
+    abp.services.app.template.getAllByKeyword = function(keyword, take, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Template/GetAllByKeyword' + abp.utils.buildQueryString([{ name: 'keyword', value: keyword }, { name: 'take', value: take }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -911,6 +997,235 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/Template/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
         type: 'POST',
         data: JSON.stringify(primaries)
+      }, ajaxParams));;
+    };
+
+    // action 'setPropertyValue'
+    abp.services.app.template.setPropertyValue = function(propertySetDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Template/SetPropertyValue',
+        type: 'POST',
+        data: JSON.stringify(propertySetDto)
+      }, ajaxParams));;
+    };
+
+    // action 'getPropertyValue'
+    abp.services.app.template.getPropertyValue = function(primaries, propertyName, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Template/GetPropertyValue' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }, { name: 'propertyName', value: propertyName }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+  })();
+
+  // controller 'feeAccount'
+  (function(){
+
+    abp.services.app.feeAccount = abp.services.app.feeAccount || {};
+
+    // action 'getPageResult'
+    abp.services.app.feeAccount.getPageResult = function(request, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FeeAccount/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'deleteEntity'
+    abp.services.app.feeAccount.deleteEntity = function(ids, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FeeAccount/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
+        type: 'DELETE'
+      }, ajaxParams));;
+    };
+
+    // action 'getSuggestResult'
+    abp.services.app.feeAccount.getSuggestResult = function(requestSuggestDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FeeAccount/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'formSubmit'
+    abp.services.app.feeAccount.formSubmit = function(request, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FeeAccount/FormSubmit',
+        type: 'POST',
+        data: JSON.stringify(request)
+      }, ajaxParams));;
+    };
+
+    // action 'getFilterColumnPageResult'
+    abp.services.app.feeAccount.getFilterColumnPageResult = function(request, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FeeAccount/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getById'
+    abp.services.app.feeAccount.getById = function(primary, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FeeAccount/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getListByIds'
+    abp.services.app.feeAccount.getListByIds = function(primaries, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FeeAccount/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getGroupedField'
+    abp.services.app.feeAccount.getGroupedField = function(requestGroupFieldPageDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FeeAccount/GetGroupedField' + abp.utils.buildQueryString([{ name: 'field', value: requestGroupFieldPageDto.field }, { name: 'query', value: requestGroupFieldPageDto.query }, { name: 'limit', value: requestGroupFieldPageDto.limit }, { name: 'page', value: requestGroupFieldPageDto.page }, { name: 'where', value: requestGroupFieldPageDto.where }, { name: 'tableFilter', value: requestGroupFieldPageDto.tableFilter }, { name: 'filterField', value: requestGroupFieldPageDto.filterField }, { name: 'filterKey', value: requestGroupFieldPageDto.filterKey }, { name: 'filterColumns', value: requestGroupFieldPageDto.filterColumns }, { name: 'searchCondition', value: requestGroupFieldPageDto.searchCondition }, { name: 'filterSos', value: requestGroupFieldPageDto.filterSos }, { name: 'searchKeys', value: requestGroupFieldPageDto.searchKeys }, { name: 'keyword', value: requestGroupFieldPageDto.keyword }, { name: 'orderField', value: requestGroupFieldPageDto.orderField }, { name: 'orderType', value: requestGroupFieldPageDto.orderType }, { name: 'moduleKey', value: requestGroupFieldPageDto.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getAllByKeyword'
+    abp.services.app.feeAccount.getAllByKeyword = function(keyword, take, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FeeAccount/GetAllByKeyword' + abp.utils.buildQueryString([{ name: 'keyword', value: keyword }, { name: 'take', value: take }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'setStatus'
+    abp.services.app.feeAccount.setStatus = function(primaries, status, isSet, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FeeAccount/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
+        type: 'POST',
+        data: JSON.stringify(primaries)
+      }, ajaxParams));;
+    };
+
+    // action 'setPropertyValue'
+    abp.services.app.feeAccount.setPropertyValue = function(propertySetDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FeeAccount/SetPropertyValue',
+        type: 'POST',
+        data: JSON.stringify(propertySetDto)
+      }, ajaxParams));;
+    };
+
+    // action 'getPropertyValue'
+    abp.services.app.feeAccount.getPropertyValue = function(primaries, propertyName, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FeeAccount/GetPropertyValue' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }, { name: 'propertyName', value: propertyName }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+  })();
+
+  // controller 'store'
+  (function(){
+
+    abp.services.app.store = abp.services.app.store || {};
+
+    // action 'getPageResult'
+    abp.services.app.store.getPageResult = function(request, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Store/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getSuggestResult'
+    abp.services.app.store.getSuggestResult = function(requestSuggestDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Store/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'formSubmit'
+    abp.services.app.store.formSubmit = function(request, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Store/FormSubmit',
+        type: 'POST',
+        data: JSON.stringify(request)
+      }, ajaxParams));;
+    };
+
+    // action 'getFilterColumnPageResult'
+    abp.services.app.store.getFilterColumnPageResult = function(request, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Store/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getById'
+    abp.services.app.store.getById = function(primary, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Store/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getListByIds'
+    abp.services.app.store.getListByIds = function(primaries, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Store/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getGroupedField'
+    abp.services.app.store.getGroupedField = function(requestGroupFieldPageDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Store/GetGroupedField' + abp.utils.buildQueryString([{ name: 'field', value: requestGroupFieldPageDto.field }, { name: 'query', value: requestGroupFieldPageDto.query }, { name: 'limit', value: requestGroupFieldPageDto.limit }, { name: 'page', value: requestGroupFieldPageDto.page }, { name: 'where', value: requestGroupFieldPageDto.where }, { name: 'tableFilter', value: requestGroupFieldPageDto.tableFilter }, { name: 'filterField', value: requestGroupFieldPageDto.filterField }, { name: 'filterKey', value: requestGroupFieldPageDto.filterKey }, { name: 'filterColumns', value: requestGroupFieldPageDto.filterColumns }, { name: 'searchCondition', value: requestGroupFieldPageDto.searchCondition }, { name: 'filterSos', value: requestGroupFieldPageDto.filterSos }, { name: 'searchKeys', value: requestGroupFieldPageDto.searchKeys }, { name: 'keyword', value: requestGroupFieldPageDto.keyword }, { name: 'orderField', value: requestGroupFieldPageDto.orderField }, { name: 'orderType', value: requestGroupFieldPageDto.orderType }, { name: 'moduleKey', value: requestGroupFieldPageDto.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getAllByKeyword'
+    abp.services.app.store.getAllByKeyword = function(keyword, take, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Store/GetAllByKeyword' + abp.utils.buildQueryString([{ name: 'keyword', value: keyword }, { name: 'take', value: take }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'deleteEntity'
+    abp.services.app.store.deleteEntity = function(ids, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Store/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
+        type: 'DELETE'
+      }, ajaxParams));;
+    };
+
+    // action 'setStatus'
+    abp.services.app.store.setStatus = function(primaries, status, isSet, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Store/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
+        type: 'POST',
+        data: JSON.stringify(primaries)
+      }, ajaxParams));;
+    };
+
+    // action 'setPropertyValue'
+    abp.services.app.store.setPropertyValue = function(propertySetDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Store/SetPropertyValue',
+        type: 'POST',
+        data: JSON.stringify(propertySetDto)
+      }, ajaxParams));;
+    };
+
+    // action 'getPropertyValue'
+    abp.services.app.store.getPropertyValue = function(primaries, propertyName, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Store/GetPropertyValue' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }, { name: 'propertyName', value: propertyName }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -1033,9 +1348,17 @@ abp.services = abp.services || {};
     };
 
     // action 'getGroupedField'
-    abp.services.app.role.getGroupedField = function(key, ajaxParams) {
+    abp.services.app.role.getGroupedField = function(requestGroupFieldPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Role/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
+        url: abp.appPath + 'api/services/app/Role/GetGroupedField' + abp.utils.buildQueryString([{ name: 'field', value: requestGroupFieldPageDto.field }, { name: 'query', value: requestGroupFieldPageDto.query }, { name: 'limit', value: requestGroupFieldPageDto.limit }, { name: 'page', value: requestGroupFieldPageDto.page }, { name: 'where', value: requestGroupFieldPageDto.where }, { name: 'tableFilter', value: requestGroupFieldPageDto.tableFilter }, { name: 'filterField', value: requestGroupFieldPageDto.filterField }, { name: 'filterKey', value: requestGroupFieldPageDto.filterKey }, { name: 'filterColumns', value: requestGroupFieldPageDto.filterColumns }, { name: 'searchCondition', value: requestGroupFieldPageDto.searchCondition }, { name: 'filterSos', value: requestGroupFieldPageDto.filterSos }, { name: 'searchKeys', value: requestGroupFieldPageDto.searchKeys }, { name: 'keyword', value: requestGroupFieldPageDto.keyword }, { name: 'orderField', value: requestGroupFieldPageDto.orderField }, { name: 'orderType', value: requestGroupFieldPageDto.orderType }, { name: 'moduleKey', value: requestGroupFieldPageDto.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getAllByKeyword'
+    abp.services.app.role.getAllByKeyword = function(keyword, take, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Role/GetAllByKeyword' + abp.utils.buildQueryString([{ name: 'keyword', value: keyword }, { name: 'take', value: take }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -1055,6 +1378,23 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/Role/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
         type: 'POST',
         data: JSON.stringify(primaries)
+      }, ajaxParams));;
+    };
+
+    // action 'setPropertyValue'
+    abp.services.app.role.setPropertyValue = function(propertySetDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Role/SetPropertyValue',
+        type: 'POST',
+        data: JSON.stringify(propertySetDto)
+      }, ajaxParams));;
+    };
+
+    // action 'getPropertyValue'
+    abp.services.app.role.getPropertyValue = function(primaries, propertyName, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Role/GetPropertyValue' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }, { name: 'propertyName', value: propertyName }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -1148,9 +1488,17 @@ abp.services = abp.services || {};
     };
 
     // action 'getGroupedField'
-    abp.services.app.resource.getGroupedField = function(key, ajaxParams) {
+    abp.services.app.resource.getGroupedField = function(requestGroupFieldPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Resource/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
+        url: abp.appPath + 'api/services/app/Resource/GetGroupedField' + abp.utils.buildQueryString([{ name: 'field', value: requestGroupFieldPageDto.field }, { name: 'query', value: requestGroupFieldPageDto.query }, { name: 'limit', value: requestGroupFieldPageDto.limit }, { name: 'page', value: requestGroupFieldPageDto.page }, { name: 'where', value: requestGroupFieldPageDto.where }, { name: 'tableFilter', value: requestGroupFieldPageDto.tableFilter }, { name: 'filterField', value: requestGroupFieldPageDto.filterField }, { name: 'filterKey', value: requestGroupFieldPageDto.filterKey }, { name: 'filterColumns', value: requestGroupFieldPageDto.filterColumns }, { name: 'searchCondition', value: requestGroupFieldPageDto.searchCondition }, { name: 'filterSos', value: requestGroupFieldPageDto.filterSos }, { name: 'searchKeys', value: requestGroupFieldPageDto.searchKeys }, { name: 'keyword', value: requestGroupFieldPageDto.keyword }, { name: 'orderField', value: requestGroupFieldPageDto.orderField }, { name: 'orderType', value: requestGroupFieldPageDto.orderType }, { name: 'moduleKey', value: requestGroupFieldPageDto.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getAllByKeyword'
+    abp.services.app.resource.getAllByKeyword = function(keyword, take, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Resource/GetAllByKeyword' + abp.utils.buildQueryString([{ name: 'keyword', value: keyword }, { name: 'take', value: take }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -1178,6 +1526,23 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/Resource/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
         type: 'POST',
         data: JSON.stringify(primaries)
+      }, ajaxParams));;
+    };
+
+    // action 'setPropertyValue'
+    abp.services.app.resource.setPropertyValue = function(propertySetDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Resource/SetPropertyValue',
+        type: 'POST',
+        data: JSON.stringify(propertySetDto)
+      }, ajaxParams));;
+    };
+
+    // action 'getPropertyValue'
+    abp.services.app.resource.getPropertyValue = function(primaries, propertyName, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Resource/GetPropertyValue' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }, { name: 'propertyName', value: propertyName }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -1246,9 +1611,17 @@ abp.services = abp.services || {};
     };
 
     // action 'getGroupedField'
-    abp.services.app.project.getGroupedField = function(key, ajaxParams) {
+    abp.services.app.project.getGroupedField = function(requestGroupFieldPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Project/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
+        url: abp.appPath + 'api/services/app/Project/GetGroupedField' + abp.utils.buildQueryString([{ name: 'field', value: requestGroupFieldPageDto.field }, { name: 'query', value: requestGroupFieldPageDto.query }, { name: 'limit', value: requestGroupFieldPageDto.limit }, { name: 'page', value: requestGroupFieldPageDto.page }, { name: 'where', value: requestGroupFieldPageDto.where }, { name: 'tableFilter', value: requestGroupFieldPageDto.tableFilter }, { name: 'filterField', value: requestGroupFieldPageDto.filterField }, { name: 'filterKey', value: requestGroupFieldPageDto.filterKey }, { name: 'filterColumns', value: requestGroupFieldPageDto.filterColumns }, { name: 'searchCondition', value: requestGroupFieldPageDto.searchCondition }, { name: 'filterSos', value: requestGroupFieldPageDto.filterSos }, { name: 'searchKeys', value: requestGroupFieldPageDto.searchKeys }, { name: 'keyword', value: requestGroupFieldPageDto.keyword }, { name: 'orderField', value: requestGroupFieldPageDto.orderField }, { name: 'orderType', value: requestGroupFieldPageDto.orderType }, { name: 'moduleKey', value: requestGroupFieldPageDto.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getAllByKeyword'
+    abp.services.app.project.getAllByKeyword = function(keyword, take, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Project/GetAllByKeyword' + abp.utils.buildQueryString([{ name: 'keyword', value: keyword }, { name: 'take', value: take }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -1267,6 +1640,23 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/Project/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
         type: 'POST',
         data: JSON.stringify(primaries)
+      }, ajaxParams));;
+    };
+
+    // action 'setPropertyValue'
+    abp.services.app.project.setPropertyValue = function(propertySetDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Project/SetPropertyValue',
+        type: 'POST',
+        data: JSON.stringify(propertySetDto)
+      }, ajaxParams));;
+    };
+
+    // action 'getPropertyValue'
+    abp.services.app.project.getPropertyValue = function(primaries, propertyName, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Project/GetPropertyValue' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }, { name: 'propertyName', value: propertyName }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -1361,9 +1751,17 @@ abp.services = abp.services || {};
     };
 
     // action 'getGroupedField'
-    abp.services.app.organization.getGroupedField = function(key, ajaxParams) {
+    abp.services.app.organization.getGroupedField = function(requestGroupFieldPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Organization/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
+        url: abp.appPath + 'api/services/app/Organization/GetGroupedField' + abp.utils.buildQueryString([{ name: 'field', value: requestGroupFieldPageDto.field }, { name: 'query', value: requestGroupFieldPageDto.query }, { name: 'limit', value: requestGroupFieldPageDto.limit }, { name: 'page', value: requestGroupFieldPageDto.page }, { name: 'where', value: requestGroupFieldPageDto.where }, { name: 'tableFilter', value: requestGroupFieldPageDto.tableFilter }, { name: 'filterField', value: requestGroupFieldPageDto.filterField }, { name: 'filterKey', value: requestGroupFieldPageDto.filterKey }, { name: 'filterColumns', value: requestGroupFieldPageDto.filterColumns }, { name: 'searchCondition', value: requestGroupFieldPageDto.searchCondition }, { name: 'filterSos', value: requestGroupFieldPageDto.filterSos }, { name: 'searchKeys', value: requestGroupFieldPageDto.searchKeys }, { name: 'keyword', value: requestGroupFieldPageDto.keyword }, { name: 'orderField', value: requestGroupFieldPageDto.orderField }, { name: 'orderType', value: requestGroupFieldPageDto.orderType }, { name: 'moduleKey', value: requestGroupFieldPageDto.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getAllByKeyword'
+    abp.services.app.organization.getAllByKeyword = function(keyword, take, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Organization/GetAllByKeyword' + abp.utils.buildQueryString([{ name: 'keyword', value: keyword }, { name: 'take', value: take }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -1391,6 +1789,23 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/Organization/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
         type: 'POST',
         data: JSON.stringify(primaries)
+      }, ajaxParams));;
+    };
+
+    // action 'setPropertyValue'
+    abp.services.app.organization.setPropertyValue = function(propertySetDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Organization/SetPropertyValue',
+        type: 'POST',
+        data: JSON.stringify(propertySetDto)
+      }, ajaxParams));;
+    };
+
+    // action 'getPropertyValue'
+    abp.services.app.organization.getPropertyValue = function(primaries, propertyName, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Organization/GetPropertyValue' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }, { name: 'propertyName', value: propertyName }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -1474,9 +1889,17 @@ abp.services = abp.services || {};
     };
 
     // action 'getGroupedField'
-    abp.services.app.notice.getGroupedField = function(key, ajaxParams) {
+    abp.services.app.notice.getGroupedField = function(requestGroupFieldPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Notice/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
+        url: abp.appPath + 'api/services/app/Notice/GetGroupedField' + abp.utils.buildQueryString([{ name: 'field', value: requestGroupFieldPageDto.field }, { name: 'query', value: requestGroupFieldPageDto.query }, { name: 'limit', value: requestGroupFieldPageDto.limit }, { name: 'page', value: requestGroupFieldPageDto.page }, { name: 'where', value: requestGroupFieldPageDto.where }, { name: 'tableFilter', value: requestGroupFieldPageDto.tableFilter }, { name: 'filterField', value: requestGroupFieldPageDto.filterField }, { name: 'filterKey', value: requestGroupFieldPageDto.filterKey }, { name: 'filterColumns', value: requestGroupFieldPageDto.filterColumns }, { name: 'searchCondition', value: requestGroupFieldPageDto.searchCondition }, { name: 'filterSos', value: requestGroupFieldPageDto.filterSos }, { name: 'searchKeys', value: requestGroupFieldPageDto.searchKeys }, { name: 'keyword', value: requestGroupFieldPageDto.keyword }, { name: 'orderField', value: requestGroupFieldPageDto.orderField }, { name: 'orderType', value: requestGroupFieldPageDto.orderType }, { name: 'moduleKey', value: requestGroupFieldPageDto.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getAllByKeyword'
+    abp.services.app.notice.getAllByKeyword = function(keyword, take, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Notice/GetAllByKeyword' + abp.utils.buildQueryString([{ name: 'keyword', value: keyword }, { name: 'take', value: take }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -1504,6 +1927,23 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/Notice/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
         type: 'POST',
         data: JSON.stringify(primaries)
+      }, ajaxParams));;
+    };
+
+    // action 'setPropertyValue'
+    abp.services.app.notice.setPropertyValue = function(propertySetDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Notice/SetPropertyValue',
+        type: 'POST',
+        data: JSON.stringify(propertySetDto)
+      }, ajaxParams));;
+    };
+
+    // action 'getPropertyValue'
+    abp.services.app.notice.getPropertyValue = function(primaries, propertyName, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Notice/GetPropertyValue' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }, { name: 'propertyName', value: propertyName }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -1564,9 +2004,17 @@ abp.services = abp.services || {};
     };
 
     // action 'getGroupedField'
-    abp.services.app.moduleData.getGroupedField = function(key, ajaxParams) {
+    abp.services.app.moduleData.getGroupedField = function(requestGroupFieldPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ModuleData/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
+        url: abp.appPath + 'api/services/app/ModuleData/GetGroupedField' + abp.utils.buildQueryString([{ name: 'field', value: requestGroupFieldPageDto.field }, { name: 'query', value: requestGroupFieldPageDto.query }, { name: 'limit', value: requestGroupFieldPageDto.limit }, { name: 'page', value: requestGroupFieldPageDto.page }, { name: 'where', value: requestGroupFieldPageDto.where }, { name: 'tableFilter', value: requestGroupFieldPageDto.tableFilter }, { name: 'filterField', value: requestGroupFieldPageDto.filterField }, { name: 'filterKey', value: requestGroupFieldPageDto.filterKey }, { name: 'filterColumns', value: requestGroupFieldPageDto.filterColumns }, { name: 'searchCondition', value: requestGroupFieldPageDto.searchCondition }, { name: 'filterSos', value: requestGroupFieldPageDto.filterSos }, { name: 'searchKeys', value: requestGroupFieldPageDto.searchKeys }, { name: 'keyword', value: requestGroupFieldPageDto.keyword }, { name: 'orderField', value: requestGroupFieldPageDto.orderField }, { name: 'orderType', value: requestGroupFieldPageDto.orderType }, { name: 'moduleKey', value: requestGroupFieldPageDto.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getAllByKeyword'
+    abp.services.app.moduleData.getAllByKeyword = function(keyword, take, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/ModuleData/GetAllByKeyword' + abp.utils.buildQueryString([{ name: 'keyword', value: keyword }, { name: 'take', value: take }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -1585,6 +2033,23 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/ModuleData/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
         type: 'POST',
         data: JSON.stringify(primaries)
+      }, ajaxParams));;
+    };
+
+    // action 'setPropertyValue'
+    abp.services.app.moduleData.setPropertyValue = function(propertySetDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/ModuleData/SetPropertyValue',
+        type: 'POST',
+        data: JSON.stringify(propertySetDto)
+      }, ajaxParams));;
+    };
+
+    // action 'getPropertyValue'
+    abp.services.app.moduleData.getPropertyValue = function(primaries, propertyName, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/ModuleData/GetPropertyValue' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }, { name: 'propertyName', value: propertyName }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -1744,9 +2209,17 @@ abp.services = abp.services || {};
     };
 
     // action 'getGroupedField'
-    abp.services.app.moduleInfo.getGroupedField = function(key, ajaxParams) {
+    abp.services.app.moduleInfo.getGroupedField = function(requestGroupFieldPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ModuleInfo/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
+        url: abp.appPath + 'api/services/app/ModuleInfo/GetGroupedField' + abp.utils.buildQueryString([{ name: 'field', value: requestGroupFieldPageDto.field }, { name: 'query', value: requestGroupFieldPageDto.query }, { name: 'limit', value: requestGroupFieldPageDto.limit }, { name: 'page', value: requestGroupFieldPageDto.page }, { name: 'where', value: requestGroupFieldPageDto.where }, { name: 'tableFilter', value: requestGroupFieldPageDto.tableFilter }, { name: 'filterField', value: requestGroupFieldPageDto.filterField }, { name: 'filterKey', value: requestGroupFieldPageDto.filterKey }, { name: 'filterColumns', value: requestGroupFieldPageDto.filterColumns }, { name: 'searchCondition', value: requestGroupFieldPageDto.searchCondition }, { name: 'filterSos', value: requestGroupFieldPageDto.filterSos }, { name: 'searchKeys', value: requestGroupFieldPageDto.searchKeys }, { name: 'keyword', value: requestGroupFieldPageDto.keyword }, { name: 'orderField', value: requestGroupFieldPageDto.orderField }, { name: 'orderType', value: requestGroupFieldPageDto.orderType }, { name: 'moduleKey', value: requestGroupFieldPageDto.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getAllByKeyword'
+    abp.services.app.moduleInfo.getAllByKeyword = function(keyword, take, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/ModuleInfo/GetAllByKeyword' + abp.utils.buildQueryString([{ name: 'keyword', value: keyword }, { name: 'take', value: take }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -1774,6 +2247,23 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/ModuleInfo/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
         type: 'POST',
         data: JSON.stringify(primaries)
+      }, ajaxParams));;
+    };
+
+    // action 'setPropertyValue'
+    abp.services.app.moduleInfo.setPropertyValue = function(propertySetDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/ModuleInfo/SetPropertyValue',
+        type: 'POST',
+        data: JSON.stringify(propertySetDto)
+      }, ajaxParams));;
+    };
+
+    // action 'getPropertyValue'
+    abp.services.app.moduleInfo.getPropertyValue = function(primaries, propertyName, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/ModuleInfo/GetPropertyValue' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }, { name: 'propertyName', value: propertyName }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -1889,9 +2379,17 @@ abp.services = abp.services || {};
     };
 
     // action 'getGroupedField'
-    abp.services.app.auditLog.getGroupedField = function(key, ajaxParams) {
+    abp.services.app.auditLog.getGroupedField = function(requestGroupFieldPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/AuditLog/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
+        url: abp.appPath + 'api/services/app/AuditLog/GetGroupedField' + abp.utils.buildQueryString([{ name: 'field', value: requestGroupFieldPageDto.field }, { name: 'query', value: requestGroupFieldPageDto.query }, { name: 'limit', value: requestGroupFieldPageDto.limit }, { name: 'page', value: requestGroupFieldPageDto.page }, { name: 'where', value: requestGroupFieldPageDto.where }, { name: 'tableFilter', value: requestGroupFieldPageDto.tableFilter }, { name: 'filterField', value: requestGroupFieldPageDto.filterField }, { name: 'filterKey', value: requestGroupFieldPageDto.filterKey }, { name: 'filterColumns', value: requestGroupFieldPageDto.filterColumns }, { name: 'searchCondition', value: requestGroupFieldPageDto.searchCondition }, { name: 'filterSos', value: requestGroupFieldPageDto.filterSos }, { name: 'searchKeys', value: requestGroupFieldPageDto.searchKeys }, { name: 'keyword', value: requestGroupFieldPageDto.keyword }, { name: 'orderField', value: requestGroupFieldPageDto.orderField }, { name: 'orderType', value: requestGroupFieldPageDto.orderType }, { name: 'moduleKey', value: requestGroupFieldPageDto.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getAllByKeyword'
+    abp.services.app.auditLog.getAllByKeyword = function(keyword, take, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/AuditLog/GetAllByKeyword' + abp.utils.buildQueryString([{ name: 'keyword', value: keyword }, { name: 'take', value: take }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -1919,6 +2417,23 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/AuditLog/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
         type: 'POST',
         data: JSON.stringify(primaries)
+      }, ajaxParams));;
+    };
+
+    // action 'setPropertyValue'
+    abp.services.app.auditLog.setPropertyValue = function(propertySetDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/AuditLog/SetPropertyValue',
+        type: 'POST',
+        data: JSON.stringify(propertySetDto)
+      }, ajaxParams));;
+    };
+
+    // action 'getPropertyValue'
+    abp.services.app.auditLog.getPropertyValue = function(primaries, propertyName, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/AuditLog/GetPropertyValue' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }, { name: 'propertyName', value: propertyName }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -2001,9 +2516,17 @@ abp.services = abp.services || {};
     };
 
     // action 'getGroupedField'
-    abp.services.app.userLoginAttempts.getGroupedField = function(key, ajaxParams) {
+    abp.services.app.userLoginAttempts.getGroupedField = function(requestGroupFieldPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/UserLoginAttempts/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
+        url: abp.appPath + 'api/services/app/UserLoginAttempts/GetGroupedField' + abp.utils.buildQueryString([{ name: 'field', value: requestGroupFieldPageDto.field }, { name: 'query', value: requestGroupFieldPageDto.query }, { name: 'limit', value: requestGroupFieldPageDto.limit }, { name: 'page', value: requestGroupFieldPageDto.page }, { name: 'where', value: requestGroupFieldPageDto.where }, { name: 'tableFilter', value: requestGroupFieldPageDto.tableFilter }, { name: 'filterField', value: requestGroupFieldPageDto.filterField }, { name: 'filterKey', value: requestGroupFieldPageDto.filterKey }, { name: 'filterColumns', value: requestGroupFieldPageDto.filterColumns }, { name: 'searchCondition', value: requestGroupFieldPageDto.searchCondition }, { name: 'filterSos', value: requestGroupFieldPageDto.filterSos }, { name: 'searchKeys', value: requestGroupFieldPageDto.searchKeys }, { name: 'keyword', value: requestGroupFieldPageDto.keyword }, { name: 'orderField', value: requestGroupFieldPageDto.orderField }, { name: 'orderType', value: requestGroupFieldPageDto.orderType }, { name: 'moduleKey', value: requestGroupFieldPageDto.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getAllByKeyword'
+    abp.services.app.userLoginAttempts.getAllByKeyword = function(keyword, take, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/UserLoginAttempts/GetAllByKeyword' + abp.utils.buildQueryString([{ name: 'keyword', value: keyword }, { name: 'take', value: take }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -2031,6 +2554,23 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/UserLoginAttempts/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
         type: 'POST',
         data: JSON.stringify(primaries)
+      }, ajaxParams));;
+    };
+
+    // action 'setPropertyValue'
+    abp.services.app.userLoginAttempts.setPropertyValue = function(propertySetDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/UserLoginAttempts/SetPropertyValue',
+        type: 'POST',
+        data: JSON.stringify(propertySetDto)
+      }, ajaxParams));;
+    };
+
+    // action 'getPropertyValue'
+    abp.services.app.userLoginAttempts.getPropertyValue = function(primaries, propertyName, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/UserLoginAttempts/GetPropertyValue' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }, { name: 'propertyName', value: propertyName }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -2106,9 +2646,17 @@ abp.services = abp.services || {};
     };
 
     // action 'getGroupedField'
-    abp.services.app.language.getGroupedField = function(key, ajaxParams) {
+    abp.services.app.language.getGroupedField = function(requestGroupFieldPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Language/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
+        url: abp.appPath + 'api/services/app/Language/GetGroupedField' + abp.utils.buildQueryString([{ name: 'field', value: requestGroupFieldPageDto.field }, { name: 'query', value: requestGroupFieldPageDto.query }, { name: 'limit', value: requestGroupFieldPageDto.limit }, { name: 'page', value: requestGroupFieldPageDto.page }, { name: 'where', value: requestGroupFieldPageDto.where }, { name: 'tableFilter', value: requestGroupFieldPageDto.tableFilter }, { name: 'filterField', value: requestGroupFieldPageDto.filterField }, { name: 'filterKey', value: requestGroupFieldPageDto.filterKey }, { name: 'filterColumns', value: requestGroupFieldPageDto.filterColumns }, { name: 'searchCondition', value: requestGroupFieldPageDto.searchCondition }, { name: 'filterSos', value: requestGroupFieldPageDto.filterSos }, { name: 'searchKeys', value: requestGroupFieldPageDto.searchKeys }, { name: 'keyword', value: requestGroupFieldPageDto.keyword }, { name: 'orderField', value: requestGroupFieldPageDto.orderField }, { name: 'orderType', value: requestGroupFieldPageDto.orderType }, { name: 'moduleKey', value: requestGroupFieldPageDto.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getAllByKeyword'
+    abp.services.app.language.getAllByKeyword = function(keyword, take, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Language/GetAllByKeyword' + abp.utils.buildQueryString([{ name: 'keyword', value: keyword }, { name: 'take', value: take }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -2136,6 +2684,23 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/Language/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
         type: 'POST',
         data: JSON.stringify(primaries)
+      }, ajaxParams));;
+    };
+
+    // action 'setPropertyValue'
+    abp.services.app.language.setPropertyValue = function(propertySetDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Language/SetPropertyValue',
+        type: 'POST',
+        data: JSON.stringify(propertySetDto)
+      }, ajaxParams));;
+    };
+
+    // action 'getPropertyValue'
+    abp.services.app.language.getPropertyValue = function(primaries, propertyName, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Language/GetPropertyValue' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }, { name: 'propertyName', value: propertyName }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -2259,9 +2824,17 @@ abp.services = abp.services || {};
     };
 
     // action 'getGroupedField'
-    abp.services.app.dictionary.getGroupedField = function(key, ajaxParams) {
+    abp.services.app.dictionary.getGroupedField = function(requestGroupFieldPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Dictionary/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
+        url: abp.appPath + 'api/services/app/Dictionary/GetGroupedField' + abp.utils.buildQueryString([{ name: 'field', value: requestGroupFieldPageDto.field }, { name: 'query', value: requestGroupFieldPageDto.query }, { name: 'limit', value: requestGroupFieldPageDto.limit }, { name: 'page', value: requestGroupFieldPageDto.page }, { name: 'where', value: requestGroupFieldPageDto.where }, { name: 'tableFilter', value: requestGroupFieldPageDto.tableFilter }, { name: 'filterField', value: requestGroupFieldPageDto.filterField }, { name: 'filterKey', value: requestGroupFieldPageDto.filterKey }, { name: 'filterColumns', value: requestGroupFieldPageDto.filterColumns }, { name: 'searchCondition', value: requestGroupFieldPageDto.searchCondition }, { name: 'filterSos', value: requestGroupFieldPageDto.filterSos }, { name: 'searchKeys', value: requestGroupFieldPageDto.searchKeys }, { name: 'keyword', value: requestGroupFieldPageDto.keyword }, { name: 'orderField', value: requestGroupFieldPageDto.orderField }, { name: 'orderType', value: requestGroupFieldPageDto.orderType }, { name: 'moduleKey', value: requestGroupFieldPageDto.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getAllByKeyword'
+    abp.services.app.dictionary.getAllByKeyword = function(keyword, take, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Dictionary/GetAllByKeyword' + abp.utils.buildQueryString([{ name: 'keyword', value: keyword }, { name: 'take', value: take }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -2289,6 +2862,23 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/Dictionary/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
         type: 'POST',
         data: JSON.stringify(primaries)
+      }, ajaxParams));;
+    };
+
+    // action 'setPropertyValue'
+    abp.services.app.dictionary.setPropertyValue = function(propertySetDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Dictionary/SetPropertyValue',
+        type: 'POST',
+        data: JSON.stringify(propertySetDto)
+      }, ajaxParams));;
+    };
+
+    // action 'getPropertyValue'
+    abp.services.app.dictionary.getPropertyValue = function(primaries, propertyName, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Dictionary/GetPropertyValue' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }, { name: 'propertyName', value: propertyName }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -2365,9 +2955,17 @@ abp.services = abp.services || {};
     };
 
     // action 'getGroupedField'
-    abp.services.app.baseType.getGroupedField = function(key, ajaxParams) {
+    abp.services.app.baseType.getGroupedField = function(requestGroupFieldPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/BaseType/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
+        url: abp.appPath + 'api/services/app/BaseType/GetGroupedField' + abp.utils.buildQueryString([{ name: 'field', value: requestGroupFieldPageDto.field }, { name: 'query', value: requestGroupFieldPageDto.query }, { name: 'limit', value: requestGroupFieldPageDto.limit }, { name: 'page', value: requestGroupFieldPageDto.page }, { name: 'where', value: requestGroupFieldPageDto.where }, { name: 'tableFilter', value: requestGroupFieldPageDto.tableFilter }, { name: 'filterField', value: requestGroupFieldPageDto.filterField }, { name: 'filterKey', value: requestGroupFieldPageDto.filterKey }, { name: 'filterColumns', value: requestGroupFieldPageDto.filterColumns }, { name: 'searchCondition', value: requestGroupFieldPageDto.searchCondition }, { name: 'filterSos', value: requestGroupFieldPageDto.filterSos }, { name: 'searchKeys', value: requestGroupFieldPageDto.searchKeys }, { name: 'keyword', value: requestGroupFieldPageDto.keyword }, { name: 'orderField', value: requestGroupFieldPageDto.orderField }, { name: 'orderType', value: requestGroupFieldPageDto.orderType }, { name: 'moduleKey', value: requestGroupFieldPageDto.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getAllByKeyword'
+    abp.services.app.baseType.getAllByKeyword = function(keyword, take, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/BaseType/GetAllByKeyword' + abp.utils.buildQueryString([{ name: 'keyword', value: keyword }, { name: 'take', value: take }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -2395,6 +2993,23 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/BaseType/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
         type: 'POST',
         data: JSON.stringify(primaries)
+      }, ajaxParams));;
+    };
+
+    // action 'setPropertyValue'
+    abp.services.app.baseType.setPropertyValue = function(propertySetDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/BaseType/SetPropertyValue',
+        type: 'POST',
+        data: JSON.stringify(propertySetDto)
+      }, ajaxParams));;
+    };
+
+    // action 'getPropertyValue'
+    abp.services.app.baseType.getPropertyValue = function(primaries, propertyName, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/BaseType/GetPropertyValue' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }, { name: 'propertyName', value: propertyName }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -2471,9 +3086,17 @@ abp.services = abp.services || {};
     };
 
     // action 'getGroupedField'
-    abp.services.app.baseTree.getGroupedField = function(key, ajaxParams) {
+    abp.services.app.baseTree.getGroupedField = function(requestGroupFieldPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/BaseTree/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
+        url: abp.appPath + 'api/services/app/BaseTree/GetGroupedField' + abp.utils.buildQueryString([{ name: 'field', value: requestGroupFieldPageDto.field }, { name: 'query', value: requestGroupFieldPageDto.query }, { name: 'limit', value: requestGroupFieldPageDto.limit }, { name: 'page', value: requestGroupFieldPageDto.page }, { name: 'where', value: requestGroupFieldPageDto.where }, { name: 'tableFilter', value: requestGroupFieldPageDto.tableFilter }, { name: 'filterField', value: requestGroupFieldPageDto.filterField }, { name: 'filterKey', value: requestGroupFieldPageDto.filterKey }, { name: 'filterColumns', value: requestGroupFieldPageDto.filterColumns }, { name: 'searchCondition', value: requestGroupFieldPageDto.searchCondition }, { name: 'filterSos', value: requestGroupFieldPageDto.filterSos }, { name: 'searchKeys', value: requestGroupFieldPageDto.searchKeys }, { name: 'keyword', value: requestGroupFieldPageDto.keyword }, { name: 'orderField', value: requestGroupFieldPageDto.orderField }, { name: 'orderType', value: requestGroupFieldPageDto.orderType }, { name: 'moduleKey', value: requestGroupFieldPageDto.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getAllByKeyword'
+    abp.services.app.baseTree.getAllByKeyword = function(keyword, take, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/BaseTree/GetAllByKeyword' + abp.utils.buildQueryString([{ name: 'keyword', value: keyword }, { name: 'take', value: take }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -2501,6 +3124,23 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/BaseTree/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
         type: 'POST',
         data: JSON.stringify(primaries)
+      }, ajaxParams));;
+    };
+
+    // action 'setPropertyValue'
+    abp.services.app.baseTree.setPropertyValue = function(propertySetDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/BaseTree/SetPropertyValue',
+        type: 'POST',
+        data: JSON.stringify(propertySetDto)
+      }, ajaxParams));;
+    };
+
+    // action 'getPropertyValue'
+    abp.services.app.baseTree.getPropertyValue = function(primaries, propertyName, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/BaseTree/GetPropertyValue' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }, { name: 'propertyName', value: propertyName }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -2576,9 +3216,17 @@ abp.services = abp.services || {};
     };
 
     // action 'getGroupedField'
-    abp.services.app.edition.getGroupedField = function(key, ajaxParams) {
+    abp.services.app.edition.getGroupedField = function(requestGroupFieldPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Edition/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
+        url: abp.appPath + 'api/services/app/Edition/GetGroupedField' + abp.utils.buildQueryString([{ name: 'field', value: requestGroupFieldPageDto.field }, { name: 'query', value: requestGroupFieldPageDto.query }, { name: 'limit', value: requestGroupFieldPageDto.limit }, { name: 'page', value: requestGroupFieldPageDto.page }, { name: 'where', value: requestGroupFieldPageDto.where }, { name: 'tableFilter', value: requestGroupFieldPageDto.tableFilter }, { name: 'filterField', value: requestGroupFieldPageDto.filterField }, { name: 'filterKey', value: requestGroupFieldPageDto.filterKey }, { name: 'filterColumns', value: requestGroupFieldPageDto.filterColumns }, { name: 'searchCondition', value: requestGroupFieldPageDto.searchCondition }, { name: 'filterSos', value: requestGroupFieldPageDto.filterSos }, { name: 'searchKeys', value: requestGroupFieldPageDto.searchKeys }, { name: 'keyword', value: requestGroupFieldPageDto.keyword }, { name: 'orderField', value: requestGroupFieldPageDto.orderField }, { name: 'orderType', value: requestGroupFieldPageDto.orderType }, { name: 'moduleKey', value: requestGroupFieldPageDto.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getAllByKeyword'
+    abp.services.app.edition.getAllByKeyword = function(keyword, take, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Edition/GetAllByKeyword' + abp.utils.buildQueryString([{ name: 'keyword', value: keyword }, { name: 'take', value: take }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -2609,6 +3257,23 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'setPropertyValue'
+    abp.services.app.edition.setPropertyValue = function(propertySetDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Edition/SetPropertyValue',
+        type: 'POST',
+        data: JSON.stringify(propertySetDto)
+      }, ajaxParams));;
+    };
+
+    // action 'getPropertyValue'
+    abp.services.app.edition.getPropertyValue = function(primaries, propertyName, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Edition/GetPropertyValue' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }, { name: 'propertyName', value: propertyName }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
   })();
 
   // controller 'feature'
@@ -2630,6602 +3295,6 @@ abp.services = abp.services || {};
       return abp.ajax($.extend(true, {
         url: abp.appPath + 'api/services/app/Feature/ResetTenantFeature' + abp.utils.buildQueryString([{ name: 'tenantId', value: tenantId }]) + '',
         type: 'POST'
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'miniProgram'
-  (function(){
-
-    abp.services.app.miniProgram = abp.services.app.miniProgram || {};
-
-    // action 'bindLogin'
-    abp.services.app.miniProgram.bindLogin = function(encryptedUserId, openId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MiniProgram/BindLogin' + abp.utils.buildQueryString([{ name: 'encryptedUserId', value: encryptedUserId }, { name: 'openId', value: openId }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'getUserInfo'
-    abp.services.app.miniProgram.getUserInfo = function(openId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MiniProgram/GetUserInfo' + abp.utils.buildQueryString([{ name: 'openId', value: openId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'weiXin'
-  (function(){
-
-    abp.services.app.weiXin = abp.services.app.weiXin || {};
-
-    // action 'login'
-    abp.services.app.weiXin.login = function(guid, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/WeiXin/Login' + abp.utils.buildQueryString([{ name: 'guid', value: guid }]) + '',
-        type: 'POST',
-        dataType: null
-      }, ajaxParams));;
-    };
-
-    // action 'getLoginInfo'
-    abp.services.app.weiXin.getLoginInfo = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/WeiXin/GetLoginInfo',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'bindLogin'
-    abp.services.app.weiXin.bindLogin = function(encryptedUserId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/WeiXin/BindLogin' + abp.utils.buildQueryString([{ name: 'encryptedUserId', value: encryptedUserId }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'getBindLoginInfo'
-    abp.services.app.weiXin.getBindLoginInfo = function(provider, encryptedUserId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/WeiXin/GetBindLoginInfo' + abp.utils.buildQueryString([{ name: 'provider', value: provider }, { name: 'encryptedUserId', value: encryptedUserId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'setUploadInfo'
-    abp.services.app.weiXin.setUploadInfo = function(guid, uploadResult, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/WeiXin/SetUploadInfo' + abp.utils.buildQueryString([{ name: 'guid', value: guid }]) + '',
-        type: 'POST',
-        dataType: null,
-        data: JSON.stringify(uploadResult)
-      }, ajaxParams));;
-    };
-
-    // action 'getUploadInfo'
-    abp.services.app.weiXin.getUploadInfo = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/WeiXin/GetUploadInfo',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'setUserInfo'
-    abp.services.app.weiXin.setUserInfo = function(guid, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/WeiXin/SetUserInfo' + abp.utils.buildQueryString([{ name: 'guid', value: guid }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'getUserInfo'
-    abp.services.app.weiXin.getUserInfo = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/WeiXin/GetUserInfo',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'downLoadMedia'
-    abp.services.app.weiXin.downLoadMedia = function(mediaIds, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/WeiXin/DownLoadMedia',
-        type: 'POST',
-        data: JSON.stringify(mediaIds)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'processTask'
-  (function(){
-
-    abp.services.app.processTask = abp.services.app.processTask || {};
-
-    // action 'get'
-    abp.services.app.processTask.get = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/Get',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getIdByTryId'
-    abp.services.app.processTask.getIdByTryId = function(tryid, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/GetIdByTryId' + abp.utils.buildQueryString([{ name: 'tryid', value: tryid }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'testCount'
-    abp.services.app.processTask.testCount = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/TestCount',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'testCount2'
-    abp.services.app.processTask.testCount2 = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/TestCount2',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'getSummaryCount'
-    abp.services.app.processTask.getSummaryCount = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/GetSummaryCount',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSummaryFee'
-    abp.services.app.processTask.getSummaryFee = function(unitId, poster, reason, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/GetSummaryFee' + abp.utils.buildQueryString([{ name: 'unitId', value: unitId }, { name: 'poster', value: poster }, { name: 'reason', value: reason }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.app.processTask.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.app.processTask.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'submitProcessTask'
-    abp.services.app.processTask.submitProcessTask = function(processTaskDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/SubmitProcessTask',
-        type: 'POST',
-        data: JSON.stringify(processTaskDto)
-      }, ajaxParams));;
-    };
-
-    // action 'submitSimpleProcessType'
-    abp.services.app.processTask.submitSimpleProcessType = function(simpleSubmitTaskDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/SubmitSimpleProcessType',
-        type: 'POST',
-        data: JSON.stringify(simpleSubmitTaskDto)
-      }, ajaxParams));;
-    };
-
-    // action 'sendToMES'
-    abp.services.app.processTask.sendToMES = function(taskId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/SendToMES' + abp.utils.buildQueryString([{ name: 'taskId', value: taskId }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'receiveMESTaskInfoForm'
-    abp.services.app.processTask.receiveMESTaskInfoForm = function(taskId, receiveMESTaskReportType, reportTime, message, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/ReceiveMESTaskInfoForm' + abp.utils.buildQueryString([{ name: 'taskId', value: taskId }, { name: 'receiveMESTaskReportType', value: receiveMESTaskReportType }, { name: 'reportTime', value: reportTime }, { name: 'message', value: message }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'receiveMESTaskInfo'
-    abp.services.app.processTask.receiveMESTaskInfo = function(receiveMESTaskDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/ReceiveMESTaskInfo',
-        type: 'POST',
-        data: JSON.stringify(receiveMESTaskDto)
-      }, ajaxParams));;
-    };
-
-    // action 'getReportTaskInfoById'
-    abp.services.app.processTask.getReportTaskInfoById = function(taskId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/GetReportTaskInfoById' + abp.utils.buildQueryString([{ name: 'taskId', value: taskId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'report'
-    abp.services.app.processTask.report = function(processTaskReportDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/Report',
-        type: 'POST',
-        data: JSON.stringify(processTaskReportDto)
-      }, ajaxParams));;
-    };
-
-    // action 'getTaskReportInfo'
-    abp.services.app.processTask.getTaskReportInfo = function(taskId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/GetTaskReportInfo' + abp.utils.buildQueryString([{ name: 'taskId', value: taskId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getProcessTaskReports'
-    abp.services.app.processTask.getProcessTaskReports = function(processTaskId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/GetProcessTaskReports' + abp.utils.buildQueryString([{ name: 'processTaskId', value: processTaskId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getTaskInfoById'
-    abp.services.app.processTask.getTaskInfoById = function(taskId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/GetTaskInfoById' + abp.utils.buildQueryString([{ name: 'taskId', value: taskId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'attachFile'
-    abp.services.app.processTask.attachFile = function(taskId, uploadFileInfo, rel, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/AttachFile' + abp.utils.buildQueryString([{ name: 'taskId', value: taskId }, { name: 'rel', value: rel }]) + '',
-        type: 'POST',
-        data: JSON.stringify(uploadFileInfo)
-      }, ajaxParams));;
-    };
-
-    // action 'attachFiles'
-    abp.services.app.processTask.attachFiles = function(taskId, uploadFileInfos, rel, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/AttachFiles' + abp.utils.buildQueryString([{ name: 'taskId', value: taskId }, { name: 'rel', value: rel }]) + '',
-        type: 'POST',
-        data: JSON.stringify(uploadFileInfos)
-      }, ajaxParams));;
-    };
-
-    // action 'removeAttachFile'
-    abp.services.app.processTask.removeAttachFile = function(taskId, filePath, rel, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/RemoveAttachFile' + abp.utils.buildQueryString([{ name: 'taskId', value: taskId }, { name: 'filePath', value: filePath }, { name: 'rel', value: rel }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'attachSheetFile'
-    abp.services.app.processTask.attachSheetFile = function(taskId, filePath, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/AttachSheetFile' + abp.utils.buildQueryString([{ name: 'taskId', value: taskId }, { name: 'filePath', value: filePath }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'getHistoryPerson'
-    abp.services.app.processTask.getHistoryPerson = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/GetHistoryPerson' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getLastTaskPersons'
-    abp.services.app.processTask.getLastTaskPersons = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/GetLastTaskPersons',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getProjectChargerByProjectId'
-    abp.services.app.processTask.getProjectChargerByProjectId = function(projectId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/GetProjectChargerByProjectId' + abp.utils.buildQueryString([{ name: 'projectId', value: projectId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getCraftsManByPartId'
-    abp.services.app.processTask.getCraftsManByPartId = function(partId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/GetCraftsManByPartId' + abp.utils.buildQueryString([{ name: 'partId', value: partId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'submitTaskDate'
-    abp.services.app.processTask.submitTaskDate = function(updateTaskDateDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/SubmitTaskDate',
-        type: 'POST',
-        data: JSON.stringify(updateTaskDateDto)
-      }, ajaxParams));;
-    };
-
-    // action 'getProcessTaskInfosByIds'
-    abp.services.app.processTask.getProcessTaskInfosByIds = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/GetProcessTaskInfosByIds' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'checkFee'
-    abp.services.app.processTask.checkFee = function(checkFeeDtos, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/CheckFee',
-        type: 'POST',
-        data: JSON.stringify(checkFeeDtos)
-      }, ajaxParams));;
-    };
-
-    // action 'addFee'
-    abp.services.app.processTask.addFee = function(feeDtos, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/AddFee',
-        type: 'POST',
-        data: JSON.stringify(feeDtos)
-      }, ajaxParams));;
-    };
-
-    // action 'addAccountingResult'
-    abp.services.app.processTask.addAccountingResult = function(accountingDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/AddAccountingResult',
-        type: 'POST',
-        data: JSON.stringify(accountingDto)
-      }, ajaxParams));;
-    };
-
-    // action 'saveBase64'
-    abp.services.app.processTask.saveBase64 = function(accountingDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/SaveBase64',
-        type: 'POST',
-        data: JSON.stringify(accountingDto)
-      }, ajaxParams));;
-    };
-
-    // action 'getIsAccountingConfirmed'
-    abp.services.app.processTask.getIsAccountingConfirmed = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/GetIsAccountingConfirmed' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'sendFee'
-    abp.services.app.processTask.sendFee = function(feeDtos, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/SendFee',
-        type: 'POST',
-        data: JSON.stringify(feeDtos)
-      }, ajaxParams));;
-    };
-
-    // action 'verifyFee'
-    abp.services.app.processTask.verifyFee = function(feeDtos, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/VerifyFee',
-        type: 'POST',
-        data: JSON.stringify(feeDtos)
-      }, ajaxParams));;
-    };
-
-    // action 'reActualHours'
-    abp.services.app.processTask.reActualHours = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/ReActualHours',
-        type: 'POST',
-        data: JSON.stringify(ids)
-      }, ajaxParams));;
-    };
-
-    // action 'reSort'
-    abp.services.app.processTask.reSort = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/ReSort',
-        type: 'POST',
-        data: JSON.stringify(ids)
-      }, ajaxParams));;
-    };
-
-    // action 'getBaseSearchData'
-    abp.services.app.processTask.getBaseSearchData = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/GetBaseSearchData',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getModelName'
-    abp.services.app.processTask.getModelName = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/GetModelName',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'arrangeTaskToEquipment'
-    abp.services.app.processTask.arrangeTaskToEquipment = function(tasksInfo, equipmentId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/ArrangeTaskToEquipment' + abp.utils.buildQueryString([{ name: 'equipmentId', value: equipmentId }]) + '',
-        type: 'POST',
-        data: JSON.stringify(tasksInfo)
-      }, ajaxParams));;
-    };
-
-    // action 'unArrangeTasks'
-    abp.services.app.processTask.unArrangeTasks = function(taskIds, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/UnArrangeTasks',
-        type: 'POST',
-        data: JSON.stringify(taskIds)
-      }, ajaxParams));;
-    };
-
-    // action 'submitFeeFromProcessor'
-    abp.services.app.processTask.submitFeeFromProcessor = function(submitFeeFromProcessorDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/SubmitFeeFromProcessor',
-        type: 'POST',
-        data: JSON.stringify(submitFeeFromProcessorDto)
-      }, ajaxParams));;
-    };
-
-    // action 'setTaskStatus'
-    abp.services.app.processTask.setTaskStatus = function(taskId, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/SetTaskStatus' + abp.utils.buildQueryString([{ name: 'taskId', value: taskId }, { name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'setTasksStatus'
-    abp.services.app.processTask.setTasksStatus = function(taskIds, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/SetTasksStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(taskIds)
-      }, ajaxParams));;
-    };
-
-    // action 'getAvailableTemplates'
-    abp.services.app.processTask.getAvailableTemplates = function(taskId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/GetAvailableTemplates' + abp.utils.buildQueryString([{ name: 'taskId', value: taskId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'setTaskTemplate'
-    abp.services.app.processTask.setTaskTemplate = function(taskId, templateId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/SetTaskTemplate' + abp.utils.buildQueryString([{ name: 'taskId', value: taskId }, { name: 'templateId', value: templateId }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'getTaskTemplateData'
-    abp.services.app.processTask.getTaskTemplateData = function(taskId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/GetTaskTemplateData' + abp.utils.buildQueryString([{ name: 'taskId', value: taskId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'submitTaskTemplateData'
-    abp.services.app.processTask.submitTaskTemplateData = function(taskId, templateData, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/SubmitTaskTemplateData' + abp.utils.buildQueryString([{ name: 'taskId', value: taskId }]) + '',
-        type: 'POST',
-        data: JSON.stringify(templateData)
-      }, ajaxParams));;
-    };
-
-    // action 'revertCanDan'
-    abp.services.app.processTask.revertCanDan = function(taskIds, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/RevertCanDan',
-        type: 'POST',
-        data: JSON.stringify(taskIds)
-      }, ajaxParams));;
-    };
-
-    // action 'sendToUnit'
-    abp.services.app.processTask.sendToUnit = function(taskId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/SendToUnit' + abp.utils.buildQueryString([{ name: 'taskId', value: taskId }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'saveTaskToHtmlAndSendUnit'
-    abp.services.app.processTask.saveTaskToHtmlAndSendUnit = function(html, taskId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/SaveTaskToHtmlAndSendUnit' + abp.utils.buildQueryString([{ name: 'taskId', value: taskId }]) + '',
-        type: 'POST',
-        data: JSON.stringify(html)
-      }, ajaxParams));;
-    };
-
-    // action 'saveTaskToHtml'
-    abp.services.app.processTask.saveTaskToHtml = function(html, taskId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/SaveTaskToHtml' + abp.utils.buildQueryString([{ name: 'taskId', value: taskId }]) + '',
-        type: 'POST',
-        data: JSON.stringify(html)
-      }, ajaxParams));;
-    };
-
-    // action 'getTaskPicSrc'
-    abp.services.app.processTask.getTaskPicSrc = function(taskId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/GetTaskPicSrc' + abp.utils.buildQueryString([{ name: 'taskId', value: taskId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'saveSearchData'
-    abp.services.app.processTask.saveSearchData = function(searchDataSave, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/SaveSearchData',
-        type: 'POST',
-        data: JSON.stringify(searchDataSave)
-      }, ajaxParams));;
-    };
-
-    // action 'delSearchData'
-    abp.services.app.processTask.delSearchData = function(searchDataSave, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/DelSearchData',
-        type: 'POST',
-        data: JSON.stringify(searchDataSave)
-      }, ajaxParams));;
-    };
-
-    // action 'rNameSearchData'
-    abp.services.app.processTask.rNameSearchData = function(searchDataSave, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/RNameSearchData',
-        type: 'POST',
-        data: JSON.stringify(searchDataSave)
-      }, ajaxParams));;
-    };
-
-    // action 'getSearchData'
-    abp.services.app.processTask.getSearchData = function(name, key, pagename, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/GetSearchData' + abp.utils.buildQueryString([{ name: 'name', value: name }, { name: 'key', value: key }, { name: 'pagename', value: pagename }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSearchDataSave'
-    abp.services.app.processTask.getSearchDataSave = function(key, pagename, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/GetSearchDataSave' + abp.utils.buildQueryString([{ name: 'key', value: key }, { name: 'pagename', value: pagename }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.app.processTask.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.app.processTask.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.app.processTask.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.app.processTask.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.app.processTask.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.app.processTask.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.app.processTask.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTask/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'bom'
-  (function(){
-
-    abp.services.app.bom = abp.services.app.bom || {};
-
-    // action 'getPageResult'
-    abp.services.app.bom.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Bom/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getBomTree'
-    abp.services.app.bom.getBomTree = function(id, name, level, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Bom/GetBomTree' + abp.utils.buildQueryString([{ name: 'id', value: id }, { name: 'name', value: name }, { name: 'level', value: level }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'moveTreeNode'
-    abp.services.app.bom.moveTreeNode = function(nodeId, targetNodeId, moveType, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Bom/MoveTreeNode' + abp.utils.buildQueryString([{ name: 'nodeId', value: nodeId }, { name: 'targetNodeId', value: targetNodeId }, { name: 'moveType', value: moveType }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'getBomInfo'
-    abp.services.app.bom.getBomInfo = function(id, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Bom/GetBomInfo' + abp.utils.buildQueryString([{ name: 'id', value: id }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'submitBomInfo'
-    abp.services.app.bom.submitBomInfo = function(partDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Bom/SubmitBomInfo',
-        type: 'POST',
-        data: JSON.stringify(partDto)
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.app.bom.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Bom/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.app.bom.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Bom/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.app.bom.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Bom/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.app.bom.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Bom/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.app.bom.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Bom/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.app.bom.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Bom/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.app.bom.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Bom/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.app.bom.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Bom/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'cloudEquipment'
-  (function(){
-
-    abp.services.app.cloudEquipment = abp.services.app.cloudEquipment || {};
-
-    // action 'getPageResult'
-    abp.services.app.cloudEquipment.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/CloudEquipment/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getFreeEquipmentByKey'
-    abp.services.app.cloudEquipment.getFreeEquipmentByKey = function(keyword, page, limit, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/CloudEquipment/GetFreeEquipmentByKey' + abp.utils.buildQueryString([{ name: 'keyword', value: keyword }, { name: 'page', value: page }, { name: 'limit', value: limit }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getCompanyByKey'
-    abp.services.app.cloudEquipment.getCompanyByKey = function(keyword, page, limit, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/CloudEquipment/GetCompanyByKey' + abp.utils.buildQueryString([{ name: 'keyword', value: keyword }, { name: 'page', value: page }, { name: 'limit', value: limit }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'findByCompanyName'
-    abp.services.app.cloudEquipment.findByCompanyName = function(companyName, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/CloudEquipment/FindByCompanyName' + abp.utils.buildQueryString([{ name: 'companyName', value: companyName }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'mESProjectCustomer'
-  (function(){
-
-    abp.services.app.mESProjectCustomer = abp.services.app.mESProjectCustomer || {};
-
-    // action 'getPageResult'
-    abp.services.app.mESProjectCustomer.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESProjectCustomer/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getProjectPartInfos'
-    abp.services.app.mESProjectCustomer.getProjectPartInfos = function(projectId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESProjectCustomer/GetProjectPartInfos' + abp.utils.buildQueryString([{ name: 'projectId', value: projectId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getPartReportInfos'
-    abp.services.app.mESProjectCustomer.getPartReportInfos = function(partId, where, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESProjectCustomer/GetPartReportInfos' + abp.utils.buildQueryString([{ name: 'partId', value: partId }, { name: 'where', value: where }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getManufactures'
-    abp.services.app.mESProjectCustomer.getManufactures = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESProjectCustomer/GetManufactures',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.app.mESProjectCustomer.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESProjectCustomer/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.app.mESProjectCustomer.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESProjectCustomer/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.app.mESProjectCustomer.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESProjectCustomer/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.app.mESProjectCustomer.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESProjectCustomer/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.app.mESProjectCustomer.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESProjectCustomer/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.app.mESProjectCustomer.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESProjectCustomer/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.app.mESProjectCustomer.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESProjectCustomer/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.app.mESProjectCustomer.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESProjectCustomer/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'processTaskCustomer'
-  (function(){
-
-    abp.services.app.processTaskCustomer = abp.services.app.processTaskCustomer || {};
-
-    // action 'getPageResult'
-    abp.services.app.processTaskCustomer.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskCustomer/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.app.processTaskCustomer.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskCustomer/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.app.processTaskCustomer.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskCustomer/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.app.processTaskCustomer.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskCustomer/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.app.processTaskCustomer.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskCustomer/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.app.processTaskCustomer.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskCustomer/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.app.processTaskCustomer.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskCustomer/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.app.processTaskCustomer.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskCustomer/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.app.processTaskCustomer.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskCustomer/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'equipment'
-  (function(){
-
-    abp.services.app.equipment = abp.services.app.equipment || {};
-
-    // action 'bindUser'
-    abp.services.app.equipment.bindUser = function(equipmentIds, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Equipment/BindUser',
-        type: 'POST',
-        data: JSON.stringify(equipmentIds)
-      }, ajaxParams));;
-    };
-
-    // action 'unbindUser'
-    abp.services.app.equipment.unbindUser = function(equipmentIds, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Equipment/UnbindUser',
-        type: 'POST',
-        data: JSON.stringify(equipmentIds)
-      }, ajaxParams));;
-    };
-
-    // action 'getByOperatorId'
-    abp.services.app.equipment.getByOperatorId = function(operatorId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Equipment/GetByOperatorId' + abp.utils.buildQueryString([{ name: 'operatorId', value: operatorId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getEquipmentInfosByProcessTypeName'
-    abp.services.app.equipment.getEquipmentInfosByProcessTypeName = function(processTypeName, unitId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Equipment/GetEquipmentInfosByProcessTypeName' + abp.utils.buildQueryString([{ name: 'processTypeName', value: processTypeName }, { name: 'unitId', value: unitId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getEquipmentInfos'
-    abp.services.app.equipment.getEquipmentInfos = function(processTypeId, unitId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Equipment/GetEquipmentInfos' + abp.utils.buildQueryString([{ name: 'processTypeId', value: processTypeId }, { name: 'unitId', value: unitId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getEquipmentInfo'
-    abp.services.app.equipment.getEquipmentInfo = function(equipmentId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Equipment/GetEquipmentInfo' + abp.utils.buildQueryString([{ name: 'equipmentId', value: equipmentId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getEquipmentProcessInfos'
-    abp.services.app.equipment.getEquipmentProcessInfos = function(equipmentProcessInfoSearchDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Equipment/GetEquipmentProcessInfos' + abp.utils.buildQueryString([{ name: 'processTypeId', value: equipmentProcessInfoSearchDto.processTypeId }, { name: 'unitId', value: equipmentProcessInfoSearchDto.unitId }, { name: 'keyword', value: equipmentProcessInfoSearchDto.keyword }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getAvailableArrangeDate'
-    abp.services.app.equipment.getAvailableArrangeDate = function(equipmentId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Equipment/GetAvailableArrangeDate' + abp.utils.buildQueryString([{ name: 'equipmentId', value: equipmentId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'syncEquipmentFromMES'
-    abp.services.app.equipment.syncEquipmentFromMES = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Equipment/SyncEquipmentFromMES',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'getUnFinishedTasks'
-    abp.services.app.equipment.getUnFinishedTasks = function(equipmentId, taskNumber, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Equipment/GetUnFinishedTasks' + abp.utils.buildQueryString([{ name: 'equipmentId', value: equipmentId }, { name: 'taskNumber', value: taskNumber }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getEquipmentsUnFinishedTasks'
-    abp.services.app.equipment.getEquipmentsUnFinishedTasks = function(equipmentIds, taskNumber, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Equipment/GetEquipmentsUnFinishedTasks' + abp.utils.buildQueryString([{ name: 'equipmentIds', value: equipmentIds }, { name: 'taskNumber', value: taskNumber }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getFinishedTasks'
-    abp.services.app.equipment.getFinishedTasks = function(equipmentId, taskNumber, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Equipment/GetFinishedTasks' + abp.utils.buildQueryString([{ name: 'equipmentId', value: equipmentId }, { name: 'taskNumber', value: taskNumber }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getAbnormalReportTasks'
-    abp.services.app.equipment.getAbnormalReportTasks = function(equipmentId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Equipment/GetAbnormalReportTasks' + abp.utils.buildQueryString([{ name: 'equipmentId', value: equipmentId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'reorderUnFinishedTasks'
-    abp.services.app.equipment.reorderUnFinishedTasks = function(taskIds, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Equipment/ReorderUnFinishedTasks',
-        type: 'POST',
-        data: JSON.stringify(taskIds)
-      }, ajaxParams));;
-    };
-
-    // action 'getEquipmentTimeLineTasks'
-    abp.services.app.equipment.getEquipmentTimeLineTasks = function(from, to, processTypeId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Equipment/GetEquipmentTimeLineTasks' + abp.utils.buildQueryString([{ name: 'from', value: from }, { name: 'to', value: to }, { name: 'processTypeId', value: processTypeId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'submitTimeLineData'
-    abp.services.app.equipment.submitTimeLineData = function(equipmentTimeLineSubmitDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Equipment/SubmitTimeLineData',
-        type: 'POST',
-        data: JSON.stringify(equipmentTimeLineSubmitDto)
-      }, ajaxParams));;
-    };
-
-    // action 'getEquipmentLoads'
-    abp.services.app.equipment.getEquipmentLoads = function(equipmentIds, startDate, endDate, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Equipment/GetEquipmentLoads' + abp.utils.buildQueryString([{ name: 'equipmentIds', value: equipmentIds }, { name: 'startDate', value: startDate }, { name: 'endDate', value: endDate }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getCameraShowUrl'
-    abp.services.app.equipment.getCameraShowUrl = function(equipmentId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Equipment/GetCameraShowUrl' + abp.utils.buildQueryString([{ name: 'equipmentId', value: equipmentId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.app.equipment.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Equipment/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.app.equipment.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Equipment/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.app.equipment.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Equipment/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.app.equipment.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Equipment/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.app.equipment.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Equipment/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.app.equipment.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Equipment/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.app.equipment.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Equipment/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.app.equipment.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Equipment/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.app.equipment.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Equipment/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'equipmentOperatorHistory'
-  (function(){
-
-    abp.services.app.equipmentOperatorHistory = abp.services.app.equipmentOperatorHistory || {};
-
-    // action 'getPageResult'
-    abp.services.app.equipmentOperatorHistory.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/EquipmentOperatorHistory/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.app.equipmentOperatorHistory.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/EquipmentOperatorHistory/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.app.equipmentOperatorHistory.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/EquipmentOperatorHistory/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.app.equipmentOperatorHistory.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/EquipmentOperatorHistory/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.app.equipmentOperatorHistory.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/EquipmentOperatorHistory/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.app.equipmentOperatorHistory.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/EquipmentOperatorHistory/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.app.equipmentOperatorHistory.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/EquipmentOperatorHistory/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.app.equipmentOperatorHistory.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/EquipmentOperatorHistory/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.app.equipmentOperatorHistory.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/EquipmentOperatorHistory/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'mESEdition'
-  (function(){
-
-    abp.services.app.mESEdition = abp.services.app.mESEdition || {};
-
-    // action 'getAll'
-    abp.services.app.mESEdition.getAll = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESEdition/GetAll',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'addEdition'
-    abp.services.app.mESEdition.addEdition = function(text, key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESEdition/AddEdition' + abp.utils.buildQueryString([{ name: 'text', value: text }, { name: 'key', value: key }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'updateField'
-    abp.services.app.mESEdition.updateField = function(editionId, field, value, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESEdition/UpdateField' + abp.utils.buildQueryString([{ name: 'editionId', value: editionId }, { name: 'field', value: field }, { name: 'value', value: value }]) + '',
-        type: 'PUT'
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.app.mESEdition.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESEdition/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.app.mESEdition.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESEdition/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.app.mESEdition.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESEdition/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.app.mESEdition.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESEdition/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.app.mESEdition.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESEdition/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.app.mESEdition.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESEdition/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.app.mESEdition.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESEdition/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.app.mESEdition.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESEdition/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.app.mESEdition.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESEdition/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'mesProcessor'
-  (function(){
-
-    abp.services.app.mesProcessor = abp.services.app.mesProcessor || {};
-
-    // action 'getPageResult'
-    abp.services.app.mesProcessor.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesProcessor/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.app.mesProcessor.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesProcessor/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.app.mesProcessor.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesProcessor/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.app.mesProcessor.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesProcessor/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.app.mesProcessor.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesProcessor/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.app.mesProcessor.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesProcessor/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.app.mesProcessor.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesProcessor/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.app.mesProcessor.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesProcessor/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.app.mesProcessor.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesProcessor/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'mESProject'
-  (function(){
-
-    abp.services.app.mESProject = abp.services.app.mESProject || {};
-
-    // action 'getProjectChargers'
-    abp.services.app.mESProject.getProjectChargers = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESProject/GetProjectChargers',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getProcessSummaryPageResult'
-    abp.services.app.mESProject.getProcessSummaryPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESProject/GetProcessSummaryPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getProjectInfo'
-    abp.services.app.mESProject.getProjectInfo = function(projectSN, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESProject/GetProjectInfo' + abp.utils.buildQueryString([{ name: 'projectSN', value: projectSN }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getBaseSearchData'
-    abp.services.app.mESProject.getBaseSearchData = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESProject/GetBaseSearchData',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getModelName'
-    abp.services.app.mESProject.getModelName = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESProject/GetModelName',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'syncProcessSchedule'
-    abp.services.app.mESProject.syncProcessSchedule = function(projectId, renew, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESProject/SyncProcessSchedule' + abp.utils.buildQueryString([{ name: 'projectId', value: projectId }, { name: 'renew', value: renew }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'getAll'
-    abp.services.app.mESProject.getAll = function(key, take, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESProject/GetAll' + abp.utils.buildQueryString([{ name: 'key', value: key }, { name: 'take', value: take }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.app.mESProject.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESProject/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.app.mESProject.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESProject/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.app.mESProject.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESProject/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.app.mESProject.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESProject/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.app.mESProject.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESProject/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.app.mESProject.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESProject/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.app.mESProject.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESProject/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.app.mESProject.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESProject/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.app.mESProject.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESProject/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'mESShipping'
-  (function(){
-
-    abp.services.app.mESShipping = abp.services.app.mESShipping || {};
-
-    // action 'getPageResult'
-    abp.services.app.mESShipping.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESShipping/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.app.mESShipping.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESShipping/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.app.mESShipping.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESShipping/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.app.mESShipping.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESShipping/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.app.mESShipping.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESShipping/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.app.mESShipping.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESShipping/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.app.mESShipping.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESShipping/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.app.mESShipping.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESShipping/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.app.mESShipping.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESShipping/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'mesTenancy'
-  (function(){
-
-    abp.services.app.mesTenancy = abp.services.app.mesTenancy || {};
-
-    // action 'test'
-    abp.services.app.mesTenancy.test = function(id, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesTenancy/Test' + abp.utils.buildQueryString([{ name: 'id', value: id }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.app.mesTenancy.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesTenancy/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getAllTenantWithLocation'
-    abp.services.app.mesTenancy.getAllTenantWithLocation = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesTenancy/GetAllTenantWithLocation',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'setLocation'
-    abp.services.app.mesTenancy.setLocation = function(tenantId, lng, lat, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesTenancy/SetLocation' + abp.utils.buildQueryString([{ name: 'tenantId', value: tenantId }, { name: 'lng', value: lng }, { name: 'lat', value: lat }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'bindTenantToUnitName'
-    abp.services.app.mesTenancy.bindTenantToUnitName = function(tenantId, inviter, unitName, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesTenancy/BindTenantToUnitName' + abp.utils.buildQueryString([{ name: 'tenantId', value: tenantId }, { name: 'inviter', value: inviter }, { name: 'unitName', value: unitName }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'claimUnit'
-    abp.services.app.mesTenancy.claimUnit = function(inviter, unitName, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesTenancy/ClaimUnit' + abp.utils.buildQueryString([{ name: 'inviter', value: inviter }, { name: 'unitName', value: unitName }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'register'
-    abp.services.app.mesTenancy.register = function(registerDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesTenancy/Register',
-        type: 'POST',
-        data: JSON.stringify(registerDto)
-      }, ajaxParams));;
-    };
-
-    // action 'setActive'
-    abp.services.app.mesTenancy.setActive = function(tenantId, isActive, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesTenancy/SetActive' + abp.utils.buildQueryString([{ name: 'tenantId', value: tenantId }, { name: 'isActive', value: isActive }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'initModule'
-    abp.services.app.mesTenancy.initModule = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesTenancy/InitModule',
-        type: 'POST',
-        data: JSON.stringify(ids)
-      }, ajaxParams));;
-    };
-
-    // action 'initAdminRole'
-    abp.services.app.mesTenancy.initAdminRole = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesTenancy/InitAdminRole',
-        type: 'POST',
-        data: JSON.stringify(ids)
-      }, ajaxParams));;
-    };
-
-    // action 'updateField'
-    abp.services.app.mesTenancy.updateField = function(tenantId, field, value, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesTenancy/UpdateField' + abp.utils.buildQueryString([{ name: 'tenantId', value: tenantId }, { name: 'field', value: field }, { name: 'value', value: value }]) + '',
-        type: 'PUT'
-      }, ajaxParams));;
-    };
-
-    // action 'getTaskTemplates'
-    abp.services.app.mesTenancy.getTaskTemplates = function(tenantId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesTenancy/GetTaskTemplates' + abp.utils.buildQueryString([{ name: 'tenantId', value: tenantId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'addTaskTemplate'
-    abp.services.app.mesTenancy.addTaskTemplate = function(tenantId, templateName, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesTenancy/AddTaskTemplate' + abp.utils.buildQueryString([{ name: 'tenantId', value: tenantId }, { name: 'templateName', value: templateName }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'delTaskTemplate'
-    abp.services.app.mesTenancy.delTaskTemplate = function(tenantId, templateId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesTenancy/DelTaskTemplate' + abp.utils.buildQueryString([{ name: 'tenantId', value: tenantId }, { name: 'templateId', value: templateId }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'setTaskTemplate'
-    abp.services.app.mesTenancy.setTaskTemplate = function(taskTemplateDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesTenancy/SetTaskTemplate',
-        type: 'POST',
-        data: JSON.stringify(taskTemplateDto)
-      }, ajaxParams));;
-    };
-
-    // action 'setTaskTemplateName'
-    abp.services.app.mesTenancy.setTaskTemplateName = function(tenantId, id, templateName, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesTenancy/SetTaskTemplateName' + abp.utils.buildQueryString([{ name: 'tenantId', value: tenantId }, { name: 'id', value: id }, { name: 'templateName', value: templateName }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'setTenantProcessInfo'
-    abp.services.app.mesTenancy.setTenantProcessInfo = function(processorInfo, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesTenancy/SetTenantProcessInfo',
-        type: 'POST',
-        data: JSON.stringify(processorInfo)
-      }, ajaxParams));;
-    };
-
-    // action 'setTenantCharacteristics'
-    abp.services.app.mesTenancy.setTenantCharacteristics = function(characteristics, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesTenancy/SetTenantCharacteristics',
-        type: 'POST',
-        data: JSON.stringify(characteristics)
-      }, ajaxParams));;
-    };
-
-    // action 'getProcessInfos'
-    abp.services.app.mesTenancy.getProcessInfos = function(tenantId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesTenancy/GetProcessInfos' + abp.utils.buildQueryString([{ name: 'tenantId', value: tenantId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.app.mesTenancy.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesTenancy/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.app.mesTenancy.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesTenancy/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.app.mesTenancy.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesTenancy/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.app.mesTenancy.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesTenancy/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.app.mesTenancy.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesTenancy/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.app.mesTenancy.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesTenancy/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.app.mesTenancy.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesTenancy/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.app.mesTenancy.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesTenancy/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'mESUnit'
-  (function(){
-
-    abp.services.app.mESUnit = abp.services.app.mESUnit || {};
-
-    // action 'unBindTenant'
-    abp.services.app.mESUnit.unBindTenant = function(unitIds, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESUnit/UnBindTenant',
-        type: 'POST',
-        data: JSON.stringify(unitIds)
-      }, ajaxParams));;
-    };
-
-    // action 'getAllUnitUnCheckCount'
-    abp.services.app.mESUnit.getAllUnitUnCheckCount = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESUnit/GetAllUnitUnCheckCount',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getAllUnitByProcessTypeName'
-    abp.services.app.mESUnit.getAllUnitByProcessTypeName = function(processTypeName, key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESUnit/GetAllUnitByProcessTypeName' + abp.utils.buildQueryString([{ name: 'processTypeName', value: processTypeName }, { name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getUnitRankReport'
-    abp.services.app.mESUnit.getUnitRankReport = function(processTypeId, startDate, endDate, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESUnit/GetUnitRankReport' + abp.utils.buildQueryString([{ name: 'processTypeId', value: processTypeId }, { name: 'startDate', value: startDate }, { name: 'endDate', value: endDate }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getUnitDateRangeReport'
-    abp.services.app.mESUnit.getUnitDateRangeReport = function(unitId, year, month, range, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESUnit/GetUnitDateRangeReport' + abp.utils.buildQueryString([{ name: 'unitId', value: unitId }, { name: 'year', value: year }, { name: 'month', value: month }, { name: 'range', value: range }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'findUnitOpenId'
-    abp.services.app.mESUnit.findUnitOpenId = function(unitId, status, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESUnit/FindUnitOpenId' + abp.utils.buildQueryString([{ name: 'unitId', value: unitId }, { name: 'status', value: status }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'getUnitTenantInfos'
-    abp.services.app.mESUnit.getUnitTenantInfos = function(unitIds, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESUnit/GetUnitTenantInfos' + abp.utils.buildQueryString([{ name: 'unitIds', value: unitIds }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getUnitTenantInfoByName'
-    abp.services.app.mESUnit.getUnitTenantInfoByName = function(unitName, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESUnit/GetUnitTenantInfoByName' + abp.utils.buildQueryString([{ name: 'unitName', value: unitName }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getUnitBindedReminders'
-    abp.services.app.mESUnit.getUnitBindedReminders = function(unitId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESUnit/GetUnitBindedReminders' + abp.utils.buildQueryString([{ name: 'unitId', value: unitId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'removeUnitReminder'
-    abp.services.app.mESUnit.removeUnitReminder = function(unitId, id, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESUnit/RemoveUnitReminder' + abp.utils.buildQueryString([{ name: 'unitId', value: unitId }, { name: 'id', value: id }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'sendNotice'
-    abp.services.app.mESUnit.sendNotice = function(sendTenantNoticeDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESUnit/SendNotice',
-        type: 'POST',
-        data: JSON.stringify(sendTenantNoticeDto)
-      }, ajaxParams));;
-    };
-
-    // action 'getAll'
-    abp.services.app.mESUnit.getAll = function(key, take, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESUnit/GetAll' + abp.utils.buildQueryString([{ name: 'key', value: key }, { name: 'take', value: take }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getAllByUnitNature'
-    abp.services.app.mESUnit.getAllByUnitNature = function(unitNature, key, take, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESUnit/GetAllByUnitNature' + abp.utils.buildQueryString([{ name: 'unitNature', value: unitNature }, { name: 'key', value: key }, { name: 'take', value: take }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getAllBySupplierType'
-    abp.services.app.mESUnit.getAllBySupplierType = function(supplierType, key, take, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESUnit/GetAllBySupplierType' + abp.utils.buildQueryString([{ name: 'supplierType', value: supplierType }, { name: 'key', value: key }, { name: 'take', value: take }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.app.mESUnit.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESUnit/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.app.mESUnit.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESUnit/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.app.mESUnit.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESUnit/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.app.mESUnit.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESUnit/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.app.mESUnit.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESUnit/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.app.mESUnit.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESUnit/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.app.mESUnit.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESUnit/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.app.mESUnit.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESUnit/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.app.mESUnit.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MESUnit/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'mesUser'
-  (function(){
-
-    abp.services.app.mesUser = abp.services.app.mesUser || {};
-
-    // action 'bindProcessType'
-    abp.services.app.mesUser.bindProcessType = function(userId, processTypeIds, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesUser/BindProcessType' + abp.utils.buildQueryString([{ name: 'userId', value: userId }]) + '',
-        type: 'POST',
-        data: JSON.stringify(processTypeIds)
-      }, ajaxParams));;
-    };
-
-    // action 'getBindedProcessType'
-    abp.services.app.mesUser.getBindedProcessType = function(userId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesUser/GetBindedProcessType' + abp.utils.buildQueryString([{ name: 'userId', value: userId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.app.mesUser.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesUser/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.app.mesUser.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesUser/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.app.mesUser.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesUser/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.app.mesUser.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesUser/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.app.mesUser.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesUser/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.app.mesUser.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesUser/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.app.mesUser.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesUser/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.app.mesUser.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesUser/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.app.mesUser.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MesUser/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'order'
-  (function(){
-
-    abp.services.app.order = abp.services.app.order || {};
-
-    // action 'addProject'
-    abp.services.app.order.addProject = function(ids, dics, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Order/AddProject' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'POST',
-        data: JSON.stringify(dics)
-      }, ajaxParams));;
-    };
-
-    // action 'getProjectsByOrderId'
-    abp.services.app.order.getProjectsByOrderId = function(id, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Order/getProjectsByOrderId' + abp.utils.buildQueryString([{ name: 'id', value: id }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.app.order.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Order/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.app.order.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Order/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.app.order.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Order/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.app.order.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Order/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.app.order.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Order/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.app.order.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Order/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.app.order.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Order/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.app.order.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Order/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.app.order.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Order/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'part'
-  (function(){
-
-    abp.services.app.part = abp.services.app.part || {};
-
-    // action 'getTaskPageResult'
-    abp.services.app.part.getTaskPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Part/GetTaskPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getAll'
-    abp.services.app.part.getAll = function(projectSN, key, enableProcess, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Part/GetAll' + abp.utils.buildQueryString([{ name: 'projectSN', value: projectSN }, { name: 'key', value: key }, { name: 'enableProcess', value: enableProcess }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'setPartImg'
-    abp.services.app.part.setPartImg = function(partId, partImg, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Part/SetPartImg' + abp.utils.buildQueryString([{ name: 'partId', value: partId }, { name: 'partImg', value: partImg }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'getPartReports'
-    abp.services.app.part.getPartReports = function(partId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Part/GetPartReports' + abp.utils.buildQueryString([{ name: 'partId', value: partId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getPartTaskInfo'
-    abp.services.app.part.getPartTaskInfo = function(partId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Part/GetPartTaskInfo' + abp.utils.buildQueryString([{ name: 'partId', value: partId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'savePartTaskInfo'
-    abp.services.app.part.savePartTaskInfo = function(data, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Part/SavePartTaskInfo',
-        type: 'POST',
-        data: JSON.stringify(data)
-      }, ajaxParams));;
-    };
-
-    // action 'exportPartProcessInfo'
-    abp.services.app.part.exportPartProcessInfo = function(partIds, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Part/ExportPartProcessInfo',
-        type: 'POST',
-        data: JSON.stringify(partIds)
-      }, ajaxParams));;
-    };
-
-    // action 'getPartInfos'
-    abp.services.app.part.getPartInfos = function(projectId, partId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Part/GetPartInfos' + abp.utils.buildQueryString([{ name: 'projectId', value: projectId }, { name: 'partId', value: partId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getPartTimeLineTasks'
-    abp.services.app.part.getPartTimeLineTasks = function(from, to, projectId, partId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Part/GetPartTimeLineTasks' + abp.utils.buildQueryString([{ name: 'from', value: from }, { name: 'to', value: to }, { name: 'projectId', value: projectId }, { name: 'partId', value: partId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.app.part.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Part/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.app.part.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Part/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.app.part.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Part/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.app.part.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Part/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.app.part.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Part/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.app.part.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Part/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.app.part.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Part/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.app.part.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Part/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.app.part.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Part/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'processQuoteProcessor'
-  (function(){
-
-    abp.services.app.processQuoteProcessor = abp.services.app.processQuoteProcessor || {};
-
-    // action 'getQuoteInfo'
-    abp.services.app.processQuoteProcessor.getQuoteInfo = function(id, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessQuoteProcessor/GetQuoteInfo' + abp.utils.buildQueryString([{ name: 'id', value: id }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'bid'
-    abp.services.app.processQuoteProcessor.bid = function(processorBidDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessQuoteProcessor/Bid',
-        type: 'POST',
-        data: JSON.stringify(processorBidDto)
-      }, ajaxParams));;
-    };
-
-    // action 'processEquipmentSave'
-    abp.services.app.processQuoteProcessor.processEquipmentSave = function(equipment, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessQuoteProcessor/ProcessEquipmentSave',
-        type: 'POST',
-        data: JSON.stringify(equipment)
-      }, ajaxParams));;
-    };
-
-    // action 'processEquipmentSaves'
-    abp.services.app.processQuoteProcessor.processEquipmentSaves = function(equipmentlist, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessQuoteProcessor/ProcessEquipmentSaves',
-        type: 'POST',
-        data: JSON.stringify(equipmentlist)
-      }, ajaxParams));;
-    };
-
-    // action 'getProcessTypes'
-    abp.services.app.processQuoteProcessor.getProcessTypes = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessQuoteProcessor/GetProcessTypes',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.app.processQuoteProcessor.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessQuoteProcessor/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.app.processQuoteProcessor.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessQuoteProcessor/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.app.processQuoteProcessor.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessQuoteProcessor/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.app.processQuoteProcessor.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessQuoteProcessor/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.app.processQuoteProcessor.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessQuoteProcessor/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.app.processQuoteProcessor.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessQuoteProcessor/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.app.processQuoteProcessor.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessQuoteProcessor/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.app.processQuoteProcessor.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessQuoteProcessor/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.app.processQuoteProcessor.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessQuoteProcessor/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'processTaskProcessor'
-  (function(){
-
-    abp.services.app.processTaskProcessor = abp.services.app.processTaskProcessor || {};
-
-    // action 'getPageResult'
-    abp.services.app.processTaskProcessor.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskProcessor/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getCustomers'
-    abp.services.app.processTaskProcessor.getCustomers = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskProcessor/GetCustomers',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.app.processTaskProcessor.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskProcessor/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.app.processTaskProcessor.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskProcessor/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.app.processTaskProcessor.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskProcessor/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.app.processTaskProcessor.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskProcessor/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.app.processTaskProcessor.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskProcessor/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.app.processTaskProcessor.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskProcessor/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.app.processTaskProcessor.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskProcessor/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.app.processTaskProcessor.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskProcessor/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'processTaskReportProcessor'
-  (function(){
-
-    abp.services.app.processTaskReportProcessor = abp.services.app.processTaskReportProcessor || {};
-
-    // action 'getPageResult'
-    abp.services.app.processTaskReportProcessor.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskReportProcessor/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.app.processTaskReportProcessor.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskReportProcessor/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.app.processTaskReportProcessor.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskReportProcessor/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.app.processTaskReportProcessor.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskReportProcessor/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.app.processTaskReportProcessor.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskReportProcessor/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.app.processTaskReportProcessor.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskReportProcessor/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.app.processTaskReportProcessor.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskReportProcessor/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.app.processTaskReportProcessor.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskReportProcessor/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.app.processTaskReportProcessor.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskReportProcessor/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'processQuote'
-  (function(){
-
-    abp.services.app.processQuote = abp.services.app.processQuote || {};
-
-    // action 'submitProcessQuote'
-    abp.services.app.processQuote.submitProcessQuote = function(processQuoteSubmitDto, isPublish, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessQuote/SubmitProcessQuote' + abp.utils.buildQueryString([{ name: 'isPublish', value: isPublish }]) + '',
-        type: 'POST',
-        data: JSON.stringify(processQuoteSubmitDto)
-      }, ajaxParams));;
-    };
-
-    // action 'getQuoteInfo'
-    abp.services.app.processQuote.getQuoteInfo = function(id, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessQuote/GetQuoteInfo' + abp.utils.buildQueryString([{ name: 'id', value: id }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'chooseBid'
-    abp.services.app.processQuote.chooseBid = function(quoteId, bidId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessQuote/ChooseBid' + abp.utils.buildQueryString([{ name: 'quoteId', value: quoteId }, { name: 'bidId', value: bidId }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'getQuoteIdByTaskId'
-    abp.services.app.processQuote.getQuoteIdByTaskId = function(id, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessQuote/GetQuoteIdByTaskId' + abp.utils.buildQueryString([{ name: 'id', value: id }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.app.processQuote.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessQuote/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.app.processQuote.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessQuote/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.app.processQuote.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessQuote/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.app.processQuote.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessQuote/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.app.processQuote.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessQuote/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.app.processQuote.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessQuote/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.app.processQuote.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessQuote/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.app.processQuote.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessQuote/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.app.processQuote.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessQuote/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'processTaskReport'
-  (function(){
-
-    abp.services.app.processTaskReport = abp.services.app.processTaskReport || {};
-
-    // action 'getPageResult'
-    abp.services.app.processTaskReport.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskReport/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getReportInfoById'
-    abp.services.app.processTaskReport.getReportInfoById = function(reportId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskReport/GetReportInfoById' + abp.utils.buildQueryString([{ name: 'reportId', value: reportId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getBaseSearchData'
-    abp.services.app.processTaskReport.getBaseSearchData = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskReport/GetBaseSearchData',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getModelName'
-    abp.services.app.processTaskReport.getModelName = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskReport/GetModelName',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'updateField'
-    abp.services.app.processTaskReport.updateField = function(processTaskReportId, field, value, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskReport/UpdateField' + abp.utils.buildQueryString([{ name: 'processTaskReportId', value: processTaskReportId }, { name: 'field', value: field }, { name: 'value', value: value }]) + '',
-        type: 'PUT'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.app.processTaskReport.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskReport/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'reportNum'
-    abp.services.app.processTaskReport.reportNum = function(requestPageDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskReport/ReportNum' + abp.utils.buildQueryString([{ name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'saveSearchData'
-    abp.services.app.processTaskReport.saveSearchData = function(searchDataSave, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskReport/SaveSearchData',
-        type: 'POST',
-        data: JSON.stringify(searchDataSave)
-      }, ajaxParams));;
-    };
-
-    // action 'delSearchData'
-    abp.services.app.processTaskReport.delSearchData = function(searchDataSave, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskReport/DelSearchData',
-        type: 'POST',
-        data: JSON.stringify(searchDataSave)
-      }, ajaxParams));;
-    };
-
-    // action 'rNameSearchData'
-    abp.services.app.processTaskReport.rNameSearchData = function(searchDataSave, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskReport/RNameSearchData',
-        type: 'POST',
-        data: JSON.stringify(searchDataSave)
-      }, ajaxParams));;
-    };
-
-    // action 'getSearchData'
-    abp.services.app.processTaskReport.getSearchData = function(name, key, pagename, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskReport/GetSearchData' + abp.utils.buildQueryString([{ name: 'name', value: name }, { name: 'key', value: key }, { name: 'pagename', value: pagename }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSearchDataSave'
-    abp.services.app.processTaskReport.getSearchDataSave = function(key, pagename, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskReport/GetSearchDataSave' + abp.utils.buildQueryString([{ name: 'key', value: key }, { name: 'pagename', value: pagename }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.app.processTaskReport.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskReport/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.app.processTaskReport.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskReport/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.app.processTaskReport.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskReport/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.app.processTaskReport.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskReport/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.app.processTaskReport.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskReport/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.app.processTaskReport.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskReport/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.app.processTaskReport.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessTaskReport/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'processType'
-  (function(){
-
-    abp.services.app.processType = abp.services.app.processType || {};
-
-    // action 'getStandardProcessTypes'
-    abp.services.app.processType.getStandardProcessTypes = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessType/GetStandardProcessTypes',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getAll'
-    abp.services.app.processType.getAll = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessType/GetAll' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getAllWithEquipmentCount'
-    abp.services.app.processType.getAllWithEquipmentCount = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessType/GetAllWithEquipmentCount' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getAllWithUnArrangeTaskCount'
-    abp.services.app.processType.getAllWithUnArrangeTaskCount = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessType/GetAllWithUnArrangeTaskCount' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getUsedProcessTypes'
-    abp.services.app.processType.getUsedProcessTypes = function(projectId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessType/GetUsedProcessTypes' + abp.utils.buildQueryString([{ name: 'projectId', value: projectId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'addProcessType'
-    abp.services.app.processType.addProcessType = function(processTypeName, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessType/AddProcessType' + abp.utils.buildQueryString([{ name: 'processTypeName', value: processTypeName }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'updateProcessType'
-    abp.services.app.processType.updateProcessType = function(processTypeDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessType/UpdateProcessType',
-        type: 'PUT',
-        data: JSON.stringify(processTypeDto)
-      }, ajaxParams));;
-    };
-
-    // action 'updateProcessTypes'
-    abp.services.app.processType.updateProcessTypes = function(processTypeDtos, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessType/UpdateProcessTypes',
-        type: 'PUT',
-        data: JSON.stringify(processTypeDtos)
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.app.processType.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessType/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.app.processType.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessType/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.app.processType.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessType/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.app.processType.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessType/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.app.processType.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessType/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.app.processType.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessType/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.app.processType.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessType/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.app.processType.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessType/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.app.processType.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ProcessType/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'remindLog'
-  (function(){
-
-    abp.services.app.remindLog = abp.services.app.remindLog || {};
-
-    // action 'getPageResult'
-    abp.services.app.remindLog.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/RemindLog/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.app.remindLog.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/RemindLog/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.app.remindLog.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/RemindLog/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.app.remindLog.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/RemindLog/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.app.remindLog.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/RemindLog/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.app.remindLog.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/RemindLog/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.app.remindLog.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/RemindLog/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.app.remindLog.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/RemindLog/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.app.remindLog.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/RemindLog/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'report'
-  (function(){
-
-    abp.services.app.report = abp.services.app.report || {};
-
-    // action 'getProcessTaskUnitMonthReport'
-    abp.services.app.report.getProcessTaskUnitMonthReport = function(processTypeId, year, month, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Report/GetProcessTaskUnitMonthReport' + abp.utils.buildQueryString([{ name: 'processTypeId', value: processTypeId }, { name: 'year', value: year }, { name: 'month', value: month }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getManufactureSummary'
-    abp.services.app.report.getManufactureSummary = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Report/GetManufactureSummary',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSupplierSummary'
-    abp.services.app.report.getSupplierSummary = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Report/GetSupplierSummary',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getReportLocation'
-    abp.services.app.report.getReportLocation = function(startDate, endDate, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Report/GetReportLocation' + abp.utils.buildQueryString([{ name: 'startDate', value: startDate }, { name: 'endDate', value: endDate }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getTaskMonthReportByProcesTypeName'
-    abp.services.app.report.getTaskMonthReportByProcesTypeName = function(processTypeName, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Report/GetTaskMonthReportByProcesTypeName' + abp.utils.buildQueryString([{ name: 'processTypeName', value: processTypeName }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSummary'
-    abp.services.app.report.getSummary = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Report/GetSummary',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'search'
-  (function(){
-
-    abp.services.app.search = abp.services.app.search || {};
-
-    // action 'getSearchData'
-    abp.services.app.search.getSearchData = function(name, key, pagename, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Search/GetSearchData' + abp.utils.buildQueryString([{ name: 'name', value: name }, { name: 'key', value: key }, { name: 'pagename', value: pagename }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getdata'
-    abp.services.app.search.getdata = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Search/Getdata' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'saveSearchData'
-    abp.services.app.search.saveSearchData = function(searchDataSave, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Search/SaveSearchData',
-        type: 'POST',
-        data: JSON.stringify(searchDataSave)
-      }, ajaxParams));;
-    };
-
-    // action 'delSearchData'
-    abp.services.app.search.delSearchData = function(searchDataSave, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Search/DelSearchData',
-        type: 'POST',
-        data: JSON.stringify(searchDataSave)
-      }, ajaxParams));;
-    };
-
-    // action 'rNameSearchData'
-    abp.services.app.search.rNameSearchData = function(searchDataSave, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Search/RNameSearchData',
-        type: 'POST',
-        data: JSON.stringify(searchDataSave)
-      }, ajaxParams));;
-    };
-
-    // action 'getBaseSearchData'
-    abp.services.app.search.getBaseSearchData = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Search/GetBaseSearchData',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSearchDataSave'
-    abp.services.app.search.getSearchDataSave = function(key, pagename, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Search/GetSearchDataSave' + abp.utils.buildQueryString([{ name: 'key', value: key }, { name: 'pagename', value: pagename }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.app.search.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Search/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.app.search.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Search/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.app.search.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Search/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.app.search.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Search/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.app.search.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Search/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.app.search.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Search/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.app.search.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Search/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.app.search.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Search/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.app.search.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Search/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'tactic'
-  (function(){
-
-    abp.services.app.tactic = abp.services.app.tactic || {};
-
-    // action 'getRemindTacticPageResult'
-    abp.services.app.tactic.getRemindTacticPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Tactic/GetRemindTacticPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getRemindTacticHostPageResult'
-    abp.services.app.tactic.getRemindTacticHostPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Tactic/GetRemindTacticHostPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'submitRemindTactic'
-    abp.services.app.tactic.submitRemindTactic = function(remindTacticDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Tactic/SubmitRemindTactic',
-        type: 'POST',
-        data: JSON.stringify(remindTacticDto)
-      }, ajaxParams));;
-    };
-
-    // action 'getRemindTacticInfoById'
-    abp.services.app.tactic.getRemindTacticInfoById = function(id, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Tactic/GetRemindTacticInfoById' + abp.utils.buildQueryString([{ name: 'id', value: id }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'bindReminder'
-    abp.services.app.tactic.bindReminder = function(id, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Tactic/BindReminder' + abp.utils.buildQueryString([{ name: 'id', value: id }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'bindCustomerReminder'
-    abp.services.app.tactic.bindCustomerReminder = function(unitId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Tactic/BindCustomerReminder' + abp.utils.buildQueryString([{ name: 'unitId', value: unitId }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'removeReminder'
-    abp.services.app.tactic.removeReminder = function(tacticId, personId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Tactic/RemoveReminder' + abp.utils.buildQueryString([{ name: 'tacticId', value: tacticId }, { name: 'personId', value: personId }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'setActive'
-    abp.services.app.tactic.setActive = function(tacticId, isActive, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Tactic/SetActive' + abp.utils.buildQueryString([{ name: 'tacticId', value: tacticId }, { name: 'isActive', value: isActive }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.app.tactic.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Tactic/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.app.tactic.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Tactic/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.app.tactic.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Tactic/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.app.tactic.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Tactic/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.app.tactic.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Tactic/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.app.tactic.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Tactic/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.app.tactic.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Tactic/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.app.tactic.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Tactic/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.app.tactic.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Tactic/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'video'
-  (function(){
-
-    abp.services.app.video = abp.services.app.video || {};
-
-    // action 'submitVideos'
-    abp.services.app.video.submitVideos = function(videoDtos, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Video/SubmitVideos',
-        type: 'POST',
-        data: JSON.stringify(videoDtos)
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.app.video.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Video/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getAllList'
-    abp.services.app.video.getAllList = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Video/GetAllList',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.app.video.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Video/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.app.video.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Video/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.app.video.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Video/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.app.video.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Video/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.app.video.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Video/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.app.video.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Video/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.app.video.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Video/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.app.video.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Video/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-})();
-
-// module 'finance'
-(function(){
-
-  abp.services.finance = abp.services.finance || {};
-
-  // controller 'cancellation'
-  (function(){
-
-    abp.services.finance.cancellation = abp.services.finance.cancellation || {};
-
-    // action 'getPageResult'
-    abp.services.finance.cancellation.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/Cancellation/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.finance.cancellation.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/Cancellation/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.finance.cancellation.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/Cancellation/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.finance.cancellation.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/Cancellation/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.finance.cancellation.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/Cancellation/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.finance.cancellation.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/Cancellation/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.finance.cancellation.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/Cancellation/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.finance.cancellation.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/Cancellation/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.finance.cancellation.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/Cancellation/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'financeFlowSheet'
-  (function(){
-
-    abp.services.finance.financeFlowSheet = abp.services.finance.financeFlowSheet || {};
-
-    // action 'getPageResult'
-    abp.services.finance.financeFlowSheet.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceFlowSheet/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.finance.financeFlowSheet.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceFlowSheet/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.finance.financeFlowSheet.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceFlowSheet/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.finance.financeFlowSheet.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceFlowSheet/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.finance.financeFlowSheet.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceFlowSheet/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.finance.financeFlowSheet.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceFlowSheet/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.finance.financeFlowSheet.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceFlowSheet/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.finance.financeFlowSheet.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceFlowSheet/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.finance.financeFlowSheet.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceFlowSheet/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'financeSubject'
-  (function(){
-
-    abp.services.finance.financeSubject = abp.services.finance.financeSubject || {};
-
-    // action 'getAllList'
-    abp.services.finance.financeSubject.getAllList = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceSubject/GetAllList',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'addSubject'
-    abp.services.finance.financeSubject.addSubject = function(subjectInsertDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceSubject/AddSubject',
-        type: 'POST',
-        data: JSON.stringify(subjectInsertDto)
-      }, ajaxParams));;
-    };
-
-    // action 'editSubject'
-    abp.services.finance.financeSubject.editSubject = function(subjectUpdateDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceSubject/EditSubject',
-        type: 'POST',
-        data: JSON.stringify(subjectUpdateDto)
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.finance.financeSubject.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceSubject/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.finance.financeSubject.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceSubject/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.finance.financeSubject.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceSubject/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.finance.financeSubject.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceSubject/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.finance.financeSubject.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceSubject/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.finance.financeSubject.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceSubject/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.finance.financeSubject.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceSubject/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.finance.financeSubject.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceSubject/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.finance.financeSubject.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceSubject/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'financeUnit'
-  (function(){
-
-    abp.services.finance.financeUnit = abp.services.finance.financeUnit || {};
-
-    // action 'getUnitTotalCost'
-    abp.services.finance.financeUnit.getUnitTotalCost = function(startDate, endDate, unitName, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceUnit/GetUnitTotalCost' + abp.utils.buildQueryString([{ name: 'startDate', value: startDate }, { name: 'endDate', value: endDate }, { name: 'unitName', value: unitName }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getUnFinishFeeSheets'
-    abp.services.finance.financeUnit.getUnFinishFeeSheets = function(unitId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceUnit/GetUnFinishFeeSheets' + abp.utils.buildQueryString([{ name: 'unitId', value: unitId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.finance.financeUnit.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceUnit/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.finance.financeUnit.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceUnit/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.finance.financeUnit.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceUnit/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.finance.financeUnit.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceUnit/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.finance.financeUnit.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceUnit/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.finance.financeUnit.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceUnit/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.finance.financeUnit.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceUnit/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.finance.financeUnit.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceUnit/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.finance.financeUnit.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceUnit/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'financeUnitFeeHistory'
-  (function(){
-
-    abp.services.finance.financeUnitFeeHistory = abp.services.finance.financeUnitFeeHistory || {};
-
-    // action 'getPageResult'
-    abp.services.finance.financeUnitFeeHistory.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceUnitFeeHistory/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.finance.financeUnitFeeHistory.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceUnitFeeHistory/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.finance.financeUnitFeeHistory.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceUnitFeeHistory/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.finance.financeUnitFeeHistory.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceUnitFeeHistory/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.finance.financeUnitFeeHistory.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceUnitFeeHistory/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.finance.financeUnitFeeHistory.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceUnitFeeHistory/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.finance.financeUnitFeeHistory.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceUnitFeeHistory/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.finance.financeUnitFeeHistory.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceUnitFeeHistory/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.finance.financeUnitFeeHistory.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/FinanceUnitFeeHistory/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'unitFeeList'
-  (function(){
-
-    abp.services.finance.unitFeeList = abp.services.finance.unitFeeList || {};
-
-    // action 'getPageResult'
-    abp.services.finance.unitFeeList.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/UnitFeeList/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.finance.unitFeeList.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/UnitFeeList/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.finance.unitFeeList.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/UnitFeeList/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.finance.unitFeeList.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/UnitFeeList/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.finance.unitFeeList.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/UnitFeeList/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.finance.unitFeeList.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/UnitFeeList/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.finance.unitFeeList.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/UnitFeeList/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.finance.unitFeeList.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/UnitFeeList/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.finance.unitFeeList.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/finance/UnitFeeList/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-})();
-
-// module 'im'
-(function(){
-
-  abp.services.im = abp.services.im || {};
-
-  // controller 'data'
-  (function(){
-
-    abp.services.im.data = abp.services.im.data || {};
-
-    // action 'getInitData'
-    abp.services.im.data.getInitData = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/im/Data/GetInitData',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getMember'
-    abp.services.im.data.getMember = function(id, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/im/Data/GetMember' + abp.utils.buildQueryString([{ name: 'id', value: id }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getChatLog'
-    abp.services.im.data.getChatLog = function(toid, type, page, limit, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/im/Data/GetChatLog' + abp.utils.buildQueryString([{ name: 'toid', value: toid }, { name: 'type', value: type }, { name: 'page', value: page }, { name: 'limit', value: limit }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getUnReadedNotificationCount'
-    abp.services.im.data.getUnReadedNotificationCount = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/im/Data/GetUnReadedNotificationCount',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'setAllNotificationReaded'
-    abp.services.im.data.setAllNotificationReaded = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/im/Data/SetAllNotificationReaded',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.im.data.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/im/Data/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.im.data.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/im/Data/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.im.data.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/im/Data/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.im.data.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/im/Data/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.im.data.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/im/Data/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.im.data.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/im/Data/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.im.data.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/im/Data/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.im.data.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/im/Data/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.im.data.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/im/Data/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'group'
-  (function(){
-
-    abp.services.im.group = abp.services.im.group || {};
-
-    // action 'addToProjectGroup'
-    abp.services.im.group.addToProjectGroup = function(projectId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/im/Group/AddToProjectGroup' + abp.utils.buildQueryString([{ name: 'projectId', value: projectId }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-  })();
-
-})();
-
-// module 'storage'
-(function(){
-
-  abp.services.storage = abp.services.storage || {};
-
-  // controller 'inOutType'
-  (function(){
-
-    abp.services.storage.inOutType = abp.services.storage.inOutType || {};
-
-    // action 'getAll'
-    abp.services.storage.inOutType.getAll = function(requestPageDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/InOutType/GetAll' + abp.utils.buildQueryString([{ name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.storage.inOutType.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/InOutType/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.storage.inOutType.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/InOutType/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.storage.inOutType.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/InOutType/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.storage.inOutType.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/InOutType/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.storage.inOutType.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/InOutType/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.storage.inOutType.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/InOutType/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.storage.inOutType.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/InOutType/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.storage.inOutType.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/InOutType/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.storage.inOutType.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/InOutType/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'material'
-  (function(){
-
-    abp.services.storage.material = abp.services.storage.material || {};
-
-    // action 'getMaterialInfo'
-    abp.services.storage.material.getMaterialInfo = function(materialId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/Material/GetMaterialInfo' + abp.utils.buildQueryString([{ name: 'materialId', value: materialId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.storage.material.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/Material/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.storage.material.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/Material/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.storage.material.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/Material/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.storage.material.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/Material/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.storage.material.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/Material/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.storage.material.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/Material/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.storage.material.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/Material/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.storage.material.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/Material/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.storage.material.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/Material/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'materialBuy'
-  (function(){
-
-    abp.services.storage.materialBuy = abp.services.storage.materialBuy || {};
-
-    // action 'getListByIds'
-    abp.services.storage.materialBuy.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialBuy/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getOperationHistory'
-    abp.services.storage.materialBuy.getOperationHistory = function(materialRequireId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialBuy/GetOperationHistory' + abp.utils.buildQueryString([{ name: 'materialRequireId', value: materialRequireId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'sendToBuyRequire'
-    abp.services.storage.materialBuy.sendToBuyRequire = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialBuy/SendToBuyRequire',
-        type: 'POST',
-        data: JSON.stringify(ids)
-      }, ajaxParams));;
-    };
-
-    // action 'sendToOutRequire'
-    abp.services.storage.materialBuy.sendToOutRequire = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialBuy/SendToOutRequire',
-        type: 'POST',
-        data: JSON.stringify(ids)
-      }, ajaxParams));;
-    };
-
-    // action 'quote'
-    abp.services.storage.materialBuy.quote = function(materialRequireQuoteDtos, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialBuy/Quote',
-        type: 'POST',
-        data: JSON.stringify(materialRequireQuoteDtos)
-      }, ajaxParams));;
-    };
-
-    // action 'getQuoteDetail'
-    abp.services.storage.materialBuy.getQuoteDetail = function(materialRequireId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialBuy/GetQuoteDetail' + abp.utils.buildQueryString([{ name: 'materialRequireId', value: materialRequireId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.storage.materialBuy.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialBuy/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.storage.materialBuy.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialBuy/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.storage.materialBuy.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialBuy/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.storage.materialBuy.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialBuy/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.storage.materialBuy.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialBuy/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.storage.materialBuy.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialBuy/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.storage.materialBuy.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialBuy/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.storage.materialBuy.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialBuy/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'materialBuyRequire'
-  (function(){
-
-    abp.services.storage.materialBuyRequire = abp.services.storage.materialBuyRequire || {};
-
-    // action 'getListByIds'
-    abp.services.storage.materialBuyRequire.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialBuyRequire/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getOperationHistory'
-    abp.services.storage.materialBuyRequire.getOperationHistory = function(materialRequireId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialBuyRequire/GetOperationHistory' + abp.utils.buildQueryString([{ name: 'materialRequireId', value: materialRequireId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'sendToBuyRequire'
-    abp.services.storage.materialBuyRequire.sendToBuyRequire = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialBuyRequire/SendToBuyRequire',
-        type: 'POST',
-        data: JSON.stringify(ids)
-      }, ajaxParams));;
-    };
-
-    // action 'sendToOutRequire'
-    abp.services.storage.materialBuyRequire.sendToOutRequire = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialBuyRequire/SendToOutRequire',
-        type: 'POST',
-        data: JSON.stringify(ids)
-      }, ajaxParams));;
-    };
-
-    // action 'quote'
-    abp.services.storage.materialBuyRequire.quote = function(materialRequireQuoteDtos, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialBuyRequire/Quote',
-        type: 'POST',
-        data: JSON.stringify(materialRequireQuoteDtos)
-      }, ajaxParams));;
-    };
-
-    // action 'getQuoteDetail'
-    abp.services.storage.materialBuyRequire.getQuoteDetail = function(materialRequireId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialBuyRequire/GetQuoteDetail' + abp.utils.buildQueryString([{ name: 'materialRequireId', value: materialRequireId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.storage.materialBuyRequire.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialBuyRequire/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.storage.materialBuyRequire.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialBuyRequire/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.storage.materialBuyRequire.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialBuyRequire/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.storage.materialBuyRequire.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialBuyRequire/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.storage.materialBuyRequire.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialBuyRequire/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.storage.materialBuyRequire.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialBuyRequire/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.storage.materialBuyRequire.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialBuyRequire/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.storage.materialBuyRequire.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialBuyRequire/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'materialOutRequire'
-  (function(){
-
-    abp.services.storage.materialOutRequire = abp.services.storage.materialOutRequire || {};
-
-    // action 'getListByIds'
-    abp.services.storage.materialOutRequire.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialOutRequire/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getOperationHistory'
-    abp.services.storage.materialOutRequire.getOperationHistory = function(materialRequireId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialOutRequire/GetOperationHistory' + abp.utils.buildQueryString([{ name: 'materialRequireId', value: materialRequireId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'sendToBuyRequire'
-    abp.services.storage.materialOutRequire.sendToBuyRequire = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialOutRequire/SendToBuyRequire',
-        type: 'POST',
-        data: JSON.stringify(ids)
-      }, ajaxParams));;
-    };
-
-    // action 'sendToOutRequire'
-    abp.services.storage.materialOutRequire.sendToOutRequire = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialOutRequire/SendToOutRequire',
-        type: 'POST',
-        data: JSON.stringify(ids)
-      }, ajaxParams));;
-    };
-
-    // action 'quote'
-    abp.services.storage.materialOutRequire.quote = function(materialRequireQuoteDtos, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialOutRequire/Quote',
-        type: 'POST',
-        data: JSON.stringify(materialRequireQuoteDtos)
-      }, ajaxParams));;
-    };
-
-    // action 'getQuoteDetail'
-    abp.services.storage.materialOutRequire.getQuoteDetail = function(materialRequireId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialOutRequire/GetQuoteDetail' + abp.utils.buildQueryString([{ name: 'materialRequireId', value: materialRequireId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.storage.materialOutRequire.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialOutRequire/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.storage.materialOutRequire.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialOutRequire/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.storage.materialOutRequire.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialOutRequire/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.storage.materialOutRequire.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialOutRequire/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.storage.materialOutRequire.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialOutRequire/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.storage.materialOutRequire.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialOutRequire/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.storage.materialOutRequire.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialOutRequire/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.storage.materialOutRequire.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialOutRequire/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'materialProject'
-  (function(){
-
-    abp.services.storage.materialProject = abp.services.storage.materialProject || {};
-
-    // action 'getListByIds'
-    abp.services.storage.materialProject.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialProject/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getOperationHistory'
-    abp.services.storage.materialProject.getOperationHistory = function(materialRequireId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialProject/GetOperationHistory' + abp.utils.buildQueryString([{ name: 'materialRequireId', value: materialRequireId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'sendToBuyRequire'
-    abp.services.storage.materialProject.sendToBuyRequire = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialProject/SendToBuyRequire',
-        type: 'POST',
-        data: JSON.stringify(ids)
-      }, ajaxParams));;
-    };
-
-    // action 'sendToOutRequire'
-    abp.services.storage.materialProject.sendToOutRequire = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialProject/SendToOutRequire',
-        type: 'POST',
-        data: JSON.stringify(ids)
-      }, ajaxParams));;
-    };
-
-    // action 'quote'
-    abp.services.storage.materialProject.quote = function(materialRequireQuoteDtos, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialProject/Quote',
-        type: 'POST',
-        data: JSON.stringify(materialRequireQuoteDtos)
-      }, ajaxParams));;
-    };
-
-    // action 'getQuoteDetail'
-    abp.services.storage.materialProject.getQuoteDetail = function(materialRequireId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialProject/GetQuoteDetail' + abp.utils.buildQueryString([{ name: 'materialRequireId', value: materialRequireId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.storage.materialProject.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialProject/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.storage.materialProject.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialProject/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.storage.materialProject.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialProject/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.storage.materialProject.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialProject/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.storage.materialProject.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialProject/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.storage.materialProject.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialProject/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.storage.materialProject.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialProject/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.storage.materialProject.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialProject/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'materialRequire'
-  (function(){
-
-    abp.services.storage.materialRequire = abp.services.storage.materialRequire || {};
-
-    // action 'getListByIds'
-    abp.services.storage.materialRequire.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialRequire/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getOperationHistory'
-    abp.services.storage.materialRequire.getOperationHistory = function(materialRequireId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialRequire/GetOperationHistory' + abp.utils.buildQueryString([{ name: 'materialRequireId', value: materialRequireId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'sendToBuyRequire'
-    abp.services.storage.materialRequire.sendToBuyRequire = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialRequire/SendToBuyRequire',
-        type: 'POST',
-        data: JSON.stringify(ids)
-      }, ajaxParams));;
-    };
-
-    // action 'sendToOutRequire'
-    abp.services.storage.materialRequire.sendToOutRequire = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialRequire/SendToOutRequire',
-        type: 'POST',
-        data: JSON.stringify(ids)
-      }, ajaxParams));;
-    };
-
-    // action 'quote'
-    abp.services.storage.materialRequire.quote = function(materialRequireQuoteDtos, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialRequire/Quote',
-        type: 'POST',
-        data: JSON.stringify(materialRequireQuoteDtos)
-      }, ajaxParams));;
-    };
-
-    // action 'getQuoteDetail'
-    abp.services.storage.materialRequire.getQuoteDetail = function(materialRequireId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialRequire/GetQuoteDetail' + abp.utils.buildQueryString([{ name: 'materialRequireId', value: materialRequireId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.storage.materialRequire.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialRequire/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.storage.materialRequire.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialRequire/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.storage.materialRequire.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialRequire/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.storage.materialRequire.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialRequire/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.storage.materialRequire.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialRequire/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.storage.materialRequire.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialRequire/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.storage.materialRequire.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialRequire/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.storage.materialRequire.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialRequire/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'materialRequireQuote'
-  (function(){
-
-    abp.services.storage.materialRequireQuote = abp.services.storage.materialRequireQuote || {};
-
-    // action 'getAllUnitQuoteCount'
-    abp.services.storage.materialRequireQuote.getAllUnitQuoteCount = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialRequireQuote/GetAllUnitQuoteCount',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'setQuoteInfo'
-    abp.services.storage.materialRequireQuote.setQuoteInfo = function(id, field, value, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialRequireQuote/SetQuoteInfo' + abp.utils.buildQueryString([{ name: 'id', value: id }, { name: 'field', value: field }, { name: 'value', value: value }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.storage.materialRequireQuote.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialRequireQuote/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.storage.materialRequireQuote.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialRequireQuote/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.storage.materialRequireQuote.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialRequireQuote/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.storage.materialRequireQuote.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialRequireQuote/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.storage.materialRequireQuote.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialRequireQuote/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.storage.materialRequireQuote.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialRequireQuote/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.storage.materialRequireQuote.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialRequireQuote/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.storage.materialRequireQuote.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialRequireQuote/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.storage.materialRequireQuote.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialRequireQuote/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'materialUseInfo'
-  (function(){
-
-    abp.services.storage.materialUseInfo = abp.services.storage.materialUseInfo || {};
-
-    // action 'getListByIds'
-    abp.services.storage.materialUseInfo.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialUseInfo/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.storage.materialUseInfo.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialUseInfo/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.storage.materialUseInfo.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialUseInfo/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.storage.materialUseInfo.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialUseInfo/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.storage.materialUseInfo.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialUseInfo/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.storage.materialUseInfo.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialUseInfo/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.storage.materialUseInfo.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialUseInfo/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.storage.materialUseInfo.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialUseInfo/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.storage.materialUseInfo.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MaterialUseInfo/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'measureMent'
-  (function(){
-
-    abp.services.storage.measureMent = abp.services.storage.measureMent || {};
-
-    // action 'submitMeasureMent'
-    abp.services.storage.measureMent.submitMeasureMent = function(measureMentDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MeasureMent/SubmitMeasureMent',
-        type: 'POST',
-        data: JSON.stringify(measureMentDto)
-      }, ajaxParams));;
-    };
-
-    // action 'getMeasureMent'
-    abp.services.storage.measureMent.getMeasureMent = function(measureMentId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MeasureMent/GetMeasureMent' + abp.utils.buildQueryString([{ name: 'measureMentId', value: measureMentId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.storage.measureMent.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MeasureMent/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.storage.measureMent.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MeasureMent/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.storage.measureMent.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MeasureMent/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.storage.measureMent.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MeasureMent/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.storage.measureMent.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MeasureMent/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.storage.measureMent.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MeasureMent/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.storage.measureMent.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MeasureMent/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.storage.measureMent.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MeasureMent/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.storage.measureMent.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/MeasureMent/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'store'
-  (function(){
-
-    abp.services.storage.store = abp.services.storage.store || {};
-
-    // action 'getAllStoreAndLocations'
-    abp.services.storage.store.getAllStoreAndLocations = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/Store/GetAllStoreAndLocations',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getStoreInfo'
-    abp.services.storage.store.getStoreInfo = function(storeId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/Store/GetStoreInfo' + abp.utils.buildQueryString([{ name: 'storeId', value: storeId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getAllLocationsPageResult'
-    abp.services.storage.store.getAllLocationsPageResult = function(storeId, showInActive, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/Store/GetAllLocationsPageResult' + abp.utils.buildQueryString([{ name: 'storeId', value: storeId }, { name: 'showInActive', value: showInActive }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getAllLocation'
-    abp.services.storage.store.getAllLocation = function(storeId, showInActive, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/Store/GetAllLocation' + abp.utils.buildQueryString([{ name: 'storeId', value: storeId }, { name: 'showInActive', value: showInActive }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'addLocation'
-    abp.services.storage.store.addLocation = function(storeId, locationName, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/Store/AddLocation' + abp.utils.buildQueryString([{ name: 'storeId', value: storeId }, { name: 'locationName', value: locationName }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'updateLocation'
-    abp.services.storage.store.updateLocation = function(locationId, fieldName, fieldValue, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/Store/UpdateLocation' + abp.utils.buildQueryString([{ name: 'locationId', value: locationId }, { name: 'fieldName', value: fieldName }, { name: 'fieldValue', value: fieldValue }]) + '',
-        type: 'PUT'
-      }, ajaxParams));;
-    };
-
-    // action 'setActiveLocation'
-    abp.services.storage.store.setActiveLocation = function(locationId, isActive, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/Store/SetActiveLocation' + abp.utils.buildQueryString([{ name: 'locationId', value: locationId }, { name: 'isActive', value: isActive }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteLocations'
-    abp.services.storage.store.deleteLocations = function(locationIds, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/Store/DeleteLocations' + abp.utils.buildQueryString([{ name: 'locationIds', value: locationIds }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'getLocationInfo'
-    abp.services.storage.store.getLocationInfo = function(locationId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/Store/GetLocationInfo' + abp.utils.buildQueryString([{ name: 'locationId', value: locationId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.storage.store.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/Store/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.storage.store.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/Store/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.storage.store.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/Store/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.storage.store.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/Store/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.storage.store.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/Store/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.storage.store.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/Store/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.storage.store.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/Store/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.storage.store.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/Store/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.storage.store.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/Store/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'storeMaterial'
-  (function(){
-
-    abp.services.storage.storeMaterial = abp.services.storage.storeMaterial || {};
-
-    // action 'getAllUnitStoreCount'
-    abp.services.storage.storeMaterial.getAllUnitStoreCount = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/StoreMaterial/GetAllUnitStoreCount',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getStoreMaterialByMaterialId'
-    abp.services.storage.storeMaterial.getStoreMaterialByMaterialId = function(materialId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/StoreMaterial/GetStoreMaterialByMaterialId' + abp.utils.buildQueryString([{ name: 'materialId', value: materialId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'storeMaterialSplit'
-    abp.services.storage.storeMaterial.storeMaterialSplit = function(storeMaterialSplitDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/StoreMaterial/StoreMaterialSplit',
-        type: 'POST',
-        data: JSON.stringify(storeMaterialSplitDto)
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.storage.storeMaterial.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/StoreMaterial/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.storage.storeMaterial.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/StoreMaterial/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.storage.storeMaterial.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/StoreMaterial/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.storage.storeMaterial.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/StoreMaterial/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.storage.storeMaterial.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/StoreMaterial/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.storage.storeMaterial.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/StoreMaterial/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.storage.storeMaterial.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/StoreMaterial/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.storage.storeMaterial.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/StoreMaterial/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.storage.storeMaterial.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/StoreMaterial/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'storeMaterialHistory'
-  (function(){
-
-    abp.services.storage.storeMaterialHistory = abp.services.storage.storeMaterialHistory || {};
-
-    // action 'getPageResult'
-    abp.services.storage.storeMaterialHistory.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/StoreMaterialHistory/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.storage.storeMaterialHistory.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/StoreMaterialHistory/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.storage.storeMaterialHistory.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/StoreMaterialHistory/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.storage.storeMaterialHistory.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/StoreMaterialHistory/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.storage.storeMaterialHistory.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/StoreMaterialHistory/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.storage.storeMaterialHistory.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/StoreMaterialHistory/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.storage.storeMaterialHistory.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/StoreMaterialHistory/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.storage.storeMaterialHistory.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/StoreMaterialHistory/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.storage.storeMaterialHistory.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/storage/StoreMaterialHistory/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-})();
-
-// module 'mouldtry'
-(function(){
-
-  abp.services.mouldtry = abp.services.mouldtry || {};
-
-  // controller 'mouldTry'
-  (function(){
-
-    abp.services.mouldtry.mouldTry = abp.services.mouldtry.mouldTry || {};
-
-    // action 'submitMouldTry'
-    abp.services.mouldtry.mouldTry.submitMouldTry = function(mouldTryDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/mouldtry/MouldTry/SubmitMouldTry',
-        type: 'POST',
-        data: JSON.stringify(mouldTryDto)
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.mouldtry.mouldTry.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/mouldtry/MouldTry/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getMouldTryInfoById'
-    abp.services.mouldtry.mouldTry.getMouldTryInfoById = function(id, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/mouldtry/MouldTry/GetMouldTryInfoById' + abp.utils.buildQueryString([{ name: 'id', value: id }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getTaskTemplateData'
-    abp.services.mouldtry.mouldTry.getTaskTemplateData = function(taskId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/mouldtry/MouldTry/GetTaskTemplateData' + abp.utils.buildQueryString([{ name: 'taskId', value: taskId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getHistory'
-    abp.services.mouldtry.mouldTry.getHistory = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/mouldtry/MouldTry/GetHistory' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getMaterialInfo'
-    abp.services.mouldtry.mouldTry.getMaterialInfo = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/mouldtry/MouldTry/GetMaterialInfo' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getOperateInfo'
-    abp.services.mouldtry.mouldTry.getOperateInfo = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/mouldtry/MouldTry/GetOperateInfo' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.mouldtry.mouldTry.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/mouldtry/MouldTry/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.mouldtry.mouldTry.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/mouldtry/MouldTry/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.mouldtry.mouldTry.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/mouldtry/MouldTry/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.mouldtry.mouldTry.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/mouldtry/MouldTry/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.mouldtry.mouldTry.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/mouldtry/MouldTry/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.mouldtry.mouldTry.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/mouldtry/MouldTry/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.mouldtry.mouldTry.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/mouldtry/MouldTry/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.mouldtry.mouldTry.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/mouldtry/MouldTry/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'mouldTryDetail'
-  (function(){
-
-    abp.services.mouldtry.mouldTryDetail = abp.services.mouldtry.mouldTryDetail || {};
-
-    // action 'getProblemType'
-    abp.services.mouldtry.mouldTryDetail.getProblemType = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/mouldtry/MouldTryDetail/GetProblemType',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'submitMouldTryDetail'
-    abp.services.mouldtry.mouldTryDetail.submitMouldTryDetail = function(mouldTryDetailDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/mouldtry/MouldTryDetail/SubmitMouldTryDetail',
-        type: 'POST',
-        data: JSON.stringify(mouldTryDetailDto)
-      }, ajaxParams));;
-    };
-
-    // action 'getMouldTryDetailById'
-    abp.services.mouldtry.mouldTryDetail.getMouldTryDetailById = function(id, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/mouldtry/MouldTryDetail/GetMouldTryDetailById' + abp.utils.buildQueryString([{ name: 'id', value: id }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getProblemListByTryId'
-    abp.services.mouldtry.mouldTryDetail.getProblemListByTryId = function(id, typeId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/mouldtry/MouldTryDetail/GetProblemListByTryId' + abp.utils.buildQueryString([{ name: 'id', value: id }, { name: 'typeId', value: typeId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getByDetailId'
-    abp.services.mouldtry.mouldTryDetail.getByDetailId = function(id, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/mouldtry/MouldTryDetail/GetByDetailId' + abp.utils.buildQueryString([{ name: 'id', value: id }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.mouldtry.mouldTryDetail.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/mouldtry/MouldTryDetail/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.mouldtry.mouldTryDetail.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/mouldtry/MouldTryDetail/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.mouldtry.mouldTryDetail.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/mouldtry/MouldTryDetail/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.mouldtry.mouldTryDetail.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/mouldtry/MouldTryDetail/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.mouldtry.mouldTryDetail.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/mouldtry/MouldTryDetail/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.mouldtry.mouldTryDetail.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/mouldtry/MouldTryDetail/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.mouldtry.mouldTryDetail.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/mouldtry/MouldTryDetail/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.mouldtry.mouldTryDetail.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/mouldtry/MouldTryDetail/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.mouldtry.mouldTryDetail.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/mouldtry/MouldTryDetail/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-})();
-
-// module 'scheduler'
-(function(){
-
-  abp.services.scheduler = abp.services.scheduler || {};
-
-  // controller 'projectScheduler'
-  (function(){
-
-    abp.services.scheduler.projectScheduler = abp.services.scheduler.projectScheduler || {};
-
-    // action 'submitProjectScheduler'
-    abp.services.scheduler.projectScheduler.submitProjectScheduler = function(projectId, projectSchedulerSubmitDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/scheduler/ProjectScheduler/SubmitProjectScheduler' + abp.utils.buildQueryString([{ name: 'projectId', value: projectId }]) + '',
-        type: 'POST',
-        data: JSON.stringify(projectSchedulerSubmitDto)
-      }, ajaxParams));;
-    };
-
-    // action 'getProjectScheduler'
-    abp.services.scheduler.projectScheduler.getProjectScheduler = function(projectId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/scheduler/ProjectScheduler/GetProjectScheduler' + abp.utils.buildQueryString([{ name: 'projectId', value: projectId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'exportProjectScheduler'
-    abp.services.scheduler.projectScheduler.exportProjectScheduler = function(projectId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/scheduler/ProjectScheduler/ExportProjectScheduler' + abp.utils.buildQueryString([{ name: 'projectId', value: projectId }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.scheduler.projectScheduler.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/scheduler/ProjectScheduler/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.scheduler.projectScheduler.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/scheduler/ProjectScheduler/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.scheduler.projectScheduler.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/scheduler/ProjectScheduler/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.scheduler.projectScheduler.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/scheduler/ProjectScheduler/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.scheduler.projectScheduler.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/scheduler/ProjectScheduler/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.scheduler.projectScheduler.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/scheduler/ProjectScheduler/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.scheduler.projectScheduler.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/scheduler/ProjectScheduler/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.scheduler.projectScheduler.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/scheduler/ProjectScheduler/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.scheduler.projectScheduler.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/scheduler/ProjectScheduler/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-})();
-
-// module 'workflow'
-(function(){
-
-  abp.services.workflow = abp.services.workflow || {};
-
-  // controller 'flowForm'
-  (function(){
-
-    abp.services.workflow.flowForm = abp.services.workflow.flowForm || {};
-
-    // action 'getAll'
-    abp.services.workflow.flowForm.getAll = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowForm/GetAll',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getFormDesigner'
-    abp.services.workflow.flowForm.getFormDesigner = function(id, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowForm/GetFormDesigner' + abp.utils.buildQueryString([{ name: 'id', value: id }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'submitFormDesigner'
-    abp.services.workflow.flowForm.submitFormDesigner = function(formDesignerDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowForm/SubmitFormDesigner',
-        type: 'POST',
-        data: JSON.stringify(formDesignerDto)
-      }, ajaxParams));;
-    };
-
-    // action 'getFormHtml'
-    abp.services.workflow.flowForm.getFormHtml = function(id, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowForm/GetFormHtml' + abp.utils.buildQueryString([{ name: 'id', value: id }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'submitFormHtml'
-    abp.services.workflow.flowForm.submitFormHtml = function(formHtmlDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowForm/SubmitFormHtml',
-        type: 'POST',
-        data: JSON.stringify(formHtmlDto)
-      }, ajaxParams));;
-    };
-
-    // action 'getFormHandler'
-    abp.services.workflow.flowForm.getFormHandler = function(id, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowForm/GetFormHandler' + abp.utils.buildQueryString([{ name: 'id', value: id }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'submitFormHandler'
-    abp.services.workflow.flowForm.submitFormHandler = function(formHtmlDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowForm/SubmitFormHandler',
-        type: 'POST',
-        data: JSON.stringify(formHtmlDto)
-      }, ajaxParams));;
-    };
-
-    // action 'initDefaultForm'
-    abp.services.workflow.flowForm.initDefaultForm = function(tenantId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowForm/InitDefaultForm' + abp.utils.buildQueryString([{ name: 'tenantId', value: tenantId }]) + '',
-        type: 'POST'
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.workflow.flowForm.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowForm/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.workflow.flowForm.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowForm/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.workflow.flowForm.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowForm/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.workflow.flowForm.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowForm/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.workflow.flowForm.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowForm/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.workflow.flowForm.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowForm/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.workflow.flowForm.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowForm/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.workflow.flowForm.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowForm/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.workflow.flowForm.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowForm/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'flowInstance'
-  (function(){
-
-    abp.services.workflow.flowInstance = abp.services.workflow.flowInstance || {};
-
-    // action 'createInstance'
-    abp.services.workflow.flowInstance.createInstance = function(flowInstanceCreateDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowInstance/CreateInstance',
-        type: 'POST',
-        data: JSON.stringify(flowInstanceCreateDto)
-      }, ajaxParams));;
-    };
-
-    // action 'repostInstance'
-    abp.services.workflow.flowInstance.repostInstance = function(flowInstanceRepostDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowInstance/RepostInstance',
-        type: 'POST',
-        data: JSON.stringify(flowInstanceRepostDto)
-      }, ajaxParams));;
-    };
-
-    // action 'nodeVerification'
-    abp.services.workflow.flowInstance.nodeVerification = function(instanceId, tag, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowInstance/NodeVerification' + abp.utils.buildQueryString([{ name: 'instanceId', value: instanceId }]) + '',
-        type: 'POST',
-        data: JSON.stringify(tag)
-      }, ajaxParams));;
-    };
-
-    // action 'nodeReject'
-    abp.services.workflow.flowInstance.nodeReject = function(reqest, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowInstance/NodeReject',
-        type: 'POST',
-        data: JSON.stringify(reqest)
-      }, ajaxParams));;
-    };
-
-    // action 'get'
-    abp.services.workflow.flowInstance.get = function(id, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowInstance/Get' + abp.utils.buildQueryString([{ name: 'id', value: id }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'verification'
-    abp.services.workflow.flowInstance.verification = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowInstance/Verification',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.workflow.flowInstance.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowInstance/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.workflow.flowInstance.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowInstance/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.workflow.flowInstance.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowInstance/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.workflow.flowInstance.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowInstance/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.workflow.flowInstance.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowInstance/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.workflow.flowInstance.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowInstance/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.workflow.flowInstance.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowInstance/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.workflow.flowInstance.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowInstance/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.workflow.flowInstance.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowInstance/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
-      }, ajaxParams));;
-    };
-
-  })();
-
-  // controller 'flowScheme'
-  (function(){
-
-    abp.services.workflow.flowScheme = abp.services.workflow.flowScheme || {};
-
-    // action 'getAvailableFlowSchemes'
-    abp.services.workflow.flowScheme.getAvailableFlowSchemes = function(ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowScheme/GetAvailableFlowSchemes',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'get'
-    abp.services.workflow.flowScheme.get = function(schemeId, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowScheme/Get' + abp.utils.buildQueryString([{ name: 'schemeId', value: schemeId }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'update'
-    abp.services.workflow.flowScheme.update = function(flowSchemeDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowScheme/Update',
-        type: 'PUT',
-        data: JSON.stringify(flowSchemeDto)
-      }, ajaxParams));;
-    };
-
-    // action 'getPageResult'
-    abp.services.workflow.flowScheme.getPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowScheme/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getSuggestResult'
-    abp.services.workflow.flowScheme.getSuggestResult = function(requestSuggestDto, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowScheme/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'formSubmit'
-    abp.services.workflow.flowScheme.formSubmit = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowScheme/FormSubmit',
-        type: 'POST',
-        data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'getFilterColumnPageResult'
-    abp.services.workflow.flowScheme.getFilterColumnPageResult = function(request, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowScheme/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'moduleKey', value: request.moduleKey }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getById'
-    abp.services.workflow.flowScheme.getById = function(primary, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowScheme/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getListByIds'
-    abp.services.workflow.flowScheme.getListByIds = function(primaries, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowScheme/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'getGroupedField'
-    abp.services.workflow.flowScheme.getGroupedField = function(key, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowScheme/GetGroupedField' + abp.utils.buildQueryString([{ name: 'key', value: key }]) + '',
-        type: 'GET'
-      }, ajaxParams));;
-    };
-
-    // action 'deleteEntity'
-    abp.services.workflow.flowScheme.deleteEntity = function(ids, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowScheme/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
-        type: 'DELETE'
-      }, ajaxParams));;
-    };
-
-    // action 'setStatus'
-    abp.services.workflow.flowScheme.setStatus = function(primaries, status, isSet, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/workflow/FlowScheme/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
-        type: 'POST',
-        data: JSON.stringify(primaries)
       }, ajaxParams));;
     };
 

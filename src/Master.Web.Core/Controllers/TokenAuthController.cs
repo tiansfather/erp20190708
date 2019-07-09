@@ -51,43 +51,7 @@ namespace Master.Controllers
             _externalAuthManager = externalAuthManager;
         }
 
-        /// <summary>
-        /// 模拟账套用户登录
-        /// </summary>
-        /// <param name="ids"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<AuthenticateResultModel> SimulateAuthenicate(IEnumerable<int> ids)
-        {
-            var tenantId = ids.First();
-            var tenant = await TenantManager.GetByIdFromCacheAsync(tenantId);
-            if (!tenant.IsActive)
-            {
-                throw new UserFriendlyException("当前账套已被禁用,无法模拟登录");
-            }
-            var adminUser = await UserManager.Repository.GetAll().IgnoreQueryFilters().Where(o => o.TenantId == tenantId && o.IsActive).OrderBy(o => o.Id).FirstOrDefaultAsync();
-            if (adminUser == null)
-            {
-                throw new UserFriendlyException("当前账套不存在用户");
-            }
-
-            var principal=await _loginManager.CreateClaimsPrincipal(adminUser);
-
-            //var principal = httpContextAccessor.HttpContext.User;
-            //var identity = principal.Identities.First();
-            //identity.AddClaim(new Claim(AbpClaimTypes.ImpersonatorUserId, adminUser.Id.ToString()));
-            //identity.AddClaim(new Claim(AbpClaimTypes.ImpersonatorTenantId, tenantId.ToString()));
-
-            var accessToken = CreateAccessToken(CreateJwtClaims(principal.Identity as ClaimsIdentity));
-
-            return new AuthenticateResultModel
-            {
-                AccessToken = accessToken,
-                EncryptedAccessToken = GetEncrpyedAccessToken(accessToken),
-                ExpireInSeconds = (int)_configuration.Expiration.TotalSeconds,
-                UserId = adminUser.Id
-            };
-        }
+       
 
         /// <summary>
         /// 生成Token
@@ -98,6 +62,11 @@ namespace Master.Controllers
         [IgnoreAntiforgeryToken]
         public async Task<AuthenticateResultModel> Authenticate(AuthenticateModel model)
         {
+            //先判断验证码
+            if (HttpContext.Session.Get<string>("CaptchaCode")?.ToLower() != model.VerifyCode.ToLower())
+            {
+                throw new UserFriendlyException("您输入的验证码不正确，如看不清，可点击验证码更换");
+            }
             var loginResult = await GetLoginResultAsync(
                 model.UserName,
                 model.Password,

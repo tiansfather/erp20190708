@@ -22,15 +22,20 @@
             var checkboxNames = [];
             $(":checkbox").each(function () {
                 var checkboxName = $(this).attr("name");
-                if (checkboxNames.indexOf(checkboxName) < 0) {
-                    var val = [];
-                    $(":checked[name='" + checkboxName + "']").each(function () {
-                        val.push($(this).val());
+                if ($(this).attr("lay-skin") == "switch") {
+                    data.field[checkboxName] = $(this).is(":checked") ? true : false;
+                } else {
+                    if (checkboxNames.indexOf(checkboxName) < 0) {
+                        var val = [];
+                        $(":checked[name='" + checkboxName + "']").each(function () {
+                            val.push($(this).val());
 
-                    })
-                    checkboxNames.push(checkboxName);
-                    data.field[checkboxName] = val.join(',');
+                        })
+                        checkboxNames.push(checkboxName);
+                        data.field[checkboxName] = val.join(',');
+                    }
                 }
+                
 
             })
             console.log(data.field);

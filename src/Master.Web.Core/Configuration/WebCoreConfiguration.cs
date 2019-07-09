@@ -19,7 +19,7 @@ namespace Master.Configuration
         /// <summary>
         /// 系统名称
         /// </summary>
-        public string SoftName { get; set; } = "执行官";
+        public string SoftName { get; set; } = "进销存系统";
         public string BaseUrl { get; set; }
     }
 

@@ -17,6 +17,7 @@ using Master.Orders;
 using Master.Organizations;
 using Master.Projects;
 using Master.Resources;
+using Master.Storage;
 using Master.Templates;
 using Master.Units;
 using Microsoft.EntityFrameworkCore;
@@ -70,6 +71,9 @@ namespace Master.EntityFrameworkCore
         public virtual DbSet<Resource> Resource { get; set; }
         public virtual DbSet<SystemLog> SystemLog { get; set; }
         #endregion
+
+        public virtual DbSet<Store> Store { get; set; }
+        public virtual DbSet<FeeAccount> FeeAccount { get; set; }
 
         public MasterDbContext(DbContextOptions<MasterDbContext> options) 
             : base(options)

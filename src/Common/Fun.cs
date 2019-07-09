@@ -1,6 +1,5 @@
-﻿using CoreHtmlToImage;
+﻿using SelectPdf;
 using Microsoft.Extensions.FileProviders;
-using SelectPdf;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -147,11 +146,5 @@ namespace Common
 
         }
 
-        public static void Html2Image(string htmlUrl,string fileName)
-        {
-            var converter = new HtmlConverter();
-            var bytes = converter.FromUrl(htmlUrl);
-            File.WriteAllBytes(fileName, bytes);
-        }
     }
 }

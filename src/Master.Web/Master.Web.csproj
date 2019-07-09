@@ -14,7 +14,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Plugins\**" />
-    <Compile Remove="Views\MES\**" />
     <Compile Remove="Views\ShengLongQuotation\**" />
     <Compile Remove="Views\Storage\**" />
     <Compile Remove="Views\Test\**" />
@@ -24,7 +23,6 @@
     <Compile Remove="wwwroot\sheets\**" />
     <Compile Remove="wwwroot\Temp\**" />
     <Content Remove="Plugins\**" />
-    <Content Remove="Views\MES\**" />
     <Content Remove="Views\ShengLongQuotation\**" />
     <Content Remove="Views\Storage\**" />
     <Content Remove="Views\Test\**" />
@@ -34,7 +32,6 @@
     <Content Remove="wwwroot\sheets\**" />
     <Content Remove="wwwroot\Temp\**" />
     <EmbeddedResource Remove="Plugins\**" />
-    <EmbeddedResource Remove="Views\MES\**" />
     <EmbeddedResource Remove="Views\ShengLongQuotation\**" />
     <EmbeddedResource Remove="Views\Storage\**" />
     <EmbeddedResource Remove="Views\Test\**" />
@@ -44,7 +41,6 @@
     <EmbeddedResource Remove="wwwroot\sheets\**" />
     <EmbeddedResource Remove="wwwroot\Temp\**" />
     <None Remove="Plugins\**" />
-    <None Remove="Views\MES\**" />
     <None Remove="Views\ShengLongQuotation\**" />
     <None Remove="Views\Storage\**" />
     <None Remove="Views\Test\**" />
@@ -56,7 +52,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Remove="menu.json" />
-    <Content Remove="Views\MES\MES.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -66,7 +61,6 @@
     <None Include="Views\Logs\Operations.cshtml" />
     <None Include="Views\Logs\System.cshtml" />
     <None Include="Views\Logs\Tip.cshtml" />
-    <None Include="Views\MES\MES.cshtml" />
     <None Include="Views\ModuleInfo\Button.cshtml" />
     <None Include="Views\ModuleInfo\Column.cshtml" />
     <None Include="Views\ModuleInfo\Edit.cshtml" />
@@ -441,15 +435,17 @@
     <Content Update="Views\BaseType\Edit.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\InOutType\Index.cshtml">
+    <Content Update="Views\FeeAccount\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Project\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Store\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\Scheduler\" />
     <Folder Include="wwwroot\lib\swiper\" />
   </ItemGroup>
   <ProjectExtensions><VisualStudio><UserProperties bundleconfig_1json__JSONSchema="" /></VisualStudio></ProjectExtensions>
