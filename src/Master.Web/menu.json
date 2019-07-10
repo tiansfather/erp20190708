@@ -7,6 +7,12 @@
 		"url": "",
     "items": [
       {
+        "name": "Admin.Tenancy.Material",
+        "displayName": "商品档案",
+        "icon": "iconfont icon-wuliao",
+        "url": "/Material"
+      },
+      {
         "name": "Admin.Tenancy.Store",
         "displayName": "仓库档案",
         "icon": "iconfont icon-ziyuan",

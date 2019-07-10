@@ -64,7 +64,7 @@
 				zTreeObj = $.fn.zTree.init($("#baseTree"), setting);
 				var newNode = { displayName: "@Html.Raw(Model.TreeName)", id: null, parentId: "" };
                 json.push(newNode);
-                json.push({ displayName: '未分类', id: -1, parentId: null });
+                //json.push({ displayName: '未分类', id: -1, parentId: null });
 				zTreeObj.addNodes(null, json);
 				//mainList({ orgId: "" });
 				zTreeObj.expandAll(true);

@@ -15,12 +15,13 @@ namespace Master.BaseTrees
         {
             get
             {
-                return DisplayName;
+                return DisplayName+(Nature==0?"[外]":"内");
             }
         }
         public string DisplayName { get; set; }
         public string BriefCode { get; set; }
         public int Sort { get; set; }
+        public int Nature { get; set; }
         public string Remarks { get; set; }
         public string Discriminator { get; set; }
     }

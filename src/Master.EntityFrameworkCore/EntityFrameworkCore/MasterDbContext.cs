@@ -73,6 +73,7 @@ namespace Master.EntityFrameworkCore
         #endregion
 
         public virtual DbSet<Store> Store { get; set; }
+        public virtual DbSet<Material> Material { get; set; }
         public virtual DbSet<FeeAccount> FeeAccount { get; set; }
 
         public MasterDbContext(DbContextOptions<MasterDbContext> options) 

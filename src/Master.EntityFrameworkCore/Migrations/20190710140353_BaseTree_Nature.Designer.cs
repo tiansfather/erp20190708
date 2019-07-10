@@ -3,14 +3,16 @@ using System;
 using Master.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Master.Migrations
 {
     [DbContext(typeof(MasterDbContext))]
-    partial class MasterDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190710140353_BaseTree_Nature")]
+    partial class BaseTree_Nature
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1334,77 +1336,6 @@ namespace Master.Migrations
                     b.ToTable("FeeAccount");
                 });
 
-            modelBuilder.Entity("Master.Storage.Material", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CreationTime");
-
-                    b.Property<long?>("CreatorUserId");
-
-                    b.Property<decimal?>("DefaultBuyDiscount");
-
-                    b.Property<decimal?>("DefaultSellDiscount");
-
-                    b.Property<long?>("DeleterUserId");
-
-                    b.Property<DateTime?>("DeletionTime");
-
-                    b.Property<string>("ExtensionData");
-
-                    b.Property<bool>("IsActive");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<DateTime?>("LastModificationTime");
-
-                    b.Property<long?>("LastModifierUserId");
-
-                    b.Property<string>("Location");
-
-                    b.Property<int>("MaterialNature");
-
-                    b.Property<int?>("MaterialTypeId");
-
-                    b.Property<string>("MeasureMentUnit");
-
-                    b.Property<string>("Name");
-
-                    b.Property<decimal>("Price");
-
-                    b.Property<string>("Property")
-                        .HasColumnType("json");
-
-                    b.Property<string>("Remarks");
-
-                    b.Property<decimal?>("SellDiscount1");
-
-                    b.Property<decimal?>("SellDiscount2");
-
-                    b.Property<decimal?>("SellDiscount3");
-
-                    b.Property<string>("Specification");
-
-                    b.Property<string>("Status");
-
-                    b.Property<int>("TenantId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatorUserId");
-
-                    b.HasIndex("DeleterUserId");
-
-                    b.HasIndex("LastModifierUserId");
-
-                    b.HasIndex("MaterialTypeId");
-
-                    b.HasIndex("TenantId");
-
-                    b.ToTable("Material");
-                });
-
             modelBuilder.Entity("Master.Storage.Store", b =>
                 {
                     b.Property<int>("Id")
@@ -1993,30 +1924,6 @@ namespace Master.Migrations
                     b.HasOne("Master.Authentication.User", "LastModifierUser")
                         .WithMany()
                         .HasForeignKey("LastModifierUserId");
-
-                    b.HasOne("Master.MultiTenancy.Tenant", "Tenant")
-                        .WithMany()
-                        .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Master.Storage.Material", b =>
-                {
-                    b.HasOne("Master.Authentication.User", "CreatorUser")
-                        .WithMany()
-                        .HasForeignKey("CreatorUserId");
-
-                    b.HasOne("Master.Authentication.User", "DeleterUser")
-                        .WithMany()
-                        .HasForeignKey("DeleterUserId");
-
-                    b.HasOne("Master.Authentication.User", "LastModifierUser")
-                        .WithMany()
-                        .HasForeignKey("LastModifierUserId");
-
-                    b.HasOne("Master.Entity.BaseTree", "MaterialType")
-                        .WithMany()
-                        .HasForeignKey("MaterialTypeId");
 
                     b.HasOne("Master.MultiTenancy.Tenant", "Tenant")
                         .WithMany()

@@ -182,21 +182,21 @@ namespace Master.Module
             #endregion
             List<ColumnInfo> BaseColumnInfos = new List<ColumnInfo>();
             //如果实体有状态标记，增加标记列
-            if (ModuleHasStatus)
-            {
-                BaseColumnInfos.Add(new ColumnInfo()
-                {
-                    ColumnKey = StaticSystemColumns.Flags,
-                    ColumnName = "标记",
-                    ValuePath="Status",
-                    IsInterColumn = true,
-                    IsSystemColumn = true,
-                    IsShownInAdd = false,
-                    IsShownInEdit = false,
-                    ColumnType = ColumnTypes.Text,
-                    Sort = 995
-                });
-            }
+            //if (ModuleHasStatus)
+            //{
+            //    BaseColumnInfos.Add(new ColumnInfo()
+            //    {
+            //        ColumnKey = StaticSystemColumns.Flags,
+            //        ColumnName = "标记",
+            //        ValuePath="Status",
+            //        IsInterColumn = true,
+            //        IsSystemColumn = true,
+            //        IsShownInAdd = false,
+            //        IsShownInEdit = false,
+            //        ColumnType = ColumnTypes.Text,
+            //        Sort = 995
+            //    });
+            //}
             #region 基础列的生名
             
             BaseColumnInfos.Add(new ColumnInfo()
@@ -569,11 +569,11 @@ namespace Master.Module
             }
 
             //设定标记按钮
-            if(ModuleHasStatus && !HaveButton("Flags"))
-            {
-                FlagsButton.TenantId = TenantId;
-                Buttons.Add(FlagsButton);
-            }
+            //if(ModuleHasStatus && !HaveButton("Flags"))
+            //{
+            //    FlagsButton.TenantId = TenantId;
+            //    Buttons.Add(FlagsButton);
+            //}
             //modi20181226查看按钮取消
             //设定查看按钮
             //if (canView && !HaveButton("View"))

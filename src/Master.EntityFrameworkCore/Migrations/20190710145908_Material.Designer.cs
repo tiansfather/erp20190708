@@ -3,14 +3,16 @@ using System;
 using Master.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Master.Migrations
 {
     [DbContext(typeof(MasterDbContext))]
-    partial class MasterDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190710145908_Material")]
+    partial class Material
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1367,7 +1369,7 @@ namespace Master.Migrations
 
                     b.Property<int?>("MaterialTypeId");
 
-                    b.Property<string>("MeasureMentUnit");
+                    b.Property<int>("MeasureMentId");
 
                     b.Property<string>("Name");
 

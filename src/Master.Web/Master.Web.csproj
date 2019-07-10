@@ -61,6 +61,7 @@
     <None Include="Views\Logs\Operations.cshtml" />
     <None Include="Views\Logs\System.cshtml" />
     <None Include="Views\Logs\Tip.cshtml" />
+    <None Include="Views\Material\Index.cshtml" />
     <None Include="Views\ModuleInfo\Button.cshtml" />
     <None Include="Views\ModuleInfo\Column.cshtml" />
     <None Include="Views\ModuleInfo\Edit.cshtml" />

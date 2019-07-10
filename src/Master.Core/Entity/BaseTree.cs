@@ -46,6 +46,7 @@ namespace Master.Entity
         /// </summary>
         public virtual ICollection<BaseTree> Children { get; set; }
         public int Sort { get; set; }
+        public int Nature { get; set; }
 
         public BaseTree()
         {
