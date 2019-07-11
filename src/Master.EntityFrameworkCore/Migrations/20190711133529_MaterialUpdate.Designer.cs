@@ -3,14 +3,16 @@ using System;
 using Master.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Master.Migrations
 {
     [DbContext(typeof(MasterDbContext))]
-    partial class MasterDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190711133529_MaterialUpdate")]
+    partial class MaterialUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1361,7 +1363,7 @@ namespace Master.Migrations
 
                     b.Property<long?>("LastModifierUserId");
 
-                    b.Property<decimal?>("LimitDown");
+                    b.Property<decimal?>("LimitDowe");
 
                     b.Property<string>("Location");
 
@@ -1518,7 +1520,7 @@ namespace Master.Migrations
 
                     b.Property<string>("BriefName");
 
-                    b.Property<string>("ContactPerson");
+                    b.Property<string>("Country");
 
                     b.Property<DateTime>("CreationTime");
 
@@ -1527,6 +1529,8 @@ namespace Master.Migrations
                     b.Property<long?>("DeleterUserId");
 
                     b.Property<DateTime?>("DeletionTime");
+
+                    b.Property<string>("District");
 
                     b.Property<string>("ExtensionData");
 
@@ -1545,9 +1549,11 @@ namespace Master.Migrations
                     b.Property<string>("Property")
                         .HasColumnType("json");
 
+                    b.Property<string>("Province");
+
                     b.Property<string>("Remarks");
 
-                    b.Property<decimal>("StartFee");
+                    b.Property<string>("SupplierType");
 
                     b.Property<int>("TenantId");
 
@@ -1555,9 +1561,9 @@ namespace Master.Migrations
 
                     b.Property<int>("UnitNature");
 
-                    b.Property<int>("UnitRank");
+                    b.Property<string>("UnitSN");
 
-                    b.Property<string>("ZipCode");
+                    b.Property<int?>("UnitTypeId");
 
                     b.HasKey("Id");
 
@@ -1568,6 +1574,8 @@ namespace Master.Migrations
                     b.HasIndex("LastModifierUserId");
 
                     b.HasIndex("TenantId");
+
+                    b.HasIndex("UnitTypeId");
 
                     b.ToTable("Unit");
                 });
@@ -2079,6 +2087,10 @@ namespace Master.Migrations
                         .WithMany()
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Master.Entity.BaseTree", "UnitType")
+                        .WithMany()
+                        .HasForeignKey("UnitTypeId");
                 });
 
             modelBuilder.Entity("Master.Application.Features.EditionFeatureSetting", b =>

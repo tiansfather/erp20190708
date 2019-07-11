@@ -44,51 +44,9 @@ namespace Master.Units
             }
             await base.ValidateEntity(entity);
         }
-        /// <summary>
-        /// 通过往来单位名称获取，若不存在，则新增
-        /// </summary>
-        /// <param name="unitName"></param>
-        /// <returns></returns>
-        public virtual async Task<Unit> GetByUnitNameOrInsert(string unitName,UnitNature unitNature=UnitNature.客户及供应商)
-        {
-            if (string.IsNullOrEmpty(unitName)) { return null; }
-            var unit = await Repository.GetAll().Where(o => o.UnitName == unitName).FirstOrDefaultAsync();
-            if (unit == null)
-            {
-                unit = new Unit()
-                {
-                    UnitName = unitName,
-                    BriefName=unitName,
-                    UnitNature= unitNature
-                };
-                //if(unitNature== UnitNature.供应商 || unitNature == UnitNature.客户及供应商)
-                //{
-                //    unit.SupplierType = "采购,加工";
-                //}
-                await InsertAsync(unit);
-                await CurrentUnitOfWork.SaveChangesAsync();
-            }
-            return unit;
-        }
+        
 
-        /// <summary>
-        /// 查询往来单位时进行权限判定
-        /// </summary>
-        /// <returns></returns>
-        public override IQueryable<Unit> GetAll()
-        {
-            var query= base.GetAll();
-            if (!PermissionChecker.IsGrantedAsync("Module.Unit.Button.ViewCustomer").Result)
-            {
-                query = query.Where(o => o.UnitNature != UnitNature.客户 && o.UnitNature != UnitNature.客户及供应商);
-            }
-            if (!PermissionChecker.IsGrantedAsync("Module.Unit.Button.ViewSupplier").Result)
-            {
-                query = query.Where(o => o.UnitNature != UnitNature.供应商 && o.UnitNature != UnitNature.客户及供应商);
-            }
-                return query;
-        }
-
+        
         //public void HandleEvent(EntityChangedEventData<Unit> eventData)
         //{
         //    var key = "Unit" + "@" + eventData.Entity.TenantId;

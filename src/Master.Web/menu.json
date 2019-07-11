@@ -13,6 +13,18 @@
         "url": "/Material"
       },
       {
+        "name": "Admin.Tenancy.MaterialDIY",
+        "displayName": "散装组合配置",
+        "icon": "iconfont icon-wuliao",
+        "url": "/MaterialDIY"
+      },
+      {
+        "name": "Admin.Tenancy.Unit",
+        "displayName": "往来单位档案",
+        "icon": "iconfont icon-jiaohusheji",
+        "url": "/Unit"
+      },
+      {
         "name": "Admin.Tenancy.Store",
         "displayName": "仓库档案",
         "icon": "iconfont icon-ziyuan",
@@ -41,12 +53,6 @@
         "displayName": "员工信息",
         "icon": "iconfont icon-yuangongxinxi2",
         "url": "/User"
-      },
-      {
-        "name": "Admin.Tenancy.Unit",
-        "displayName": "往来单位",
-        "icon": "iconfont icon-jiaohusheji",
-        "url": "/Unit"
       }
     ]
   },

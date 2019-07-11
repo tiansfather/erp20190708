@@ -1,0 +1,57 @@
+﻿@using Master.Web.Components
+@inherits Master.Web.Components.MasterRazorPage<TModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Master.Web.Core
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutDialog.cshtml";
+}
+
+<div class="layui-fluid" id="LAY-app-message">
+    <div id="app" v-cloak>
+        <blockquote class="layui-elem-quote">装配商品:{{currentItem.name}}</blockquote>
+        <table class="layui-table">
+            
+            <thead>
+                <tr>
+                    <th>品名</th>
+                    <th>规格</th>
+                    <th>零售价</th>
+                    <th>份内数量</th>
+                    <th>计量单位</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(item,index) in currentItem.diyInfos">
+                    <td>{{item.name}}</td>
+                    <td>{{item.specification}}</td>
+                    <td>{{item.price}}</td>
+                    <td>{{item.measureMentUnit}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+</div>
+
+@section scripts{
+	<script>
+        var materialId = $.getUrlParam("data");
+		//layui加载完成后调用此方法，
+		config.ready = function () {
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    currentItem: {}
+                },
+                mounted: function () {
+                    var that = this;
+                    func.runAsync(abp.services.app.materialDIY.getMaterialDiyInfo(materialId).done(function (data) {
+                        that.currentItem = data;
+                    }))
+                }
+            })
+		}
+		
+	</script>
+}
