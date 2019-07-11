@@ -1,0 +1,86 @@
+﻿@using Master.Web.Components
+@inherits Master.Web.Components.MasterRazorPage<TModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Master.Web.Core
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="layui-fluid" id="LAY-app-message">
+    <div class="layui-card">
+        <div class="layui-tab layui-tab-brief" lay-filter="flowTab">
+            <ul class="layui-tab-title">
+                <li class="layui-this ">@L("待处理流程")</li>
+                <li>@L("已处理流程")</li>
+                <li>@L("我的流程")</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="LAY-app-message-btns" style="margin-bottom: 10px;">
+                    <vc:module-button module-key="FlowInstance"></vc:module-button>
+                    
+                </div>
+                <vc:module-table param="@(new ModuleTableViewParam() {ID="FlowInstance",ModuleKey="FlowInstance",Height="full-150",Where="",SearchKeys="{\"type\":\"processing\"}" })"></vc:module-table>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        //layui加载完成后调用此方法，
+        var isToDealTab = true;
+        config.ready = function () {
+            var element = layui.element;
+            var table = layui.table;
+            //一些事件监听
+            element.on('tab(flowTab)', function (data) {
+                if (data.index != 0) {
+                    isToDealTab = false;
+                    //待处理流程页才有处理按钮
+                    $("[lay-event='Deal']").hide();
+                    $("[lay-event='View']").show();
+                } else {
+                    isToDealTab = true;
+                    $("[lay-event='Deal']").show();
+                    $("[lay-event='View']").hide();
+                }
+                config.reloadTable();
+            });
+            config.refresh();
+        }
+        //当检索窗体提交后会调用此方法
+        config.reloadTable = function () {
+            layui.table.reload('FlowInstance', {
+                where: getWhere($(".layui-tab-title .layui-this").index())
+
+            })
+        }
+        config.onTableDoneExport = function () {
+            //console.log('a')
+        }
+        //当编辑或删除或添加表单提交后会调用此方法
+        config.refresh = function () {
+            
+        }
+        function getWhere(index) {
+            var where = {};
+            switch (index) {
+                case 0:
+                    where = { where: '',searchKeys:'{"type":"processing"}' };
+                    break;
+                case 1:
+                    where = { where: '',searchKeys:'{"type":"disposed"}' };
+                    break;
+                case 2:
+                    where = { where: '', searchKeys: '{"type":"all"}' };
+                    break;
+            }            
+            where.searchCondition = func.buildSearchCondition('FlowInstance');
+
+            return where;
+
+        }
+    </script>
+}

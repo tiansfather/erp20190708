@@ -1,0 +1,191 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutDialog.cshtml";
+}
+@section styles
+    {
+    <link href="/assets/layuiadmin/lib/extend/flow/GooFlow.css" rel="stylesheet" />
+}
+<form class="layui-form layui-form-pane" action="" id="app">
+    <div class="layui-row">
+        <div class="layui-tab layui-tab-brief" lay-filter="tab" style="margin: 0px">
+            <ul class="layui-tab-title">
+                <li class="layui-this">基本信息</li>
+                <li>流程设计</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">流程编号</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="schemeCode" v-model="currentItem.schemeCode" required lay-verify="required"
+                                   placeholder="流程编号" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">流程名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="schemeName" v-model="currentItem.schemeName" required lay-verify="required"
+                                   placeholder="流程名称" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">对应表单</label>
+                        <div class="layui-input-block">
+                            <select name="formId" v-model="currentItem.flowFormId" lay-verify="required" lay-filter="FormId">
+                                <option value="">未选择</option>
+                                <option v-for="(form,index) in forms" :value="form.id">{{form.formName}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">排序码</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="sort" v-model="currentItem.sort" required lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item" pane>
+                        <label class="layui-form-label">启用</label>
+                        <div class="layui-input-block">
+                            <input type="checkbox" value="1" v-model="currentItem.isActive" name="isActive"
+                                   lay-skin="switch" lay-text="是|否">
+                        </div>
+                    </div>
+                    <div class="layui-form-item" pane>
+                        <label class="layui-form-label">备注</label>
+                        <div class="layui-input-block">
+                            <textarea name="remarks" v-model="currentItem.remarks" placeholder="请输入" class="layui-textarea"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-tab-item">
+                    <div id="flowPanel" style=""></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" lay-submit id="btnSubmit" lay-filter="formSubmit" />
+</form>
+@section scripts{
+<script>
+    var app;
+
+    config.ready = function () {
+        layui.config({
+            base: '/assets/layuiadmin/lib/extend/'
+        }).use(['flow/gooflow', 'flow/flowlayout'], function () {
+            var index = layer.getFrameIndex(window.name); //获取窗口索引
+            var id = $.getUrlParam("data");   //ID
+            var update = (id != null && id != '');
+
+            layui.form.on('switch(isActive)', function (data) {
+                app.currentItem.isActive = data.elem.checked; //开关是否开启，true或者false
+            });
+            layui.form.on('select(FormId)', function (data) {
+                app.currentItem.flowFormId = data.value;
+            });
+            //提交数据
+            layui.form.on('submit(formSubmit)',
+                function (data) {
+                    var content = flowDesignPanel.exportDataEx();
+                    if (content == -1) {
+                        return false; //阻止表单跳转。
+                    }
+                    app.currentItem.schemeContent = JSON.stringify(content);
+
+                    console.log(app.currentItem);
+
+                    func.runAsync(abp.services.workflow.flowScheme.update(app.currentItem).done(function () {
+                        parent.layer.msg("&#x63D0;&#x4EA4;&#x6210;&#x529F;");
+                        parent.layer.closeAll("iframe");
+                        parent.config.refresh();
+                    }));
+
+                    return false; //阻止表单跳转。
+                });
+            app = new Vue({
+                el: '#app',
+                data: {
+                    currentItem: {
+                        id: 0,
+                        schemeCode: '',
+                        schemeName: '',
+                        isActive: true
+                    },
+                    forms:[]
+                }, mounted: function () {
+                    //加载表单
+                    abp.services.workflow.flowForm.getAll().done(function (data) {
+                        app.forms = data;
+                        if (id) {
+                            func.runAsync(abp.services.workflow.flowScheme.get(id).done(function (data) {
+                                app.currentItem = data;
+                                flowDesignPanel.loadData(JSON.parse(app.currentItem.schemeContent));
+                                refresh();
+                            }))
+                        } else {
+                            app.currentItem.schemeCode = new Date().getTime();
+                            app.currentItem.sort = 1;
+                            refresh();
+                        }
+                    })
+                    
+                }
+            });
+            /*=========流程设计（begin）======================*/
+            var flowDesignPanel = $('#flowPanel').flowdesign({
+                height: 400,
+                widht: 600,
+                OpenNode: function (object) {
+                    FlowDesignObject = object;  //为NodeInfo窗口提供调用
+
+                    if (object.type == 'start round mix' || object.type == 'end round') {
+                        layer.msg("开始节点与结束节点不能设置");
+                        return false;
+                    }
+
+                    layer.open({
+                        type: 2,
+                        area: ['600px', '500px'], //宽高
+                        maxmin: true, //开启最大化最小化按钮
+                        title: '节点设置【' + object.name + '】',
+                        content: '/flowscheme/nodeInfo',
+                        btn: ['确定', '取消'],
+                        yes: function (index, layero) {
+                            var body = layer.getChildFrame('body', index);
+                            var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
+                            var nodedata = iframeWin.getVal();
+                            console.log(nodedata);
+                            flowDesignPanel.SetNodeEx(object.id, nodedata);
+                            layer.close(index);
+                        },
+                        cancel: function (index) {
+                            layer.close(index);
+                        }
+                    });
+                },
+                OpenLine: function (id, object) {
+                    lay.msg("暂不能设置分支条件");
+                    return;
+                }
+            });
+            /*=========流程设计（end）=====================*/
+        })
+
+    }
+
+    //该函数供给父窗口确定时调用
+    submit = function () {
+        //只能用隐藏的submit btn才行，用form.submit()时data.field里没有数据
+        $("#btnSubmit").click();
+    };
+    refresh = function () {
+        Vue.nextTick(function () {
+            layui.form.render();
+        })
+        
+    }
+
+</script>
+}

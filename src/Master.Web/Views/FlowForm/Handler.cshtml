@@ -1,0 +1,145 @@
+﻿@using Master.Web.Components
+@inherits Master.Web.Components.MasterRazorPage<TModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Master.Web.Core
+@{
+    Layout = "~/Views/Shared/_LayoutDialog.cshtml";
+    ViewData["Title"] = "Html";
+}
+@section styles{
+    <link href="/lib/codemirror-minified/lib/codemirror.css" rel="stylesheet" />
+    <link href="~/lib/codemirror-minified/theme/dracula.css" rel="stylesheet" />
+    <link href="~/lib/codemirror-minified/addon/fold/foldgutter.css" rel="stylesheet" />
+    <style>
+
+        .CodeMirror {
+            border: 1px solid #eee;
+            height: 400px;
+        }
+
+        .CodeMirror-scroll {
+            max-height: 76vh;
+            overflow-y: hidden;
+            overflow-x: auto;
+        }
+    </style>
+
+}
+
+@await Html.PartialAsync("/Views/FlowForm/Common.cshtml")
+<div id="app" class="layui-hide">
+    <blockquote class="layui-elem-quote">
+        <p>处理程序：<button type="button" class="layui-btn layui-btn-normal" @@click="tryCompile">测试编译</button></p>
+    </blockquote>
+    <div class="layui-card-body layui-form layui-form-pane " id="app">
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">程序内容</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入表单内容" class="layui-textarea" id="templet" v-model="item.formHandler" style="height:350px"></textarea>
+            </div>
+        </div>
+    </div>
+
+</div>
+@section scripts{
+    <script src="/lib/codemirror-minified/lib/codemirror.js"></script>
+    <script src="/lib/codemirror-minified/mode/javascript/javascript.js"></script>
+    <script src="~/lib/codemirror-minified/addon/fold/foldcode.js"></script>
+    <script src="~/lib/codemirror-minified/addon/fold/foldgutter.js"></script>
+    <script src="~/lib/codemirror-minified/addon/fold/brace-fold.js"></script>
+    <script src="~/lib/codemirror-minified/addon/fold/comment-fold.js"></script>
+    <script>
+
+        var editor, app;
+        config.ready = function () {
+
+
+            app = new Vue({
+                el: '#app',
+                data: {
+                    item: {},
+                },
+                methods: {
+                    setCurrent: function () {
+                        var that = this;
+                        //对于代码编辑器重新设置值
+                        if (editor) {
+                            editor.setValue(that.item.formHandler || '');
+                        }
+                        refresh();
+                    },
+                    loadItem: function (id) {
+                        var that = this;
+                        if (id) {
+                            abp.services.app.flowForm.getFormHandler(id).done(function (data) {
+                                that.item = data;
+                                that.loadEditor();
+                                that.setCurrent();
+                            });
+                        } else {
+                            that.item = { id: 0, formHandler: '' };
+                            that.loadEditor();
+                            that.setCurrent();
+                        }
+
+                        refresh();
+                    },
+                    loadEditor() {
+                        var that = this
+                        //编辑器
+                        editor = CodeMirror.fromTextArea(document.getElementById("templet"), {
+                            lineNumbers: true,	//显示行号
+                            theme: "dracula",	//设置主题
+                            lineWrapping: true,	//代码折叠
+                            foldGutter: true,
+                            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+                            matchBrackets: true,	//括号匹配
+                        });
+                        editor.on("change", function (obj, data) {
+                            var value = obj.getValue()
+                            that.item.formHandler = value;
+                           // console.log(obj.getValue());
+
+                        })
+                    },
+                    tryCompile() {
+                        if (!this.item.formHandler) {
+                            abp.message.error('请输入程序内容');
+                            return;
+                        } else {
+                            func.runAsync(abp.services.app.script.tryCompile({ content: this.item.formHandler }).done(function (data) {
+                                abp.message.success(data+"编译成功");
+                            }))
+                        }
+                    }
+                },
+                mounted: function () {
+                    var id = $.getUrlParam("data");
+                    this.loadItem(id);
+                 //   this.loadEditor();
+                    $("#app").removeClass("layui-hide");
+                }, created: function () {
+
+                }
+            });
+        }
+        function refresh() {
+            Vue.nextTick(function () {
+                layui.form.render();
+
+
+            })
+        }
+
+        function submit() {
+            func.runAsync(abp.services.app.flowForm.submitFormHandler(app.item).done(function () {
+                    parent.layer.msg("@L("提交成功")");
+                    parent.layer.closeAll("iframe");
+                    parent.config.refresh();
+
+                }))
+        }
+
+    </script>
+}

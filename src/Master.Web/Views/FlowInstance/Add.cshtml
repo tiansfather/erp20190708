@@ -1,0 +1,160 @@
+﻿@using Master.Web.Components
+@inherits Master.Web.Components.MasterRazorPage<TModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Master.Web.Core
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutDialog.cshtml";
+}
+@section styles
+    {
+    <link href="/assets/layuiadmin/lib/extend/flow/GooFlow.css" rel="stylesheet" />
+}
+<form class="layui-form layui-form-pane" action="" id="app">
+
+    <div class="layui-row">
+        <div class="layui-col-xs3">
+            <ul id="frmTree" class="ztree"
+                style="padding: 2px; border: 1px solid #ddd; overflow: auto;"></ul>
+        </div>
+        <div class="layui-col-xs9 layui-col-space10">
+            <div class="layui-row">
+                <fieldset class="layui-elem-field">
+                    <legend>流程预览</legend>
+                    <div class="layui-field-box">
+                        <div id="flowPanel"></div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" lay-submit id="btnSubmit" lay-filter="formSubmit" />
+</form>
+
+@section scripts{
+    <script>
+        //layui加载完成后调用此方法，
+        var tree;
+        config.ready = function () {
+            layui.config({
+                base: '/assets/layuiadmin/lib/extend/'
+            }).use(['flow/gooflow', 'flow/flowlayout'], function () {
+
+                /*=========流程设计（begin）======================*/
+                var flowDesignPanel = $('#flowPanel').flowdesign({
+                    height: 300,
+                    widht: $(window).width() - 250,
+                    haveTool: false,
+                    preview: 1,
+                    //OpenNode: function (object) {
+                    //    FlowDesignObject = object;  //为NodeInfo窗口提供调用
+
+                    //    if (object.type == 'start round mix' || object.type == 'end round') {
+                    //        return false;
+                    //    }
+
+                    //    layer.open({
+                    //        type: 2,
+                    //        area: ['500px', '450px'], //宽高
+                    //        maxmin: true, //开启最大化最小化按钮
+                    //        title: '节点设置【' + object.name + '】',
+                    //        content: '/flowschemes/nodeInfo',
+                    //        btn: ['关闭'],
+                    //        cancel: function (index) {
+                    //            layer.close(index);
+                    //        }
+                    //    });
+                    //},
+                    //OpenLine: function (id, object) {
+                    //    lay.msg("暂不能设置分支条件");
+                    //    return;
+                    //}
+                });
+    /*=========流程设计（end）=====================*/
+
+                //流程模板选择
+                tree = function () {
+                    var zTreeObj;
+                    var setting = {
+                        view: { selectedMulti: true },
+                        check: {
+                            enable: true,
+                            chkStyle: "radio",
+                            radioType: "all",  //整个节点一个分组
+                            chkboxType: { "Y": "", "N": "" } //去掉勾选时级联
+                        },
+                        data: {
+                            key: {
+                                name: 'schemeName',
+                                title: 'schemeName'
+                            },
+                            simpleData: {
+                                enable: true,
+                                idKey: 'id',
+                                pIdKey: 'ParentId',
+                                rootPId: 'null'
+                            }
+                        },
+                        callback: {
+                            onClick: function (event, treeId, treeNode) {
+                                zTreeObj.checkNode(treeNode, true, false);
+                                //预览流程
+                                flowDesignPanel.loadData(JSON.parse(treeNode.schemeContent));
+                            },
+                            onCheck: function (event, treeId, treeNode) {
+                                //预览流程
+                                flowDesignPanel.loadData(JSON.parse(treeNode.schemeContent));
+                            }
+                        }
+                    };
+
+                    abp.services.app.flowScheme.getAvailableFlowSchemes().done(function (data) {
+                        zTreeObj = $.fn.zTree.init($("#frmTree"), setting);
+                        zTreeObj.addNodes(null, data);
+                        zTreeObj.expandAll(true);
+                        //选中首个节点
+                        var firstNode = zTreeObj.getNodes()[0];
+                        zTreeObj.checkNode(firstNode, true, false);
+                        flowDesignPanel.loadData(JSON.parse(firstNode.schemeContent));
+                    })
+                    //var url = '/flowschemes/load';
+                    //$.ajax(url,
+                    //    {
+                    //        async: false
+                    //        , success: function (data) {
+                    //            var json = JSON.parse(data);
+                    //            zTreeObj = $.fn.zTree.init($("#frmTree"), setting);
+                    //            zTreeObj.addNodes(null, json.data);
+                    //            zTreeObj.expandAll(true);
+                    //        }
+                    //    });
+
+                    var setCheck = function (id) {    //设置已经选中的表单
+                        if (id == null | id == '') return;
+                        var node = zTreeObj.getNodeByParam("id", id, null);
+                        zTreeObj.checkNode(node, true, false);
+                    };
+                    var getCheckedNode = function () {
+                        return zTreeObj.getCheckedNodes();
+                    }
+                    return {
+                        setCheck: setCheck,
+                        getCheckedNode: getCheckedNode
+                    }
+                }();
+
+            });
+            
+        }
+        function submit() {
+            var nodes = tree.getCheckedNode();
+            if (nodes.length == 0) {
+                abp.message.error(L("请先选择流程"));
+            }
+            var formId = nodes[0].flowFormId;
+            var flowSchemeId = nodes[0].id;
+            //跳转至录入页
+            location.href = '/FlowForm/Input?data=' + formId + '&flowSchemeId=' + flowSchemeId;
+        }
+    </script>
+}

@@ -1,0 +1,180 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutDialog.cshtml";
+}
+@section styles
+    {
+
+}
+<form class="layui-form" action="" id="app">
+    <div class="layui-row">
+        <div class="layui-tab layui-tab-brief" lay-filter="tab" style="margin: 0px">
+            <ul class="layui-tab-title">
+                <li class="layui-this">基本信息</li>
+                <li>执行人</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">节点标识</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="NodeCode" id="NodeCode" v-model="nodeInfo.NodeCode" required lay-verify="required"
+                                   placeholder="流程编号" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">节点名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="NodeName" v-model="nodeInfo.NodeName" required lay-verify="required"
+                                   placeholder="节点名称" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">驳回类型</label>
+                        <div class="layui-input-block">
+                            <select id="NodeRejectType" lay-filter="NodeRejectType" name="NodeRejectType" v-model="nodeInfo.NodeRejectType" required lay-verify="required">
+                                <option value="0">上一步</option>
+                                <option value="1">第一步</option>
+                                <option value="2">指定步骤</option>
+                                <option value="3">不处理</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item" v-if="isFork">
+                        <label class="layui-form-label">会签方式</label>
+                        <div class="layui-input-block">
+                            <select id="NodeConfluenceType" lay-filter="NodeConfluenceType" name="NodeConfluenceType" v-model="nodeInfo.NodeConfluenceType">
+                                <option value="all">全部分支都同意</option>
+                                <option value="one">至少一个分支同意</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">备注</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="Description" v-model="nodeInfo.Description" required lay-verify="required"
+                                   placeholder="备注" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-tab-item">
+                    <div class="layui-row">
+                        <div class="layui-input-block">
+                            <input type="radio" name="NodeDesignate" v-model="nodeInfo.NodeDesignate" lay-filter="NodeDesignate" value="ALL_USER" title="所有用户" checked>
+                            <input type="radio" name="NodeDesignate" v-model="nodeInfo.NodeDesignate" lay-filter="NodeDesignate" value="SPECIAL_USER" title="指定用户">
+                            <input type="radio" name="NodeDesignate" v-model="nodeInfo.NodeDesignate" lay-filter="NodeDesignate" value="SPECIAL_ROLE" title="指定角色">
+                        </div>
+                    </div>
+                    <div class="layui-row">
+                        <div v-show="nodeInfo.NodeDesignate === 'SPECIAL_USER'">
+                            <div is="lay-tableselect" :column-Info="{ColumnKey:'users',ColumnName:'指定用户',VerifyRules:'',RelativeDataType:'Module',RelativeDataString:'User',MaxReferenceNumber:'-1',ReferenceItemTpl:'name',ReferenceSearchColumns:'name',ReferenceSearchWhere:'{&quot;where&quot;:&quot;isactive=true&quot;}'}" :data='userdata' :value="users"></div>
+                            @*<ul id="tree" class="ztree layui-nav-tree" style="float: left;border-right: 1px solid #eee;"></ul>
+                                <ul id="userstree" class="ztree" style="margin-left: 220px; "></ul>*@
+                        </div>
+                        <div v-show="nodeInfo.NodeDesignate === 'SPECIAL_ROLE'">
+                            <div is="lay-tableselect" :column-Info="roleColumnInfo" :data='roledata' :value="roles"></div>
+                            @*<ul id="tree" class="ztree layui-nav-tree" style="float: left;border-right: 1px solid #eee;"></ul>
+                                <ul id="rolestree" class="ztree" style="margin-left: 220px; "></ul>*@
+                        </div>
+                        @*<div v-if="nodeInfo.NodeDesignate === 'ALL_USER'">
+                                所有人都可以审核
+                            </div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section scripts{
+    <script>
+        var app;
+
+        config.ready = function () {
+            layui.form.on('select(NodeRejectType)',
+                function (data) {
+                    app.nodeInfo.NodeRejectType = data.value;
+                });
+            layui.form.on('radio(NodeDesignate)',
+                function (data) {
+                    app.nodeInfo.NodeDesignate = data.value;
+                    //if (data.value === "SPECIAL_USER") {
+                    //    userstree.load();
+                    //    ztree.reload();
+                    //}
+                    //else if (data.value === "SPECIAL_ROLE") {
+                    //    rolestree.load();
+                    //    ztree.reload();
+                    //}
+                });
+            layui.form.on('select(NodeConfluenceType)',
+                function (data) {
+                    app.nodeInfo.NodeConfluenceType = data.value;
+                });
+            var node = parent.FlowDesignObject;
+
+            app = new Vue({
+                el: '#app',
+                data: {
+                    nodeInfo: {
+                        NodeName: node.name
+                        , NodeCode: node.name   //默认的code
+                        , NodeRejectType: "0"
+                        , NodeDesignate: "ALL_USER"
+                        , NodeConfluenceType: "all"
+                        , Description: ''
+                    },
+                    users: '',
+                    userdata: [],
+                    roles: '',
+                    roledata: [],
+                    roleColumnInfo: { ColumnKey: 'roles', ColumnName: '指定角色', VerifyRules: '', RelativeDataType: 'Url', RelativeDataString: '/api/services/app/Role/GetPageResult', MaxReferenceNumber: '-1', ReferenceItemTpl: 'displayName', ReferenceSearchColumns: '[{"field":"displayName","width":250,"title":"角色名"}]', ReferenceSearchWhere: '' }
+                },
+                computed: {
+                    //是否会签
+                    isFork: function () {
+                        return node.type === 'fork';
+                    }
+                }
+            })
+
+            //初始化节点设置信息
+            if (node.setInfo != null) {
+                console.log(node.setInfo);
+                app.nodeInfo = node.setInfo;
+                node.setInfo.NodeDesignateData = $.extend({ users: '', usernames: '', roles: '', rolenames: '' }, node.setInfo.NodeDesignateData);
+                app.users = node.setInfo.NodeDesignateData.users;
+                app.userdata = node.setInfo.NodeDesignateData.usernames.split(',').map(function (o) { return { name: o } });
+                app.roles = node.setInfo.NodeDesignateData.roles;
+                app.roledata = node.setInfo.NodeDesignateData.rolenames.split(',').map(function (o) { return { displayName: o } });
+                //layui与vue不兼容，要重新赋值select radio(lll￢ω￢)
+                //$("#NodeRejectType").val(node.setInfo.NodeRejectType);
+                //if (node.type == "fork") {  //会签开始节点
+                //    $("#NodeConfluenceType").val(node.setInfo.NodeConfluenceType);
+                //}
+                //$(":radio[name='NodeDesignate'][value='" + node.setInfo.NodeDesignate + "']").prop("checked", true);
+            }
+            refresh();
+        }
+
+        function refresh() {
+            Vue.nextTick(function () {
+                layui.form.render();
+            })
+
+        }
+
+        //提供给上父页面调用
+        getVal = function () {
+            var userIdStr = $("input[name='users']").val();
+            var roleIdStr = $("input[name='roles']").val();
+            app.nodeInfo.NodeDesignateData = {  //节点指定操作人
+                users: userIdStr ? userIdStr.split(','):[],
+                usernames: $("input[name='users']").next("input").val(),
+                roles: roleIdStr ? roleIdStr.split(','):[],
+                rolenames: $("input[name='roles']").next("input").val(),
+                orgs: []
+            }
+            return app.nodeInfo;
+        }
+    </script>
+}

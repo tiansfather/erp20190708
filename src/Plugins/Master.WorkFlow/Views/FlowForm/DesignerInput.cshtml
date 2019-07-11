@@ -1,0 +1,106 @@
+﻿@using Master.Web.Components
+@inherits Master.Web.Components.MasterRazorPage<TModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Master.Web.Core
+@{
+    Layout = "~/Views/Shared/_LayoutDialog.cshtml";
+    ViewData["Title"] = "Designer";
+}
+@await Html.PartialAsync("/Views/FlowForm/Common.cshtml")
+@section styles{ 
+    <style>
+        .formPreview .notVerify{
+            border:1px solid red;
+        }
+    </style>
+}
+<div class="layui-hide" id="app">
+    <form>
+        <div class="formPreview">
+            <layout :list="currentItem.datas"></layout>
+        </div>
+
+    </form>
+
+
+</div>
+@section scripts{
+    <script>
+
+        var app;
+        config.ready = function () {
+
+            app = new Vue({
+                el: '#app',
+                data: {
+                    item: {},
+                    currentData: null,
+                    currentItem: { id: 0, datas: [] }
+                },
+                methods: {
+                    loadItem: function (id) {
+                        var that = this;
+                        if (id) {
+                            abp.services.workflow.flowForm.getFormDesigner(id).done(function (data) {
+                                that.currentItem = data;
+                                if (!that.currentItem.datas || that.currentItem.datas.length == 0) {
+                                    that.currentItem.datas = [];
+                                }
+                            });
+                        }
+
+                        refresh();
+                    }
+                },
+                mounted: function () {
+                    var id = $.getUrlParam("data");
+                    this.loadItem(id);
+                    layui.form.render();
+                    $("#app").removeClass("layui-hide");
+                }
+            });
+        }
+        function refresh() {
+            Vue.nextTick(function () {
+
+                layui.form.render();
+
+
+
+                //$(".layout").each(function () {
+                //    var height = $(this).parent().height();
+                //    $(this).css("height", height + "px");
+                //});
+            })
+        }
+
+        function checkRequired(datas) {
+            for (var i = 0; i < datas.length; i++) {
+                var control = datas[i];
+                if (control.required && !control.value) {
+                    throw "请填写"+control.formName;
+                }
+                control.children && checkRequired(control.children);
+            }
+        }
+
+        function submit() {
+            var formId = $.getUrlParam("data");
+            var flowSchemeId = $.getUrlParam("flowSchemeId");
+            //数据必填验证
+            try {
+                checkRequired(app.currentItem.datas);
+            } catch (ex) {
+                abp.message.error(ex);
+            }
+            var dto = { flowSchemeId: flowSchemeId, flowFormId: formId, formData: JSON.stringify(app.currentItem.datas) };
+            func.runAsync(abp.services.workflow.flowInstance.createInstance(dto).done(function () {
+                parent.layer.msg(L("提交成功"));
+                parent.layer.closeAll('iframe');
+                parent.config.reloadTable();
+                parent.config.refresh();
+            }))
+        }
+
+    </script>
+}

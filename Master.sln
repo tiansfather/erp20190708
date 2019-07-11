@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.645
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.452
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{AFAA0841-BD93-466F-B8F4-FB4EEC86F1FC}"
 EndProject
@@ -24,6 +24,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.展现层", "4.展现层", "{BE13F8A0-EA35-4E0C-8362-679C0A392CC0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "src\Common\Common.csproj", "{81B1579A-76DF-49D4-A97C-87608CB3C590}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5.插件", "5.插件", "{79873A6F-B562-47FC-B3D5-220359B4171A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -70,6 +72,7 @@ Global
 		{21C95CD6-F0FA-4AEC-86CD-64F0083B831B} = {AFAA0841-BD93-466F-B8F4-FB4EEC86F1FC}
 		{BE13F8A0-EA35-4E0C-8362-679C0A392CC0} = {AFAA0841-BD93-466F-B8F4-FB4EEC86F1FC}
 		{81B1579A-76DF-49D4-A97C-87608CB3C590} = {214B6E36-F0D4-4692-8787-9DAB67892EEB}
+		{79873A6F-B562-47FC-B3D5-220359B4171A} = {AFAA0841-BD93-466F-B8F4-FB4EEC86F1FC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {284F83E1-D185-45C8-9C20-90ACB4910905}

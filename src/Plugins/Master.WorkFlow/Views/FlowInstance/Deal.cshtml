@@ -1,0 +1,116 @@
+﻿@using Master.Web.Components
+@inherits Master.Web.Components.MasterRazorPage<TModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Master.Web.Core
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutDialog.cshtml";
+}
+@section styles
+    {
+    <link href="/assets/layuiadmin/lib/extend/flow/GooFlow.css" rel="stylesheet" />
+}
+<form class="layui-form " action="" id="formEdit">
+    <div class="layui-row ">
+        <div class="layui-col-xs8">
+            <div class="layui-tab layui-tab-brief" lay-filter="tab" style="margin: 0px">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">流程信息</li>
+                    <li>表单信息</li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show">
+                        <div id="flowPanel"></div>
+                    </div>
+                    <div class="layui-tab-item">
+                        <iframe src="" id="formFrame" frameborder="0" style="width:90%;margin:0 auto"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-xs4" style="background-color: gainsboro; min-height: 600px">
+            <div class="layui-form-item">
+                <label class="layui-form-label">审核结果</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="VerificationFinally" value="1" title="同意" checked>
+                    <input type="radio" name="VerificationFinally" value="2" title="不同意">
+                    <input type="radio" name="VerificationFinally" value="3" title="驳回">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">审核意见</label>
+                <div class="layui-input-block">
+                    <textarea name="VerificationOpinion"
+                              placeholder="" autocomplete="off" class="layui-textarea"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+
+@section scripts{
+    <script>
+        //layui加载完成后调用此方法，
+        var tree, id;
+        config.ready = function () {
+            layui.config({
+                base: '/assets/layuiadmin/lib/extend/'
+            }).use(['flow/gooflow', 'flow/flowlayout'], function () {
+                id = $.getUrlParam("data").split(',')[0];   //ID
+                var flowDesignPanel;
+
+                func.runAsync(abp.services.workflow.flowInstance.get(id).done(function (data) {
+                    //判断当前用户是否能操作
+                    if (data.makerList != "ALL" && !(data.makerList.indexOf(',' + abp.session.userId + ',') >= 0)) {
+                        abp.message.error(L("当前用户不能处理此流程"));
+                        return false;
+                    }
+                    var schemeContent = JSON.parse(data.schemeContent);
+                    flowDesignPanel = $('#flowPanel').flowdesign({
+                        haveTool: false
+                        , isprocessing: true
+                        , activityId: data.activityId
+                        , nodeData: schemeContent.nodes
+                        , flowcontent: schemeContent
+                    });
+                }))
+
+                $("#formFrame").attr("src", "/FlowForm/InstanceView?data=" + id);
+                //$.getJSON('/FlowInstances/get?id=' + id,
+                //    function (data) {
+                //        var obj = data.Result;
+                //        var schemeContent = JSON.parse(obj.SchemeContent);
+                //        flowDesignPanel = $('#flowPanel').flowdesign({
+                //            haveTool: false
+                //            , isprocessing: true
+                //            , activityId: obj.ActivityId
+                //            , nodeData: schemeContent.nodes
+                //            , flowcontent: schemeContent
+                //        });
+
+                //        $(".GooFlow_work").slimScroll({
+                //            height: 'auto'
+                //        });
+                //        $("#frmPreview").html(data.Result.FrmPreviewHtml);
+                //        flowDesignPanel.reinitSize($(window).width() - 30, $(window).height() - 120);
+                //    });
+            });
+
+        }
+
+        function submit() {
+            var verificationFinally = $("input[name='VerificationFinally']:checked").val();
+            var verificationOpinion = $("textarea[name='VerificationOpinion']").val();
+            abp.message.confirm(L("确认提交?"), function () {
+                var dto = { flowInstanceId: id, verificationFinally: verificationFinally, VerificationOpinion: verificationOpinion };
+                func.runAsync(abp.services.workflow.flowInstance.verification(dto).done(function () {
+                    parent.layer.msg(L("提交成功"));
+                    parent.layer.closeAll("iframe");
+                    parent.config.reloadTable();
+                }))
+            })
+        }
+    </script>
+}

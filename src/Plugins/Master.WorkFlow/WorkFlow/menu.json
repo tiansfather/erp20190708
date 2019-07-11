@@ -1,0 +1,32 @@
+[
+
+  {
+    "name": "WorkFlow",
+    "displayName": "工作流",
+    "icon": "iconfont icon-zonglan",
+    "order": 90,
+    "items": [
+      {
+        "name": "WorkFlow.Tenancy.FlowForm",
+        "displayName": "表单定义",
+        "icon": "iconfont icon-celve",
+        "url": "/FlowForm/Index",
+        "order": 1
+      },
+      {
+        "name": "WorkFlow.Tenancy.FlowScheme",
+        "displayName": "流程定义",
+        "icon": "iconfont icon-celve",
+        "url": "/FlowScheme/Index",
+        "order": 1
+      },
+      {
+        "name": "WorkFlow.Tenancy.FlowInstance",
+        "displayName": "我的流程",
+        "icon": "iconfont icon-celve",
+        "url": "/FlowInstance/Index",
+        "order": 2
+      }
+    ]
+  }
+]

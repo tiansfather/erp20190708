@@ -1,4 +1,5 @@
 ﻿using Abp.Configuration.Startup;
+using Master.WorkFlow;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,6 +17,7 @@ namespace Master.Configuration
         /// 实体标记数据提供者，用于定义实体标记
         /// </summary>
         public Dictionary<Type, List<StatusDefinition>> EntityStatusDefinitions { get; private set; } = new Dictionary<Type, List<StatusDefinition>>();
+        public List<FlowForm> DefaultForms { get; private set; } = new List<FlowForm>();
     }
 
     public static class MasterConfigurationExtension

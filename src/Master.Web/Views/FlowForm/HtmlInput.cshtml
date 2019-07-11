@@ -1,0 +1,113 @@
+﻿@using Master.Web.Components
+@inherits Master.Web.Components.MasterRazorPage<TModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Master.Web.Core
+@{
+    Layout = "~/Views/Shared/_LayoutDialog.cshtml";
+    ViewData["Title"] = "Html";
+}
+<script>
+    var _formOption = {
+        readonly: false,
+    };
+</script>
+
+@Html.Raw(ViewBag.FormContent)
+
+@section scripts{
+    <script>
+        ///将表单数据加入缓存 进行扫描查看
+        
+         
+        function DataSetCache() {
+            var indexload = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+
+            var formData = {};
+
+            if (typeof (getFormData) != "undefined") {
+                try {
+                    formData = getFormData();
+                } catch (err) {
+                    abp.message.error(err.message || err);
+                    return false;
+                }
+
+            } else {
+                abp.message.error(L("模板错误，必须实现getFormData方法"));
+                return false;
+            }
+             
+            var formId = $.getUrlParam('data'); 
+            $.post("/FlowForm/SetFormCache", { formData: JSON.stringify(formData) , formId: formId }, function (data, status) {
+                console.log(data, status,"success:::");
+                var result = data.result;
+                app.qrCodePerson = '/api/qrcode?url=' + encodeURIComponent(location.origin + "/FlowForm/FormCacheView/?code=" + result);
+
+                var url = location.origin + "/FlowForm/GetFormCachePerson/";//"?code=" + result
+                var timerID = 0;
+                var index = layer.open({
+                    type: 1,
+                    area: ['250px', '290px'], //宽高
+                    content: '<img src="' + app.qrCodePerson + '"  />',
+                    cancel: function () {
+                        window.clearTimeout(timerID);
+                    }
+                });
+                layer.close(indexload);//关闭加载层
+               function loopFunc() {
+                    $.post(url, { code: result }, function (data, status) {
+                        console.log(data);
+                        if (data.result != null && data.result != "") {
+                            app.currentItem.usePerson = data.result;
+
+                            layer.close(index);//关闭二维码窗 
+                        } else {
+                            timerID = window.setTimeout(loopFunc, 1000);
+                        }
+                    })
+
+                }
+                loopFunc();
+              
+
+            });
+           
+        }
+
+
+        function submit() {
+            
+            var formId = $.getUrlParam("data");
+            var flowSchemeId = $.getUrlParam("flowSchemeId");
+            var formData = {};
+
+            if (typeof (getFormData) != "undefined") {
+                try {
+                    formData = getFormData();
+                } catch (err) {
+                    abp.message.error(err.message||err);
+                    return false;
+                }
+                
+            } else {
+                abp.message.error(L("模板错误，必须实现getFormData方法"));
+                return false;
+            }
+
+            abp.message.confirm(L("确认提交?"), function () {
+                var dto = { flowSchemeId: flowSchemeId, flowFormId: formId, formData: JSON.stringify(formData) };
+                func.runAsync(abp.services.app.flowInstance.createInstance(dto).done(function () {
+                    parent.layer.msg(L("提交成功"));
+                    parent.layer.closeAll('iframe');
+                    parent.config.reloadTable();
+                    parent.config.refresh();
+                }))
+            })
+
+            
+        }
+
+    </script>
+}

@@ -1,0 +1,55 @@
+﻿@using Master.Web.Components
+@inherits Master.Web.Components.MasterRazorPage<TModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Master.Web.Core
+@{
+    Layout = "~/Views/Shared/_LayoutDialog.cshtml";
+    ViewData["Title"] = "Html";
+}
+<script>
+    var _formOption = {
+        readonly: false,
+        formData:@Html.Raw(ViewBag.FormData)
+    };
+</script>
+
+@Html.Raw(ViewBag.FormContent)
+
+@section scripts{
+    <script>
+
+
+
+        function submit() {
+            
+            var flowInstanceId = $.getUrlParam("data");
+            var formData = {};
+
+            if (typeof (getFormData) != "undefined") {
+                try {
+                    formData = getFormData();
+                } catch (err) {
+                    abp.message.error(err.message||err);
+                    return false;
+                }
+                
+            } else {
+                abp.message.error(L("模板错误，必须实现getFormData方法"));
+                return false;
+            }
+
+            abp.message.confirm(L("确认提交?"), function () {
+                var dto = { id: flowInstanceId, formData: JSON.stringify(formData) };
+                func.runAsync(abp.services.workflow.flowInstance.repostInstance(dto).done(function () {
+                    parent.layer.msg(L("提交成功"));
+                    parent.layer.closeAll('iframe');
+                    parent.config.reloadTable();
+                    parent.config.refresh();
+                }))
+            })
+
+            
+        }
+
+    </script>
+}

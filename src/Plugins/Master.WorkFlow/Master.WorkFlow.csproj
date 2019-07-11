@@ -1,0 +1,123 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <RuntimeFrameworkVersion>2.2.5</RuntimeFrameworkVersion>
+    <RootNamespace>Master</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="EntityFrameworkCore\WorkFlowDbContextOptionsConfigurer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="appsettings.json" />
+    <None Remove="Views\FlowForm\Handler.cshtml" />
+    <None Remove="Views\FlowForm\Html.cshtml" />
+    <None Remove="Views\FlowForm\HtmlInput.cshtml" />
+    <None Remove="Views\FlowForm\HtmlRepost.cshtml" />
+    <None Remove="Views\FlowForm\HtmlView.cshtml" />
+    <None Remove="Views\FlowInstance\Add.cshtml" />
+    <None Remove="Views\FlowInstance\Deal.cshtml" />
+    <None Remove="Views\FlowInstance\Index.cshtml" />
+    <None Remove="Views\FlowInstance\View.cshtml" />
+    <None Remove="Views\FlowScheme\Design.cshtml" />
+    <None Remove="Views\FlowScheme\Index.cshtml" />
+    <None Remove="Views\FlowScheme\NodeInfo.cshtml" />
+    <None Remove="Views\FlowForm\Common.cshtml" />
+    <None Remove="Views\FlowForm\Designer.cshtml" />
+    <None Remove="Views\FlowForm\DesignerInput.cshtml" />
+    <None Remove="Views\FlowForm\DesignerView.cshtml" />
+    <None Remove="Views\FlowForm\Index.cshtml" />
+    <None Remove="WorkFlow\menu.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <EmbeddedResource Include="Views\FlowForm\Handler.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\FlowForm\HtmlRepost.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\FlowForm\HtmlView.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\FlowForm\HtmlInput.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\FlowForm\Html.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\FlowInstance\Add.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\FlowInstance\Deal.cshtml" />
+    <EmbeddedResource Include="Views\FlowInstance\Index.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\FlowInstance\View.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\FlowScheme\Design.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Views\FlowScheme\Index.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\FlowScheme\NodeInfo.cshtml" />
+    <EmbeddedResource Include="Views\FlowForm\Designer.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\FlowForm\Common.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\FlowForm\DesignerView.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\FlowForm\DesignerInput.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\FlowForm\Index.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WorkFlow\menu.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="WorkFlow\Jobs\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Common.csproj" />
+    <ProjectReference Include="..\..\Master.Application\Master.Application.csproj" />
+    <ProjectReference Include="..\..\Master.Core\Master.Core.csproj" />
+    <ProjectReference Include="..\..\Master.Web.Core\Master.Web.Core.csproj" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy /y &quot;$(TargetDir)Master.WorkFlow.dll&quot; &quot;$(SolutionDir)\src\Master.Web\plugins\Master.WorkFlow.dll&quot;" />
+  </Target>
+
+</Project>

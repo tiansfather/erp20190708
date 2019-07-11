@@ -17,6 +17,7 @@ using Master.Module;
 using Abp.Auditing;
 using Master.Auditing;
 using Abp.Localization;
+using Master.WorkFlow;
 
 namespace Master
 {
@@ -75,7 +76,7 @@ namespace Master
         {
 
             IocManager.Resolve<AppTimes>().StartupTime = Clock.Now;
-
+            BuildDefaultForm();
         }
 
         /// <summary>
@@ -138,6 +139,26 @@ namespace Master
             Configuration.Modules.Core().Dictionaries.Add(StaticDictionaryNames.Marriage, new Dictionary<string, string>() { { "未婚", "未婚" }, { "已婚", "已婚" } });
             //项目类型
             Configuration.Modules.Core().Dictionaries.Add(StaticDictionaryNames.ProjectType, new Dictionary<string, string>() { { "普通", "普通" }});
+        }
+
+        private void BuildDefaultForm()
+        {
+            //读取程序集中内置的表单
+            var files = Common.Fun.GetFilesInAsm(typeof(MasterCoreModule).GetAssembly(), "Master.Forms");
+            foreach (var file in files)
+            {
+                var fileName = System.IO.Path.GetFileNameWithoutExtension(file.Name);
+                var form = new FlowForm()
+                {
+                    FormKey = fileName.Split('-')[1],
+                    FormName = fileName.Split('-')[0],
+                    FormType = WorkFlow.FormType.Html,
+                    IsActive = true,
+                    FormContent = Common.Fun.ReadEmbedString(file)
+                };
+                Configuration.Modules.Core().DefaultForms.Add(form);
+            }
+            //Configuration.Modules.WorkFlow().
         }
     }
 }

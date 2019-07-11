@@ -1,0 +1,24 @@
+﻿@using Master.Web.Components
+@inherits Master.Web.Components.MasterRazorPage<TModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Master.Web.Core
+@{
+    Layout = "~/Views/Shared/_LayoutDialog.cshtml";
+    ViewData["Title"] = "单据查看";
+}
+<style>
+
+    @@media screen and (max-width: 480px) {
+        .layui-table {
+            word-break: keep-all;
+        }
+    }
+</style>
+<script>
+    var _formOption = {
+        readonly: true,
+        formData:@Html.Raw(ViewBag.FormData)
+    };
+</script>
+
+@Html.Raw(ViewBag.FormContent)

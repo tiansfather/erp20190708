@@ -1,0 +1,69 @@
+﻿@using Master.Web.Components
+@inherits Master.Web.Components.MasterRazorPage<TModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Master.Web.Core
+@{
+    Layout = "~/Views/Shared/_LayoutDialog.cshtml";
+    ViewData["Title"] = "Designer";
+}
+@await Html.PartialAsync("/Views/FlowForm/Common.cshtml")
+<div class="layui-hide" id="app">
+    <form>
+        <div class="formPreview">
+            <layout :list="currentItem.datas" :readonly="true"></layout>
+        </div>
+
+    </form>
+
+
+</div>
+@section scripts{
+    <script>
+
+        var app;
+        config.ready = function () {
+
+            app = new Vue({
+                el: '#app',
+                data: {
+                    item: {},
+                    currentData: null,
+                    currentItem: { id: 0, datas: [] }
+                },
+                methods: {
+                    loadItem: function (id) {
+                        var that = this;
+                        if (id) {
+                            abp.services.workflow.flowInstance.get(id).done(function (data) {
+                                that.currentItem.datas = JSON.parse(data.formData);
+                            });
+                        }
+
+                        refresh();
+                    }
+                },
+                mounted: function () {
+                    var id = $.getUrlParam("data");
+                    this.loadItem(id);
+                    layui.form.render();
+                    $("#app").removeClass("layui-hide");
+                }
+            });
+        }
+        function refresh() {
+            Vue.nextTick(function () {
+
+                layui.form.render();
+
+
+
+                //$(".layout").each(function () {
+                //    var height = $(this).parent().height();
+                //    $(this).css("height", height + "px");
+                //});
+            })
+        }
+
+
+    </script>
+}
