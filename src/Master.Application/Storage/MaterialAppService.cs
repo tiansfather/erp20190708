@@ -1,5 +1,6 @@
 ﻿using Abp.Authorization;
 using Master.Entity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +39,16 @@ namespace Master.Storage
                 }
             }
             return query;
+        }
+
+        /// <summary>
+        /// 某物料的库存总量
+        /// </summary>
+        /// <param name="materialId"></param>
+        /// <returns></returns>
+        public virtual async Task<int> GetStoreMaterialCount(int materialId)
+        {
+            return await Resolve<StoreMaterialManager>().GetAll().CountAsync(o => o.MaterialId == materialId);
         }
     }
 }

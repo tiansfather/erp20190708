@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace Master.Storage.Domains
+namespace Master.Storage
 {
     public class StoreMaterialManager : ModuleServiceBase<StoreMaterial, int>
     {
