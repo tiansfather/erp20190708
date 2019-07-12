@@ -25,6 +25,12 @@
         "url": "/Unit"
       },
       {
+        "name": "Admin.Tenancy.MaterialUnitDiscount",
+        "displayName": "折扣与销售方式",
+        "icon": "iconfont icon-jiaohusheji",
+        "url": "/MaterialUnitDiscount"
+      },
+      {
         "name": "Admin.Tenancy.Store",
         "displayName": "仓库档案",
         "icon": "iconfont icon-ziyuan",

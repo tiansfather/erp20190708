@@ -20,7 +20,7 @@ namespace Master.Storage
         protected override async Task<IQueryable<Material>> GetQueryable(RequestPageDto request)
         {
             return (await base.GetQueryable(request))
-                .Where(o=>o.MaterialDIYType==MaterialDIYType.组装 && o.MaterialNature==MaterialNature.实物);
+                .Where(o=>o.MaterialNature==MaterialNature.实物);
         }
         protected override async Task<IQueryable<Material>> BuildSearchQueryAsync(IDictionary<string, string> searchKeys, IQueryable<Material> query)
         {
@@ -54,6 +54,7 @@ namespace Master.Storage
                     o.Specification,
                     o.MeasureMentUnit,
                     o.Price,
+                    MaterialId=o.Id,
                     Number=diyInfo.First(d=>d.MaterialId==o.Id).Number
                 })
             };

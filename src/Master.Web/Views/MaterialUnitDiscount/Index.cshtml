@@ -17,9 +17,9 @@
 				</div>
 				<div class="layui-col-xs10">
 					<div class="LAY-app-message-btns" style="margin-bottom: 10px;">
-						<vc:module-button module-key="MaterialDIY"></vc:module-button>
+						
 					</div>
-					<vc:module-table param="@(new ModuleTableViewParam() {ID="MaterialDIY",ModuleKey="MaterialDIY",Height="full-110",SearchKeys="{materialDIYType:1}" })"></vc:module-table>
+					<vc:module-table param="@(new ModuleTableViewParam() {ID="MaterialUnitDiscount",ModuleKey="MaterialUnitDiscount",Height="full-110" })"></vc:module-table>
 				</div>
 			</div>
 
@@ -47,7 +47,7 @@
 		}
 		//当检索窗体提交后会调用此方法
 		config.reloadTable = function () {
-            layui.table.reload('MaterialDIY', {
+            layui.table.reload('MaterialUnitDiscount', {
 				where: getWhere()
 
 			})
@@ -61,7 +61,7 @@
 		}
 		function getWhere() {
 			var where = { searchKeys: JSON.stringify(searchKeys) };
-            where.searchCondition = func.buildSearchCondition('MaterialDIY');
+            where.searchCondition = func.buildSearchCondition('MaterialUnitDiscount');
 
 			return where;
 

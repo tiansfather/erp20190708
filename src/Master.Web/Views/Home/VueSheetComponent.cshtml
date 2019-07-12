@@ -1,4 +1,44 @@
-﻿@* -------------------------------------------------------------------------- *@
+﻿<script>
+    Vue.component('unit-select', {
+        inheritAttrs: false,
+        data() {
+            return {
+                options: [],
+                myUnit: this.unit
+            }
+        },
+        props: {
+            nature: {//1||2=>客户||供应商
+                type: String,
+                required: true,
+                default: '1'
+            },
+            unit: String,
+            valueIsid: {
+                type: Boolean,
+                default: true
+            }
+        },
+        methods: {
+            changeHandle($event) {
+                var obj = this.options.filter(el => el[this.valueIsid ? 'id' : 'unitName'] == $event)[0];
+                this.$emit('update:unit', $event)
+                this.$emit('change', obj)
+            }
+        },
+        created() {
+            console.log(this.valueIsid ? 'id' : 'unitName')
+            abp.services.app.unit.getAllByUnitNature(this.nature).done(res => {
+                this.options = res;
+            })
+        },
+        template: `<el-select v-bind="$attrs" v-model="myUnit" clearable @@change="changeHandle" filterable :placeholder="'请选择'+(nature==1?'供应商':'代理商')">
+            <el-option v-for="item in options" :key="item.id"  :label="item.unitName"  :value="item[valueIsid?'id':'unitName']"></el-option>
+        </el-select>`
+    })
+</script>
+
+@* -------------------------------------------------------------------------- *@
 <script type="text/x-template" id="VueSearchInput">
     @* 渲染出一个input和一个查询按钮，当按回车和点击按钮都会把input的值传出来 *@
     <div>

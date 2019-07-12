@@ -1,0 +1,144 @@
+﻿@using Master.Web.Components
+@inherits Master.Web.Components.MasterRazorPage<TModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Master.Web.Core
+@{
+	ViewData["Title"] = "Index";
+}
+
+<div class="layui-fluid" id="LAY-app-message">
+    <div class="layui-card">
+        <div class="layui-card-body" id="app" v-cloak>
+
+            <el-form :inline="true" size="mini">
+                <el-form-item label="代理商名称">
+                    <unit-select nature="0" :unit.sync="filters.unitId" :value-isid="true" size="mini" style="margin-bottom:15px;"></unit-select>
+                </el-form-item>
+                <el-form-item label="代理商等级">
+                    <el-checkbox-group v-model="filters.unitRanks">
+                        <el-checkbox label="1"></el-checkbox>
+                        <el-checkbox label="2"></el-checkbox>
+                        <el-checkbox label="3"></el-checkbox>
+                        <el-checkbox label="4"></el-checkbox>
+                        <el-checkbox label="5"></el-checkbox>
+                    </el-checkbox-group>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @@click="doSearch">查询</el-button>
+                </el-form-item>
+            </el-form>
+            <blockquote class="layui-elem-quote">
+                <span style="margin-right:50px">批量操作</span>
+                <el-radio-group v-model="multi.unitDiscount" @@change="doMultiDiscount" style="margin-left:50px;">
+                    <el-radio :label="0">默认</el-radio>
+                    <el-radio :label="1">折扣1</el-radio>
+                    <el-radio :label="2">折扣2</el-radio>
+                    <el-radio :label="3">折扣3</el-radio>
+                </el-radio-group>
+                <el-select v-model="multi.unitSellMode" @@change="doMultiSellMode" style="margin-left:50px;">
+                    <el-option key="0" label="始终销售" value="0"></el-option>
+                    <el-option key="1" label="售完为止" value="1"></el-option>
+                    <el-option key="2" label="停止销售" value="2"></el-option>
+                </el-select>
+            </blockquote>
+            <table class="layui-table">
+
+                <thead>
+                    <tr>
+                        <th>代理商名称</th>
+                        <th>代理商等级</th>
+                        <th>商品出货折扣</th>
+                        <th>销售方式</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item,index) in unitInfos">
+                        <td>{{item.unitName}}</td>
+                        <td>{{item.unitRank}}</td>
+                        <td>
+                            <el-radio-group v-model="item.unitDiscount">
+                                <el-radio :label="0">默认</el-radio>
+                                <el-radio :label="1">折扣1</el-radio>
+                                <el-radio :label="2">折扣2</el-radio>
+                                <el-radio :label="3">折扣3</el-radio>
+                            </el-radio-group>
+                        </td>
+                        <td>
+                            <el-select v-model="item.unitSellMode">
+                                <el-option key="0" label="始终销售" value="0"></el-option>
+                                <el-option key="1" label="售完为止" value="1"></el-option>
+                                <el-option key="2" label="停止销售" value="2"></el-option>
+                            </el-select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        var materialId = $.getUrlParam("data");
+        var app;
+		//layui加载完成后调用此方法，
+		config.ready = function () {
+			var element = layui.element;
+            var table = layui.table;
+            app = new Vue({
+                el: '#app',
+                data: {
+                    multi: {
+
+                    },
+                    filters: {
+                        materialId: materialId,
+                        unitRanks: ['1','2','3','4','5'],
+                        unitId:null
+                    },
+                    unitInfos: []
+                },
+                methods: {
+                    doSearch: function () {
+                        var that = this;
+                        if (!this.filters.unitRanks.length) {
+                            layer.msg("请选择代理商等级", { icon: 5, anim: 6 });
+                            return;
+                        }
+                        func.runAsync(abp.services.app.materialUnitDiscount.getUnitMaterialDiscountInfo(this.filters).done(function (data) {
+                            that.unitInfos = data;
+                        }))
+                    },
+                    doMultiDiscount: function (discount) {
+                        this.unitInfos.forEach(o => o.unitDiscount = discount);
+                    },
+                    doMultiSellMode: function (sellMode) {
+                        this.unitInfos.forEach(o => o.unitSellMode = sellMode);
+                    }
+                },
+                mounted: function () {
+                    this.doSearch();
+                    
+                }
+            })
+
+			config.refresh();
+
+		}
+		//当编辑或删除或添加表单提交后会调用此方法
+		config.refresh = function () {
+
+		}
+        function submit() {
+            abp.message.confirm("确认提交?", function () {
+                func.runAsync(abp.services.app.materialUnitDiscount.setMaterialUnitDiscountInfo(materialId, app.unitInfos)
+                    .done(function () {
+                        parent.layer.msg("提交成功");
+                        parent.layer.closeAll("iframe");
+                        //parent.config.reloadTable();
+                    }))
+            })
+            
+        }
+    </script>
+}

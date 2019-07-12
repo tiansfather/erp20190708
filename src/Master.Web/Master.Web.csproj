@@ -465,6 +465,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Views\新文件夹\" />
     <Folder Include="wwwroot\lib\swiper\" />
   </ItemGroup>
   <ProjectExtensions><VisualStudio><UserProperties bundleconfig_1json__JSONSchema="" /></VisualStudio></ProjectExtensions>

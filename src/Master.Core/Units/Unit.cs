@@ -48,7 +48,7 @@ namespace Master.Units
         public string ContactPerson { get; set; }
         [InterColumn(ColumnName = "联系电话", Sort = 8, IsShownInList = false)]
         public string Phone { get; set; }      
-        [InterColumn(ColumnName ="等级",ColumnType =ColumnTypes.Select,DictionaryName = "{\"1\":\"1\",\"2\":\"2\",\"3\":\"3\",\"4\":\"4\",\"5\":\"5\"}", ControlFormat ="select", Sort =9)]
+        [InterColumn(ColumnName ="等级", DefaultValue ="1",ColumnType =ColumnTypes.Select,DictionaryName = "{\"1\":\"1\",\"2\":\"2\",\"3\":\"3\",\"4\":\"4\",\"5\":\"5\"}", ControlFormat ="select", Sort =9)]
         public int UnitRank { get; set; }
         /// <summary>
         /// 是否启用

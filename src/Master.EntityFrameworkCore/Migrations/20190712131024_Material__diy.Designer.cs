@@ -3,14 +3,16 @@ using System;
 using Master.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Master.Migrations
 {
     [DbContext(typeof(MasterDbContext))]
-    partial class MasterDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190712131024_Material__diy")]
+    partial class Material__diy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1460,85 +1462,6 @@ namespace Master.Migrations
                     b.ToTable("Store");
                 });
 
-            modelBuilder.Entity("Master.Storage.StoreMaterial", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CreationTime");
-
-                    b.Property<long?>("CreatorUserId");
-
-                    b.Property<long?>("DeleterUserId");
-
-                    b.Property<DateTime?>("DeletionTime");
-
-                    b.Property<string>("ExtensionData");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<DateTime?>("LastModificationTime");
-
-                    b.Property<long?>("LastModifierUserId");
-
-                    b.Property<int>("MaterialId");
-
-                    b.Property<decimal>("Number");
-
-                    b.Property<string>("Property")
-                        .HasColumnType("json");
-
-                    b.Property<string>("Remarks");
-
-                    b.Property<string>("Status");
-
-                    b.Property<int>("StoreId");
-
-                    b.Property<int>("TenantId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatorUserId");
-
-                    b.HasIndex("DeleterUserId");
-
-                    b.HasIndex("LastModifierUserId");
-
-                    b.HasIndex("MaterialId");
-
-                    b.HasIndex("StoreId");
-
-                    b.HasIndex("TenantId");
-
-                    b.ToTable("StoreMaterial");
-                });
-
-            modelBuilder.Entity("Master.Storage.UnitMaterialDiscount", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CreationTime");
-
-                    b.Property<long?>("CreatorUserId");
-
-                    b.Property<int>("MaterialId");
-
-                    b.Property<int>("UnitDiscount");
-
-                    b.Property<int>("UnitId");
-
-                    b.Property<int>("UnitSellMode");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MaterialId");
-
-                    b.HasIndex("UnitId");
-
-                    b.ToTable("UnitMaterialDiscount");
-                });
-
             modelBuilder.Entity("Master.Templates.Template", b =>
                 {
                     b.Property<int>("Id")
@@ -2120,49 +2043,6 @@ namespace Master.Migrations
                     b.HasOne("Master.MultiTenancy.Tenant", "Tenant")
                         .WithMany()
                         .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Master.Storage.StoreMaterial", b =>
-                {
-                    b.HasOne("Master.Authentication.User", "CreatorUser")
-                        .WithMany()
-                        .HasForeignKey("CreatorUserId");
-
-                    b.HasOne("Master.Authentication.User", "DeleterUser")
-                        .WithMany()
-                        .HasForeignKey("DeleterUserId");
-
-                    b.HasOne("Master.Authentication.User", "LastModifierUser")
-                        .WithMany()
-                        .HasForeignKey("LastModifierUserId");
-
-                    b.HasOne("Master.Storage.Material", "Material")
-                        .WithMany()
-                        .HasForeignKey("MaterialId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Master.Storage.Store", "Store")
-                        .WithMany()
-                        .HasForeignKey("StoreId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Master.MultiTenancy.Tenant", "Tenant")
-                        .WithMany()
-                        .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Master.Storage.UnitMaterialDiscount", b =>
-                {
-                    b.HasOne("Master.Storage.Material", "Material")
-                        .WithMany()
-                        .HasForeignKey("MaterialId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Master.Units.Unit", "Unit")
-                        .WithMany()
-                        .HasForeignKey("UnitId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

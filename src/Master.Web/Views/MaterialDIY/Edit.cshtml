@@ -10,32 +10,34 @@
     <div class="layui-card">
         <div class="layui-card-body">
 
-            <div class="layui-row">
+            <div class="layui-row layui-col-space5">
                 <div class="layui-col-xs2">
                     <vc:base-tree param="@(new BaseTreeViewParam() { TreeKey="MaterialType",TreeName="商品分类",EnableAdd=false,EnableEdit=false,EnableDelete=false})"></vc:base-tree>
 
                 </div>
                 <div class="layui-col-xs8">
-                    <div class="LAY-app-message-btns" style="margin-bottom: 10px;">
-
+                    <div class="LAY-app-message-btns" style="margin-bottom:10px;">
+                        <button class="layui-btn  layui-btn-sm" type="button" confirmmsg="" onclick="app.doSubmit()" id="submitBtn">保存</button>
                     </div>
                     <table id="MaterialDIY" lay-filter="MaterialDIY"></table>
                 </div>
                 <div class="layui-col-xs2">
                     <div id="app" v-cloak>
-                        <blockquote class="layui-elem-quote">装配商品:{{currentItem.name}}</blockquote>
+                        <blockquote class="layui-elem-quote" style="margin-bottom:0px;padding:7px;">装配商品:{{currentItem.name}}</blockquote>
                         <table class="layui-table">
 
                             <thead>
                                 <tr>
                                     <th>品名</th>
                                     <th>数量</th>
+                                    <th>操作</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="(item,index) in currentItem.diyInfos">
                                     <td>{{item.name}}</td>
                                     <td>{{item.number}}{{item.measureMentUnit}}</td>
+                                    <td><a title="删除" style="cursor: pointer;" @@click="currentItem.diyInfos.splice(index,1);config.reloadTable()"><i class="layui-icon layui-icon-delete"></i></a></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -50,20 +52,61 @@
 </div>
 
 @section scripts{
+    <script type="text/html" id="editTpl">
+        <input type="number"  style="width:50px" id="edit_{{d.id}}" onblur="app.updateInfo({ materialId: {{d.id}},number:this.value,name:'{{d.name}}',measureMentUnit:'{{d.measureMentUnit}}'})"/>
+    </script>
     <script>
         var searchKeys = {materialDIYType:0};
-
+        var materialId = $.getUrlParam("data");
+        var app;
 		//layui加载完成后调用此方法，
 		config.ready = function () {
 			var element = layui.element;
             var table = layui.table;
-            var app = new Vue({
+            app = new Vue({
                 el: '#app',
                 data: {
-                    currentItem: {}
+                    currentItem: {
+                        diyInfos:[]
+                    }
+                },
+                methods: {
+                    updateInfo: function (info) {
+                        if (isNaN(info.number)) { info.number = 0;}
+                        var existInfo = this.currentItem.diyInfos.filter(o => o.materialId == info.materialId)[0];
+                        //小于0直接移除
+                        if (info.number <= 0) {
+                            existInfo && this.currentItem.diyInfos.splice(this.currentItem.diyInfos.indexOf(existInfo), 1);
+                            return;
+                        }
+
+                        if (existInfo) {
+                            existInfo.number = info.number;
+                        } else {
+                            this.currentItem.diyInfos.push(info);
+                        }
+                    },
+                    doSubmit: function () {
+                        var that = this;
+                        abp.message.confirm("确认提交？", function () {
+                            func.runAsync(abp.services.app.materialDIY.setMaterialDiyInfo({ id: materialId, dIYInfos: that.currentItem.diyInfos })
+                                .done(function () {
+                                    parent.layer.msg("提交成功");
+                                    parent.layer.closeAll("iframe");
+                                    parent.config.reloadTable();
+                                }))
+                        })
+                    }
                 },
                 mounted: function () {
                     var that = this;
+                    //获取库存，如果库存大于0，则不允许修改
+                    abp.services.app.material.getStoreMaterialCount(materialId).done(function (data) {
+                        if (data <= 0) {
+                            abp.message.info("库存为0的组合商品不能进行散装组合配置修改");
+                            $("#submitBtn").addClass("layui-btn-disabled");
+                        }
+                    })
                     func.runAsync(abp.services.app.materialDIY.getMaterialDiyInfo(materialId).done(function (data) {
                         that.currentItem = data;
                         table.render({
@@ -71,8 +114,8 @@
                             autoSort:false,
                             toolbar: false,
                             //cellMinWidth: '60',
-                            height: 'full-110',
-                            url: '',
+                            height: 'full-70',
+                            url: '/api/services/app/MaterialDIY/GetPageResult',
                             where: getWhere(),
                             page: true,
 
@@ -81,7 +124,11 @@
                             cols: [[
                                 {field:'name',title:'品名'},
                                 {field:'specifiation',title:'规格'},
-                                {field:'name',title:'品名'},
+                                { field: 'price', title: '零售价' },
+                                { field: 'remarks', title: '备注' },
+                                { field: '', title: '分内数量',templet:'#editTpl' },
+                                { field: 'measureMentUnit', title: '计量单位' },
+                                { field: 'location', title: '适用区域' },
                             ]],
 
                             done: function () {
@@ -108,8 +155,10 @@
 
 			})
 		}
-		config.onTableDone = function () {
-
+        config.onTableDone = function () {
+            $.each(app.currentItem.diyInfos, function (i, v) {
+                $("#edit_" + v.materialId).val(v.number);
+            });
 		}
 		//当编辑或删除或添加表单提交后会调用此方法
 		config.refresh = function () {

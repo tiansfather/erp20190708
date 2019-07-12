@@ -74,7 +74,9 @@ namespace Master.EntityFrameworkCore
 
         public virtual DbSet<Store> Store { get; set; }
         public virtual DbSet<Material> Material { get; set; }
+        public virtual DbSet<StoreMaterial> StoreMaterial { get; set; }
         public virtual DbSet<FeeAccount> FeeAccount { get; set; }
+        public virtual DbSet<UnitMaterialDiscount> UnitMaterialDiscount { get; set; }
 
         public MasterDbContext(DbContextOptions<MasterDbContext> options) 
             : base(options)

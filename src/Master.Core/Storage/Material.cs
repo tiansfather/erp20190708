@@ -69,6 +69,7 @@ namespace Master.Storage
         [InterColumn(ColumnName ="备注",Sort =16,IsShownInList =false)]
         public override string Remarks { get; set; }
 
+        public virtual bool IsDiyed { get; set; }
         /// <summary>
         /// 组装信息
         /// </summary>
@@ -82,6 +83,10 @@ namespace Master.Storage
             }
             set
             {
+                if (value.Count > 0)
+                {
+                    this.IsDiyed = true;
+                }
                 this.SetData("DIYInfo", value);
             }
         }
