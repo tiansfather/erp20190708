@@ -10,6 +10,7 @@ using Master.Configuration;
 using Master.Configuration.Dictionaries;
 using Master.Entity;
 using Master.EntityFrameworkCore.Repositories;
+using Master.Finance;
 using Master.Module;
 using Master.MultiTenancy;
 using Master.Notices;
@@ -20,6 +21,7 @@ using Master.Resources;
 using Master.Storage;
 using Master.Templates;
 using Master.Units;
+using Master.WorkFlow;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -72,11 +74,28 @@ namespace Master.EntityFrameworkCore
         public virtual DbSet<SystemLog> SystemLog { get; set; }
         #endregion
 
+        #region WorkFlow
+        public DbSet<FlowScheme> FlowScheme { get; set; }
+        public DbSet<FlowInstance> FlowInstance { get; set; }
+        public DbSet<FlowForm> FlowForm { get; set; }
+        public DbSet<FlowSheet> FlowSheet { get; set; }
+        public DbSet<FlowInstanceOperationHistory> FlowInstanceOperationHistory { get; set; }
+        public DbSet<FlowInstanceTransitionHistory> FlowInstanceTransitionHistory { get; set; }
+        #endregion
+
+        #region Storage
         public virtual DbSet<Store> Store { get; set; }
         public virtual DbSet<Material> Material { get; set; }
         public virtual DbSet<StoreMaterial> StoreMaterial { get; set; }
-        public virtual DbSet<FeeAccount> FeeAccount { get; set; }
+        public virtual DbSet<StoreMaterialHistory> StoreMaterialHistory { get; set; }       
         public virtual DbSet<UnitMaterialDiscount> UnitMaterialDiscount { get; set; }
+        #endregion
+
+        #region Finance
+        public virtual DbSet<FeeAccount> FeeAccount { get; set; }
+        public virtual DbSet<UnitFeeHistory> UnitFeeHistory { get; set; }
+        #endregion
+
 
         public MasterDbContext(DbContextOptions<MasterDbContext> options) 
             : base(options)

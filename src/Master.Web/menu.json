@@ -1,9 +1,96 @@
 [
+
+  {
+    "name": "Storage",
+    "displayName": "库存",
+    "icon": "iconfont icon-zonglan",
+    "order": 10,
+    "items": [
+      {
+        "name": "Storage.Tenancy.IAS",
+        "displayName": "散货装配",
+        "icon": "iconfont icon-celve",
+        "url": "/Home/Show?name=../FlowSheet/IAS/Add",
+        "order": 1
+      },
+      {
+        "name": "Storage.Tenancy.IASSheet",
+        "displayName": "装配单查询",
+        "icon": "iconfont icon-celve",
+        "url": "/Home/Show?name=../FlowSheet/IAS/Index",
+        "order": 2
+      },
+      {
+        "name": "Storage.Tenancy.IBK",
+        "displayName": "成品拆散",
+        "icon": "iconfont icon-celve",
+        "url": "/Home/Show?name=../FlowSheet/IBK/Add",
+        "order": 3
+      },
+      {
+        "name": "Storage.Tenancy.IBKSheet",
+        "displayName": "拆散单查询",
+        "icon": "iconfont icon-celve",
+        "url": "/Home/Show?name=../FlowSheet/IBK/Index",
+        "order": 4
+      }
+    ]
+  },
+  {
+    "name": "Finance",
+    "displayName": "财务",
+    "icon": "iconfont icon-caiwuguanli",
+    "url": "",
+    "order": 20,
+    "items": [
+      {
+        "name": "Finance.Tenancy.SSK",
+        "displayName": "销售收款",
+        "icon": "iconfont icon-zongzhangjiqita",
+        "url": "/Home/Show?name=../FlowSheet/SSK/Add"
+      },
+      {
+        "name": "Finance.Tenancy.SSKSheet",
+        "displayName": "销售收款单",
+        "icon": "iconfont icon-mingxizhang",
+        "url": "/Home/Show?name=../FlowSheet/SSK/Index"
+      }
+    ]
+  },
+  {
+    "name": "WorkFlow",
+    "displayName": "工作流",
+    "icon": "iconfont icon-zonglan",
+    "order": 30,
+    "items": [
+      {
+        "name": "WorkFlow.Tenancy.FlowForm",
+        "displayName": "表单定义",
+        "icon": "iconfont icon-celve",
+        "url": "/FlowForm/Index",
+        "order": 1
+      },
+      {
+        "name": "WorkFlow.Tenancy.FlowScheme",
+        "displayName": "流程定义",
+        "icon": "iconfont icon-celve",
+        "url": "/FlowScheme/Index",
+        "order": 1
+      },
+      {
+        "name": "WorkFlow.Tenancy.FlowInstance",
+        "displayName": "我的流程",
+        "icon": "iconfont icon-celve",
+        "url": "/FlowInstance/Index",
+        "order": 2
+      }
+    ]
+  },
   {
     "name": "Admin",
     "displayName": "基础信息",
     "icon": "iconfont icon-xingzheng",
-    "order": 10,
+    "order": 40,
     "url": "",
     "items": [
       {
@@ -43,12 +130,6 @@
         "url": "/FeeAccount"
       },
       {
-        "name": "Admin.Tenancy.Organization",
-        "displayName": "组织架构",
-        "icon": "iconfont icon-zuzhijiagou",
-        "url": "/Organization"
-      },
-      {
         "name": "Admin.Tenancy.Role",
         "displayName": "角色管理",
         "icon": "iconfont icon-jiaoseguanli1",
@@ -63,61 +144,32 @@
     ]
   },
   {
-    "name": "WorkFlow",
-    "displayName": "工作流",
-    "icon": "iconfont icon-zonglan",
-    "order": 90,
+    "name": "Setting",
+    "displayName": "设置",
+    "icon": "iconfont icon-shezhi1",
+    "order": 100,
+    "url": "",
     "items": [
       {
-        "name": "WorkFlow.Tenancy.FlowForm",
-        "displayName": "表单定义",
-        "icon": "iconfont icon-celve",
-        "url": "/FlowForm/Index",
-        "order": 1
+        "name": "Setting.Tenancy.BaseSetting",
+        "displayName": "基本设置",
+        "icon": "iconfont icon-shezhi1",
+        "url": "/Setting/"
       },
       {
-        "name": "WorkFlow.Tenancy.FlowScheme",
-        "displayName": "流程定义",
-        "icon": "iconfont icon-celve",
-        "url": "/FlowScheme/Index",
-        "order": 1
+        "name": "Setting.Tenancy.ModuleSetting",
+        "displayName": "模块设置",
+        "icon": "iconfont icon-shezhi1",
+        "url": "/ModuleInfo"
       },
       {
-        "name": "WorkFlow.Tenancy.FlowInstance",
-        "displayName": "我的流程",
-        "icon": "iconfont icon-celve",
-        "url": "/FlowInstance/Index",
-        "order": 2
+        "name": "Setting.Tenancy.DictionarySetting",
+        "displayName": "字典设置",
+        "icon": "iconfont icon-shezhi1",
+        "url": "/Dictionary"
       }
-    ]
-  },
-    {
-        "name": "Setting",
-        "displayName": "设置",
-      "icon": "iconfont icon-shezhi1",
-      "order": 100,
-        "url": "",
-      "items": [
-        {
-          "name": "Setting.Tenancy.BaseSetting",
-          "displayName": "基本设置",
-          "icon": "iconfont icon-shezhi1",
-          "url": "/Setting/"
-        },
-        {
-          "name": "Setting.Tenancy.ModuleSetting",
-          "displayName": "模块设置",
-          "icon": "iconfont icon-shezhi1",
-          "url": "/ModuleInfo"
-        },
-        {
-          "name": "Setting.Tenancy.DictionarySetting",
-          "displayName": "字典设置",
-          "icon": "iconfont icon-shezhi1",
-          "url": "/Dictionary"
-        },
 
-      ]
-    }
+    ]
+  }
 
 ]

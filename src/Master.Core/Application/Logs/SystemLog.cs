@@ -4,6 +4,7 @@ using Master.Entity;
 using Master.MultiTenancy;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Master.Application
@@ -31,6 +32,7 @@ namespace Master.Application
         public string LogContent { get; set; }
         public int? TenantId { get; set; }
         public virtual Tenant Tenant { get; set; }
+        [Column(TypeName = "json")]
         public JsonObject<IDictionary<string, object>> Property { get; set; }
     }
 }

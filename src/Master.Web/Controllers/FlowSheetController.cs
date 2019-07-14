@@ -30,7 +30,7 @@ namespace Master.Controllers
             }
 
 
-            return Redirect($"/FlowForm/InstanceView?data={sheet.FlowInstanceId}&mode={mode}");
+            return Redirect($"/FlowForm/InstanceView?data={sheet.FlowInstanceId}&mode={mode}&sheetId="+sheet.Id);
         }
     }
 }

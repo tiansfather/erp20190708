@@ -28,7 +28,7 @@ namespace Master.Storage
         /// </summary>
         [InterColumn(ColumnName = "仓库地址",Sort =3)]
         public string Address { get; set; }
-        [InterColumn(ColumnName ="状态",ColumnType =Module.ColumnTypes.Switch,Templet = "{{#if(d.isActive){}}<span class=\"layui-badge layui-bg-green\">有效</span>{{#}else{}}<span class=\"layui-badge layui-bg-gray\">无效</span>{{#}}}",Sort =4)]
+        [InterColumn(ColumnName ="状态",DefaultValue ="true",ColumnType =Module.ColumnTypes.Switch,Templet = "{{#if(d.isActive){}}<span class=\"layui-badge layui-bg-green\">有效</span>{{#}else{}}<span class=\"layui-badge layui-bg-gray\">无效</span>{{#}}}",Sort =4)]
         public bool IsActive { get; set; }
     }
 }

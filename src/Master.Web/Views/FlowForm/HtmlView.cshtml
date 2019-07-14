@@ -15,10 +15,77 @@
     }
 </style>
 <script>
+    var sheetId = $.getUrlParam("sheetId");
     var _formOption = {
         readonly: true,
-        formData:@Html.Raw(ViewBag.FormData)
+        formData:@Html.Raw(ViewBag.FormData),
+        mode:"@ViewBag.Mode"
     };
 </script>
-
+<div id="header" v-cloak v-if="sheetId">
+    <el-form :inline="true" size="mini">
+        <el-form-item label="单号">
+            <el-input v-model="sheetInfo.sheetSN" readonly="true"></el-input>
+        </el-form-item>
+        <el-form-item label="录单日期">
+            <el-input v-model="sheetInfo.creationTime" readonly="true"></el-input>
+        </el-form-item>
+        <el-form-item label="经办人">
+            <el-input v-model="sheetInfo.creatorUserName" readonly="true"></el-input>
+        </el-form-item>
+        <el-form-item label="单据性质">
+            <el-input v-model="sheetInfo.sheetNatureName" readonly="true"></el-input>
+        </el-form-item>
+        <el-form-item label="对应单号" v-if="sheetInfo.sheetNature!=0">
+        <el-input v-model="sheetInfo.relSheetSN" readonly="true" ></el-input>
+        </el-form-item>
+        <el-form-item label="冲红原因" v-if="sheetInfo.sheetNature!=0">
+        <el-input v-model="sheetInfo.revertReason" readonly="true" ></el-input>
+        </el-form-item>
+    </el-form>
+    <button type="button" class="layui-btn layui-btn-danger" v-if="sheetInfo.sheetNature==0" style="float:right" @@click="revertSheet">冲红</button>
+    <hr>
+</div>
 @Html.Raw(ViewBag.FormContent)
+<script>
+    config.readyFuncs.push(function () {
+        var header = new Vue({
+            el: '#header',
+            data: {
+                sheetInfo: {}
+            },
+            computed: {
+
+            },
+            methods: {
+                revertSheet: function () {
+                    abp.message.confirm("确认冲红此单据?", function () {
+                        layer.prompt({
+                            formType: 2,
+                            value: '',
+                            title: '请输入冲红原因',
+                            //area: ['800px', '350px'] //自定义文本域宽高
+                        }, function (value, index, elem) {
+                            func.runAsync(abp.services.app.flowSheet.revert(sheetId,value).done(function () {
+                                parent.layer.msg("冲红成功");
+                                parent.config.reloadTable();
+                                parent.layer.closeAll('iframe');
+                            }))
+                            layer.close(index);
+                        });
+                    })
+                }
+            },
+            mounted: function () {
+                var that = this;
+                if (sheetId) {
+                    abp.services.app.flowSheet.getById(sheetId).done(function (data) {
+                        that.sheetInfo = data;
+                    })
+                }
+
+            }
+        })
+    })
+    
+</script>

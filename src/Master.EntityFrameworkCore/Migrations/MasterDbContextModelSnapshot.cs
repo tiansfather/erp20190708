@@ -180,7 +180,8 @@ namespace Master.Migrations
 
                     b.Property<string>("LogName");
 
-                    b.Property<string>("Property");
+                    b.Property<string>("Property")
+                        .HasColumnType("json");
 
                     b.Property<int?>("TenantId");
 
@@ -700,6 +701,110 @@ namespace Master.Migrations
                     b.HasIndex("LastModifierUserId");
 
                     b.ToTable("File");
+                });
+
+            modelBuilder.Entity("Master.Finance.FeeAccount", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreationTime");
+
+                    b.Property<long?>("CreatorUserId");
+
+                    b.Property<long?>("DeleterUserId");
+
+                    b.Property<DateTime?>("DeletionTime");
+
+                    b.Property<string>("ExtensionData");
+
+                    b.Property<decimal>("Fee");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime?>("LastModificationTime");
+
+                    b.Property<long?>("LastModifierUserId");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Property")
+                        .HasColumnType("json");
+
+                    b.Property<string>("Remarks");
+
+                    b.Property<decimal>("StartFee");
+
+                    b.Property<int>("TenantId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorUserId");
+
+                    b.HasIndex("DeleterUserId");
+
+                    b.HasIndex("LastModifierUserId");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("FeeAccount");
+                });
+
+            modelBuilder.Entity("Master.Finance.UnitFeeHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Content");
+
+                    b.Property<DateTime>("CreationTime");
+
+                    b.Property<long?>("CreatorUserId");
+
+                    b.Property<long?>("DeleterUserId");
+
+                    b.Property<DateTime?>("DeletionTime");
+
+                    b.Property<string>("ExtensionData");
+
+                    b.Property<decimal>("Fee");
+
+                    b.Property<int?>("FlowSheetId");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime?>("LastModificationTime");
+
+                    b.Property<long?>("LastModifierUserId");
+
+                    b.Property<string>("Property")
+                        .HasColumnType("json");
+
+                    b.Property<decimal>("RemainFee");
+
+                    b.Property<string>("Remarks");
+
+                    b.Property<int>("TenantId");
+
+                    b.Property<int>("UnitId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorUserId");
+
+                    b.HasIndex("DeleterUserId");
+
+                    b.HasIndex("FlowSheetId");
+
+                    b.HasIndex("LastModifierUserId");
+
+                    b.HasIndex("TenantId");
+
+                    b.HasIndex("UnitId");
+
+                    b.ToTable("UnitFeeHistory");
                 });
 
             modelBuilder.Entity("Master.Module.ColumnInfo", b =>
@@ -1285,55 +1390,6 @@ namespace Master.Migrations
                     b.ToTable("Resource");
                 });
 
-            modelBuilder.Entity("Master.Storage.FeeAccount", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CreationTime");
-
-                    b.Property<long?>("CreatorUserId");
-
-                    b.Property<long?>("DeleterUserId");
-
-                    b.Property<DateTime?>("DeletionTime");
-
-                    b.Property<string>("ExtensionData");
-
-                    b.Property<decimal>("Fee");
-
-                    b.Property<bool>("IsActive");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<DateTime?>("LastModificationTime");
-
-                    b.Property<long?>("LastModifierUserId");
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("Property")
-                        .HasColumnType("json");
-
-                    b.Property<string>("Remarks");
-
-                    b.Property<decimal>("StartFee");
-
-                    b.Property<int>("TenantId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatorUserId");
-
-                    b.HasIndex("DeleterUserId");
-
-                    b.HasIndex("LastModifierUserId");
-
-                    b.HasIndex("TenantId");
-
-                    b.ToTable("FeeAccount");
-                });
-
             modelBuilder.Entity("Master.Storage.Material", b =>
                 {
                     b.Property<int>("Id")
@@ -1513,6 +1569,75 @@ namespace Master.Migrations
                     b.ToTable("StoreMaterial");
                 });
 
+            modelBuilder.Entity("Master.Storage.StoreMaterialHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Brand");
+
+                    b.Property<string>("ChangeType");
+
+                    b.Property<DateTime>("CreationTime");
+
+                    b.Property<long?>("CreatorUserId");
+
+                    b.Property<long?>("DeleterUserId");
+
+                    b.Property<DateTime?>("DeletionTime");
+
+                    b.Property<string>("ExtensionData");
+
+                    b.Property<int?>("FlowSheetId");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime?>("LastModificationTime");
+
+                    b.Property<long?>("LastModifierUserId");
+
+                    b.Property<int>("MaterialId");
+
+                    b.Property<string>("MaterialName");
+
+                    b.Property<string>("MeasureMentUnitName");
+
+                    b.Property<decimal>("Number");
+
+                    b.Property<string>("Property")
+                        .HasColumnType("json");
+
+                    b.Property<string>("Remarks");
+
+                    b.Property<string>("Specification");
+
+                    b.Property<int>("StoreId");
+
+                    b.Property<string>("StoreName");
+
+                    b.Property<int>("TenantId");
+
+                    b.Property<string>("UnitName");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorUserId");
+
+                    b.HasIndex("DeleterUserId");
+
+                    b.HasIndex("FlowSheetId");
+
+                    b.HasIndex("LastModifierUserId");
+
+                    b.HasIndex("MaterialId");
+
+                    b.HasIndex("StoreId");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("StoreMaterialHistory");
+                });
+
             modelBuilder.Entity("Master.Storage.UnitMaterialDiscount", b =>
                 {
                     b.Property<int>("Id")
@@ -1651,6 +1776,441 @@ namespace Master.Migrations
                     b.HasIndex("TenantId");
 
                     b.ToTable("Unit");
+                });
+
+            modelBuilder.Entity("Master.WorkFlow.FlowForm", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreationTime");
+
+                    b.Property<long?>("CreatorUserId");
+
+                    b.Property<long?>("DeleterUserId");
+
+                    b.Property<DateTime?>("DeletionTime");
+
+                    b.Property<string>("ExtensionData");
+
+                    b.Property<string>("FormContent");
+
+                    b.Property<string>("FormHandler");
+
+                    b.Property<string>("FormKey");
+
+                    b.Property<string>("FormName");
+
+                    b.Property<int>("FormType");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<bool>("IsSystemForm");
+
+                    b.Property<DateTime?>("LastModificationTime");
+
+                    b.Property<long?>("LastModifierUserId");
+
+                    b.Property<string>("Property")
+                        .HasColumnType("json");
+
+                    b.Property<string>("Remarks");
+
+                    b.Property<int>("Sort");
+
+                    b.Property<int>("TenantId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorUserId");
+
+                    b.HasIndex("DeleterUserId");
+
+                    b.HasIndex("LastModifierUserId");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("FlowForm");
+                });
+
+            modelBuilder.Entity("Master.WorkFlow.FlowInstance", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ActivityId");
+
+                    b.Property<string>("ActivityName");
+
+                    b.Property<int?>("ActivityType");
+
+                    b.Property<string>("Code");
+
+                    b.Property<DateTime>("CreationTime");
+
+                    b.Property<long?>("CreatorUserId");
+
+                    b.Property<long?>("DeleterUserId");
+
+                    b.Property<DateTime?>("DeletionTime");
+
+                    b.Property<string>("ExtensionData");
+
+                    b.Property<int>("FlowFormId");
+
+                    b.Property<int>("FlowLevel");
+
+                    b.Property<int?>("FlowSchemeId");
+
+                    b.Property<string>("FormContent");
+
+                    b.Property<string>("FormData");
+
+                    b.Property<int>("FormType");
+
+                    b.Property<string>("InstanceName");
+
+                    b.Property<int>("InstanceStatus");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime?>("LastModificationTime");
+
+                    b.Property<long?>("LastModifierUserId");
+
+                    b.Property<string>("MakerList");
+
+                    b.Property<string>("PreviousId");
+
+                    b.Property<string>("Property")
+                        .HasColumnType("json");
+
+                    b.Property<string>("Remarks");
+
+                    b.Property<string>("SchemeContent");
+
+                    b.Property<int>("TenantId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorUserId");
+
+                    b.HasIndex("DeleterUserId");
+
+                    b.HasIndex("FlowFormId");
+
+                    b.HasIndex("FlowSchemeId");
+
+                    b.HasIndex("LastModifierUserId");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("FlowInstance");
+                });
+
+            modelBuilder.Entity("Master.WorkFlow.FlowInstanceOperationHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Content");
+
+                    b.Property<DateTime>("CreationTime");
+
+                    b.Property<long?>("CreatorUserId");
+
+                    b.Property<long?>("DeleterUserId");
+
+                    b.Property<DateTime?>("DeletionTime");
+
+                    b.Property<string>("ExtensionData");
+
+                    b.Property<int>("FlowInstanceId");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime?>("LastModificationTime");
+
+                    b.Property<long?>("LastModifierUserId");
+
+                    b.Property<string>("Property")
+                        .HasColumnType("json");
+
+                    b.Property<string>("Remarks");
+
+                    b.Property<int>("TenantId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorUserId");
+
+                    b.HasIndex("DeleterUserId");
+
+                    b.HasIndex("FlowInstanceId");
+
+                    b.HasIndex("LastModifierUserId");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("FlowInstanceOperationHistory");
+                });
+
+            modelBuilder.Entity("Master.WorkFlow.FlowInstanceTransitionHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreationTime");
+
+                    b.Property<long?>("CreatorUserId");
+
+                    b.Property<long?>("DeleterUserId");
+
+                    b.Property<DateTime?>("DeletionTime");
+
+                    b.Property<string>("ExtensionData");
+
+                    b.Property<int>("FlowInstanceId");
+
+                    b.Property<string>("FromNodeId");
+
+                    b.Property<string>("FromNodeName");
+
+                    b.Property<int?>("FromNodeType");
+
+                    b.Property<int>("InstanceStatus");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime?>("LastModificationTime");
+
+                    b.Property<long?>("LastModifierUserId");
+
+                    b.Property<string>("Property")
+                        .HasColumnType("json");
+
+                    b.Property<string>("Remarks");
+
+                    b.Property<int>("TenantId");
+
+                    b.Property<string>("ToNodeId");
+
+                    b.Property<string>("ToNodeName");
+
+                    b.Property<int?>("ToNodeType");
+
+                    b.Property<int>("TransitionSate");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorUserId");
+
+                    b.HasIndex("DeleterUserId");
+
+                    b.HasIndex("FlowInstanceId");
+
+                    b.HasIndex("LastModifierUserId");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("FlowInstanceTransitionHistory");
+                });
+
+            modelBuilder.Entity("Master.WorkFlow.FlowScheme", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AuthorizeType");
+
+                    b.Property<DateTime>("CreationTime");
+
+                    b.Property<long?>("CreatorUserId");
+
+                    b.Property<long?>("DeleterUserId");
+
+                    b.Property<DateTime?>("DeletionTime");
+
+                    b.Property<string>("ExtensionData");
+
+                    b.Property<int>("FlowFormId");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime?>("LastModificationTime");
+
+                    b.Property<long?>("LastModifierUserId");
+
+                    b.Property<string>("Property")
+                        .HasColumnType("json");
+
+                    b.Property<string>("Remarks");
+
+                    b.Property<string>("SchemeCanUser");
+
+                    b.Property<string>("SchemeCode");
+
+                    b.Property<string>("SchemeContent");
+
+                    b.Property<string>("SchemeName");
+
+                    b.Property<string>("SchemeType");
+
+                    b.Property<string>("SchemeVersion");
+
+                    b.Property<int>("Sort");
+
+                    b.Property<int>("TenantId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorUserId");
+
+                    b.HasIndex("DeleterUserId");
+
+                    b.HasIndex("FlowFormId");
+
+                    b.HasIndex("LastModifierUserId");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("FlowScheme");
+                });
+
+            modelBuilder.Entity("Master.WorkFlow.FlowSheet", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("BusinessSN");
+
+                    b.Property<string>("BusinessType");
+
+                    b.Property<DateTime>("CreationTime");
+
+                    b.Property<long?>("CreatorUserId");
+
+                    b.Property<long?>("DeleterUserId");
+
+                    b.Property<DateTime?>("DeletionTime");
+
+                    b.Property<string>("ExtensionData");
+
+                    b.Property<int?>("FlowInstanceId");
+
+                    b.Property<string>("FormKey");
+
+                    b.Property<long?>("HandlerId");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime?>("LastModificationTime");
+
+                    b.Property<long?>("LastModifierUserId");
+
+                    b.Property<string>("Property")
+                        .HasColumnType("json");
+
+                    b.Property<int?>("RelSheetId");
+
+                    b.Property<string>("Remarks");
+
+                    b.Property<string>("RevertReason");
+
+                    b.Property<DateTime>("SheetDate");
+
+                    b.Property<string>("SheetName");
+
+                    b.Property<int>("SheetNature");
+
+                    b.Property<string>("SheetSN");
+
+                    b.Property<int>("SheetStatus");
+
+                    b.Property<string>("Status");
+
+                    b.Property<int>("TenantId");
+
+                    b.Property<int?>("UnitId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorUserId");
+
+                    b.HasIndex("DeleterUserId");
+
+                    b.HasIndex("FlowInstanceId");
+
+                    b.HasIndex("HandlerId");
+
+                    b.HasIndex("LastModifierUserId");
+
+                    b.HasIndex("RelSheetId");
+
+                    b.HasIndex("TenantId");
+
+                    b.HasIndex("UnitId");
+
+                    b.ToTable("FlowSheet");
+                });
+
+            modelBuilder.Entity("Master.WorkFlow.FlowSheetContent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreationTime");
+
+                    b.Property<long?>("CreatorUserId");
+
+                    b.Property<long?>("DeleterUserId");
+
+                    b.Property<DateTime?>("DeletionTime");
+
+                    b.Property<string>("ExtensionData");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime?>("LastModificationTime");
+
+                    b.Property<long?>("LastModifierUserId");
+
+                    b.Property<string>("Property")
+                        .HasColumnType("json");
+
+                    b.Property<int?>("RelativeSheetContentId");
+
+                    b.Property<string>("Remarks");
+
+                    b.Property<int?>("SheetContentId");
+
+                    b.Property<int>("SheetId");
+
+                    b.Property<string>("Status");
+
+                    b.Property<int>("TenantId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorUserId");
+
+                    b.HasIndex("DeleterUserId");
+
+                    b.HasIndex("LastModifierUserId");
+
+                    b.HasIndex("RelativeSheetContentId");
+
+                    b.HasIndex("SheetId");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("FlowSheetContent");
                 });
 
             modelBuilder.Entity("Master.Application.Features.EditionFeatureSetting", b =>
@@ -1858,6 +2418,55 @@ namespace Master.Migrations
                         .HasForeignKey("LastModifierUserId");
                 });
 
+            modelBuilder.Entity("Master.Finance.FeeAccount", b =>
+                {
+                    b.HasOne("Master.Authentication.User", "CreatorUser")
+                        .WithMany()
+                        .HasForeignKey("CreatorUserId");
+
+                    b.HasOne("Master.Authentication.User", "DeleterUser")
+                        .WithMany()
+                        .HasForeignKey("DeleterUserId");
+
+                    b.HasOne("Master.Authentication.User", "LastModifierUser")
+                        .WithMany()
+                        .HasForeignKey("LastModifierUserId");
+
+                    b.HasOne("Master.MultiTenancy.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Master.Finance.UnitFeeHistory", b =>
+                {
+                    b.HasOne("Master.Authentication.User", "CreatorUser")
+                        .WithMany()
+                        .HasForeignKey("CreatorUserId");
+
+                    b.HasOne("Master.Authentication.User", "DeleterUser")
+                        .WithMany()
+                        .HasForeignKey("DeleterUserId");
+
+                    b.HasOne("Master.WorkFlow.FlowSheet", "FlowSheet")
+                        .WithMany()
+                        .HasForeignKey("FlowSheetId");
+
+                    b.HasOne("Master.Authentication.User", "LastModifierUser")
+                        .WithMany()
+                        .HasForeignKey("LastModifierUserId");
+
+                    b.HasOne("Master.MultiTenancy.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Master.Units.Unit", "Unit")
+                        .WithMany()
+                        .HasForeignKey("UnitId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Master.Module.ColumnInfo", b =>
                 {
                     b.HasOne("Master.Module.ModuleInfo", "ModuleInfo")
@@ -2059,26 +2668,6 @@ namespace Master.Migrations
                         .HasForeignKey("TenantId");
                 });
 
-            modelBuilder.Entity("Master.Storage.FeeAccount", b =>
-                {
-                    b.HasOne("Master.Authentication.User", "CreatorUser")
-                        .WithMany()
-                        .HasForeignKey("CreatorUserId");
-
-                    b.HasOne("Master.Authentication.User", "DeleterUser")
-                        .WithMany()
-                        .HasForeignKey("DeleterUserId");
-
-                    b.HasOne("Master.Authentication.User", "LastModifierUser")
-                        .WithMany()
-                        .HasForeignKey("LastModifierUserId");
-
-                    b.HasOne("Master.MultiTenancy.Tenant", "Tenant")
-                        .WithMany()
-                        .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("Master.Storage.Material", b =>
                 {
                     b.HasOne("Master.Authentication.User", "CreatorUser")
@@ -2153,6 +2742,40 @@ namespace Master.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("Master.Storage.StoreMaterialHistory", b =>
+                {
+                    b.HasOne("Master.Authentication.User", "CreatorUser")
+                        .WithMany()
+                        .HasForeignKey("CreatorUserId");
+
+                    b.HasOne("Master.Authentication.User", "DeleterUser")
+                        .WithMany()
+                        .HasForeignKey("DeleterUserId");
+
+                    b.HasOne("Master.WorkFlow.FlowSheet", "FlowSheet")
+                        .WithMany()
+                        .HasForeignKey("FlowSheetId");
+
+                    b.HasOne("Master.Authentication.User", "LastModifierUser")
+                        .WithMany()
+                        .HasForeignKey("LastModifierUserId");
+
+                    b.HasOne("Master.Storage.Material", "Material")
+                        .WithMany()
+                        .HasForeignKey("MaterialId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Master.Storage.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Master.MultiTenancy.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Master.Storage.UnitMaterialDiscount", b =>
                 {
                     b.HasOne("Master.Storage.Material", "Material")
@@ -2198,6 +2821,195 @@ namespace Master.Migrations
                     b.HasOne("Master.Authentication.User", "LastModifierUser")
                         .WithMany()
                         .HasForeignKey("LastModifierUserId");
+
+                    b.HasOne("Master.MultiTenancy.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Master.WorkFlow.FlowForm", b =>
+                {
+                    b.HasOne("Master.Authentication.User", "CreatorUser")
+                        .WithMany()
+                        .HasForeignKey("CreatorUserId");
+
+                    b.HasOne("Master.Authentication.User", "DeleterUser")
+                        .WithMany()
+                        .HasForeignKey("DeleterUserId");
+
+                    b.HasOne("Master.Authentication.User", "LastModifierUser")
+                        .WithMany()
+                        .HasForeignKey("LastModifierUserId");
+
+                    b.HasOne("Master.MultiTenancy.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Master.WorkFlow.FlowInstance", b =>
+                {
+                    b.HasOne("Master.Authentication.User", "CreatorUser")
+                        .WithMany()
+                        .HasForeignKey("CreatorUserId");
+
+                    b.HasOne("Master.Authentication.User", "DeleterUser")
+                        .WithMany()
+                        .HasForeignKey("DeleterUserId");
+
+                    b.HasOne("Master.WorkFlow.FlowForm", "FlowForm")
+                        .WithMany()
+                        .HasForeignKey("FlowFormId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Master.WorkFlow.FlowScheme", "FlowScheme")
+                        .WithMany()
+                        .HasForeignKey("FlowSchemeId");
+
+                    b.HasOne("Master.Authentication.User", "LastModifierUser")
+                        .WithMany()
+                        .HasForeignKey("LastModifierUserId");
+
+                    b.HasOne("Master.MultiTenancy.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Master.WorkFlow.FlowInstanceOperationHistory", b =>
+                {
+                    b.HasOne("Master.Authentication.User", "CreatorUser")
+                        .WithMany()
+                        .HasForeignKey("CreatorUserId");
+
+                    b.HasOne("Master.Authentication.User", "DeleterUser")
+                        .WithMany()
+                        .HasForeignKey("DeleterUserId");
+
+                    b.HasOne("Master.WorkFlow.FlowInstance", "FlowInstance")
+                        .WithMany()
+                        .HasForeignKey("FlowInstanceId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Master.Authentication.User", "LastModifierUser")
+                        .WithMany()
+                        .HasForeignKey("LastModifierUserId");
+
+                    b.HasOne("Master.MultiTenancy.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Master.WorkFlow.FlowInstanceTransitionHistory", b =>
+                {
+                    b.HasOne("Master.Authentication.User", "CreatorUser")
+                        .WithMany()
+                        .HasForeignKey("CreatorUserId");
+
+                    b.HasOne("Master.Authentication.User", "DeleterUser")
+                        .WithMany()
+                        .HasForeignKey("DeleterUserId");
+
+                    b.HasOne("Master.WorkFlow.FlowInstance", "FlowInstance")
+                        .WithMany()
+                        .HasForeignKey("FlowInstanceId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Master.Authentication.User", "LastModifierUser")
+                        .WithMany()
+                        .HasForeignKey("LastModifierUserId");
+
+                    b.HasOne("Master.MultiTenancy.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Master.WorkFlow.FlowScheme", b =>
+                {
+                    b.HasOne("Master.Authentication.User", "CreatorUser")
+                        .WithMany()
+                        .HasForeignKey("CreatorUserId");
+
+                    b.HasOne("Master.Authentication.User", "DeleterUser")
+                        .WithMany()
+                        .HasForeignKey("DeleterUserId");
+
+                    b.HasOne("Master.WorkFlow.FlowForm", "FlowForm")
+                        .WithMany()
+                        .HasForeignKey("FlowFormId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Master.Authentication.User", "LastModifierUser")
+                        .WithMany()
+                        .HasForeignKey("LastModifierUserId");
+
+                    b.HasOne("Master.MultiTenancy.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Master.WorkFlow.FlowSheet", b =>
+                {
+                    b.HasOne("Master.Authentication.User", "CreatorUser")
+                        .WithMany()
+                        .HasForeignKey("CreatorUserId");
+
+                    b.HasOne("Master.Authentication.User", "DeleterUser")
+                        .WithMany()
+                        .HasForeignKey("DeleterUserId");
+
+                    b.HasOne("Master.WorkFlow.FlowInstance", "FlowInstance")
+                        .WithMany()
+                        .HasForeignKey("FlowInstanceId");
+
+                    b.HasOne("Master.Authentication.User", "Handler")
+                        .WithMany()
+                        .HasForeignKey("HandlerId");
+
+                    b.HasOne("Master.Authentication.User", "LastModifierUser")
+                        .WithMany()
+                        .HasForeignKey("LastModifierUserId");
+
+                    b.HasOne("Master.WorkFlow.FlowSheet", "RelSheet")
+                        .WithMany()
+                        .HasForeignKey("RelSheetId");
+
+                    b.HasOne("Master.MultiTenancy.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Master.Units.Unit", "Unit")
+                        .WithMany()
+                        .HasForeignKey("UnitId");
+                });
+
+            modelBuilder.Entity("Master.WorkFlow.FlowSheetContent", b =>
+                {
+                    b.HasOne("Master.Authentication.User", "CreatorUser")
+                        .WithMany()
+                        .HasForeignKey("CreatorUserId");
+
+                    b.HasOne("Master.Authentication.User", "DeleterUser")
+                        .WithMany()
+                        .HasForeignKey("DeleterUserId");
+
+                    b.HasOne("Master.Authentication.User", "LastModifierUser")
+                        .WithMany()
+                        .HasForeignKey("LastModifierUserId");
+
+                    b.HasOne("Master.WorkFlow.FlowSheetContent", "RelativeSheetContent")
+                        .WithMany()
+                        .HasForeignKey("RelativeSheetContentId");
+
+                    b.HasOne("Master.WorkFlow.FlowSheet", "Sheet")
+                        .WithMany("SheetContents")
+                        .HasForeignKey("SheetId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Master.MultiTenancy.Tenant", "Tenant")
                         .WithMany()

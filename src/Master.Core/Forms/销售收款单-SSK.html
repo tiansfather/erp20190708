@@ -1,0 +1,81 @@
+﻿<div id="app" v-cloak>
+    <el-form :inline="true" size="mini">
+        <el-form-item label="代理商">
+            <unit-select nature="0" :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @change="loadUnit"></unit-select>
+        </el-form-item>
+        
+
+
+    </el-form>
+    <el-form size="mini">
+        <el-form-item label="现金">
+            <el-input placeholder="" v-model="currentItem.totalFee">
+                <template slot="append">
+                    元
+                </template>
+            </el-input>
+        </el-form-item>
+        <el-form-item label="备注">
+            <el-input type="textarea" v-model="currentItem.remarks"></el-input>
+        </el-form-item>
+        
+    </el-form>
+        
+</div>
+<script>
+    config.ready = function () {
+        app = new Vue({
+            el: "#app",
+            data: {
+                currentItem: _formOption.formData ? _formOption.formData.layoutData : {
+                    totalFee: 0,
+                    unitId: null,
+                    unitInfo: {},
+                    remarks:''
+                }
+
+            },
+            methods: {
+                loadUnit(unitId) {
+                    var that = this;
+                    if (unitId) {
+                        //获取往来单位信息
+                        func.runAsync(abp.services.app.unit.getById(unitId).done(function (data) {
+                            that.currentItem.unitInfo = data;
+                        }))
+                    }
+                }
+            },
+            created() {
+                var that = this;
+                if (!_formOption.formData) {
+                    //录入模式获取数据
+                    
+                }
+            },
+            mounted() {
+            }
+        })
+    }
+
+    //模板中必须实现的方法，用于获取表单数据，返回一个对象，如果需要取消提交，可抛出一个异常
+    function getFormData() {
+        var data = app.currentItem.items;
+        if (!data.length) {
+            throw "请至少录入一条数据";
+        }
+        var sheetData = {
+            header: {
+                sheetDate: app.currentItem.sheetDate,
+                remarks: app.currentItem.remarks,
+                storeId: app.currentItem.storeId
+            },
+            body: data
+        };
+        //约定，formData由两部分组成,一为layoutData,即用于表单呈现数据,另一部分是单据数据,用于后台进行数据处理,一般由呈现数据进行处理后得到
+        return {
+            layoutData: app.currentItem,
+            sheetData: sheetData
+        };
+    }
+</script>

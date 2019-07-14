@@ -1,6 +1,7 @@
 ﻿using Abp.Authorization;
 using Abp.UI;
 using Master.Dto;
+using Master.Finance;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

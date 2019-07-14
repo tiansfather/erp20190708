@@ -104,7 +104,7 @@ namespace Master.Controllers
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public async Task<IActionResult> InstanceView(int data)
+        public async Task<IActionResult> InstanceView(int data,string mode)
         {
             var instance = await FlowInstanceManager.GetAll().IgnoreQueryFilters().Where(o => o.Id == data).FirstOrDefaultAsync();
             if (instance == null)
@@ -117,6 +117,7 @@ namespace Master.Controllers
                 case FormType.Html:
                     ViewBag.FormContent = instance.FormContent;
                     ViewBag.FormData = instance.FormData;
+                    ViewBag.Mode = mode;
                     return View("HtmlView");
                 case FormType.Designer:
                     return View("DesignerView");
@@ -126,72 +127,6 @@ namespace Master.Controllers
             return View();
         }
 
-        /// <summary>
-        /// 表单的缓存 页查看
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        public async Task<ActionResult> FormCacheView(string code)
-        { 
-            var formObj = await GetFormCache(code);
-            ViewBag.FormContent = formObj["formContent"];
-            ViewBag.FormData = formObj["formData"];
-            return View("HtmlView");
-        }
-        /// <summary>
-        /// 表单的缓存获取 并设置用户为当前扫码打开页面人
-        /// </summary>
-        /// <param name="code"></param>
-        /// <returns></returns>
-        public async Task<JObject> GetFormCache(string code)
-        {
-            var userPerson = await UserManager.GetByIdAsync((long)AbpSession.UserId);
-            var instance = CacheManager.GetCache("FormCache").GetOrDefault(code);
-            var formObj = Newtonsoft.Json.JsonConvert.DeserializeObject<JObject>(instance.ToString());
-            formObj["formData"]["layoutData"]["usePerson"] = userPerson.Name;
-
-            CacheManager.GetCache("FormCache").Set(code, formObj);
-            // var flowForm = FlowFormManager.GetAll().Where(o => o.Id == Convert.ToInt32(formObj["formId"])).FirstOrDefault();
-            var flowForm = await FlowFormManager.GetByIdAsync(Convert.ToInt32(formObj["formId"]));
-            formObj["formContent"] = flowForm.FormContent;
-            return formObj;
-        }
-
-        /// <summary>
-        /// 表单的设置缓存
-        /// </summary>
-        /// <param name="code"></param>
-        /// <returns></returns>
-        public string SetFormCache(string formData,string formId)
-        {
-            var formDataJson = Newtonsoft.Json.JsonConvert.DeserializeObject<JObject>(formData);
-            var jsonData = new JObject();
-            jsonData["formData"] = formDataJson;
-            jsonData["formId"] = formId;
-       //     { formData = formDataJson, formId }
-            var code =   Guid.NewGuid().ToString();
-            CacheManager.GetCache("FormCache").Set(code, jsonData);
-            return code;
-        }
-        /// <summary>
-        /// 表单的缓存中的领取人名
-        /// </summary>
-        /// <param name="code"></param>
-        /// <returns></returns>
-        public string GetFormCachePerson(string code)
-        {
-            string Name = null;
-            try
-            {
-                var instance = CacheManager.GetCache("FormCache").GetOrDefault(code);
-                var formObj = Newtonsoft.Json.JsonConvert.DeserializeObject<JObject>(instance.ToString());
-                Name = formObj["formData"]["layoutData"]["usePerson"].ToString();
-            }
-            catch (Exception ex) {
-                return null;
-            }
-            return Name;
-        }
         public async Task<IActionResult> InstanceRepost(int data)
         {
             var instance = await FlowInstanceManager.GetByIdFromCacheAsync(data);

@@ -86,5 +86,16 @@ namespace Master.Units
             
             return query;
         }
+
+        protected override object ResultConverter(Unit entity)
+        {
+            return new
+            {
+                entity.Id,
+                entity.UnitName,
+                entity.UnitNature,
+                NowFee = entity.StartFee + entity.Fee
+            };
+        }
     }
 }

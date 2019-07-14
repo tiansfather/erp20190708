@@ -15,5 +15,13 @@ namespace Master.WorkFlow
         /// <param name="flowForm"></param>
         /// <returns></returns>
         Task Handle(FlowInstance instance,FlowForm flowForm);
+
+        /// <summary>
+        /// 单据回滚
+        /// </summary>
+        /// <param name="flowInstance"></param>
+        /// <param name="flowSheet"></param>
+        /// <returns></returns>
+        Task HandleRevert(FlowInstance flowInstance,FlowSheet flowSheet);
     }
 }

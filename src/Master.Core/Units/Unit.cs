@@ -37,7 +37,7 @@ namespace Master.Units
         /// <summary>
         /// 当前余额
         /// </summary>
-        [InterColumn(ColumnName = "当前结余", ColumnType = Module.ColumnTypes.Number, DisplayFormat = "0.00", IsShownInAdd = false, IsShownInEdit = false, Sort = 4)]
+        [InterColumn(ColumnName = "当前结余", ColumnType = Module.ColumnTypes.Number, DisplayFormat = "0.00", IsShownInAdd = false, IsShownInEdit = false, Sort = 4,Templet ="{{d.startFee+d.fee}}")]
         public decimal Fee { get; set; }
        
         [InterColumn(ColumnName = "联系地址", Sort = 5,IsShownInList =false)]

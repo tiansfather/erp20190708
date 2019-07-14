@@ -14,6 +14,8 @@ namespace Master.WorkFlow
     {
         public abstract Task Handle(FlowInstance instance, FlowForm flowForm);
 
+        public abstract Task HandleRevert(FlowInstance flowInstance, FlowSheet flowSheet);
+
         protected T Resolve<T>()
         {
             using (var wrapper=IocManager.Instance.ResolveAsDisposable<T>())

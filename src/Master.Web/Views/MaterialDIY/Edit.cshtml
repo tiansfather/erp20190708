@@ -102,7 +102,7 @@
                     var that = this;
                     //获取库存，如果库存大于0，则不允许修改
                     abp.services.app.material.getStoreMaterialCount(materialId).done(function (data) {
-                        if (data <= 0) {
+                        if (data > 0) {
                             abp.message.info("库存为0的组合商品不能进行散装组合配置修改");
                             $("#submitBtn").addClass("layui-btn-disabled");
                         }

@@ -8,64 +8,156 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Abp.UI;
+using Master.WorkFlow;
 
 namespace Master.Storage
 {
     public class StoreMaterialManager : ModuleServiceBase<StoreMaterial, int>
     {
-     //   public MaterialUseInfoManager MaterialUseInfoManager { get; set; }
-     //   public StoreMaterialHistoryManager StoreMaterialHistoryManager { get; set; }
-      //  public FlowSheetManager FlowSheetManager { get; set; }
+        /// <summary>
+        /// 获取商品在某个仓库的库存
+        /// </summary>
+        /// <param name="storeId"></param>
+        /// <param name="materialId"></param>
+        /// <returns></returns>
+        public virtual async Task<decimal> GetStoreMaterialNumber(int storeId,int materialId)
+        {
+            return (await GetAll().Where(o => o.StoreId == storeId && o.MaterialId == materialId).FirstOrDefaultAsync())?.Number ?? 0;
+        }
+        #region 拆散与组合
+        /// <summary>
+        /// 组合商品
+        /// </summary>
+        /// <param name="storeId"></param>
+        /// <param name="materialId"></param>
+        /// <param name="number"></param>
+        /// <param name="flowSheetId"></param>
+        /// <returns></returns>
+        public virtual async Task CombineMaterial(int storeId, int materialId, int number, FlowSheet flowSheet)
+        {
+            var changeType = flowSheet.SheetNature == SheetNature.正单 ? flowSheet.SheetName : $"{flowSheet.SheetName}冲红";
+            var materialManager = Resolve<MaterialManager>();
+            var material = await materialManager.GetByIdAsync(materialId);
+            if (!material.IsDiyed || material.DIYInfo.Count == 0)
+            {
+                throw new UserFriendlyException($"商品{material.Name}未配置组合信息,无法组合");
+            }
+            //1.减少单品库存
+            foreach (var diyInfo in material.DIYInfo)
+            {
+                //是否有足够库存
+                var diyMaterialNumber = await GetStoreMaterialNumber(storeId, diyInfo.MaterialId);
+                if(diyMaterialNumber< diyInfo.Number * number)
+                {
+                    var diyMaterial = await materialManager.GetByIdFromCacheAsync(diyInfo.MaterialId);
+                    throw new UserFriendlyException($"商品{diyMaterial.Name}需要数量{diyInfo.Number * number}才能组合目标商品,目前库存数量为{diyMaterialNumber},无法组合");
+                }
+                var diyStoreMaterial = new StoreMaterial()
+                {
+                    MaterialId = diyInfo.MaterialId,
+                    StoreId = storeId,
+                    Number = -diyInfo.Number * number
+                };
+                
+                diyStoreMaterial.BuildStoreMaterialHistory(changeType, -diyInfo.Number * number, flowSheet.Id);
+                await AppendStoreMaterial(diyStoreMaterial);
+            }
+            //2.增加组装库存
+            var storeMaterial = new StoreMaterial()
+            {
+                MaterialId = materialId,
+                StoreId = storeId,
+                Number = number
+            };
+            storeMaterial.BuildStoreMaterialHistory(changeType, number, flowSheet.Id);
+            await AppendStoreMaterial(storeMaterial);
+            
+        }
+        /// <summary>
+        /// 拆散商品
+        /// </summary>
+        /// <param name="storeId"></param>
+        /// <param name="materialId"></param>
+        /// <returns></returns>
+        public virtual async Task BreakMaterial(int storeId, int materialId, int number, FlowSheet flowSheet)
+        {
+            var changeType = flowSheet.SheetNature == SheetNature.正单 ? flowSheet.SheetName : $"{flowSheet.SheetName}冲红";
+            var material = await Resolve<MaterialManager>().GetByIdAsync(materialId);
+            if (!material.IsDiyed || material.DIYInfo.Count == 0)
+            {
+                throw new UserFriendlyException($"商品{material.Name}未配置组合信息,无法拆散");
+            }
+            var storeMaterialCount = await GetStoreMaterialNumber(storeId, materialId);
+            if (storeMaterialCount < number)
+            {
+                throw new UserFriendlyException("拆散数量不能大于库存数量");
+            }
+
+            //1.减少组装库存
+            var storeMaterial = new StoreMaterial()
+            {
+                MaterialId = materialId,
+                StoreId = storeId,
+                Number = -number
+            };
+            storeMaterial.BuildStoreMaterialHistory(changeType, -number, flowSheet.Id);
+            await AppendStoreMaterial(storeMaterial);
+            //2.增加单品库存
+            foreach (var diyInfo in material.DIYInfo)
+            {
+                var diyStoreMaterial = new StoreMaterial()
+                {
+                    MaterialId = diyInfo.MaterialId,
+                    StoreId = storeId,
+                    Number = diyInfo.Number * number
+                };
+                diyStoreMaterial.BuildStoreMaterialHistory(changeType, diyInfo.Number * number, flowSheet.Id);
+                await AppendStoreMaterial(diyStoreMaterial);
+            }
+        }
+        #endregion
+
+        //   public MaterialUseInfoManager MaterialUseInfoManager { get; set; }
+        //   public StoreMaterialHistoryManager StoreMaterialHistoryManager { get; set; }
+        //  public FlowSheetManager FlowSheetManager { get; set; }
         /// <summary>
         /// 增加库存信息
         /// </summary>
         /// <param name="storeMaterial"></param>
-        
-        //public virtual async Task<StoreMaterial> AppendStoreMaterial(StoreMaterial storeMaterial)
-        //{
-        //    var oriStoreMaterial = await FindExistStoreMaterialRecord(storeMaterial);
-        //    if (oriStoreMaterial == null)
-        //    {
-        //        //如果没有记录则产生库存记录
-        //        await InsertAsync(storeMaterial);
-        //        await CurrentUnitOfWork.SaveChangesAsync();
-        //        return storeMaterial;
-        //    }
-        //    else
-        //    {
-        //        //如果已经有记录了,则更新原有记录
-        //        //计算原有库存总金额
-        //        var oriStoreCost = oriStoreMaterial.Price * oriStoreMaterial.Number;//原库存金额 
-        //        var newCost = storeMaterial.Price * storeMaterial.Number;//新出入库金额
-        //        oriStoreMaterial.Number += storeMaterial.Number;//更新库存数量
-        //        oriStoreMaterial.Price = oriStoreMaterial.Number == 0 ? 0 :Math.Round( (oriStoreCost + newCost) / oriStoreMaterial.Number,2);//计算平均单价
-        //        oriStoreMaterial.StoreMaterialHistory = storeMaterial.StoreMaterialHistory;
-        //        await CurrentUnitOfWork.SaveChangesAsync();
-        //        return oriStoreMaterial;
-        //    }
-        //}
 
-        ///// <summary>
-        ///// 寻找库存中已存在的库存记录
-        ///// </summary>
-        ///// <param name="storeMaterial"></param>
-        ///// <returns></returns>
-        //public virtual async Task<StoreMaterial> FindExistStoreMaterialRecord(StoreMaterial storeMaterial)
-        //{
-        //    return await GetAll()
-        //        .Where(o=>o.ProjectId==storeMaterial.ProjectId)
-        //        .Where(o => o.MaterialId == storeMaterial.MaterialId)
-        //        .Where(o => o.UnitId == storeMaterial.UnitId)
-        //        .Where(o => o.StoreId == storeMaterial.StoreId)
-        //        .Where(o => o.StoreLocationId == storeMaterial.StoreLocationId)
-        //        .Where(o => o.MeasureMentUnitId == storeMaterial.MeasureMentUnitId)
-        //        .Where(o=>o.CustomName==storeMaterial.CustomName)
-        //        .Where(o=>o.CustomSpecification==storeMaterial.CustomSpecification)
-        //        .Where(o=>o.CustomBrand==storeMaterial.CustomBrand)
-        //        .Where(o => o.Batch == storeMaterial.Batch)
-        //        .Where(o => o.Price == storeMaterial.Price)
-        //        .SingleOrDefaultAsync();
-        //}
+        public virtual async Task<StoreMaterial> AppendStoreMaterial(StoreMaterial storeMaterial)
+        {
+            var oriStoreMaterial = await FindExistStoreMaterialRecord(storeMaterial);
+            if (oriStoreMaterial == null)
+            {
+                //如果没有记录则产生库存记录
+                await InsertAsync(storeMaterial);
+                await CurrentUnitOfWork.SaveChangesAsync();
+                return storeMaterial;
+            }
+            else
+            {
+                //如果已经有记录了,则更新原有记录
+                oriStoreMaterial.Number += storeMaterial.Number;//更新库存数量
+                oriStoreMaterial.StoreMaterialHistory = storeMaterial.StoreMaterialHistory;
+                await CurrentUnitOfWork.SaveChangesAsync();
+                return oriStoreMaterial;
+            }
+        }
+
+        /// <summary>
+        /// 寻找库存中已存在的库存记录
+        /// </summary>
+        /// <param name="storeMaterial"></param>
+        /// <returns></returns>
+        public virtual async Task<StoreMaterial> FindExistStoreMaterialRecord(StoreMaterial storeMaterial)
+        {
+            return await GetAll()
+                .Where(o => o.MaterialId == storeMaterial.MaterialId)
+                .Where(o => o.StoreId == storeMaterial.StoreId)
+                .SingleOrDefaultAsync();
+        }
 
         ///// <summary>
         ///// 库存出库
@@ -123,7 +215,7 @@ namespace Master.Storage
         //    await Resolve<MaterialUseInfoManager>().InsertAsync(materialUseInfo);
         //    //产生出入库明细
         //    storeMaterial.BuildStoreMaterialHistory(flowInstance?.FlowForm.FormKey,-number, flowSheetId);
-    
+
         //    //storeMaterialHistory.ChangeType = flowInstance?.FlowForm.FormKey;
         //    //storeMaterialHistory.Number = -number;
         //    //storeMaterialHistory.FlowSheetId = flowSheetId;
@@ -140,7 +232,7 @@ namespace Master.Storage
 
         //    // var str = JsonConvert.SerializeObject(StoreMaterialFirst);
         //    // var newStoreMaterial = JsonConvert.DeserializeObject<StoreMaterial>(str); 
-           
+
         //  //  newStoreMaterial.MeasureMentUnitId = StoreMaterialSplitDto.MeasureMentUnitId;//拆分后的库存对象
 
         //    var MeasureMent = StoreMaterialFirst.MeasureMentUnit.MeasureMent;
@@ -181,8 +273,8 @@ namespace Master.Storage
         //        storeMaterial.BuildStoreMaterialHistory(firstUnit.Name + "拆分成" + lastUnit.Name, StoreMaterialSplitDto.SplitNumber, null);
         //        storeMaterial.Number += StoreMaterialSplitDto.SplitNumber;
         //    }
-            
-           
+
+
         //}
         ///// <summary>
         ///// 分页实体数据返回，判断是否是可拆分的多计量单位
