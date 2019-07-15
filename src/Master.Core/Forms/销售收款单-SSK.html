@@ -3,18 +3,36 @@
         <el-form-item label="代理商">
             <unit-select nature="0" :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @change="loadUnit"></unit-select>
         </el-form-item>
-        
-
+        <el-form-item label="当前结余">
+            <el-input v-model="currentItem.unitInfo.nowFee" readonly="true" tips="负数代表对方欠我方，正数代表我方欠对方。"></el-input>
+        </el-form-item>
+        <el-form-item label="收款方式">
+            <el-radio-group v-model="currentItem.payType">
+                <el-radio label="0">现金收款</el-radio>
+                <el-radio label="1">转账收款</el-radio>
+                <el-radio label="2">支票收款</el-radio>
+            </el-radio-group>
+        </el-form-item>
 
     </el-form>
     <el-form size="mini">
-        <el-form-item label="现金">
+        <el-form-item :label="currentItem.payType==0?'现金':'转账'" v-if="currentItem.payType!=2">
             <el-input placeholder="" v-model="currentItem.totalFee">
                 <template slot="append">
                     元
                 </template>
             </el-input>
+            <el-select v-model="currentItem.accountId" placeholder="请选择账号" size="medium" v-if="currentItem.payType==1">
+                <el-option v-for="item in currentItem.accounts"
+                           :key="item.id"
+                           :label="item.name"
+                           :value="item.id">
+                </el-option>
+            </el-select>
         </el-form-item>
+        <div v-if="currentItem.payType==2">
+            <multi-data-add :items="currentItem.multiItems" :parts="currentItem.checks"></multi-data-add>
+        </div>
         <el-form-item label="备注">
             <el-input type="textarea" v-model="currentItem.remarks"></el-input>
         </el-form-item>
@@ -29,9 +47,22 @@
             data: {
                 currentItem: _formOption.formData ? _formOption.formData.layoutData : {
                     totalFee: 0,
+                    remainFee: 0,
+                    payType:0,
                     unitId: null,
-                    unitInfo: {},
-                    remarks:''
+                    unitInfo: { nowFee: 0 },
+                    accounts: [],
+                    accountId:null,
+                    remarks: '',
+                    checks: [],
+                    multiItems: [
+                        { type: 'text', key: 'checkSN', title: '支票号码' },
+                        { type: 'number', key: 'checkFee', title: '支票金额（元）' },
+                        { type: 'date', key: 'checkDate', title: '开票日期' },
+                        { type: 'number', key: 'expireDays', title: '兑现期限（天）' },
+                        { type: 'text', key: 'signCompany', title: '签发公司' },
+                        { type: 'text', key: 'bank', title: '银行' },
+                    ]
                 }
 
             },
@@ -49,8 +80,11 @@
             created() {
                 var that = this;
                 if (!_formOption.formData) {
-                    //录入模式获取数据
-                    
+                    //录入模式获取数据                    
+                    //获取所有账号
+                    abp.services.app.feeAccount.getNormalAccounts().done(function (data) {
+                        that.currentItem.accounts = data;
+                    })
                 }
             },
             mounted() {

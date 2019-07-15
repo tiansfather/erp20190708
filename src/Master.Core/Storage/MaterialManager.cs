@@ -26,6 +26,7 @@ namespace Master.Storage
                 })
                 .ToListAsync();
             data["StoreCount"] = storeCountInfo;
+            data["TotalCount"] = storeCountInfo.Sum(o => o.Number);
         }
     }
 }

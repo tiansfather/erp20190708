@@ -1,0 +1,136 @@
+﻿@using Master.Web.Components
+@inherits Master.Web.Components.MasterRazorPage<TModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Master.Web.Core
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="layui-fluid" id="LAY-app-message">
+    <div class="layui-card">
+        <div class="layui-card-body" >
+
+            <div class="layui-row layui-col-space5">
+                <div class="layui-col-xs2">
+                    <vc:base-tree param="@(new BaseTreeViewParam() { TreeKey="MaterialType",TreeName="商品分类",EnableAdd=false,EnableEdit=false,EnableDelete=false})"></vc:base-tree>
+
+                </div>
+                <div id="app" v-cloak>
+                    <div class="layui-col-xs10">
+                        <div class="LAY-app-message-btns" style="margin-bottom:10px;">
+                            <el-select v-model="currentItem.storeId" placeholder="所有仓库" clearable  size="medium" @@change="config.reloadTable()">
+                                <el-option v-for="item in stores"
+                                           :key="item.id"
+                                           :label="item.name"
+                                           :value="item.id">
+                                </el-option>
+                            </el-select>
+                        </div>
+                        <table id="Material" lay-filter="Material"></table>
+                    </div>
+                </div>
+                
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        var searchKeys = {};
+        var app;
+		//layui加载完成后调用此方法，
+		config.ready = function () {
+			var element = layui.element;
+            var table = layui.table;
+            
+            app = new Vue({
+                el: '#app',
+                data: {
+                    stores:[],
+                    currentItem: {
+                        items: [],
+                        storeId:null
+                    }
+                },
+                methods: {
+                },
+                mounted: function () {
+                    var that = this;
+                    abp.services.app.store.getAllStores().done(function (data) {
+                        that.stores = data;
+                    })
+                    table.render({
+                        elem: '#Material',
+                        autoSort: false,
+                        toolbar: false,
+                        //cellMinWidth: '60',
+                        height: 'full-70',
+                        url: '/api/services/app/Material/GetPageResult',
+                        where: getWhere(),
+                        page: true,
+
+                        id: 'Material',
+                        even: true,
+                        cols: [[
+                            { field: 'name', title: '品名' },
+                            { field: 'specifiation', title: '规格' },
+                            { field: 'materialNature_display', title: '商品性质' },
+                            { field: 'price', title: '零售价' },
+                            { field: 'remarks', title: '备注' },
+                            {
+                                field: 'storeCount', title: '当前库存', templet: function (d) {
+                                    if (app.currentItem.storeId) {
+                                        var storeInfo = d.storeCount.filter(o => o.storeId == app.currentItem.storeId)[0];
+                                        if (storeInfo) {
+                                            return storeInfo.number;
+                                        } else {
+                                            return 0;
+                                        }
+                                    } else {
+                                        return d.totalCount;
+                                    }
+                                    
+                                }
+                            },
+                            { field: 'measureMentUnit', title: '计量单位' },
+                        ]],
+
+                        done: function () {
+                        
+                            config.onTableDone();
+                        }
+                    });
+                }
+            })
+
+			//监听树选中事件
+            baseTree.onSelect = function (node) {
+				searchKeys.MaterialTypeId = node.id;
+				config.reloadTable();
+			}
+		}
+		//当检索窗体提交后会调用此方法
+		config.reloadTable = function () {
+            layui.table.reload('Material', {
+				where: getWhere()
+
+			})
+		}
+        config.onTableDone = function () {
+            
+		}
+		//当编辑或删除或添加表单提交后会调用此方法
+		config.refresh = function () {
+            
+		}
+		function getWhere() {
+            var where = { searchKeys: JSON.stringify(searchKeys) };            
+            where.searchCondition = func.buildSearchCondition('Material');
+			return where;
+
+		}
+    </script>
+}

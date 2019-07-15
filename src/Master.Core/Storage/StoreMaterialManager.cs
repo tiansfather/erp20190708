@@ -25,6 +25,7 @@ namespace Master.Storage
         {
             return (await GetAll().Where(o => o.StoreId == storeId && o.MaterialId == materialId).FirstOrDefaultAsync())?.Number ?? 0;
         }
+
         #region 拆散与组合
         /// <summary>
         /// 组合商品
@@ -51,7 +52,7 @@ namespace Master.Storage
                 if(diyMaterialNumber< diyInfo.Number * number)
                 {
                     var diyMaterial = await materialManager.GetByIdFromCacheAsync(diyInfo.MaterialId);
-                    throw new UserFriendlyException($"商品{diyMaterial.Name}需要数量{diyInfo.Number * number}才能组合目标商品,目前库存数量为{diyMaterialNumber},无法组合");
+                    throw new UserFriendlyException($"商品{diyMaterial.Name}需要数量{diyInfo.Number * number}才能装配目标商品,目前库存数量为{diyMaterialNumber.ToString("0")},无法装配");
                 }
                 var diyStoreMaterial = new StoreMaterial()
                 {
@@ -115,6 +116,48 @@ namespace Master.Storage
                 diyStoreMaterial.BuildStoreMaterialHistory(changeType, diyInfo.Number * number, flowSheet.Id);
                 await AppendStoreMaterial(diyStoreMaterial);
             }
+        }
+        #endregion
+
+        #region 调拨
+        /// <summary>
+        /// 仓库调拨
+        /// </summary>
+        /// <param name="outStoreId"></param>
+        /// <param name="inStoreId"></param>
+        /// <param name="materialId"></param>
+        /// <param name="number"></param>
+        /// <param name="flowSheet"></param>
+        /// <returns></returns>
+        public virtual async Task TransferMaterial(int outStoreId,int inStoreId,int materialId, int number, FlowSheet flowSheet)
+        {
+            var changeType = flowSheet.SheetNature == SheetNature.正单 ? flowSheet.SheetName : $"{flowSheet.SheetName}冲红";
+            var material = await Resolve<MaterialManager>().GetByIdAsync(materialId);
+           
+            var storeMaterialCount = await GetStoreMaterialNumber(outStoreId, materialId);
+            if (storeMaterialCount < number)
+            {
+                throw new UserFriendlyException("调拨数量不能大于库存数量");
+            }
+
+            //1.减少调出仓库库存
+            var outStoreMaterial = new StoreMaterial()
+            {
+                MaterialId = materialId,
+                StoreId = outStoreId,
+                Number = -number
+            };
+            outStoreMaterial.BuildStoreMaterialHistory(changeType, -number, flowSheet.Id);
+            await AppendStoreMaterial(outStoreMaterial);
+            //2.增加调入仓库库存
+            var inStoreMaterial = new StoreMaterial()
+            {
+                MaterialId = materialId,
+                StoreId = inStoreId,
+                Number = number
+            };
+            inStoreMaterial.BuildStoreMaterialHistory(changeType, number, flowSheet.Id);
+            await AppendStoreMaterial(inStoreMaterial);
         }
         #endregion
 

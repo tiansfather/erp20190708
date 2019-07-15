@@ -7,32 +7,60 @@
     "order": 10,
     "items": [
       {
+        "name": "Storage.Tenancy.StoreMaterial",
+        "displayName": "库存查看",
+        "icon": "iconfont icon-celve",
+        "url": "/Material/StoreMaterial",
+        "order": 1
+      },
+      {
+        "name": "Storage.Tenancy.StoreMaterialHistory",
+        "displayName": "库存变动明细",
+        "icon": "iconfont icon-m-fileFormat",
+        "url": "/Material/History",
+        "order": 1
+      },
+      {
+        "name": "Storage.Tenancy.IAL",
+        "displayName": "仓库调拨",
+        "icon": "iconfont icon-celve",
+        "url": "/Home/Show?name=../FlowSheet/IAL/Add",
+        "order": 5
+      },
+      {
+        "name": "Storage.Tenancy.IALSheet",
+        "displayName": "调拨单查询",
+        "icon": "iconfont icon-celve",
+        "url": "/Home/Show?name=../FlowSheet/IAL/Index",
+        "order": 6
+      },
+      {
         "name": "Storage.Tenancy.IAS",
         "displayName": "散货装配",
         "icon": "iconfont icon-celve",
         "url": "/Home/Show?name=../FlowSheet/IAS/Add",
-        "order": 1
+        "order": 7
       },
       {
         "name": "Storage.Tenancy.IASSheet",
         "displayName": "装配单查询",
         "icon": "iconfont icon-celve",
         "url": "/Home/Show?name=../FlowSheet/IAS/Index",
-        "order": 2
+        "order": 8
       },
       {
         "name": "Storage.Tenancy.IBK",
         "displayName": "成品拆散",
         "icon": "iconfont icon-celve",
         "url": "/Home/Show?name=../FlowSheet/IBK/Add",
-        "order": 3
+        "order": 9
       },
       {
         "name": "Storage.Tenancy.IBKSheet",
         "displayName": "拆散单查询",
         "icon": "iconfont icon-celve",
         "url": "/Home/Show?name=../FlowSheet/IBK/Index",
-        "order": 4
+        "order": 10
       }
     ]
   },
@@ -47,7 +75,7 @@
         "name": "Finance.Tenancy.SSK",
         "displayName": "销售收款",
         "icon": "iconfont icon-zongzhangjiqita",
-        "url": "/Home/Show?name=../FlowSheet/SSK/Add"
+        "url": "/FlowForm/InputByFormKey?formKey=SSK"
       },
       {
         "name": "Finance.Tenancy.SSKSheet",

@@ -1,0 +1,116 @@
+﻿<div id="app" v-cloak>
+    <el-form :inline="true" size="mini">
+        <el-form-item label="发生日期">
+            <el-input v-model="currentItem.sheetDate" readonly="true"></el-input>
+        </el-form-item>
+        <el-form-item label="调出仓库">
+            <el-input v-model="currentItem.outStoreName" readonly="true"></el-input>
+        </el-form-item>
+        <el-form-item label="调入仓库">
+            <el-input v-model="currentItem.inStoreName" readonly="true"></el-input>
+        </el-form-item>
+
+    </el-form>
+    <table class="layui-table">
+        <thead>
+            <tr>
+                <th>品名</th>
+                <th>规格</th>
+                <th>备注</th>
+                <th>当前库存</th>
+                <th>调拨数量</th>
+                <th>计量单位</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="(item,index) in currentItem.items">
+                <td>{{item.name}}</td>
+                <td>{{item.specification}}</td>
+                <td>{{item.remarks}}</td>
+                <td>{{item.storeNumber}}</td>
+                <td><el-input-number v-model="item.number" :min="1" :max="item.storeNumber" label="调拨数量"></el-input-number></td>
+                <td>{{item.measureMentUnit}}</td>
+                <td><a title="删除" style="cursor: pointer;" @click="currentItem.items.splice(index,1);"><i class="layui-icon layui-icon-delete"></i></a></td>
+            </tr>
+        </tbody>
+    </table>
+    <el-form  size="mini">
+        <el-form-item label="备注">
+            <el-input type="textarea" v-model="currentItem.remarks"></el-input>
+        </el-form-item>
+    </el-form>
+        
+</div>
+<script>
+    config.ready = function () {
+        app = new Vue({
+            el: "#app",
+            data: {
+                columns:[],
+                rCount:0,                
+                currentItem: _formOption.formData ? _formOption.formData.layoutData : {
+                    sheetDate: new Date().pattern("yyyy-MM-dd"),
+                    outStoreName: '',
+                    inStoreName:'',
+                    outStoreId: null,
+                    inStoreId:null,
+                    items: [],
+                    remarks:''
+                }
+
+            },
+            methods: {
+            },
+            created() {
+                var that = this;
+                if (!_formOption.formData) {
+                    //录入模式获取数据
+                    var params = JSON.parse( $.getUrlParam("params"));
+                    this.currentItem.outStoreId = params.outStoreId;
+                    this.currentItem.inStoreId = params.inStoreId;
+                    //仓库信息
+                    abp.services.app.store.getById(params.outStoreId).done(data => this.currentItem.outStoreName = data.name);
+                    abp.services.app.store.getById(params.inStoreId).done(data => this.currentItem.inStoreName = data.name);
+                    //商品信息
+                    func.runAsync(abp.services.app.material.getStoreMaterialInfos(params.outStoreId, params.items.map(o => o.id)).done(function (data) {
+                        console.log(data);
+                        that.currentItem.items = data.map(function (o) {
+                            var number = params.items.filter(i => i.id == o.id)[0].number;
+                            return $.extend(o, { number: number });
+                        })
+                    }))
+                }
+            },
+            mounted() {
+            }
+        })
+    }
+
+    //模板中必须实现的方法，用于获取表单数据，返回一个对象，如果需要取消提交，可抛出一个异常
+    function getFormData() {
+        var data = app.currentItem.items;
+        if (!data.length) {
+            throw "请至少录入一条数据";
+        }
+        if (data.filter(o => o.number < 0 || o.number > o.storeNumber || o.number % 1 !== 0).length) {
+            throw "调拨数量必须是大于0整数且小于当前库存";
+        }
+        var sheetData = {
+            header: {
+                sheetDate: app.currentItem.sheetDate,
+                remarks: app.currentItem.remarks,
+                outStoreId: app.currentItem.outStoreId,
+                inStoreId: app.currentItem.inStoreId,
+                outStoreName: app.currentItem.outStoreName,
+                inStoreName: app.currentItem.inStoreName
+            },
+            body: data
+        };
+        //约定，formData由两部分组成,一为layoutData,即用于表单呈现数据,另一部分是单据数据,用于后台进行数据处理,一般由呈现数据进行处理后得到
+        return {
+            layoutData: app.currentItem,
+            sheetData: sheetData
+        };
+    }
+</script>

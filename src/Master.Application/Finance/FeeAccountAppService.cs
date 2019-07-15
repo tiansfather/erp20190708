@@ -34,5 +34,20 @@ namespace Master.Storage
             }
             await base.DeleteEntity(ids);
         }
+
+        /// <summary>
+        /// 获取正常账号，除现金和支票
+        /// </summary>
+        /// <returns></returns>
+        public virtual async Task<object> GetNormalAccounts()
+        {
+            var allAccounts = await Manager.GetAllList();
+            return allAccounts.Where(o => o.Name != "现金账户" && o.Name != "支票账户")
+                .Select(o => new
+                {
+                    o.Id,
+                    o.Name
+                });
+        }
     }
 }

@@ -13,5 +13,13 @@ namespace Master.Controllers
         {
             return View();
         }
+        public IActionResult StoreMaterial()
+        {
+            return View();
+        }
+        public IActionResult History()
+        {
+            return View();
+        }
     }
 }

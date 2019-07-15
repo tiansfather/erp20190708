@@ -176,7 +176,7 @@
         }
         config.onTableDone = function () {
             $.each(app.currentItem.items, function (i, v) {
-                $("#edit_" + v.materialId).val(v.number);
+                $("#edit_" + v.id).val(v.number);
             });
         }
         //当编辑或删除或添加表单提交后会调用此方法
