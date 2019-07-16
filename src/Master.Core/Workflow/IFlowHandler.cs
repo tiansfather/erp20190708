@@ -8,20 +8,12 @@ namespace Master.WorkFlow
 {
     public interface IFlowHandler:ITransientDependency
     {
-        /// <summary>
-        /// 流程的处理
-        /// </summary>
-        /// <param name="instance"></param>
-        /// <param name="flowForm"></param>
-        /// <returns></returns>
-        Task Handle(FlowInstance instance,FlowForm flowForm);
+        
+        Task Handle(FlowSheet flowSheet);
 
-        /// <summary>
-        /// 单据回滚
-        /// </summary>
-        /// <param name="flowInstance"></param>
-        /// <param name="flowSheet"></param>
-        /// <returns></returns>
-        Task HandleRevert(FlowInstance flowInstance,FlowSheet flowSheet);
+        Task<FlowSheet> CreateSheet(FlowInstance instance, FlowForm flowForm);
+
+        Task CreateRevertSheet(FlowSheet flowSheet, string revertReason);
+        Task HandleRevert(FlowSheet flowSheet);
     }
 }

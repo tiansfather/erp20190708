@@ -15,25 +15,14 @@ namespace Master.FlowHandlers
     /// 装配单
     /// </summary>
     public class IASFlowHandler : FlowHandlerBase
-    {
-        public FlowSheetManager FlowSheetManager { get; set; }
-        public FlowInstanceManager FlowInstanceManager { get; set; }
+    {        
         public MaterialManager MaterialManager { get; set; }
         public StoreMaterialManager StoreMaterialManager { get; set; }
-        public override async Task Handle(FlowInstance instance, FlowForm flowForm)
+        public override async Task Handle(FlowSheet flowSheet)
         {
-            var formData = instance.FormData;
-            var formKey = flowForm.FormKey;
-            //生成单据
-            var flowSheet = new FlowSheet()
-            {
-                FlowInstanceId = instance.Id,
-                SheetName = instance.InstanceName,
-                FormKey = formKey,
-            };
-            var sheetId = await FlowSheetManager.InsertAndGetIdAsync(flowSheet);
+            await base.Handle(flowSheet);
             //数据处理
-            var formObj = Newtonsoft.Json.JsonConvert.DeserializeObject<JObject>(formData);
+            var formObj = Newtonsoft.Json.JsonConvert.DeserializeObject<JObject>(flowSheet.FlowInstance.FormData);
             var sheetData = formObj["sheetData"];
             var sheetHeader = sheetData["header"];
 
@@ -52,11 +41,11 @@ namespace Master.FlowHandlers
 
         }
 
-        public override async Task HandleRevert(FlowInstance flowInstance,FlowSheet flowSheet)
+        public override async Task HandleRevert(FlowSheet flowSheet)
         {
             
             //数据处理
-            var formObj = Newtonsoft.Json.JsonConvert.DeserializeObject<JObject>(flowInstance.FormData);
+            var formObj = Newtonsoft.Json.JsonConvert.DeserializeObject<JObject>(flowSheet.FlowInstance.FormData);
             var sheetData = formObj["sheetData"];
             var sheetHeader = sheetData["header"];
 

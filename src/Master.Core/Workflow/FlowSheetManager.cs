@@ -45,47 +45,52 @@ namespace Master.WorkFlow
             });
             
         }
+        public virtual async Task<FlowSheet> GetByInstanceId(int instanceId)
+        {
+            return await GetAll().Include(o=>o.FlowInstance).ThenInclude(o=>o.FlowForm).Where(o => o.FlowInstanceId == instanceId).FirstOrDefaultAsync();
+        }
 
         public virtual async Task Revert(int sheetId,string revertReason)
         {
             var flowInstanceManager = Resolve<FlowInstanceManager>();
-            var flowSheet = await GetAll().Include(o => o.FlowInstance).Where(o => o.Id == sheetId).SingleOrDefaultAsync();
-            //产生新的流程实例
-            var instance = flowSheet.FlowInstance;
-            var newInstance = new FlowInstance()
-            {
-                InstanceName = instance.InstanceName,
-                FormContent = instance.FormContent,
-                FormData = instance.FormData,
-                FlowFormId = instance.FlowFormId,
-                FormType = instance.FormType,
-                InstanceStatus = instance.InstanceStatus,
-                IsActive = true,
-                Code = Common.Fun.ConvertToTimeStamp(DateTime.Now).ToString()
-            };
-            var newInstanceId = await flowInstanceManager.InsertAndGetIdAsync(newInstance);
-            //生成新的单据
-            var newFlowSheet = new FlowSheet()
-            {
-                FlowInstanceId = newInstanceId,
-                SheetSN = GenerateSheetSN(flowSheet.FormKey),
-                SheetName = newInstance.InstanceName,
-                FormKey = flowSheet.FormKey,
-                SheetNature = SheetNature.冲红,
-                RelSheetId = flowSheet.Id,
-                RevertReason = revertReason
-            };
-            newFlowSheet.SheetDate = flowSheet.SheetDate;
-            newFlowSheet.Remarks = flowSheet.Remarks;
-            var newSheetId = await InsertAndGetIdAsync(newFlowSheet);
-            //设置旧单据状态
-            flowSheet.SheetNature = SheetNature.被冲红;
-            flowSheet.RelSheetId = newSheetId;
-            flowSheet.RevertReason = revertReason;
+            var flowSheet = await GetAll().Include(o => o.FlowInstance).ThenInclude(o=>o.FlowForm).Where(o => o.Id == sheetId).SingleOrDefaultAsync();
+            ////产生新的流程实例
+            //var instance = flowSheet.FlowInstance;
+            //var newInstance = new FlowInstance()
+            //{
+            //    InstanceName = instance.InstanceName,
+            //    FormContent = instance.FormContent,
+            //    FormData = instance.FormData,
+            //    FlowFormId = instance.FlowFormId,
+            //    FormType = instance.FormType,
+            //    InstanceStatus = instance.InstanceStatus,
+            //    IsActive = true,
+            //    Code = Common.Fun.ConvertToTimeStamp(DateTime.Now).ToString()
+            //};
+            //var newInstanceId = await flowInstanceManager.InsertAndGetIdAsync(newInstance);
+            ////生成新的单据
+            //var newFlowSheet = new FlowSheet()
+            //{
+            //    FlowInstanceId = newInstanceId,
+            //    SheetSN = GenerateSheetSN(flowSheet.FormKey),
+            //    SheetName = newInstance.InstanceName,
+            //    FormKey = flowSheet.FormKey,
+            //    SheetNature = SheetNature.冲红,
+            //    RelSheetId = flowSheet.Id,
+            //    RevertReason = revertReason
+            //};
+            //newFlowSheet.SheetDate = flowSheet.SheetDate;
+            //newFlowSheet.Remarks = flowSheet.Remarks;
+            //var newSheetId = await InsertAndGetIdAsync(newFlowSheet);
+            ////设置旧单据状态
+            //flowSheet.SheetNature = SheetNature.被冲红;
+            //flowSheet.RelSheetId = newSheetId;
+            //flowSheet.RevertReason = revertReason;
             
             var flowHandler = Resolve<IFlowHandlerFinder>().FindFlowHandler(flowSheet.FormKey);
 
-            await flowHandler.HandleRevert(newInstance, newFlowSheet);
+            await flowHandler.CreateRevertSheet(flowSheet, revertReason);
+            //await flowHandler.HandleRevert(newFlowSheet);
         }
 
         public override async Task FillEntityDataBefore(IDictionary<string, object> data, ModuleInfo moduleInfo, object entity)

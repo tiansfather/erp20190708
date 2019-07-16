@@ -1,7 +1,10 @@
 ﻿using Abp.Dependency;
 using Abp.UI;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,9 +15,68 @@ namespace Master.WorkFlow
     /// </summary>
     public abstract class FlowHandlerBase : IFlowHandler
     {
-        public abstract Task Handle(FlowInstance instance, FlowForm flowForm);
+        public FlowSheetManager FlowSheetManager { get; set; }
+        public FlowInstanceManager FlowInstanceManager { get; set; }
+        public virtual async Task<FlowSheet> CreateSheet(FlowInstance instance, FlowForm flowForm)
+        {
+            var formData = instance.FormData;
+            var formKey = flowForm.FormKey;
+            //生成单据
+            var flowSheet = new FlowSheet()
+            {
+                FlowInstanceId = instance.Id,
+                SheetName = instance.InstanceName,
+                FormKey = formKey,
+                SheetNature=SheetNature.待审核
+            };
+            var sheetId = await FlowSheetManager.InsertAndGetIdAsync(flowSheet);
+            return flowSheet;
+        }
 
-        public abstract Task HandleRevert(FlowInstance flowInstance, FlowSheet flowSheet);
+        public virtual async Task Handle(FlowSheet flowSheet)
+        {
+            flowSheet.SheetNature = SheetNature.正单;
+        }
+
+        public async Task CreateRevertSheet(FlowSheet flowSheet,string revertReason)
+        {
+            //产生新的流程实例
+            var instance = flowSheet.FlowInstance;
+            var newInstance = new FlowInstance()
+            {
+                InstanceName = instance.InstanceName,
+                FormContent = instance.FormContent,
+                FormData = instance.FormData,
+                FlowFormId = instance.FlowFormId,
+                FormType = instance.FormType,
+                InstanceStatus = instance.InstanceStatus,
+                IsActive = true,
+                Code = Common.Fun.ConvertToTimeStamp(DateTime.Now).ToString()
+            };
+            var newInstanceId = await FlowInstanceManager.InsertAndGetIdAsync(newInstance);
+            //生成新的单据
+            var newFlowSheet = new FlowSheet()
+            {
+                FlowInstanceId = newInstanceId,
+                SheetSN = FlowSheetManager.GenerateSheetSN(flowSheet.FormKey),
+                SheetName = newInstance.InstanceName,
+                FormKey = flowSheet.FormKey,
+                SheetNature = SheetNature.冲红,
+                RelSheetId = flowSheet.Id,
+                RevertReason = revertReason
+            };
+            newFlowSheet.SheetDate = flowSheet.SheetDate;
+            newFlowSheet.Remarks = flowSheet.Remarks;
+            var newSheetId = await FlowSheetManager.InsertAndGetIdAsync(newFlowSheet);
+            //设置旧单据状态
+            flowSheet.SheetNature = SheetNature.被冲红;
+            flowSheet.RelSheetId = newSheetId;
+            flowSheet.RevertReason = revertReason;
+
+            await HandleRevert(newFlowSheet);
+        }
+
+        public abstract Task HandleRevert(FlowSheet flowSheet);
 
         protected T Resolve<T>()
         {

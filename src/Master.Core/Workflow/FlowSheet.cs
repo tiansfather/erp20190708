@@ -134,6 +134,8 @@ namespace Master.WorkFlow
 
     public enum SheetNature
     {
+        待审核=-1,
+        驳回=-2,
         正单,
         冲红,
         被冲红

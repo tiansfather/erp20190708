@@ -1,4 +1,7 @@
-﻿using Master.Module;
+﻿using Abp.Domain.Uow;
+using Abp.Events.Bus.Entities;
+using Abp.Events.Bus.Handlers;
+using Master.Module;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -6,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Master.WorkFlow
 {
-    public class FlowInstanceManager : ModuleServiceBase<FlowInstance, int>
+    public class FlowInstanceManager : ModuleServiceBase<FlowInstance, int>, IEventHandler<EntityCreatedEventData<FlowInstance>>
     {
         //public IFlowHandlerFinder FlowHandlerFinder { get; set; }
         //public FlowFormManager FlowFormManager { get; set; }
@@ -22,8 +25,23 @@ namespace Master.WorkFlow
 
             var flowHandler = Resolve<IFlowHandlerFinder>().FindFlowHandler(form.FormKey);
 
-            await flowHandler.Handle(flowInstance,form);
-        }
+            var flowSheet = await Resolve<FlowSheetManager>().GetByInstanceId(flowInstance.Id);
 
+            await flowHandler.Handle(flowSheet);
+        }
+        /// <summary>
+        /// 流程建立后自动建立表单
+        /// </summary>
+        /// <param name="eventData"></param>
+        [UnitOfWork]
+        public virtual void HandleEvent(EntityCreatedEventData<FlowInstance> eventData)
+        {
+            var flowInstance = eventData.Entity;
+            var form = Resolve<FlowFormManager>().GetByIdFromCacheAsync(flowInstance.FlowFormId).Result;
+
+            var flowHandler = Resolve<IFlowHandlerFinder>().FindFlowHandler(form.FormKey);
+
+            flowHandler.CreateSheet(flowInstance, form).GetAwaiter().GetResult();
+        }
     }
 }
