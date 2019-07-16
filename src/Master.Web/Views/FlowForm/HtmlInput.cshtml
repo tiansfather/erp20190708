@@ -41,7 +41,7 @@
             abp.message.confirm(L("确认提交?"), function () {
                 var dto = { flowSchemeId: flowSchemeId, flowFormId: formId, formData: JSON.stringify(formData) };
                 func.runAsync(abp.services.app.flowInstance.createInstance(dto).done(function () {
-                    parent.layer.msg(L("提交成功"));
+                    top.layer.msg(L("提交成功"));
                     parent.layer.closeAll('iframe');
                     parent.config.reloadTable();
                     parent.config.refresh();

@@ -15,30 +15,39 @@
         </el-form-item>
 
     </el-form>
-    <el-form size="mini">
-        <el-form-item :label="currentItem.payType==0?'现金':'转账'" v-if="currentItem.payType!=2">
-            <el-input placeholder="" v-model="currentItem.totalFee">
-                <template slot="append">
-                    元
-                </template>
-            </el-input>
-            <el-select v-model="currentItem.accountId" placeholder="请选择账号" size="medium" v-if="currentItem.payType==1">
-                <el-option v-for="item in currentItem.accounts"
-                           :key="item.id"
-                           :label="item.name"
-                           :value="item.id">
-                </el-option>
-            </el-select>
+    <el-divider></el-divider>
+    <el-form ref="form" label-width="80px">
+        <el-form-item :label="currentItem.payType=='0'?'现金':'转账'" v-if="currentItem.payType!='2'">
+            <el-col :span="10">
+                <el-input placeholder="" v-model="currentItem.inputedFee">
+                    <template slot="append">
+                        元
+                    </template>
+                </el-input>
+            </el-col>
+            <el-col :span="10">
+                <el-select v-model="currentItem.accountId" placeholder="请选择账号" size="medium" v-if="currentItem.payType=='1'">
+                    <el-option v-for="item in currentItem.accounts"
+                               :key="item.id"
+                               :label="item.name"
+                               :value="item.id">
+                    </el-option>
+                </el-select>
+            </el-col>
+
         </el-form-item>
         <div v-if="currentItem.payType==2">
-            <multi-data-add :items="currentItem.multiItems" :parts="currentItem.checks"></multi-data-add>
+            <multi-data-add :items="currentItem.multiItems" :parts="currentItem.checks" :readonly="_formOption.readonly"></multi-data-add>
         </div>
         <el-form-item label="备注">
             <el-input type="textarea" v-model="currentItem.remarks"></el-input>
         </el-form-item>
-        
     </el-form>
-        
+    <el-divider></el-divider>
+    <div>
+        <label>本单收款总额（元）：{{totalFee}}</label>
+        <label style="margin-left:50px">收款后结余（元）：{{remainFee}}</label>
+    </div>
 </div>
 <script>
     config.ready = function () {
@@ -46,9 +55,9 @@
             el: "#app",
             data: {
                 currentItem: _formOption.formData ? _formOption.formData.layoutData : {
-                    totalFee: 0,
-                    remainFee: 0,
-                    payType:0,
+                    sheetDate: new Date().pattern("yyyy-MM-dd"),
+                    inputedFee: 0,
+                    payType:'0',
                     unitId: null,
                     unitInfo: { nowFee: 0 },
                     accounts: [],
@@ -56,22 +65,36 @@
                     remarks: '',
                     checks: [],
                     multiItems: [
-                        { type: 'text', key: 'checkSN', title: '支票号码' },
-                        { type: 'number', key: 'checkFee', title: '支票金额（元）' },
-                        { type: 'date', key: 'checkDate', title: '开票日期' },
-                        { type: 'number', key: 'expireDays', title: '兑现期限（天）' },
-                        { type: 'text', key: 'signCompany', title: '签发公司' },
-                        { type: 'text', key: 'bank', title: '银行' },
+                        { type: 'text', key: 'checkSN', title: '支票号码' ,verify:'required'},
+                        { type: 'number', key: 'checkFee', title: '支票金额（元）', verify: 'required' },
+                        { type: 'date', key: 'checkDate', title: '开票日期', verify: 'required'},
+                        { type: 'number', key: 'expireDays', title: '兑现期限（天）', verify: 'required' },
+                        { type: 'text', key: 'signCompany', title: '签发公司', verify: 'required'},
+                        { type: 'text', key: 'bank', title: '银行', verify: 'required'},
                     ]
-                }
+                },
 
             },
+            computed: {
+                totalFee: function () {
+                    if (this.currentItem.payType == '0' || this.currentItem.payType == '1') {
+                        return parseFloat(this.currentItem.inputedFee).toFixed(2);
+                    } else {
+                        var sum = 0;
+                        this.currentItem.checks.forEach(o => sum += parseFloat(o.checkFee));
+                        return sum.toFixed(2);
+                    }
+                },
+                remainFee: function () {
+                    return (parseFloat(this.totalFee) + parseFloat(this.currentItem.unitInfo.nowFee)).toFixed(2);
+                }
+            },
             methods: {
-                loadUnit(unitId) {
+                loadUnit() {
                     var that = this;
-                    if (unitId) {
+                    if (this.currentItem.unitId) {
                         //获取往来单位信息
-                        func.runAsync(abp.services.app.unit.getById(unitId).done(function (data) {
+                        func.runAsync(abp.services.app.unit.getById(this.currentItem.unitId).done(function (data) {
                             that.currentItem.unitInfo = data;
                         }))
                     }
@@ -94,17 +117,28 @@
 
     //模板中必须实现的方法，用于获取表单数据，返回一个对象，如果需要取消提交，可抛出一个异常
     function getFormData() {
-        var data = app.currentItem.items;
-        if (!data.length) {
-            throw "请至少录入一条数据";
+        if (!app.currentItem.unitId) {
+            throw "请先选择代理商";
+        }
+        if (app.totalFee == 0) {
+            throw "收款金额不能为0";
+        }
+        if (app.currentItem.payType == '1' && !app.currentItem.accountId) {
+            throw "请选择收款账户";
+        }
+        if (app.currentItem.payType == '2' && !app.currentItem.checks.length) {
+            throw "请输入支票信息";
         }
         var sheetData = {
             header: {
                 sheetDate: app.currentItem.sheetDate,
                 remarks: app.currentItem.remarks,
-                storeId: app.currentItem.storeId
+                unitId: app.currentItem.unitId,
+                accountId: app.currentItem.accountId,
+                payType: app.currentItem.payType,
+                totalFee: app.totalFee
             },
-            body: data
+            body: app.currentItem.checks
         };
         //约定，formData由两部分组成,一为layoutData,即用于表单呈现数据,另一部分是单据数据,用于后台进行数据处理,一般由呈现数据进行处理后得到
         return {

@@ -32,12 +32,12 @@ namespace Master.Units
         /// </summary>
         [InterColumn(ColumnName = "单位类型", ColumnType = ColumnTypes.Select,DefaultValue = "代理商", DictionaryName = "Master.Units.UnitNature", Sort = 2, Templet = "{{d.unitNature_display}}")]
         public virtual UnitNature UnitNature { get; set; } = UnitNature.代理商;
-        [InterColumn(ColumnName = "期初结余", ColumnType = Module.ColumnTypes.Number, DisplayFormat = "0.00", DefaultValue = "0", VerifyRules = "number", Sort = 3)]
+        [InterColumn(ColumnName = "期初结余", ColumnType = Module.ColumnTypes.Number, DisplayFormat = "0.00", DefaultValue = "0", VerifyRules = "number|required", Sort = 3)]
         public decimal StartFee { get; set; }
         /// <summary>
         /// 当前余额
         /// </summary>
-        [InterColumn(ColumnName = "当前结余", ColumnType = Module.ColumnTypes.Number, DisplayFormat = "0.00", IsShownInAdd = false, IsShownInEdit = false, Sort = 4,Templet ="{{d.startFee+d.fee}}")]
+        [InterColumn(ColumnName = "当前结余", ColumnType = Module.ColumnTypes.Number, DisplayFormat = "0.00", IsShownInAdd = false, IsShownInEdit = false, Sort = 4,Templet = "{{(Math.round((parseFloat(d.startFee)+parseFloat(d.fee))*100)/100).toFixed(2)}}")]
         public decimal Fee { get; set; }
        
         [InterColumn(ColumnName = "联系地址", Sort = 5,IsShownInList =false)]

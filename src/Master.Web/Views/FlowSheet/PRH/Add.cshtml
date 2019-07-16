@@ -18,20 +18,33 @@
                 <div id="app" v-cloak>
                     <div class="layui-col-xs8">
                         <div class="LAY-app-message-btns" style="margin-bottom:10px;">
-                            <el-select v-model="currentItem.storeId" placeholder="请选择仓库" size="medium" @@change="currentItem.items=[];config.reloadTable()">
+                            <unit-select nature="1" :unit.sync="currentItem.unitId" :value-isid="true" size="medium" ></unit-select>
+                            <el-select v-model="currentItem.storeId" placeholder="收货仓库" size="medium" style="width:120px">
                                 <el-option v-for="item in stores"
                                            :key="item.id"
                                            :label="item.name"
                                            :value="item.id">
                                 </el-option>
                             </el-select>
-                            <button class="layui-btn  layui-btn-sm" style="float:right;margin-right:10px" :class="{'layui-btn-disabled':!currentItem.items.length}" fornonerow="1" buttonname="生成拆散单" type="button" confirmmsg="" id="submitBtn" buttonactiontype="Form" buttonactionurl="" onclick="app.doSubmit(this)">生成拆散单</button>
+                            <button class="layui-btn  layui-btn-sm" style="float:right;margin-right:10px" :class="{'layui-btn-disabled':!currentItem.items.length}" fornonerow="1" buttonname="生成进货单" type="button" confirmmsg="" id="submitBtn" buttonactiontype="Form" buttonactionurl="" onclick="app.doSubmit(this)">生成进货单</button>
+                            @*<el-form :inline="true" size="mini">
+                                <el-form-item label="调出仓库">
+
+                                </el-form-item>
+                                <el-form-item label="调入仓库">
+
+                                </el-form-item>
+
+
+                            </el-form>*@
+
+
                         </div>
                         <table id="Material" lay-filter="Material"></table>
                     </div>
                     <div class="layui-col-xs2">
                         <div>
-                            <blockquote class="layui-elem-quote" style="margin-bottom:0px;padding:7px;">拆散单预览</blockquote>
+                            <blockquote class="layui-elem-quote" style="margin-bottom:0px;padding:7px;">进货单预览</blockquote>
                             <table class="layui-table">
 
                                 <thead>
@@ -66,29 +79,28 @@
         <div info="">
             <input type="number" style="width:50px" id="edit_{{d.id}}" onblur="app.updateInfo({ id: {{d.id}},number:this.value,name:'{{d.name}}',measureMentUnit:'{{d.measureMentUnit}}'})" />
         </div>
-
+        
     </script>
     <script>
         var searchKeys = {};
-        var materialId = $.getUrlParam("data");
         var app;
-        //layui加载完成后调用此方法，
-        config.ready = function () {
-            var element = layui.element;
+		//layui加载完成后调用此方法，
+		config.ready = function () {
+			var element = layui.element;
             var table = layui.table;
-
+            
             app = new Vue({
                 el: '#app',
                 data: {
-                    stores: [],
+                    stores:[],
                     currentItem: {
                         items: [],
-                        storeId: null
+                        storeId:null
                     }
                 },
                 methods: {
                     updateInfo: function (info) {
-                        if (isNaN(info.number)) { info.number = 0; }
+                        if (isNaN(info.number) || info.number<0) { info.number = 0;}
                         var existInfo = this.currentItem.items.filter(o => o.id == info.id)[0];
                         //小于0直接移除
                         if (info.number <= 0) {
@@ -106,14 +118,19 @@
                         if (!this.currentItem.items.length) {
                             return;
                         }
+                        if (!this.currentItem.unitId || !this.currentItem.storeId) {
+                            abp.message.error("请选择供货商和收货仓库");
+                            return;
+                        }
                         var that = this;
                         var data = {
                             storeId: this.currentItem.storeId,
+                            unitId: this.currentItem.unitId,
                             items: this.currentItem.items.map(function (o) {
-                                return { id:o.id, number:o.number };
+                                return { id: o.id, number: o.number };
                             })
                         };
-                        $(obj).attr("buttonactionurl", '/FlowForm/InputByFormKey?formKey=IBK&data=' + encodeURIComponent( JSON.stringify(data)));
+                        $(obj).attr("buttonactionurl", '/FlowForm/InputByFormKey?formKey=IAL&data=' + encodeURIComponent(JSON.stringify(data)));
                         func.callModuleButtonEvent($(obj));
                     }
                 },
@@ -138,60 +155,48 @@
                             { field: 'name', title: '品名' },
                             { field: 'specifiation', title: '规格' },
                             { field: 'price', title: '零售价' },
-                            { field: 'remarks', title: '备注' },
-                            {
-                                field: 'storeCount', title: '当前库存', templet: function (d) {
-                                    var storeInfo = d.storeCount.filter(o => o.storeId == app.currentItem.storeId)[0];
-                                    if (storeInfo) {
-                                        return storeInfo.number;
-                                    } else {
-                                        return 0;
-                                    }
-                                }
-                            },
-                            { field: '', title: '拆散数量', templet: '#editTpl' },
+                            { field: 'remarks', title: '备注' },                            {
+                            { field: '', title: '进货数量', templet: '#editTpl' },
                             { field: 'measureMentUnit', title: '计量单位' },
+                            { field: 'location', title: '适用区域' },      
                         ]],
 
                         done: function () {
-
+                        
                             config.onTableDone();
                         }
                     });
                 }
             })
 
-            //监听树选中事件
+			//监听树选中事件
             baseTree.onSelect = function (node) {
-                searchKeys.MaterialTypeId = node.id;
-                config.reloadTable();
-            }
-        }
-        //当检索窗体提交后会调用此方法
+				searchKeys.MaterialTypeId = node.id;
+				config.reloadTable();
+			}
+		}
+		//当检索窗体提交后会调用此方法
         config.reloadTable = function () {
             layui.table.reload('Material', {
-                where: getWhere()
+				where: getWhere()
 
-            })
-        }
+			})
+		}
         config.onTableDone = function () {
             $.each(app.currentItem.items, function (i, v) {
                 $("#edit_" + v.id).val(v.number);
             });
-        }
-        //当编辑或删除或添加表单提交后会调用此方法
-        config.refresh = function () {
+		}
+		//当编辑或删除或添加表单提交后会调用此方法
+		config.refresh = function () {
             location.reload();
-        }
-        function getWhere() {
-            var where = { searchKeys: JSON.stringify(searchKeys) };
-
-            where.where = "materialDIYType=1 and MaterialNature=1 and isdiyed=true";//实物组合已配置
+		}
+		function getWhere() {
+            var where = { searchKeys: JSON.stringify(searchKeys),where:'1=1' };
+            
             where.searchCondition = func.buildSearchCondition('Material');
-            //默认不显示商品，选择仓库后再显示
-            if (!(app && app.currentItem && app.currentItem.storeId)) { where.where = "1>2"; }
-            return where;
+			return where;
 
-        }
+		}
     </script>
 }

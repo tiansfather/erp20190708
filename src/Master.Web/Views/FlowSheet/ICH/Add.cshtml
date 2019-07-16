@@ -25,13 +25,14 @@
                                            :value="item.id">
                                 </el-option>
                             </el-select>
-                            <button class="layui-btn  layui-btn-sm" style="float:right;margin-right:10px" :class="{'layui-btn-disabled':!currentItem.items.length}" fornonerow="1" buttonname="生成拆散单" type="button" confirmmsg="" id="submitBtn" buttonactiontype="Form" buttonactionurl="" onclick="app.doSubmit(this)">生成拆散单</button>
+                            <label style="color:red">填正数代表报溢，填负数代表报损</label>
+                            <button class="layui-btn  layui-btn-sm" style="float:right;margin-right:10px" :class="{'layui-btn-disabled':!currentItem.items.length}" fornonerow="1" buttonname="生成报损报溢单" type="button" confirmmsg="" id="submitBtn" buttonactiontype="Form" buttonactionurl="" onclick="app.doSubmit(this)">生成报损报溢单</button>
                         </div>
                         <table id="Material" lay-filter="Material"></table>
                     </div>
                     <div class="layui-col-xs2">
                         <div>
-                            <blockquote class="layui-elem-quote" style="margin-bottom:0px;padding:7px;">拆散单预览</blockquote>
+                            <blockquote class="layui-elem-quote" style="margin-bottom:0px;padding:7px;">报损报溢单预览</blockquote>
                             <table class="layui-table">
 
                                 <thead>
@@ -66,32 +67,31 @@
         <div info="">
             <input type="number" style="width:50px" id="edit_{{d.id}}" onblur="app.updateInfo({ id: {{d.id}},number:this.value,name:'{{d.name}}',measureMentUnit:'{{d.measureMentUnit}}'})" />
         </div>
-
+        
     </script>
     <script>
         var searchKeys = {};
-        var materialId = $.getUrlParam("data");
         var app;
-        //layui加载完成后调用此方法，
-        config.ready = function () {
-            var element = layui.element;
+		//layui加载完成后调用此方法，
+		config.ready = function () {
+			var element = layui.element;
             var table = layui.table;
-
+            
             app = new Vue({
                 el: '#app',
                 data: {
-                    stores: [],
+                    stores:[],
                     currentItem: {
                         items: [],
-                        storeId: null
+                        storeId:null
                     }
                 },
                 methods: {
                     updateInfo: function (info) {
-                        if (isNaN(info.number)) { info.number = 0; }
+                        if (isNaN(info.number)) { info.number = 0;}
                         var existInfo = this.currentItem.items.filter(o => o.id == info.id)[0];
-                        //小于0直接移除
-                        if (info.number <= 0) {
+                        //等于0直接移除
+                        if (info.number == 0) {
                             existInfo && this.currentItem.items.splice(this.currentItem.items.indexOf(existInfo), 1);
                             return;
                         }
@@ -110,10 +110,10 @@
                         var data = {
                             storeId: this.currentItem.storeId,
                             items: this.currentItem.items.map(function (o) {
-                                return { id:o.id, number:o.number };
+                                return { id: o.id, number: o.number };
                             })
                         };
-                        $(obj).attr("buttonactionurl", '/FlowForm/InputByFormKey?formKey=IBK&data=' + encodeURIComponent( JSON.stringify(data)));
+                        $(obj).attr("buttonactionurl", '/FlowForm/InputByFormKey?formKey=ICH&data=' + encodeURIComponent(JSON.stringify(data)));
                         func.callModuleButtonEvent($(obj));
                     }
                 },
@@ -149,49 +149,48 @@
                                     }
                                 }
                             },
-                            { field: '', title: '拆散数量', templet: '#editTpl' },
+                            { field: '', title: '报损/报溢数量', templet: '#editTpl' },
                             { field: 'measureMentUnit', title: '计量单位' },
                         ]],
 
                         done: function () {
-
+                        
                             config.onTableDone();
                         }
                     });
                 }
             })
 
-            //监听树选中事件
+			//监听树选中事件
             baseTree.onSelect = function (node) {
-                searchKeys.MaterialTypeId = node.id;
-                config.reloadTable();
-            }
-        }
-        //当检索窗体提交后会调用此方法
-        config.reloadTable = function () {
+				searchKeys.MaterialTypeId = node.id;
+				config.reloadTable();
+			}
+		}
+		//当检索窗体提交后会调用此方法
+		config.reloadTable = function () {
             layui.table.reload('Material', {
-                where: getWhere()
+				where: getWhere()
 
-            })
-        }
+			})
+		}
         config.onTableDone = function () {
             $.each(app.currentItem.items, function (i, v) {
                 $("#edit_" + v.id).val(v.number);
             });
-        }
-        //当编辑或删除或添加表单提交后会调用此方法
-        config.refresh = function () {
+		}
+		//当编辑或删除或添加表单提交后会调用此方法
+		config.refresh = function () {
             location.reload();
-        }
-        function getWhere() {
+		}
+		function getWhere() {
             var where = { searchKeys: JSON.stringify(searchKeys) };
-
-            where.where = "materialDIYType=1 and MaterialNature=1 and isdiyed=true";//实物组合已配置
+            
+            where.where = "1=1 ";
             where.searchCondition = func.buildSearchCondition('Material');
-            //默认不显示商品，选择仓库后再显示
             if (!(app && app.currentItem && app.currentItem.storeId)) { where.where = "1>2"; }
-            return where;
+			return where;
 
-        }
+		}
     </script>
 }

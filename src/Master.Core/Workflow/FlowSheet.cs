@@ -106,6 +106,14 @@ namespace Master.WorkFlow
                 this.SetPropertyValue("Files", value);
             }
         }
+        [NotMapped]
+        public virtual string ChangeType
+        {
+            get
+            {
+                return this.SheetNature == SheetNature.正单 ? this.SheetName : $"{this.SheetName}冲红";
+            }
+        }
 
     }
 
@@ -136,9 +144,9 @@ namespace Master.WorkFlow
     {
         待审核=-1,
         驳回=-2,
-        正单,
-        冲红,
-        被冲红
+        正单=0,
+        冲红=1,
+        被冲红=2
     }
 
     /// <summary>

@@ -10,6 +10,8 @@ namespace Master.Finance
     [InterModule("资金账户档案")]
     public class FeeAccount : BaseFullEntityWithTenant, IPassivable
     {
+        public const string StaticAccountName1 = "现金账户";
+        public const string StaticAccountName2 = "支票账户";
         [InterColumn(ColumnName = "账户名称", VerifyRules = "required",Sort =1)]
         public string Name { get; set; }
         [InterColumn(ColumnName = "状态", ColumnType = Module.ColumnTypes.Switch, Templet = "{{#if(d.isActive){}}<span class=\"layui-badge layui-bg-green\">有效</span>{{#}else{}}<span class=\"layui-badge layui-bg-gray\">无效</span>{{#}}}",Sort =2)]
@@ -19,7 +21,7 @@ namespace Master.Finance
         /// <summary>
         /// 当前余额
         /// </summary>
-        [InterColumn(ColumnName = "当前余额", ColumnType = Module.ColumnTypes.Number, DisplayFormat = "0.00",IsShownInAdd =false,IsShownInEdit =false,Sort =4)]
+        [InterColumn(ColumnName = "当前余额", ColumnType = Module.ColumnTypes.Number, DisplayFormat = "0.00",IsShownInAdd =false,IsShownInEdit =false,Sort =4, Templet = "{{(Math.round((parseFloat(d.startFee)+parseFloat(d.fee))*100)/100).toFixed(2)}}")]
         public decimal Fee { get; set; }
     }
 }

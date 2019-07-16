@@ -24,11 +24,13 @@
   <ItemGroup>
     <None Remove="Forms\仓库调拨单-IAL.html" />
     <None Remove="Forms\成品拆散单-IBK.html" />
+    <None Remove="Forms\报损报溢单-ICH.html" />
     <None Remove="Forms\散货装配单-IAS.html" />
     <None Remove="Forms\销售收款单-SSK.html" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Forms\仓库调拨单-IAL.html" />
+    <EmbeddedResource Include="Forms\报损报溢单-ICH.html" />
     <EmbeddedResource Include="Forms\销售收款单-SSK.html" />
     <EmbeddedResource Include="Forms\成品拆散单-IBK.html" />
     <EmbeddedResource Include="Forms\散货装配单-IAS.html" />

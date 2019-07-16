@@ -36,10 +36,10 @@
         <el-form-item label="单据性质">
             <el-input v-model="sheetInfo.sheetNatureName" readonly="true"></el-input>
         </el-form-item>
-        <el-form-item label="对应单号" v-if="sheetInfo.sheetNature!=0">
+        <el-form-item label="对应单号" v-if="sheetInfo.sheetNature==1 || sheetInfo.sheetNature==2">
         <el-input v-model="sheetInfo.relSheetSN" readonly="true" ></el-input>
         </el-form-item>
-        <el-form-item label="冲红原因" v-if="sheetInfo.sheetNature!=0">
+        <el-form-item label="冲红原因" v-if="sheetInfo.sheetNature==1 || sheetInfo.sheetNature==2">
         <el-input v-model="sheetInfo.revertReason" readonly="true" ></el-input>
         </el-form-item>
     </el-form>
@@ -49,7 +49,7 @@
 @Html.Raw(ViewBag.FormContent)
 <script>
     config.readyFuncs.push(function () {
-        var header = new Vue({
+        window.header = new Vue({
             el: '#header',
             data: {
                 sheetInfo: {}

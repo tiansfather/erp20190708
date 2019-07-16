@@ -1,5 +1,4 @@
 ﻿using Master.Entity;
-using Master.Units;
 using Master.WorkFlow;
 using System;
 using System.Collections.Generic;
@@ -8,12 +7,12 @@ using System.Text;
 namespace Master.Finance
 {
     /// <summary>
-    /// 往来单位费用变动明细
+    /// 账号金额变动明细
     /// </summary>
-    public class UnitFeeHistory : BaseFullEntityWithTenant
+    public class FeeAccountHistory : BaseFullEntityWithTenant
     {
-        public int UnitId { get; set; }
-        public virtual Unit Unit { get; set; }
+        public int FeeAccountId { get; set; }
+        public virtual FeeAccount FeeAccount { get; set; }
         /// <summary>
         /// 变化的金额,正数为应付增加，负数为应付减少
         /// </summary>

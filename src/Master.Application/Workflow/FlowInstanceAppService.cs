@@ -89,7 +89,7 @@ namespace Master.WorkFlow
                 flowInstance.InstanceName = form.FormName;
                 flowInstance.InstanceStatus = InstanceStatus.Finish;//直接为完成状态
 
-                await manager.InsertAsync(flowInstance);
+                await manager.CreateInstance(flowInstance);
                 await CurrentUnitOfWork.SaveChangesAsync();
                 await manager.FinishInstance(flowInstance);//调用流程结束事件
                 return;
@@ -116,8 +116,8 @@ namespace Master.WorkFlow
             flowInstance.MakerList = (wfruntime.GetNextNodeType() != 4 ? GetNextMakers(wfruntime) : "");
             flowInstance.InstanceStatus = (wfruntime.GetNextNodeType() == 4 ? InstanceStatus.Finish : InstanceStatus.Processing);
 
-            await manager.InsertAsync(flowInstance);
-            await CurrentUnitOfWork.SaveChangesAsync();
+            await manager.CreateInstance(flowInstance);
+            //await CurrentUnitOfWork.SaveChangesAsync();
             if (flowInstance.InstanceStatus == InstanceStatus.Finish)
             {
                 await manager.FinishInstance(flowInstance);//调用流程结束事件

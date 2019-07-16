@@ -10,6 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Abp.Runtime.Caching;
+using Master.WorkFlow;
+using Master.Finance;
 
 namespace Master.Units
 {
@@ -45,8 +47,46 @@ namespace Master.Units
             await base.ValidateEntity(entity);
         }
         
+        /// <summary>
+        /// 往来单位金额变动
+        /// </summary>
+        /// <param name="unitId"></param>
+        /// <param name="accountId"></param>
+        /// <param name="totalFee"></param>
+        /// <param name="flowSheet"></param>
+        /// <returns></returns>
+        public virtual async Task ChangeFee(int unitId,int accountId,decimal totalFee,FlowSheet flowSheet)
+        {
+            var feeAccountManager = Resolve<FeeAccountManager>();
+            var unit = await GetByIdAsync(unitId);
+            var account = await feeAccountManager.GetByIdAsync(accountId);
+            unit.Fee += totalFee;
+            account.Fee += totalFee;
+            //记录变动明细
+            await BuildFeeHistory(unit, totalFee, flowSheet);
+            await feeAccountManager.BuildFeeHistory(account, totalFee, flowSheet);
+        }
+        /// <summary>
+        /// 构建往来单位变动明细
+        /// </summary>
+        /// <param name="unit"></param>
+        /// <param name="totalFee"></param>
+        /// <param name="flowSheet"></param>
+        /// <returns></returns>
+        public virtual async Task BuildFeeHistory(Unit unit,decimal totalFee,FlowSheet flowSheet)
+        {
+            var unitFeeHistory = new UnitFeeHistory()
+            {
+                UnitId=unit.Id,
+                Fee=totalFee,
+                RemainFee=unit.Fee+unit.StartFee,//当前总结余,
+                ChangeType=flowSheet.ChangeType,
+                FlowSheetId=flowSheet.Id
+            };
 
-        
+            await Resolve<UnitFeeHistoryManager>().InsertAsync(unitFeeHistory);
+        }
+
         //public void HandleEvent(EntityChangedEventData<Unit> eventData)
         //{
         //    var key = "Unit" + "@" + eventData.Entity.TenantId;

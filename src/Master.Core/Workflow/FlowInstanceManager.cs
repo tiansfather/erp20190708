@@ -14,6 +14,16 @@ namespace Master.WorkFlow
         //public IFlowHandlerFinder FlowHandlerFinder { get; set; }
         //public FlowFormManager FlowFormManager { get; set; }
         //public FlowSheetManager FlowSheetManager { get; set; }
+        public virtual async Task CreateInstance(FlowInstance flowInstance)
+        {
+            await InsertAsync(flowInstance);
+            await CurrentUnitOfWork.SaveChangesAsync();
+            var form = await Resolve<FlowFormManager>().GetByIdFromCacheAsync(flowInstance.FlowFormId);
+
+            var flowHandler = Resolve<IFlowHandlerFinder>().FindFlowHandler(form.FormKey);
+
+            await flowHandler.CreateSheet(flowInstance, form);
+        }
         /// <summary>
         /// 当一个流程审核通过后调用
         /// </summary>
@@ -36,12 +46,12 @@ namespace Master.WorkFlow
         [UnitOfWork]
         public virtual void HandleEvent(EntityCreatedEventData<FlowInstance> eventData)
         {
-            var flowInstance = eventData.Entity;
-            var form = Resolve<FlowFormManager>().GetByIdFromCacheAsync(flowInstance.FlowFormId).Result;
+            //var flowInstance = eventData.Entity;
+            //var form = Resolve<FlowFormManager>().GetByIdFromCacheAsync(flowInstance.FlowFormId).Result;
 
-            var flowHandler = Resolve<IFlowHandlerFinder>().FindFlowHandler(form.FormKey);
+            //var flowHandler = Resolve<IFlowHandlerFinder>().FindFlowHandler(form.FormKey);
 
-            flowHandler.CreateSheet(flowInstance, form).GetAwaiter().GetResult();
+            //flowHandler.CreateSheet(flowInstance, form).GetAwaiter().GetResult();
         }
     }
 }

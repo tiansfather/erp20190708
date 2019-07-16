@@ -37,7 +37,7 @@ namespace Master.Storage
         /// <returns></returns>
         public virtual async Task CombineMaterial(int storeId, int materialId, int number, FlowSheet flowSheet)
         {
-            var changeType = flowSheet.SheetNature == SheetNature.正单 ? flowSheet.SheetName : $"{flowSheet.SheetName}冲红";
+            var changeType = flowSheet.ChangeType;
             var materialManager = Resolve<MaterialManager>();
             var material = await materialManager.GetByIdAsync(materialId);
             if (!material.IsDiyed || material.DIYInfo.Count == 0)
@@ -83,7 +83,7 @@ namespace Master.Storage
         /// <returns></returns>
         public virtual async Task BreakMaterial(int storeId, int materialId, int number, FlowSheet flowSheet)
         {
-            var changeType = flowSheet.SheetNature == SheetNature.正单 ? flowSheet.SheetName : $"{flowSheet.SheetName}冲红";
+            var changeType = flowSheet.ChangeType;
             var material = await Resolve<MaterialManager>().GetByIdAsync(materialId);
             if (!material.IsDiyed || material.DIYInfo.Count == 0)
             {
@@ -131,7 +131,7 @@ namespace Master.Storage
         /// <returns></returns>
         public virtual async Task TransferMaterial(int outStoreId,int inStoreId,int materialId, int number, FlowSheet flowSheet)
         {
-            var changeType = flowSheet.SheetNature == SheetNature.正单 ? flowSheet.SheetName : $"{flowSheet.SheetName}冲红";
+            var changeType = flowSheet.ChangeType;
             var material = await Resolve<MaterialManager>().GetByIdAsync(materialId);
            
             var storeMaterialCount = await GetStoreMaterialNumber(outStoreId, materialId);
@@ -158,6 +158,24 @@ namespace Master.Storage
             };
             inStoreMaterial.BuildStoreMaterialHistory(changeType, number, flowSheet.Id);
             await AppendStoreMaterial(inStoreMaterial);
+        }
+        #endregion
+
+        #region 报损报溢
+        public virtual async Task CountMaterial(int storeId, int materialId, int number, FlowSheet flowSheet)
+        {
+            var changeType = flowSheet.ChangeType;
+            var materialManager = Resolve<MaterialManager>();
+            var material = await materialManager.GetByIdAsync(materialId);
+            var storeMaterial = new StoreMaterial()
+            {
+                MaterialId = materialId,
+                StoreId = storeId,
+                Number = number
+            };
+
+            storeMaterial.BuildStoreMaterialHistory(changeType, number, flowSheet.Id);
+            await AppendStoreMaterial(storeMaterial);
         }
         #endregion
 

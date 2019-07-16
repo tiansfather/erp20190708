@@ -93,6 +93,7 @@ namespace Master.EntityFrameworkCore
 
         #region Finance
         public virtual DbSet<FeeAccount> FeeAccount { get; set; }
+        public virtual DbSet<FeeAccountHistory> FeeAccountHistory { get; set; }
         public virtual DbSet<UnitFeeHistory> UnitFeeHistory { get; set; }
         #endregion
 

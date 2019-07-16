@@ -57,13 +57,15 @@ namespace Master.WorkFlow
             //生成新的单据
             var newFlowSheet = new FlowSheet()
             {
+                UnitId=flowSheet.UnitId,
                 FlowInstanceId = newInstanceId,
                 SheetSN = FlowSheetManager.GenerateSheetSN(flowSheet.FormKey),
                 SheetName = newInstance.InstanceName,
                 FormKey = flowSheet.FormKey,
                 SheetNature = SheetNature.冲红,
                 RelSheetId = flowSheet.Id,
-                RevertReason = revertReason
+                RevertReason = revertReason,
+                Property=flowSheet.Property
             };
             newFlowSheet.SheetDate = flowSheet.SheetDate;
             newFlowSheet.Remarks = flowSheet.Remarks;

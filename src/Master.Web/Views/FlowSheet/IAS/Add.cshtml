@@ -25,7 +25,7 @@
                                            :value="item.id">
                                 </el-option>
                             </el-select>
-                            <button class="layui-btn  layui-btn-sm" :class="{'layui-btn-disabled':!currentItem.items.length}" fornonerow="1" buttonname="生成装配单" type="button" confirmmsg="" id="submitBtn" buttonactiontype="Form" buttonactionurl="" onclick="app.doSubmit(this)">生成装配单</button>
+                            <button class="layui-btn  layui-btn-sm" style="float:right;margin-right:10px" :class="{'layui-btn-disabled':!currentItem.items.length}" fornonerow="1" buttonname="生成装配单" type="button" confirmmsg="" id="submitBtn" buttonactiontype="Form" buttonactionurl="" onclick="app.doSubmit(this)">生成装配单</button>
                         </div>
                         <table id="Material" lay-filter="Material"></table>
                     </div>

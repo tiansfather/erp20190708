@@ -1,5 +1,7 @@
 ﻿using Abp.UI;
 using Master.Module;
+using Master.WorkFlow;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +12,13 @@ namespace Master.Finance
 {
     public class FeeAccountManager : ModuleServiceBase<FeeAccount, int>
     {
+        public virtual async Task<FeeAccount> GetByName(string name)
+        {
+            await BuildDefaultAccount();
+            return await GetAll().Where(o => o.Name == name).FirstOrDefaultAsync();
+        }
         /// <summary>
-        /// 仓库名字不能一样
+        /// 账号名字不能一样
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
@@ -39,16 +46,30 @@ namespace Master.Finance
             {
                 await InsertAsync(new FeeAccount()
                 {
-                    Name = "支票账户",
+                    Name = FeeAccount.StaticAccountName2,
                     IsActive = true,
                 });
                 await InsertAsync(new FeeAccount()
                 {
-                    Name = "现金账户",
+                    Name = FeeAccount.StaticAccountName1,
                     IsActive = true
                 });
             }
             await CurrentUnitOfWork.SaveChangesAsync();
+        }
+
+        public virtual async Task BuildFeeHistory(FeeAccount account, decimal totalFee, FlowSheet flowSheet)
+        {
+            var feeAccountHistory = new FeeAccountHistory()
+            {
+                FeeAccountId = account.Id,
+                Fee = totalFee,
+                RemainFee = account.Fee + account.StartFee,//当前总结余,
+                ChangeType = flowSheet.ChangeType,
+                FlowSheetId = flowSheet.Id
+            };
+
+            await Resolve<FeeAccountHistoryManager>().InsertAsync(feeAccountHistory);
         }
     }
 }

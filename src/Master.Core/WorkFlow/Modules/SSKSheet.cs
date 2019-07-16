@@ -23,7 +23,7 @@ namespace Master.WorkFlow.Modules
         public virtual decimal Fee{get;set;}
         [InterColumn(ColumnName = "收款类型", ValuePath = "Property",Sort =6)]
         [NotMapped]
-        public virtual decimal FeeType { get; set; }
+        public virtual string PayType { get; set; }
         public override DateTime SheetDate { get => base.SheetDate; set => base.SheetDate = value; }
     }
 }
