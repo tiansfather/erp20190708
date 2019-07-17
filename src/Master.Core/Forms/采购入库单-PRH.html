@@ -1,0 +1,154 @@
+﻿<div id="app" v-cloak>
+    <el-form :inline="true" size="mini">
+        <el-form-item label="入库日期">
+            <el-input v-model="currentItem.sheetDate" readonly="true"></el-input>
+        </el-form-item>
+        <el-form-item label="供货商">
+            <el-input v-model="currentItem.unitName" readonly="true"></el-input>
+        </el-form-item>
+        <el-form-item label="收货仓库">
+            <el-input v-model="currentItem.storeName" readonly="true"></el-input>
+        </el-form-item>
+
+    </el-form>
+    <table class="layui-table">
+        <thead>
+            <tr>
+                <th>品名</th>
+                <th>规格</th>
+                <th>零售价</th>
+                <th>备注</th>
+                <th>进货数量</th>
+                <th>计量单位</th>
+                <th>适用区域</th>
+                <th>特征符</th>
+                <th>卡号</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="(item,index) in currentItem.items">
+                <td>{{item.name}}</td>
+                <td>{{item.specification}}</td>
+                <td>{{item.price}}</td>
+                <td>{{item.remarks}}</td>
+                <td><el-input-number v-model="item.number" :min="1" label="进货数量"></el-input-number></td>
+                <td>{{item.measureMentUnit}}</td>
+                <td>{{item.location}}</td>
+                <td>
+                    <el-input v-model="item.feature"></el-input>
+                </td>
+                <td>
+                    <el-col :span="11">
+                        <el-input v-model="item.cardStart"></el-input>
+                    </el-col>
+                    <el-col class="line" :span="2">-</el-col>
+                    <el-col :span="11">
+                        <el-input v-model="item.cardEnd"></el-input>
+                    </el-col>
+                </td>
+                <td><a title="删除" style="cursor: pointer;" @click="currentItem.items.splice(index,1);"><i class="layui-icon layui-icon-delete"></i></a></td>
+            </tr>
+        </tbody>
+    </table>
+    <el-form :inline="true" size="mini">
+        <el-form-item label="货款总额">
+            <el-input v-model="materialFee" readonly="true"></el-input>
+        </el-form-item>
+        <el-form-item label="其它费用">
+            <el-input v-model="currentItem.otherFee" typeof="number"></el-input>
+        </el-form-item>
+        <el-form-item label="本单应付金额">
+            <el-input v-model="totalFee" readonly="true"></el-input>
+        </el-form-item>
+
+    </el-form>
+    <el-form size="mini">
+        <el-form-item label="备注">
+            <el-input type="textarea" v-model="currentItem.remarks"></el-input>
+        </el-form-item>
+    </el-form>
+
+</div>
+<script>
+    config.ready = function () {
+        app = new Vue({
+            el: "#app",
+            data: {
+                columns:[],
+                rCount:0,                
+                currentItem: _formOption.formData ? _formOption.formData.layoutData : {
+                    sheetDate: new Date().pattern("yyyy-MM-dd"),
+                    storeName: '',
+                    unitName:'',
+                    storeId: null,
+                    unitId:null,
+                    items: [],
+                    remarks: '',
+                    otherFee:0
+                }
+            },
+            computed: {
+                materialFee: function () {
+                    var fee = 0;
+                    this.items.forEach(o => fee += o.price * o.number);
+                    return fee.toFixed(2);
+                },
+                totalFee: function () {
+                    return (parseFloat(this.materialFee) + parseFloat(this.otherFee)).toFixed(2);
+                }
+            },
+            methods: {
+            },
+            created() {
+                var that = this;
+                if (!_formOption.formData) {
+                    //录入模式获取数据
+                    var params = JSON.parse( $.getUrlParam("params"));
+                    this.currentItem.storeId = params.storeId;
+                    this.currentItem.unitId = params.unitId;
+                    //仓库信息
+                    abp.services.app.store.getById(params.storeId).done(data => this.currentItem.storeName = data.name);
+                    //供货商信息
+                    abp.services.app.unit.getById(params.unitId).done(data => this.currentItem.unitName = data.unitName);
+                    //商品信息
+                    func.runAsync(abp.services.app.material.getUnitMaterialInfos(this.currentItem.unitId, params.items.map(o => o.id)).done(function (data) {
+                        console.log(data);
+                        that.currentItem.items = data.map(function (o) {
+                            var number = params.items.filter(i => i.id == o.id)[0].number;
+                            var disCount = o.disCount || 1;
+                            var price = o.price * discount;
+                            return $.extend(o, { number: number, price: price.toFixed(2) });
+                        })
+                    }))
+                }
+            },
+            mounted() {
+            }
+        })
+    }
+
+    //模板中必须实现的方法，用于获取表单数据，返回一个对象，如果需要取消提交，可抛出一个异常
+    function getFormData() {
+        var data = app.currentItem.items;
+        if (!data.length) {
+            throw "请至少录入一条数据";
+        }
+        var sheetData = {
+            header: {
+                sheetDate: app.currentItem.sheetDate,
+                remarks: app.currentItem.remarks,
+                unitId: app.currentItem.unitId,
+                storeName: app.currentItem.storeName,
+                storeId: app.currentItem.storeId,
+                totalFee: app.totalFee
+            },
+            body: data
+        };
+        //约定，formData由两部分组成,一为layoutData,即用于表单呈现数据,另一部分是单据数据,用于后台进行数据处理,一般由呈现数据进行处理后得到
+        return {
+            layoutData: app.currentItem,
+            sheetData: sheetData
+        };
+    }
+</script>

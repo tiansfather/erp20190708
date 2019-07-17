@@ -50,6 +50,34 @@ namespace Master.Storage
         {
             return await Resolve<StoreMaterialManager>().GetAll().CountAsync(o => o.MaterialId == materialId);
         }
+        /// <summary>
+        /// 获取物料信息，用于采购入库
+        /// </summary>
+        /// <param name="unitId"></param>
+        /// <param name="materialIds"></param>
+        /// <returns></returns>
+        public virtual async Task<object> GetUnitMaterialInfos(int unitId,IEnumerable<int> materialIds)
+        {
+            var result = new List<object>();
+            var materials = await Manager.GetListByIdsAsync(materialIds);
+            foreach (var o in materials)
+            {
+                var obj = new
+                {
+                    o.Id,
+                    o.Name,
+                    o.Specification,
+                    o.Remarks,
+                    o.MeasureMentUnit,
+                    o.MaterialNature,
+                    o.Price,
+                    o.Location,
+                    o.DefaultBuyDiscount
+                };
+                result.Add(obj);
+            }
+            return result;
+        }
 
         /// <summary>
         /// 获取某仓库中的物料信息

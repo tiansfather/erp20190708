@@ -25,6 +25,22 @@ namespace Master.Storage
         {
             return (await GetAll().Where(o => o.StoreId == storeId && o.MaterialId == materialId).FirstOrDefaultAsync())?.Number ?? 0;
         }
+        #region 入库
+        public virtual async Task InMaterial(int storeId, int materialId, int number, FlowSheet flowSheet)
+        {
+            var changeType = flowSheet.ChangeType;
+            var materialManager = Resolve<MaterialManager>();
+            var storeMaterial = new StoreMaterial()
+            {
+                MaterialId = materialId,
+                StoreId = storeId,
+                Number = number
+            };
+
+            storeMaterial.BuildStoreMaterialHistory(changeType, number, flowSheet.Id);
+            await AppendStoreMaterial(storeMaterial);
+        }
+        #endregion
 
         #region 拆散与组合
         /// <summary>
@@ -161,7 +177,7 @@ namespace Master.Storage
         }
         #endregion
 
-        #region 报损报溢
+        #region 库存变化
         public virtual async Task CountMaterial(int storeId, int materialId, int number, FlowSheet flowSheet)
         {
             var changeType = flowSheet.ChangeType;

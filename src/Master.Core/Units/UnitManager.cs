@@ -55,16 +55,21 @@ namespace Master.Units
         /// <param name="totalFee"></param>
         /// <param name="flowSheet"></param>
         /// <returns></returns>
-        public virtual async Task ChangeFee(int unitId,int accountId,decimal totalFee,FlowSheet flowSheet)
+        public virtual async Task ChangeFee(int unitId,int? accountId,decimal totalFee,FlowSheet flowSheet)
         {
-            var feeAccountManager = Resolve<FeeAccountManager>();
-            var unit = await GetByIdAsync(unitId);
-            var account = await feeAccountManager.GetByIdAsync(accountId);
+            //往来单位
+            var unit = await GetByIdAsync(unitId);            
             unit.Fee += totalFee;
-            account.Fee += totalFee;
-            //记录变动明细
+            // 记录变动明细
             await BuildFeeHistory(unit, totalFee, flowSheet);
-            await feeAccountManager.BuildFeeHistory(account, totalFee, flowSheet);
+            if (accountId.HasValue)
+            {
+                var feeAccountManager = Resolve<FeeAccountManager>();
+                var account = await feeAccountManager.GetByIdAsync(accountId.Value);
+                account.Fee += totalFee;
+                await feeAccountManager.BuildFeeHistory(account, totalFee, flowSheet);
+            }
+            
         }
         /// <summary>
         /// 构建往来单位变动明细
