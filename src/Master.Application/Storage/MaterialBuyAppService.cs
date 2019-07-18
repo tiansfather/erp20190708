@@ -21,6 +21,9 @@ namespace Master.Storage
                     o.Key.Id,
                     o.Key.Name,
                     o.Key.Specification,
+                    o.Key.Price,
+                    BuyNumber=o.Sum(b=>b.BuyNumber),
+                    BackNumber=o.Sum(b=>b.BackNumber),
                     CanBackNumber=o.Sum(b=>b.CanBackNumber)
                 })
                 .Where(o=>o.CanBackNumber>0)

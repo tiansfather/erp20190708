@@ -10,9 +10,9 @@
 	<div class="layui-card">
 		<div class="layui-card-body">
 			<div class="LAY-app-message-btns" style="margin-bottom: 10px;">
-				<vc:module-button module-key="PRHSheet"></vc:module-button>
+				<vc:module-button module-key="PRRSheet"></vc:module-button>
 			</div>
-			<vc:module-table param="@(new ModuleTableViewParam() {ID="PRHSheet",ModuleKey=nameof(Master.WorkFlow.Modules.PRHSheet),Height="full-100",Where="" })"></vc:module-table>
+			<vc:module-table param="@(new ModuleTableViewParam() {ID="PRRSheet",ModuleKey=nameof(Master.WorkFlow.Modules.PRRSheet),Height="full-100",Where="" })"></vc:module-table>
 		</div>
 		
 	</div>
@@ -28,7 +28,7 @@
 		}
 		//当检索窗体提交后会调用此方法
 		config.reloadTable = function () {
-            layui.table.reload('PRHSheet', {
+            layui.table.reload('PRRSheet', {
 				where: getWhere()
 
 			})
@@ -43,7 +43,7 @@
 		function getWhere() {
 			var where = {};
 
-            where.searchCondition = func.buildSearchCondition('PRHSheet');
+            where.searchCondition = func.buildSearchCondition('PRRSheet');
 
 			return where;
 

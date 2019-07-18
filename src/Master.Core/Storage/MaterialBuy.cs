@@ -17,6 +17,9 @@ namespace Master.Storage
         public virtual FlowSheet FlowSheet { get; set; }
         public int BuyNumber { get; set; }
         public int BackNumber { get; set; }
+        public string FeatureCode { get; set; }
+        public string CodeStartNumber { get; set; }
+        public string CodeEndNumber { get; set; }
         [NotMapped]
         public int CanBackNumber
         {

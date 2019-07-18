@@ -472,6 +472,12 @@
     <Content Update="Views\FlowSheet\PRH\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\FlowSheet\PRR\Add.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\FlowSheet\PRR\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\FlowSheet\SSK\Add.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

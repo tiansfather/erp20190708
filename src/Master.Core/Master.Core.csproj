@@ -27,9 +27,11 @@
     <None Remove="Forms\报损报溢单-ICH.html" />
     <None Remove="Forms\散货装配单-IAS.html" />
     <None Remove="Forms\采购入库单-PRH.html" />
+    <None Remove="Forms\采购退货单-PRR.html" />
     <None Remove="Forms\销售收款单-SSK.html" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Forms\采购退货单-PRR.html" />
     <EmbeddedResource Include="Forms\采购入库单-PRH.html" />
     <EmbeddedResource Include="Forms\仓库调拨单-IAL.html" />
     <EmbeddedResource Include="Forms\报损报溢单-ICH.html" />

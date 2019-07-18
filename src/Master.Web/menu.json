@@ -2,7 +2,7 @@
   {
     "name": "Buy",
     "displayName": "进货",
-    "icon": "iconfont icon-zonglan",
+    "icon": "iconfont icon-ruku1 ",
     "order": 2,
     "items": [
       {
@@ -18,13 +18,27 @@
         "icon": "iconfont icon-celve",
         "url": "/Home/Show?name=../FlowSheet/PRH/Index",
         "order": 2
+      },
+      {
+        "name": "Buy.Tenancy.PRR",
+        "displayName": "采购退货",
+        "icon": "iconfont icon-celve",
+        "url": "/Home/Show?name=../FlowSheet/PRR/Add",
+        "order": 3
+      },
+      {
+        "name": "Buy.Tenancy.PRRSheet",
+        "displayName": "退货单查询",
+        "icon": "iconfont icon-celve",
+        "url": "/Home/Show?name=../FlowSheet/PRR/Index",
+        "order": 4
       }
     ]
   },
   {
     "name": "Storage",
     "displayName": "库存",
-    "icon": "iconfont icon-zonglan",
+    "icon": "iconfont icon-ziyuan",
     "order": 10,
     "items": [
       {

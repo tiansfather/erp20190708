@@ -14,6 +14,8 @@ namespace Master.Storage
     {
         public virtual async Task Back(int unitId,DateTime startDate,int materialId,int storeId,int number,FlowSheet flowSheet)
         {
+            var material = await Resolve<MaterialManager>().GetByIdFromCacheAsync(materialId);
+
             var toDoNumber = number;
             var materialBuys = await GetAll().Where(new MaterialBuySpecification(unitId, startDate))
                 .Where(o => o.MaterialId == materialId)
@@ -42,7 +44,7 @@ namespace Master.Storage
 
             if (toDoNumber > 0)
             {
-                throw new UserFriendlyException($"{mat}可退货数量少于{toDoNumber}");
+                throw new UserFriendlyException($"{material.Name}可退货数量少于{toDoNumber}");
             }
 
             await Resolve<StoreMaterialManager>().CountMaterial(storeId, materialId, -number, flowSheet);

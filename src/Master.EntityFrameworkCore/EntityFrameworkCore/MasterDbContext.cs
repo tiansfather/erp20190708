@@ -86,6 +86,7 @@ namespace Master.EntityFrameworkCore
         #region Storage
         public virtual DbSet<Store> Store { get; set; }
         public virtual DbSet<Material> Material { get; set; }
+        public virtual DbSet<MaterialBuy> MaterialBuy { get; set; }
         public virtual DbSet<StoreMaterial> StoreMaterial { get; set; }
         public virtual DbSet<StoreMaterialHistory> StoreMaterialHistory { get; set; }       
         public virtual DbSet<UnitMaterialDiscount> UnitMaterialDiscount { get; set; }

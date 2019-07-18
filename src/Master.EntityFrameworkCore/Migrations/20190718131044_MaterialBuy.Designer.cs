@@ -3,14 +3,16 @@ using System;
 using Master.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Master.Migrations
 {
     [DbContext(typeof(MasterDbContext))]
-    partial class MasterDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190718131044_MaterialBuy")]
+    partial class MaterialBuy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1531,15 +1533,9 @@ namespace Master.Migrations
 
                     b.Property<int>("BuyNumber");
 
-                    b.Property<string>("CodeEndNumber");
-
-                    b.Property<string>("CodeStartNumber");
-
                     b.Property<DateTime>("CreationTime");
 
                     b.Property<long?>("CreatorUserId");
-
-                    b.Property<string>("FeatureCode");
 
                     b.Property<int>("FlowSheetId");
 
