@@ -20,6 +20,7 @@ namespace Master.FlowHandlers
     {
         
         public MaterialManager MaterialManager { get; set; }
+        public MaterialBuyManager MaterialBuyManager { get; set; }
         public StoreMaterialManager StoreMaterialManager { get; set; }
         public UnitManager UnitManager { get; set; }
         public override async Task Handle(FlowSheet flowSheet)
@@ -47,7 +48,15 @@ namespace Master.FlowHandlers
                 var materialId = Convert.ToInt32(sheetItem["id"]);//对应的物料Id
                 
                 var number= sheetItem["number"].ToObjectWithDefault<int>();//入库数量
-
+                //记录采购
+                var materialBuy = new MaterialBuy()
+                {
+                    MaterialId = materialId,
+                    FlowSheetId = flowSheet.Id,
+                    BuyNumber = number
+                };
+                await MaterialBuyManager.InsertAsync(materialBuy);
+                //库存变化
                 await StoreMaterialManager.CountMaterial(storeId, materialId, number,flowSheet);
                 
             }

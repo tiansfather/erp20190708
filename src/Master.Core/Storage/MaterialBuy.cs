@@ -1,7 +1,10 @@
 ﻿using Abp.Domain.Entities.Auditing;
+using Abp.Specifications;
 using Master.WorkFlow;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace Master.Storage
@@ -12,5 +15,30 @@ namespace Master.Storage
         public virtual Material Material { get; set; }
         public int FlowSheetId { get; set; }
         public virtual FlowSheet FlowSheet { get; set; }
+        public int BuyNumber { get; set; }
+        public int BackNumber { get; set; }
+        [NotMapped]
+        public int CanBackNumber
+        {
+            get
+            {
+                return BuyNumber - BackNumber;
+            }
+        }
+    }
+
+    public class MaterialBuySpecification : Specification<MaterialBuy>
+    {
+        private int _unitId;
+        private DateTime _startdate;
+        public MaterialBuySpecification(int unitId,DateTime startDate)
+        {
+            _unitId = unitId;
+            _startdate = startDate;
+        }
+        public override Expression<Func<MaterialBuy, bool>> ToExpression()
+        {
+            return o => o.FlowSheet.UnitId == _unitId && o.CreationTime > _startdate && o.FlowSheet.SheetNature == SheetNature.正单;
+        }
     }
 }
