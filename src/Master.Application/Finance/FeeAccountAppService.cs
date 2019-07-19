@@ -49,5 +49,20 @@ namespace Master.Storage
                     o.Name
                 });
         }
+
+        /// <summary>
+        /// 获取所有账户
+        /// </summary>
+        /// <returns></returns>
+        public virtual async Task<object> GetAllAccounts()
+        {
+            var allAccounts = await Manager.GetAllList();
+            return allAccounts
+                .Select(o => new
+                {
+                    o.Id,
+                    o.Name
+                });
+        }
     }
 }

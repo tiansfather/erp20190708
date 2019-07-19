@@ -60,6 +60,7 @@ namespace Master.Finance
 
         public virtual async Task BuildFeeHistory(FeeAccount account, decimal totalFee, FlowSheet flowSheet)
         {
+            account.Fee += totalFee;
             var feeAccountHistory = new FeeAccountHistory()
             {
                 FeeAccountId = account.Id,

@@ -51,8 +51,9 @@ namespace Master.Web.Components
                 //todo:统一进行数据处理
                 if (vm.ModuleInfo.IsInterModule)
                 {
-                    var pluginName = vm.ModuleInfo.GetData<string>("PluginName");
-                    if (string.IsNullOrEmpty(pluginName) || pluginName=="core") { pluginName = "app"; }
+                    //var pluginName = vm.ModuleInfo.GetData<string>("PluginName");
+                    //if (string.IsNullOrEmpty(pluginName) || pluginName=="core") { pluginName = "app"; }
+                    var pluginName = "app";
                     vm.DataUrl = $"/api/services/{pluginName}/{param.ModuleKey}/GetPageResult";
                 }
                 else

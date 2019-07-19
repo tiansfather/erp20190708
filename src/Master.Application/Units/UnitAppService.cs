@@ -36,7 +36,7 @@ namespace Master.Units
         /// </summary>
         /// <param name="unitNature">1:客户，2:供应商</param>
         /// <returns></returns>
-        public virtual async Task<List<UnitDto>> GetAllByUnitNature(int unitNature,string key,int take=200)
+        public virtual async Task<List<UnitDto>> GetAllByUnitNature(int? unitNature,string key,int take=200)
         {
             var query = Manager.GetAll();
             if (unitNature == 0)

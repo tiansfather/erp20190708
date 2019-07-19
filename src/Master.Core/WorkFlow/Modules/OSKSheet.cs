@@ -7,12 +7,12 @@ using System.Text;
 
 namespace Master.WorkFlow.Modules
 {
-    [InterModule("销售收款单", BaseType = typeof(FlowSheet), GenerateDefaultButtons = false, GenerateDefaultColumns = false)]
-    public class SSKSheet : FlowSheet
+    [InterModule("其它收款单", BaseType = typeof(FlowSheet), GenerateDefaultButtons = false, GenerateDefaultColumns = false)]
+    public class OSKSheet : FlowSheet
     {
         [InterColumn(ColumnName = "收款单编号", Templet = "<a dataid=\"{{d.id}}\" class=\"layui-btn layui-btn-xs layui-btn-normal\" buttonname=\"单据\" params=\"{&quot;btn&quot;:[]}\"   buttonactiontype=\"Form\" buttonactionurl=\"/FlowSheet/SheetView\" onclick=\"func.callModuleButtonEvent()\">{{d.sheetSN}}</a>", Sort = 1)]
         public override string SheetSN { get => base.SheetSN; set => base.SheetSN = value; }
-        [InterColumn(ColumnName = "付款代理商", DisplayPath = "Unit.UnitName", Templet = "{{d.unitId_display}}", Sort = 2)]
+        [InterColumn(ColumnName = "收款代理", DisplayPath = "Unit.UnitName", Templet = "{{d.unitId_display}}", Sort = 2)]
         public override int? UnitId { get => base.UnitId; set => base.UnitId = value; }
         [InterColumn(ColumnName = "制单时间",Sort =3)]
         public override DateTime CreationTime { get => base.CreationTime; set => base.CreationTime = value; }

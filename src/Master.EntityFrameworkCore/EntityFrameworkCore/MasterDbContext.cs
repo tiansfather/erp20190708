@@ -96,6 +96,7 @@ namespace Master.EntityFrameworkCore
         public virtual DbSet<FeeAccount> FeeAccount { get; set; }
         public virtual DbSet<FeeAccountHistory> FeeAccountHistory { get; set; }
         public virtual DbSet<UnitFeeHistory> UnitFeeHistory { get; set; }
+        public virtual DbSet<FeeCheck> FeeCheck { get; set; }
         #endregion
 
 

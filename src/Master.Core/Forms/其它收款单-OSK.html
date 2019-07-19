@@ -1,7 +1,7 @@
 ﻿<div id="app" v-cloak>
     <el-form :inline="true" size="mini">
         <el-form-item label="代理商">
-            <unit-select nature="0" :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @change="loadUnit"></unit-select>
+            <unit-select :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @change="loadUnit"></unit-select>
         </el-form-item>
         <el-form-item label="当前结余">
             <el-input v-model="currentItem.unitInfo.nowFee" readonly="true" tips="负数代表对方欠我方，正数代表我方欠对方。"></el-input>

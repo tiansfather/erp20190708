@@ -1,7 +1,7 @@
 ﻿<div id="app" v-cloak>
     <el-form :inline="true" size="mini">
-        <el-form-item label="代理商">
-            <unit-select nature="0" :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @change="loadUnit"></unit-select>
+        <el-form-item label="供应商">
+            <unit-select nature="1" :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @change="loadUnit"></unit-select>
         </el-form-item>
         <el-form-item label="当前结余">
             <el-input v-model="currentItem.unitInfo.nowFee" readonly="true" tips="负数代表对方欠我方，正数代表我方欠对方。"></el-input>
@@ -63,8 +63,8 @@
     </el-form>
     <el-divider></el-divider>
     <div>
-        <label>本单收款总额（元）：{{totalFee}}</label>
-        <label style="margin-left:50px">收款后结余（元）：{{remainFee}}</label>
+        <label>本单付款总额（元）：{{totalFee}}</label>
+        <label style="margin-left:50px">付款后结余（元）：{{remainFee}}</label>
     </div>
 </div>
 <script>
@@ -97,7 +97,7 @@
                     }
                 },
                 remainFee: function () {
-                    return (parseFloat(this.totalFee) + parseFloat(this.currentItem.unitInfo.nowFee)).toFixed(2);
+                    return (parseFloat(this.currentItem.unitInfo.nowFee) - parseFloat(this.totalFee)).toFixed(2);
                 }
             },
             methods: {
@@ -129,13 +129,13 @@
     //模板中必须实现的方法，用于获取表单数据，返回一个对象，如果需要取消提交，可抛出一个异常
     function getFormData() {
         if (!app.currentItem.unitId) {
-            throw "请先选择代理商";
+            throw "请先选择供应商";
         }
         if (app.totalFee == 0) {
             throw "收款金额不能为0";
         }
         if (app.currentItem.payType == '1' && !app.currentItem.accountId) {
-            throw "请选择收款账户";
+            throw "请选择付款账户";
         }
         if (app.currentItem.payType == '2') {
             if (!app.currentItem.feeCheck.checkNumber) {

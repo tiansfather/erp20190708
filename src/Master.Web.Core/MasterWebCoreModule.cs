@@ -58,6 +58,7 @@ namespace Master
                      typeof(MasterApplicationModule).GetAssembly()
                  );
 
+            Configuration.Auditing.IsEnabled = false;
 
             ConfigureTokenAuth();
 

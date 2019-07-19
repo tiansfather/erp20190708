@@ -15,9 +15,9 @@ using System.Threading.Tasks;
 namespace Master.FlowHandlers
 {
     /// <summary>
-    /// 销售收款单
+    /// 采购付款单
     /// </summary>
-    public class SSKFlowHandler : FlowHandlerBase
+    public class PPYFlowHandler : FlowHandlerBase
     {
         public UnitManager UnitManager { get; set; }
         public FeeAccountManager FeeAccountManager { get; set; }
@@ -60,16 +60,13 @@ namespace Master.FlowHandlers
             {
                 accountId = (await FeeAccountManager.GetByName(FeeAccount.StaticAccountName2)).Id;
                 //建立支票信息
-                var feeCheck = sheetHeader["feeCheck"].ToObject<FeeCheck>();
-                feeCheck.CheckStatus = CheckStatus.收入;
-                feeCheck.InFlowSheetId = flowSheet.Id;
-                feeCheck.Remarks = flowSheet.Remarks;
-                var feeCheckId=await FeeCheckManager.InsertAndGetIdAsync(feeCheck);
-                flowSheet.SetPropertyValue("FeeCheckId", feeCheckId);
+                
+                
+                //flowSheet.SetPropertyValue("FeeCheckId", feeCheckId);
             }
             flowSheet.SetPropertyValue("AccountId", accountId);
             //往来单位金额变动
-            await UnitManager.ChangeFee(unitId, accountId.Value, totalFee, flowSheet);
+            await UnitManager.ChangeFee(unitId, accountId.Value, -totalFee, flowSheet);
 
             
 
@@ -80,13 +77,13 @@ namespace Master.FlowHandlers
             var accountId = flowSheet.GetPropertyValue<int>("AccountId");
             var totalFee = flowSheet.GetPropertyValue<decimal>("Fee");
             //往来单位金额变动
-            await UnitManager.ChangeFee(flowSheet.UnitId.Value, accountId, -totalFee, flowSheet);
+            await UnitManager.ChangeFee(flowSheet.UnitId.Value, accountId, +totalFee, flowSheet);
             //将对应的支票设置为收入退回
             if(flowSheet.GetPropertyValue<string>("PayType")== GetPayTypeName(2))
             {
                 var feeCheckId = flowSheet.GetPropertyValue<int>("FeeCheckId");
                 var feeCheck = await FeeCheckManager.GetByIdAsync(feeCheckId);
-                feeCheck.CheckStatus = CheckStatus.收入退票;
+                feeCheck.CheckStatus = CheckStatus.支出退票;
             }
         }
     }

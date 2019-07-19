@@ -10,13 +10,21 @@
         props: {
             nature: {//1||2=>客户||供应商
                 type: String,
-                required: true,
-                default: '1'
+                required: false
             },
             unit: String,
             valueIsid: {
                 type: Boolean,
                 default: true
+            }
+        },
+        computed: {
+            placeHolder: function () {
+                if (!this.nature) {
+                    return "往来单位";
+                } else {
+                    return this.nature == 1 ? '供应商' : '代理商';
+                }
             }
         },
         methods: {
@@ -32,7 +40,7 @@
                 this.options = res;
             })
         },
-        template: `<el-select v-bind="$attrs" v-model="myUnit" clearable @@change="changeHandle" filterable :placeholder="'请选择'+(nature==1?'供应商':'代理商')">
+        template: `<el-select v-bind="$attrs" v-model="myUnit" clearable @@change="changeHandle" filterable :placeholder="'请选择'+placeHolder">
             <el-option v-for="item in options" :key="item.id"  :label="item.unitName"  :value="item[valueIsid?'id':'unitName']"></el-option>
         </el-select>`
     })

@@ -15,10 +15,7 @@ namespace Master.Web.MiddleWares
             return app.Use(async (ctx, next) =>
             {
                 var filePath = ctx.Request.Path;
-                if (!ctx.User.Identity.IsAuthenticated && filePath.Value.IndexOf("files") >= 0)
-                {
-                    ctx.Response.Redirect("/account/login");
-                }
+               
                 if (Common.ImageHelper.IsImg(filePath) && ctx.Request.Query.ContainsKey("w"))
                 {
                     int.TryParse(ctx.Request.Query["w"], out var w);

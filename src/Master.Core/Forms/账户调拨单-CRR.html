@@ -1,0 +1,83 @@
+﻿<div id="app" v-cloak>    
+    <el-form ref="form" label-width="80px">
+        <el-form-item label="调出账号">
+            <el-select v-model="currentItem.outAccountId">
+                <el-option v-for="(item,index) in currentItem.accounts" :label="item.name" :value="item.id"></el-option>
+            </el-select>
+        </el-form-item>
+        <el-form-item label="调入账号">
+            <el-select v-model="currentItem.inAccountId">
+                <el-option v-for="(item,index) in currentItem.accounts" :label="item.name" :value="item.id"></el-option>
+            </el-select>
+        </el-form-item>
+        <el-form-item label="发生日期">
+            <el-date-picker type="date" placeholder="选择日期" v-model="currentItem.sheetDate" ></el-date-picker>
+        </el-form-item>
+        <el-form-item label="调拨金额">
+            <el-input v-model="currentItem.fee" type="number"></el-input>
+        </el-form-item>
+        <el-form-item label="备注">
+            <el-input type="textarea" v-model="currentItem.remarks"></el-input>
+        </el-form-item>
+    </el-form>
+</div>
+<script>
+    config.ready = function () {
+        app = new Vue({
+            el: "#app",
+            data: {
+                currentItem: _formOption.formData ? _formOption.formData.layoutData : {
+                    sheetDate: new Date().pattern("yyyy-MM-dd"),
+                    fee: 0,
+                    accounts: [],
+                    inAccountId: null,
+                    outAccountId:null,
+                    remarks: '',
+                },
+
+            },
+            methods: {
+            },
+            created() {
+                var that = this;
+                if (!_formOption.formData) {
+                    //录入模式获取数据                    
+                    //获取所有账号
+                    abp.services.app.feeAccount.getAllAccounts().done(function (data) {
+                        that.currentItem.accounts = data;
+                    })
+                }
+            },
+            mounted() {
+            }
+        })
+    }
+
+    //模板中必须实现的方法，用于获取表单数据，返回一个对象，如果需要取消提交，可抛出一个异常
+    function getFormData() {
+        if (!app.currentItem.inAccountId || !app.currentItem.outAccountId) {
+            throw "请先选择调入账号和调出账号";
+        }
+        if (app.currentItem.inAccountId == app.currentItem.outAccountId) {
+            throw "调入账号不能与调出账号相同";
+        }
+        if (app.currentItem.fee<= 0) {
+            throw "调拨金额必须大于0";
+        }
+        var sheetData = {
+            header: {
+                sheetDate: app.currentItem.sheetDate,
+                remarks: app.currentItem.remarks,
+                inAccountId: app.currentItem.inAccountId,
+                outAccountId: app.currentItem.outAccountId,
+                fee: app.currentItem.fee,
+            },
+            body: {}
+        };
+        //约定，formData由两部分组成,一为layoutData,即用于表单呈现数据,另一部分是单据数据,用于后台进行数据处理,一般由呈现数据进行处理后得到
+        return {
+            layoutData: app.currentItem,
+            sheetData: sheetData
+        };
+    }
+</script>

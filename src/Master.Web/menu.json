@@ -138,6 +138,60 @@
         "displayName": "销售收款单",
         "icon": "iconfont icon-mingxizhang",
         "url": "/Home/Show?name=../FlowSheet/SSK/Index"
+      },
+      {
+        "name": "Finance.Tenancy.OSK",
+        "displayName": "其它收款",
+        "icon": "iconfont icon-zongzhangjiqita",
+        "url": "/Home/Show?name=../FlowSheet/OSK/Add"
+      },
+      {
+        "name": "Finance.Tenancy.OSKSheet",
+        "displayName": "其它收款单",
+        "icon": "iconfont icon-mingxizhang",
+        "url": "/Home/Show?name=../FlowSheet/OSK/Index"
+      },
+      {
+        "name": "Finance.Tenancy.PPY",
+        "displayName": "采购付款",
+        "icon": "iconfont icon-zongzhangjiqita",
+        "url": "/Home/Show?name=../FlowSheet/PPY/Add"
+      },
+      {
+        "name": "Finance.Tenancy.PPYSheet",
+        "displayName": "采购付款单",
+        "icon": "iconfont icon-mingxizhang",
+        "url": "/Home/Show?name=../FlowSheet/PPY/Index"
+      },
+      {
+        "name": "Finance.Tenancy.OPY",
+        "displayName": "其它付款",
+        "icon": "iconfont icon-zongzhangjiqita",
+        "url": "/Home/Show?name=../FlowSheet/OPY/Add"
+      },
+      {
+        "name": "Finance.Tenancy.OPYSheet",
+        "displayName": "其它付款单",
+        "icon": "iconfont icon-mingxizhang",
+        "url": "/Home/Show?name=../FlowSheet/OPY/Index"
+      },
+      {
+        "name": "Finance.Tenancy.CRR",
+        "displayName": "账户间调拨",
+        "icon": "iconfont icon-zongzhangjiqita",
+        "url": "/Home/Show?name=../FlowSheet/CRR/Add"
+      },
+      {
+        "name": "Finance.Tenancy.CRRSheet",
+        "displayName": "账户调拨单",
+        "icon": "iconfont icon-mingxizhang",
+        "url": "/Home/Show?name=../FlowSheet/CRR/Index"
+      },
+      {
+        "name": "Finance.Tenancy.FeeCheck",
+        "displayName": "支票查询",
+        "icon": "iconfont icon-mingxizhang",
+        "url": "/FeeCheck/Index"
       }
     ]
   },

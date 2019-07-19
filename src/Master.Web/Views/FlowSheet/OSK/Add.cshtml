@@ -1,0 +1,14 @@
+﻿
+
+<button class="layui-btn  layui-btn-sm" style="display:none" fornonerow="1" buttonname="其它收款单" type="button" confirmmsg="" id="submitBtn" buttonactiontype="Form" buttonactionurl="/FlowForm/InputByFormKey?formKey=OSK" onclick="func.callModuleButtonEvent()">其它收款单</button>
+
+@section scripts{
+    <script>
+        config.ready = function () {
+            $("#submitBtn").click();
+        }
+        config.refresh = function () {
+            location.reload();
+        }
+    </script>
+}

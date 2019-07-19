@@ -15,9 +15,9 @@ using System.Threading.Tasks;
 namespace Master.FlowHandlers
 {
     /// <summary>
-    /// 销售收款单
+    /// 其它收款单
     /// </summary>
-    public class SSKFlowHandler : FlowHandlerBase
+    public class OSKFlowHandler : FlowHandlerBase
     {
         public UnitManager UnitManager { get; set; }
         public FeeAccountManager FeeAccountManager { get; set; }
@@ -67,9 +67,10 @@ namespace Master.FlowHandlers
                 var feeCheckId=await FeeCheckManager.InsertAndGetIdAsync(feeCheck);
                 flowSheet.SetPropertyValue("FeeCheckId", feeCheckId);
             }
+            var feeAccount = await FeeAccountManager.GetByIdAsync(accountId.Value);
             flowSheet.SetPropertyValue("AccountId", accountId);
-            //往来单位金额变动
-            await UnitManager.ChangeFee(unitId, accountId.Value, totalFee, flowSheet);
+            //账户金额变动
+            await FeeAccountManager.BuildFeeHistory(feeAccount, totalFee, flowSheet);
 
             
 
@@ -78,9 +79,10 @@ namespace Master.FlowHandlers
         public override async Task HandleRevert(FlowSheet flowSheet)
         {
             var accountId = flowSheet.GetPropertyValue<int>("AccountId");
+            var feeAccount = await FeeAccountManager.GetByIdAsync(accountId);
             var totalFee = flowSheet.GetPropertyValue<decimal>("Fee");
             //往来单位金额变动
-            await UnitManager.ChangeFee(flowSheet.UnitId.Value, accountId, -totalFee, flowSheet);
+            await FeeAccountManager.BuildFeeHistory(feeAccount, -totalFee, flowSheet);
             //将对应的支票设置为收入退回
             if(flowSheet.GetPropertyValue<string>("PayType")== GetPayTypeName(2))
             {
