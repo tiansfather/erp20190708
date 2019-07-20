@@ -27,11 +27,11 @@ namespace Master.FlowHandlers
             switch (payType)
             {
                 case 0:
-                    return "现金收款";
+                    return "现金付款";
                 case 1:
-                    return "转账收款";
+                    return "转账付款";
                 case 2:
-                    return "支票收款";
+                    return "支票付款";
                 default:
                     return "";
             }
@@ -60,9 +60,16 @@ namespace Master.FlowHandlers
             {
                 accountId = (await FeeAccountManager.GetByName(FeeAccount.StaticAccountName2)).Id;
                 //建立支票信息
-                
-                
-                //flowSheet.SetPropertyValue("FeeCheckId", feeCheckId);
+                var feeCheckId = sheetHeader["feeCheck"]["id"].ToObject<int>();
+                //设置对应支票信息为已支出
+                var feeCheck = await FeeCheckManager.GetByIdAsync(feeCheckId);
+                if (feeCheck.CheckStatus != CheckStatus.收入)
+                {
+                    throw new UserFriendlyException("支票状态不是收入，无法进行使用");
+                }
+                feeCheck.CheckStatus = CheckStatus.支出;
+                feeCheck.OutFlowSheetId = flowSheet.Id;//设置支票的支出单据
+                flowSheet.SetPropertyValue("FeeCheckId", feeCheckId);
             }
             flowSheet.SetPropertyValue("AccountId", accountId);
             //往来单位金额变动
@@ -72,8 +79,7 @@ namespace Master.FlowHandlers
 
         }
 
-        public override async Task HandleRevert(FlowSheet flowSheet)
-        {
+        public override async Task HandleRevert(FlowSheet flowSheet)        {
             var accountId = flowSheet.GetPropertyValue<int>("AccountId");
             var totalFee = flowSheet.GetPropertyValue<decimal>("Fee");
             //往来单位金额变动

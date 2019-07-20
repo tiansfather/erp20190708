@@ -15,9 +15,9 @@ using System.Threading.Tasks;
 namespace Master.FlowHandlers
 {
     /// <summary>
-    /// 其它收款单
+    /// 其它付款单
     /// </summary>
-    public class OSKFlowHandler : FlowHandlerBase
+    public class OPYFlowHandler : FlowHandlerBase
     {
         public UnitManager UnitManager { get; set; }
         public FeeAccountManager FeeAccountManager { get; set; }
@@ -27,11 +27,11 @@ namespace Master.FlowHandlers
             switch (payType)
             {
                 case 0:
-                    return "现金收款";
+                    return "现金付款";
                 case 1:
-                    return "转账收款";
+                    return "转账付款";
                 case 2:
-                    return "支票收款";
+                    return "支票付款";
                 default:
                     return "";
             }
@@ -60,17 +60,21 @@ namespace Master.FlowHandlers
             {
                 accountId = (await FeeAccountManager.GetByName(FeeAccount.StaticAccountName2)).Id;
                 //建立支票信息
-                var feeCheck = sheetHeader["feeCheck"].ToObject<FeeCheck>();
-                feeCheck.CheckStatus = CheckStatus.收入;
-                feeCheck.InFlowSheetId = flowSheet.Id;
-                feeCheck.Remarks = flowSheet.Remarks;
-                var feeCheckId=await FeeCheckManager.InsertAndGetIdAsync(feeCheck);
+                var feeCheckId = sheetHeader["feeCheck"]["id"].ToObject<int>();
+                //设置对应支票信息为已支出
+                var feeCheck = await FeeCheckManager.GetByIdAsync(feeCheckId);
+                if (feeCheck.CheckStatus != CheckStatus.收入)
+                {
+                    throw new UserFriendlyException("支票状态不是收入，无法进行使用");
+                }
+                feeCheck.CheckStatus = CheckStatus.支出;
+                feeCheck.OutFlowSheetId = flowSheet.Id;//设置支票的支出单据
                 flowSheet.SetPropertyValue("FeeCheckId", feeCheckId);
             }
             var feeAccount = await FeeAccountManager.GetByIdAsync(accountId.Value);
             flowSheet.SetPropertyValue("AccountId", accountId);
-            //账户金额变动
-            await FeeAccountManager.BuildFeeHistory(feeAccount, totalFee, flowSheet);
+            //账号金额变动
+            await FeeAccountManager.BuildFeeHistory(feeAccount, -totalFee, flowSheet);
 
             
 
@@ -82,13 +86,13 @@ namespace Master.FlowHandlers
             var feeAccount = await FeeAccountManager.GetByIdAsync(accountId);
             var totalFee = flowSheet.GetPropertyValue<decimal>("Fee");
             //账号金额变动
-            await FeeAccountManager.BuildFeeHistory(feeAccount, -totalFee, flowSheet);
+            await FeeAccountManager.BuildFeeHistory(feeAccount, totalFee, flowSheet);
             //将对应的支票设置为收入退回
-            if(flowSheet.GetPropertyValue<string>("PayType")== GetPayTypeName(2))
+            if (flowSheet.GetPropertyValue<string>("PayType")== GetPayTypeName(2))
             {
                 var feeCheckId = flowSheet.GetPropertyValue<int>("FeeCheckId");
                 var feeCheck = await FeeCheckManager.GetByIdAsync(feeCheckId);
-                feeCheck.CheckStatus = CheckStatus.收入退票;
+                feeCheck.CheckStatus = CheckStatus.支出退票;
             }
         }
     }

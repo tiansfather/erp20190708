@@ -21,8 +21,8 @@
 </style>
 <div id="app" v-cloak>
     <el-form :inline="true" size="mini">
-        <el-form-item label="供应商">
-            <unit-select nature="1" :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @change="loadUnit"></unit-select>
+        <el-form-item label="往来单位">
+            <unit-select  :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @change="loadUnit"></unit-select>
         </el-form-item>
         <el-form-item label="当前结余">
             <el-input v-model="currentItem.unitInfo.nowFee" readonly="true" tips="负数代表对方欠我方，正数代表我方欠对方。"></el-input>
@@ -167,7 +167,7 @@
     //模板中必须实现的方法，用于获取表单数据，返回一个对象，如果需要取消提交，可抛出一个异常
     function getFormData() {
         if (!app.currentItem.unitId) {
-            throw "请先选择供应商";
+            throw "请先选择往来单位";
         }
         if (app.totalFee == 0) {
             throw "付款金额不能为0";

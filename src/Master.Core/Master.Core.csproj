@@ -23,6 +23,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Forms\仓库调拨单-IAL.html" />
+    <None Remove="Forms\其它付款单-OPY.html" />
     <None Remove="Forms\其它收款单-OSK.html" />
     <None Remove="Forms\成品拆散单-IBK.html" />
     <None Remove="Forms\报损报溢单-ICH.html" />
@@ -34,6 +35,7 @@
     <None Remove="Forms\销售收款单-SSK.html" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Forms\其它付款单-OPY.html" />
     <EmbeddedResource Include="Forms\采购退货单-PRR.html" />
     <EmbeddedResource Include="Forms\采购入库单-PRH.html" />
     <EmbeddedResource Include="Forms\仓库调拨单-IAL.html" />

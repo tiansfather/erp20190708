@@ -1,0 +1,91 @@
+﻿
+@{
+	Layout = "~/Views/Shared/_LayoutDialog.cshtml";
+}
+<form class="layui-form" id="app" v-cloak>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">支票号码</label>
+            <div class="layui-input-inline">
+                <input type="text" v-model="currentItem.checkNumber" class="layui-input" readonly>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">支票金额</label>
+            <div class="layui-input-inline">
+                <input type="text" v-model="currentItem.checkFee" class="layui-input" readonly>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">签发公司</label>
+            <div class="layui-input-inline">
+                <input type="text" v-model="currentItem.checkCompany" class="layui-input" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">银行</label>
+            <div class="layui-input-inline">
+                <input type="text" v-model="currentItem.checkBank" class="layui-input" readonly>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">开票日期</label>
+            <div class="layui-input-inline">
+                <input type="text" v-model="currentItem.checkDate" class="layui-input" readonly>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">兑现期限</label>
+            <div class="layui-input-inline">
+                <input type="text" v-model="currentItem.checkDaySpan" class="layui-input" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-inline">
+                <input type="text" v-model="currentItem.checkStatus" class="layui-input" readonly>
+            </div>
+        </div>
+        <div class="layui-inline" >
+            <label class="layui-form-label">收入单据</label>
+            <div class="layui-input-inline" style="line-height: 38px;">
+                <a v-if="currentItem.inFlowSheetId" :dataid="currentItem.inFlowSheetId" class="layui-btn layui-btn-xs layui-btn-normal" buttonname="单据" params="{&quot;btn&quot;:[]}" buttonactiontype="Form" buttonactionurl="/FlowSheet/SheetView" onclick="func.callModuleButtonEvent()" opentop="1">{{currentItem.inFlowSheetSN}}</a>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">支出单据</label>
+            <div class="layui-input-inline" style="line-height: 38px;">
+                <a v-if="currentItem.outFlowSheetId" :dataid="currentItem.outFlowSheetId" class="layui-btn layui-btn-xs layui-btn-normal" buttonname="单据" params="{&quot;btn&quot;:[]}" buttonactiontype="Form" buttonactionurl="/FlowSheet/SheetView" onclick="func.callModuleButtonEvent()" opentop="1">{{currentItem.outFlowSheetSN}}</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+@section scripts{ 
+	<script>
+        var app;
+        var id=$.getUrlParam("data")
+		config.ready = function () {
+			
+			app = new Vue({
+				el: '#app',
+				data: {
+					currentItem: {}
+				},
+                mounted: function () {
+                    func.runAsync(abp.services.app.feeCheck.getById(id).done(res => this.currentItem = res));
+
+				}
+			})
+		}
+
+		function submit() {
+			$("#submitBtn").click();
+		}
+	</script>
+}
