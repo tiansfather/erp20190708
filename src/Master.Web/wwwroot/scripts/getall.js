@@ -1191,6 +1191,23 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getInvoice'
+    abp.services.app.unit.getInvoice = function(id, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Unit/GetInvoice' + abp.utils.buildQueryString([{ name: 'id', value: id }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'submitInvoice'
+    abp.services.app.unit.submitInvoice = function(id, unitInvoice, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Unit/SubmitInvoice' + abp.utils.buildQueryString([{ name: 'id', value: id }]) + '',
+        type: 'POST',
+        data: JSON.stringify(unitInvoice)
+      }, ajaxParams));;
+    };
+
     // action 'getPageResult'
     abp.services.app.unit.getPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {

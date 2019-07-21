@@ -97,5 +97,19 @@ namespace Master.Units
                 NowFee = entity.StartFee + entity.Fee
             };
         }
+
+        #region 往来单位发票
+        public virtual async Task<object> GetInvoice(int id)
+        {
+            var unit = await Manager.GetByIdFromCacheAsync(id);
+            return unit.UnitInvoice;
+        }
+        public virtual async Task SubmitInvoice(int id,UnitInvoice unitInvoice)
+        {
+            var unit = await Manager.GetByIdAsync(id);
+            unit.UnitInvoice = unitInvoice;
+            await Manager.UpdateAsync(unit);
+        }
+        #endregion
     }
 }

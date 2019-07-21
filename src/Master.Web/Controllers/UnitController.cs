@@ -15,5 +15,9 @@ namespace Master.Web.Controllers
         {
             return View();
         }
+        public IActionResult Invoice()
+        {
+            return View();
+        }
     }
 }

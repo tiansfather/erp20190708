@@ -6,6 +6,12 @@ using Master.Module;
 using Master.Module.Attributes;
 using Abp.Domain.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
+using Abp.Specifications;
+using System.Linq.Expressions;
+using Abp.Dependency;
+using Abp.Domain.Repositories;
+using System.Linq;
+using System.Linq.Dynamic.Core;
 
 namespace Master.Storage
 {
@@ -102,5 +108,26 @@ namespace Master.Storage
     {
         单品,
         组装
+    }
+
+    public class MaterialSellUnitSpecification : Specification<Material>
+    {
+        private int _unitId;
+        public MaterialSellUnitSpecification(int unitId)
+        {
+            _unitId = unitId;
+        }
+        public override Expression<Func<Material, bool>> ToExpression()
+        {
+            using(var scope = IocManager.Instance.CreateScope())
+            {
+                var repository = scope.Resolve<IRepository<UnitMaterialDiscount, int>>();
+                var storeMaterialManager = scope.Resolve<StoreMaterialManager>();
+
+                return o => repository.Count(d => d.UnitId == _unitId && d.MaterialId == o.Id) == 0 //并未设置代理商销售方式的默认始终销售
+                ||repository.Count(d=> d.UnitId == _unitId && d.MaterialId == o.Id && d.UnitSellMode==UnitSellMode.始终销售)>0 //始终销售的展示
+                    || repository.Count(d => d.UnitId == _unitId && d.MaterialId == o.Id && d.UnitSellMode == UnitSellMode.售完为止 && storeMaterialManager.GetAll().Where(s => s.MaterialId == o.Id).Sum(s=>s.Number) > 0)>0;//售完为止且库存数量大于0的显示
+            }
+        }
     }
 }

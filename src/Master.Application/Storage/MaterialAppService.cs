@@ -38,6 +38,12 @@ namespace Master.Storage
 
                 }
             }
+            if (searchKeys.ContainsKey("SellUnitId"))
+            {
+                //如果按照代理来查询，则需要按代理的销售方式进行查询
+                var sellUnitId = int.Parse(searchKeys["SellUnitId"]);
+                query = query.Where(new MaterialSellUnitSpecification(sellUnitId));
+            }
             return query;
         }
 

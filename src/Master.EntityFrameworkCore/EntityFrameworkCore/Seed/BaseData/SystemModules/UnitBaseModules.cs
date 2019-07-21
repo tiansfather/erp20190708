@@ -15,17 +15,17 @@ namespace Master.EntityFrameworkCore.Seed.BaseData.SystemModules
         public override List<ModuleButton> GetModuleButtons()
         {
             var btns = new List<ModuleButton>();
-            //btns.Add(new ModuleButton()
-            //{
-            //    ButtonKey = "Import",
-            //    ButtonName = "导入",
-            //    ButtonActionType = ButtonActionType.Form,
-            //    ButtonType = ButtonType.ForNoneRow,
-            //    IsEnabled = true,
-            //    ButtonActionUrl = "/Import/?type=Master.Units.UnitImportDto",
-            //    ButtonActionParam = "{\"area\": [\"100%\", \"100%\"],\"btn\":[]}",
-            //    Sort = 5
-            //});
+            btns.Add(new ModuleButton()
+            {
+                ButtonKey = "Invoice",
+                ButtonName = "开票资料",
+                ButtonActionType = ButtonActionType.Form,
+                ButtonType = ButtonType.ForSingleRow,
+                IsEnabled = true,
+                ButtonActionUrl = "/Unit/Invoice",
+                ButtonActionParam = "{\"area\": [\"60%\", \"60%\"]}",
+                Sort = 5
+            });
             ////增加查看客户查看供应商权限
             //var ViewCustomerButton = new ModuleButton()
             //{

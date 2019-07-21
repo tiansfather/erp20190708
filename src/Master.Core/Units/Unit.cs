@@ -57,6 +57,19 @@ namespace Master.Units
         public bool IsActive { get; set; } = true;
         [InterColumn(ColumnName = "备注", Sort = 11, IsShownInList = false)]
         public override string Remarks { get; set; }
+        [NotMapped]
+        public UnitInvoice UnitInvoice
+        {
+            get
+            {
+                var invoice= this.GetData<UnitInvoice>("UnitInvoice");
+                return invoice ?? new UnitInvoice();
+            }
+            set
+            {
+                this.SetData("UnitInvoice", value);
+            }
+        }
     }
 
     public enum UnitNature
@@ -65,6 +78,13 @@ namespace Master.Units
         供应商,
     }
 
+    public class UnitInvoice
+    {
+        public string CompanyName { get; set; }
+        public string TaxNumber { get; set; }
+        public string Bank { get; set; }
+        public string BankAccount { get; set; }
+    }
 
     public class UnitEntityMapConfiguration : EntityMappingConfiguration<Unit>
     {
