@@ -90,6 +90,9 @@ namespace Master.EntityFrameworkCore
         public virtual DbSet<StoreMaterial> StoreMaterial { get; set; }
         public virtual DbSet<StoreMaterialHistory> StoreMaterialHistory { get; set; }       
         public virtual DbSet<UnitMaterialDiscount> UnitMaterialDiscount { get; set; }
+        public virtual DbSet<MaterialSell> MaterialSell { get; set; }
+        public virtual DbSet<MaterialSellCart> MaterialSellCart { get; set; }
+             
         #endregion
 
         #region Finance

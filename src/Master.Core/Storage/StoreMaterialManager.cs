@@ -205,6 +205,8 @@ namespace Master.Storage
 
         public virtual async Task<StoreMaterial> AppendStoreMaterial(StoreMaterial storeMaterial)
         {
+            var material = await Resolve<MaterialManager>().GetByIdAsync(storeMaterial.MaterialId);
+            material.TotalNumber += storeMaterial.Number;
             var oriStoreMaterial = await FindExistStoreMaterialRecord(storeMaterial);
             if (oriStoreMaterial == null)
             {

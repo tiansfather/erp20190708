@@ -35,7 +35,8 @@ namespace Master.Storage
         public virtual async Task<object> GetUnitMaterialDiscountInfo(UnitMaterialDiscountSearchDto unitMaterialDiscountSearchDto)
         {
             var result = new List<object>();
-            var units = await Resolve<UnitManager>().GetAllList();
+            var units = (await Resolve<UnitManager>().GetAllList())
+                .Where(o=>o.UnitNature==UnitNature.代理商);
             if (unitMaterialDiscountSearchDto.UnitId.HasValue)
             {
                 units = units.Where(o => o.Id == unitMaterialDiscountSearchDto.UnitId.Value).ToList();

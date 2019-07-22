@@ -1,4 +1,5 @@
 ﻿using Abp.Authorization;
+using Abp.Domain.Repositories;
 using Master.Entity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,6 +14,8 @@ namespace Master.Storage
     public class MaterialAppService : ModuleDataAppServiceBase<Material, int>
     {
         public BaseTreeManager BaseTreeManager { get; set; }
+        public StoreMaterialManager StoreMaterialManager { get; set; }
+        public IRepository<UnitMaterialDiscount, int> UnitMaterialRepository { get; set; }
         protected override string ModuleKey()
         {
             return nameof(Material);
@@ -20,6 +23,14 @@ namespace Master.Storage
 
         protected override async Task<IQueryable<Material>> BuildSearchQueryAsync(IDictionary<string, string> searchKeys, IQueryable<Material> query)
         {
+            if (searchKeys.ContainsKey("From"))
+            {
+                //如果是用于销售的只显示上架商品
+                if (searchKeys["From"] == "sell")
+                {
+                    query = query.Where(o => o.IsActive);
+                }
+            }
             if (searchKeys.ContainsKey("MaterialTypeId"))
             {
                 if (int.TryParse(searchKeys["MaterialTypeId"], out var materialTypeId))
@@ -38,11 +49,14 @@ namespace Master.Storage
 
                 }
             }
-            if (searchKeys.ContainsKey("SellUnitId"))
+            if (searchKeys.ContainsKey("SellUnitId") && !string.IsNullOrEmpty(searchKeys["SellUnitId"]))
             {
                 //如果按照代理来查询，则需要按代理的销售方式进行查询
-                var sellUnitId = int.Parse(searchKeys["SellUnitId"]);
-                query = query.Where(new MaterialSellUnitSpecification(sellUnitId));
+                var _unitId = int.Parse(searchKeys["SellUnitId"]);
+                query = query.Where(new MaterialSellUnitSpecification(_unitId));
+                /*query=query.Where(o => 
+                UnitMaterialRepository.GetAll().Count(d => d.UnitId == _unitId && d.MaterialId == o.Id &&( d.UnitSellMode==UnitSellMode.停止销售 || d.UnitSellMode == UnitSellMode.售完为止 && o.TotalNumber==0) ) == 0 //并未设置代理商销售方式的默认始终销售
+                    );*/
             }
             return query;
         }

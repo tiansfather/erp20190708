@@ -74,6 +74,7 @@ namespace Master.Storage
         public string Location { get; set; }
         [InterColumn(ColumnName ="备注",Sort =16,IsShownInList =false)]
         public override string Remarks { get; set; }
+        public decimal TotalNumber { get; set; }
 
         public virtual bool IsDiyed { get; set; }
         /// <summary>
@@ -122,11 +123,13 @@ namespace Master.Storage
             using(var scope = IocManager.Instance.CreateScope())
             {
                 var repository = scope.Resolve<IRepository<UnitMaterialDiscount, int>>();
-                var storeMaterialManager = scope.Resolve<StoreMaterialManager>();
 
-                return o => repository.Count(d => d.UnitId == _unitId && d.MaterialId == o.Id) == 0 //并未设置代理商销售方式的默认始终销售
-                ||repository.Count(d=> d.UnitId == _unitId && d.MaterialId == o.Id && d.UnitSellMode==UnitSellMode.始终销售)>0 //始终销售的展示
-                    || repository.Count(d => d.UnitId == _unitId && d.MaterialId == o.Id && d.UnitSellMode == UnitSellMode.售完为止 && storeMaterialManager.GetAll().Where(s => s.MaterialId == o.Id).Sum(s=>s.Number) > 0)>0;//售完为止且库存数量大于0的显示
+                return o =>
+                repository.GetAll().Count(d => d.UnitId == _unitId && d.MaterialId == o.Id && (d.UnitSellMode == UnitSellMode.停止销售 || d.UnitSellMode == UnitSellMode.售完为止 && o.TotalNumber == 0)) == 0;
+
+                //return o => repository.Count(d => d.UnitId == _unitId && d.MaterialId == o.Id) == 0 //并未设置代理商销售方式的默认始终销售
+                //||repository.Count(d=> d.UnitId == _unitId && d.MaterialId == o.Id && d.UnitSellMode==UnitSellMode.始终销售)>0 //始终销售的展示
+                //    || repository.Count(d => d.UnitId == _unitId && d.MaterialId == o.Id && d.UnitSellMode == UnitSellMode.售完为止 && storeMaterialManager.GetAll().Where(s => s.MaterialId == o.Id).Sum(s=>s.Number) > 0)>0;//售完为止且库存数量大于0的显示
             }
         }
     }

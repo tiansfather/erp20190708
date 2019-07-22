@@ -1,0 +1,189 @@
+﻿@using Master.Web.Components
+@inherits Master.Web.Components.MasterRazorPage<TModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Master.Web.Core
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="layui-fluid" id="LAY-app-message">
+    <div class="layui-card">
+        <div class="layui-card-body" >
+
+            <div class="layui-row layui-col-space5">
+                <div class="layui-col-xs2">
+                    <vc:base-tree param="@(new BaseTreeViewParam() { TreeKey="MaterialType",TreeName="商品分类",EnableAdd=false,EnableEdit=false,EnableDelete=false})"></vc:base-tree>
+
+                </div>
+                <div id="app" v-cloak>
+                    <div class="layui-col-xs8">
+                        <div class="LAY-app-message-btns" style="margin-bottom:10px;">
+                            <unit-select nature="0" :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @@change="config.reloadTable"></unit-select>
+                            <button class="layui-btn  layui-btn-sm" style="float:right;margin-right:10px" :class="{'layui-btn-disabled':!currentItem.items.length}" fornonerow="1" buttonname="去购物车下单" type="button" confirmmsg="" id="submitBtn" buttonactiontype="Form" buttonactionurl="" onclick="app.doSubmit(this)">去购物车下单</button>
+                        </div>
+                        <table id="Material" lay-filter="Material"></table>
+                    </div>
+                    <div class="layui-col-xs2">
+                        <div>
+                            <blockquote class="layui-elem-quote" style="margin-bottom:0px;padding:7px;">购物车预览</blockquote>
+                            <table class="layui-table">
+
+                                <thead>
+                                    <tr>
+                                        <th>品名</th>
+                                        <th>数量</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(item,index) in currentItem.items">
+                                        <td>{{item.name}}</td>
+                                        <td>{{item.number}}{{item.measureMentUnit}}</td>
+                                        <td><a title="删除" style="cursor: pointer;" @@click="currentItem.items.splice(index,1);config.reloadTable();syncCart()"><i class="layui-icon layui-icon-delete"></i></a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+                
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/html" id="editTpl">
+        <div info="">
+            <input type="number" style="width:50px" id="edit_{{d.id}}" onblur="app.updateInfo({ id: {{d.id}},number:this.value,name:'{{d.name}}',measureMentUnit:'{{d.measureMentUnit}}'})" />
+        </div>
+        
+    </script>
+    <script>
+        var searchKeys = {"From":"sell"};
+        var app;
+		//layui加载完成后调用此方法，
+		config.ready = function () {
+			var element = layui.element;
+            var table = layui.table;
+            
+            app = new Vue({
+                el: '#app',
+                data: {
+                    currentItem: {
+                        items: [],
+                        unitId:null
+                    }
+                },
+                methods: {
+                    //同步购物车至后台
+                    syncCart: function () {
+                        abp.services.app.materialSell.syncCart(app.currentItem.unitId, 0, app.currentItem.items);
+                    },
+                    updateInfo: function (info) {
+                        if (isNaN(info.number)) { info.number = 0;}
+                        var existInfo = this.currentItem.items.filter(o => o.id == info.id)[0];
+                        //等于0直接移除
+                        if (info.number == 0) {
+                            existInfo && this.currentItem.items.splice(this.currentItem.items.indexOf(existInfo), 1);
+                            return;
+                        }
+
+                        if (existInfo) {
+                            existInfo.number = info.number;
+                        } else {
+                            this.currentItem.items.push(info);
+                        }
+                        this.syncCart();
+                    },
+                    doSubmit: function (obj) {
+                        if (!this.currentItem.items.length) {
+                            return;
+                        }
+                        var that = this;
+                        var data = {
+                            storeId: this.currentItem.storeId,
+                            items: this.currentItem.items.map(function (o) {
+                                return { id: o.id, number: o.number };
+                            })
+                        };
+                        $(obj).attr("buttonactionurl", '/FlowForm/InputByFormKey?formKey=ICH&data=' + encodeURIComponent(JSON.stringify(data)));
+                        func.callModuleButtonEvent($(obj));
+                    }
+                },
+                mounted: function () {
+                    var that = this;
+                    table.render({
+                        elem: '#Material',
+                        autoSort: false,
+                        toolbar: false,
+                        //cellMinWidth: '60',
+                        height: 'full-70',
+                        url: '/api/services/app/Material/GetPageResult',
+                        where: getWhere(),
+                        page: true,
+
+                        id: 'Material',
+                        even: true,
+                        cols: [[
+                            { field: 'name', title: '品名' },
+                            { field: 'specifiation', title: '规格' },
+                            { field: 'price', title: '零售价' },
+                            { field: 'remarks', title: '备注' },
+                            { field: '', title: '订购数量', templet: '#editTpl' },
+                            { field: 'measureMentUnit', title: '计量单位' },
+                            { field: 'location', title: '适用区域' },
+                        ]],
+
+                        done: function () {
+                        
+                            config.onTableDone();
+                        }
+                    });
+                }
+            })
+
+			//监听树选中事件
+            baseTree.onSelect = function (node) {
+				searchKeys.MaterialTypeId = node.id;
+				config.reloadTable();
+			}
+		}
+		//当检索窗体提交后会调用此方法
+        config.reloadTable = function () {
+            searchKeys.SellUnitId = app.currentItem.unitId;
+            if (app.currentItem.unitId) {
+                //加载购物车数据
+                func.runAsync(abp.services.app.materialSell.getCartInfo(app.currentItem.unitId, 0).done(res => {
+                    app.currentItem.items = res;
+                    layui.table.reload('Material', {
+                        where: getWhere()
+
+                    })
+                }))
+            }
+            
+		}
+        config.onTableDone = function () {
+            $.each(app.currentItem.items, function (i, v) {
+                $("#edit_" + v.id).val(v.number);
+            });
+		}
+		//当编辑或删除或添加表单提交后会调用此方法
+		config.refresh = function () {
+            location.reload();
+		}
+        function getWhere() {
+            var where = { searchKeys: JSON.stringify(searchKeys) };
+            
+            where.where = "MaterialNature=0 ";//只显示票劵商品
+            where.searchCondition = func.buildSearchCondition('Material');
+            if (!(app && app.currentItem && app.currentItem.unitId)) { where.where = "1>2"; }
+			return where;
+
+		}
+    </script>
+}

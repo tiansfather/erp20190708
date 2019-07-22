@@ -26,10 +26,6 @@ namespace Master.Storage
         public int OutNumber { get; set; }
         public int BackNumber { get; set; }
         /// <summary>
-        /// 是否购物车商品
-        /// </summary>
-        public bool IsInCart { get; set; }
-        /// <summary>
         /// 可退货数量
         /// </summary>
         [NotMapped]
@@ -41,4 +37,14 @@ namespace Master.Storage
             }
         }
     }
+
+    public class MaterialSellCart : CreationAuditedEntity<int>
+    {
+        public int UnitId { get; set; }
+        public virtual Unit Unit { get; set; }
+        public int MaterialId { get; set; }
+        public virtual Material Material { get; set; }
+        public int Number { get; set; }
+    }
+
 }

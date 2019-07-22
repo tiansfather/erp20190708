@@ -1,5 +1,48 @@
 [
   {
+    "name": "Sell",
+    "displayName": "销售",
+    "icon": "iconfont icon-ruku1 ",
+    "order": 2,
+    "items": [
+      {
+        "name": "Buy.Tenancy.SDD",
+        "displayName": "票劵商品订货",
+        "icon": "iconfont icon-celve",
+        "url": "/Home/Show?name=../FlowSheet/SDD/Add",
+        "order": 1
+      },
+      {
+        "name": "Buy.Tenancy.SSDCart",
+        "displayName": "票劵购物车",
+        "icon": "iconfont icon-celve",
+        "url": "/Home/Show?name=../FlowSheet/SDD/Cart",
+        "order": 2
+      },
+      {
+        "name": "Buy.Tenancy.SSDSheet",
+        "displayName": "票劵订单查询",
+        "icon": "iconfont icon-celve",
+        "url": "/Home/Show?name=../FlowSheet/SDD/Index",
+        "order": 2
+      },
+      {
+        "name": "Buy.Tenancy.PRR",
+        "displayName": "采购退货",
+        "icon": "iconfont icon-celve",
+        "url": "/Home/Show?name=../FlowSheet/PRR/Add",
+        "order": 3
+      },
+      {
+        "name": "Buy.Tenancy.PRRSheet",
+        "displayName": "退货单查询",
+        "icon": "iconfont icon-celve",
+        "url": "/Home/Show?name=../FlowSheet/PRR/Index",
+        "order": 4
+      }
+    ]
+  },
+  {
     "name": "Buy",
     "displayName": "进货",
     "icon": "iconfont icon-ruku1 ",
