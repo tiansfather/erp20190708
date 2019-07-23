@@ -714,6 +714,7 @@
                                     <div is="lay-tableselect-base" :column-info="tableSelectGetInfo(item.info,index,itemIndex)" :data="part[item.key]?part[item.key].displayValue:''" :value="part[item.key]?part[item.key].value:''" @@choose="getSetValue($event,index,item)" @@input="$emit('input',[index,item.key,$event] )"></div>
                                 </td>
                                 <td v-if="item.type=='upload'" :class="item.key.toLowerCase()">
+                                    {{part[item.key].filePath}}
                                     <button @@click="renderUpload(item,index)" class="layui-btn layui-btn-sm layui-btn-normal" type="button">上传</button>
                                 </td>
                                 @*<td style="padding:0;" v-if="item.type=='select'">
@@ -975,4 +976,31 @@
         },
         template: '#multiDataAdd'
     })
+</script>
+<script>
+    Vue.component('lay-homepics', {
+        template: `
+    <div class="layui-form-item">
+        <input type="hidden" :name="columnInfo.ColumnKey" :value="newValue" />
+        <multi-data-add :items="items" :parts="parts" ></multi-data-add>
+    </div>
+`,
+        props: ['columnInfo', 'value'],
+        data: function () {
+            return {
+                newValue: this.value,
+                items: [
+                    {
+                        type: 'upload', title: '图片', key: 'file', onChange: ev => {
+                            this.newValue = JSON.stringify(this.parts);
+                        }
+                    },
+                ], parts: []
+            }
+        },
+        created: function () {
+            console.log(this.value);
+            if (this.value) { this.parts = JSON.parse(this.value) }
+        }
+    });
 </script>

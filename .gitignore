@@ -260,3 +260,4 @@ paket-files/
 __pycache__/
 *.pyc
 /src/Master.Web/App_Data/Logs
+/src/Master.Web/wwwroot/files/2019/07/23/d29cdcf8-73c1-4b49-a361-b414c09f1049.png

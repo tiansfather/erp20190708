@@ -59,9 +59,9 @@ namespace Master.Workflow
         /// <param name="sheetId"></param>
         /// <param name="action"></param>
         /// <returns></returns>
-        public virtual async Task Action(int sheetId,string action)
+        public virtual async Task Action(int sheetId,string actionName)
         {
-            await (Manager as FlowSheetManager).Action(sheetId, action);
+            await (Manager as FlowSheetManager).Action(sheetId, actionName);
         }
 
         public virtual async Task<object> GetFlowBtns(int sheetId)

@@ -193,6 +193,14 @@ namespace Master.Authentication
             return new UserIdentifier(TenantId, Id);
         }
 
+        [NotMapped]
+        public bool IsCenterUser
+        {
+            get
+            {
+                return true;
+            }
+        }
     }
     public class UserEntityMapConfiguration : EntityMappingConfiguration<User>
     {

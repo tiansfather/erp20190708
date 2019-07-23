@@ -43,8 +43,8 @@
             <el-input v-model="sheetInfo.revertReason" readonly="true"></el-input>
         </el-form-item>
     </el-form>
-    <button type="button" v-for="(btn,index) in sheetInfo.btns" class="layui-btn " style="float:right" @@click="action(btn)">{{btn.buttonName}}</button>
-    <button type="button" class="layui-btn layui-btn-danger" v-if="sheetInfo.sheetNature==0" style="float:right" @@click="revertSheet">冲红</button>
+    <button type="button" v-for="(btn,index) in sheetInfo.btns" class="layui-btn " :class="btn.buttonClass" style="float:right" @@click="action(btn)">{{btn.buttonName}}</button>
+    @*<button type="button" class="layui-btn layui-btn-danger" v-if="sheetInfo.sheetNature==0" style="float:right" @@click="revertSheet">冲红</button>*@
     <hr>
 </div>
 @Html.Raw(ViewBag.FormContent)
@@ -79,11 +79,28 @@
                 action: function (btn) {
                     var confirmMsg = btn.confirmMsg || '确认提交?';
                     abp.message.confirm(confirmMsg, function () {
-                        func.runAsync(abp.services.app.flowSheet.action(sheetId,btn.buttonKey).done(function () {
+                        if (btn.buttonKey == "revert") {
+                            layer.prompt({
+                                formType: 2,
+                                value: '',
+                                title: '请输入冲红原因',
+                                //area: ['800px', '350px'] //自定义文本域宽高
+                            }, function (value, index, elem) {
+                                func.runAsync(abp.services.app.flowSheet.revert(sheetId, value).done(function () {
+                                    parent.layer.msg("冲红成功");
+                                    parent.config.reloadTable();
+                                    parent.layer.closeAll('iframe');
+                                }))
+                                layer.close(index);
+                            });
+                        } else {
+                            func.runAsync(abp.services.app.flowSheet.action(sheetId, btn.buttonKey).done(function () {
                                 parent.layer.msg("提交成功");
                                 parent.config.reloadTable();
                                 parent.layer.closeAll('iframe');
                             }))
+                        }
+                        
                     })
                 }
             },

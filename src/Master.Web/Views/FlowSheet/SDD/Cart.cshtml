@@ -12,10 +12,41 @@
 
             <div id="app" v-cloak>
                 <div class="LAY-app-message-btns" style="margin-bottom:10px;">
-                    <unit-select nature="0" :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @@change="config.reloadTable"></unit-select>
-                    <button class="layui-btn  layui-btn-sm" style="float:right;margin-right:10px" :class="{'layui-btn-disabled':!currentItem.items.length}" fornonerow="1" buttonname="去购物车下单" type="button" confirmmsg="" id="submitBtn" buttonactiontype="Form" buttonactionurl="" onclick="app.doSubmit(this)">去购物车下单</button>
+                    <unit-select nature="0" :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @@change="loadCart"></unit-select>
+                    <button class="layui-btn  layui-btn-sm" style="float:right;margin-right:10px" :class="{'layui-btn-disabled':!currentItem.items.length||!currentItem.unitId}" fornonerow="1" buttonname="清空购物车" type="button" confirmmsg="" @@click="clearCart">清空购物车</button>
+                    <button class="layui-btn  layui-btn-sm" style="float:right;margin-right:10px" :class="{'layui-btn-disabled':!currentItem.items.length}" fornonerow="1" buttonname="生成订单" type="button" confirmmsg="" id="submitBtn" buttonactiontype="Form" buttonactionurl="" onclick="app.doSubmit(this)">生成订单</button>
                 </div>
-                <table id="Material" lay-filter="Material"></table>
+                <table class="layui-table">
+
+                    <thead>
+                        <tr>
+                            <th>品名</th>
+                            <th>规格</th>
+                            <th>零售价</th>
+                            <th>备注</th>
+                            <th>订购数量</th>
+                            <th>计量单位</th>
+                            <th>适用区域</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(item,index) in currentItem.items">
+                            <td>{{item.name}}</td>
+                            <td>{{item.specification}}</td>
+                            <td>{{item.price}}</td>
+                            <td>{{item.remarks}}</td>
+                            <td>
+                                <el-input-number v-model="item.number"  :min="1" @@change="syncCart"></el-input-number>
+                            </td>
+                            <td>{{item.measureMentUnit}}</td>
+                            <td>{{item.location}}</td>
+                            <td>
+                                <button class="layui-btn layui-btn-sm layui-btn-danger" type="button" @@click="currentItem.items.splice(index,1);syncCart()">删除</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
 
@@ -24,15 +55,11 @@
 </div>
 
 @section scripts{
-    <script type="text/html" id="editTpl">
-        <div info="">
-            <input type="number" style="width:50px" id="edit_{{d.id}}" onblur="app.updateInfo({ id: {{d.id}},number:this.value,name:'{{d.name}}',measureMentUnit:'{{d.measureMentUnit}}'})" />
-        </div>
-        
-    </script>
     <script>
-        var searchKeys = {"From":"sell"};
         var app;
+        config.refresh = function () {
+            location.reload();
+        }
 		//layui加载完成后调用此方法，
 		config.ready = function () {
 			var element = layui.element;
@@ -47,6 +74,14 @@
                     }
                 },
                 methods: {
+                    clearCart: function () {
+                        var that = this;
+                        if (!this.currentItem.unitId) { return;}
+                        abp.message.confirm("确认清空购物车?", function () {
+                            that.currentItem.items = [];
+                            that.syncCart();
+                        })
+                    },
                     //同步购物车至后台
                     syncCart: function () {
                         abp.services.app.materialSell.syncCart(app.currentItem.unitId, 0, app.currentItem.items);
@@ -73,84 +108,31 @@
                         }
                         var that = this;
                         var data = {
-                            storeId: this.currentItem.storeId,
-                            items: this.currentItem.items.map(function (o) {
-                                return { id: o.id, number: o.number };
-                            })
+                            unitId: this.currentItem.unitId,
+                            //items: this.currentItem.items.map(function (o) {
+                            //    return { id: o.id, number: o.number };
+                            //})
                         };
-                        $(obj).attr("buttonactionurl", '/FlowForm/InputByFormKey?formKey=ICH&data=' + encodeURIComponent(JSON.stringify(data)));
+                        $(obj).attr("buttonactionurl", '/FlowForm/InputByFormKey?formKey=SDD&data=' + encodeURIComponent(JSON.stringify(data)));
                         func.callModuleButtonEvent($(obj));
+                    },
+                    loadCart: function () {
+                        var that = this;
+                        //加载购物车数据
+                        func.runAsync(abp.services.app.materialSell.getCartInfo(that.currentItem.unitId, 0).done(res => {
+                            that.currentItem.items = res;
+                        }))
                     }
                 },
                 mounted: function () {
                     var that = this;
-                    table.render({
-                        elem: '#Material',
-                        autoSort: false,
-                        toolbar: false,
-                        //cellMinWidth: '60',
-                        height: 'full-70',
-                        url: '/api/services/app/Material/GetPageResult',
-                        where: getWhere(),
-                        page: true,
-
-                        id: 'Material',
-                        even: true,
-                        cols: [[
-                            { field: 'name', title: '品名' },
-                            { field: 'specifiation', title: '规格' },
-                            { field: 'price', title: '零售价' },
-                            { field: 'remarks', title: '备注' },
-                            { field: '', title: '订购数量', templet: '#editTpl' },
-                            { field: 'measureMentUnit', title: '计量单位' },
-                            { field: 'location', title: '适用区域' },
-                        ]],
-
-                        done: function () {
-                        
-                            config.onTableDone();
-                        }
-                    });
+                    var unitId = $.getUrlParam("unitId");
+                    if (unitId) {
+                        this.currentItem.unitId = unitId;
+                        this.loadCart();
+                    }
                 }
             })
-
-			//监听树选中事件
-            baseTree.onSelect = function (node) {
-				searchKeys.MaterialTypeId = node.id;
-				config.reloadTable();
-			}
-		}
-		//当检索窗体提交后会调用此方法
-        config.reloadTable = function () {
-            searchKeys.SellUnitId = app.currentItem.unitId;
-            if (app.currentItem.unitId) {
-                //加载购物车数据
-                func.runAsync(abp.services.app.materialSell.getCartInfo(app.currentItem.unitId, 0).done(res => {
-                    app.currentItem.items = res;
-                    layui.table.reload('Material', {
-                        where: getWhere()
-
-                    })
-                }))
-            }
-            
-		}
-        config.onTableDone = function () {
-            $.each(app.currentItem.items, function (i, v) {
-                $("#edit_" + v.id).val(v.number);
-            });
-		}
-		//当编辑或删除或添加表单提交后会调用此方法
-		config.refresh = function () {
-            location.reload();
-		}
-        function getWhere() {
-            var where = { searchKeys: JSON.stringify(searchKeys) };
-            
-            where.where = "MaterialNature=0 ";//只显示票劵商品
-            where.searchCondition = func.buildSearchCondition('Material');
-            if (!(app && app.currentItem && app.currentItem.unitId)) { where.where = "1>2"; }
-			return where;
 
 		}
     </script>

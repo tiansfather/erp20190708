@@ -393,6 +393,22 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'action'
+    abp.services.app.flowSheet.action = function(sheetId, actionName, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FlowSheet/Action' + abp.utils.buildQueryString([{ name: 'sheetId', value: sheetId }, { name: 'actionName', value: actionName }]) + '',
+        type: 'POST'
+      }, ajaxParams));;
+    };
+
+    // action 'getFlowBtns'
+    abp.services.app.flowSheet.getFlowBtns = function(sheetId, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FlowSheet/GetFlowBtns' + abp.utils.buildQueryString([{ name: 'sheetId', value: sheetId }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getPageResult'
     abp.services.app.flowSheet.getPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {

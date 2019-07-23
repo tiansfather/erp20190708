@@ -1,5 +1,7 @@
 ﻿using Abp.Dependency;
+using Abp.Runtime.Session;
 using Abp.UI;
+using Master.Authentication;
 using Master.Module;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
@@ -18,6 +20,15 @@ namespace Master.WorkFlow
     {
         public FlowSheetManager FlowSheetManager { get; set; }
         public FlowInstanceManager FlowInstanceManager { get; set; }
+        public UserManager UserManager { get; set; }
+        public IAbpSession AbpSession { get; set; }
+        public User CurrentUser
+        {
+            get
+            {
+                return UserManager.GetByIdAsync(AbpSession.UserId.Value).Result;
+            }
+        }
         public virtual async Task<FlowSheet> CreateSheet(FlowInstance instance, FlowForm flowForm)
         {
             var formData = instance.FormData;
@@ -89,14 +100,25 @@ namespace Master.WorkFlow
             }
         }
 
-        public async Task Action(FlowSheet flowSheet, string action)
+        public virtual async Task Action(FlowSheet flowSheet, string action)
         {
             
         }
 
-        public async Task<IEnumerable<ModuleButton>> GetFlowBtns(FlowSheet flowSheet)
+        public virtual async Task<IEnumerable<ModuleButton>> GetFlowBtns(FlowSheet flowSheet)
         {
             var result = new List<ModuleButton>();
+            if (flowSheet.SheetNature == SheetNature.正单)
+            {
+                //加入冲红按钮
+                result.Add(new ModuleButton()
+                {
+                    ButtonKey="revert",
+                    ButtonName="冲红",
+                    ConfirmMsg="确认冲红此单据?",
+                    ButtonClass="layui-btn-danger"
+                });
+            }
             return result;
         }
     }
