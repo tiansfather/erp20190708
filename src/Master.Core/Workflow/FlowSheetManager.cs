@@ -49,7 +49,20 @@ namespace Master.WorkFlow
         {
             return await GetAll().Include(o=>o.FlowInstance).ThenInclude(o=>o.FlowForm).Where(o => o.FlowInstanceId == instanceId).FirstOrDefaultAsync();
         }
-
+        public async Task<IEnumerable<ModuleButton>> GetFlowBtns(int sheetId)
+        {
+            var flowInstanceManager = Resolve<FlowInstanceManager>();
+            var flowSheet = await GetAll().Include(o => o.FlowInstance).ThenInclude(o => o.FlowForm).Where(o => o.Id == sheetId).SingleOrDefaultAsync();
+            var flowHandler = Resolve<IFlowHandlerFinder>().FindFlowHandler(flowSheet.FormKey);
+            return await flowHandler.GetFlowBtns(flowSheet);
+        }
+        public virtual async Task Action(int sheetId, string action)
+        {
+            var flowInstanceManager = Resolve<FlowInstanceManager>();
+            var flowSheet = await GetAll().Include(o => o.FlowInstance).ThenInclude(o => o.FlowForm).Where(o => o.Id == sheetId).SingleOrDefaultAsync();
+            var flowHandler = Resolve<IFlowHandlerFinder>().FindFlowHandler(flowSheet.FormKey);
+            await flowHandler.Action(flowSheet, action);
+        }
         public virtual async Task Revert(int sheetId,string revertReason)
         {
             var flowInstanceManager = Resolve<FlowInstanceManager>();

@@ -51,6 +51,7 @@
     <PackageReference Include="Abp" Version="4.5.0" />
     <PackageReference Include="Abp.AutoMapper" Version="4.5.0" />
     <PackageReference Include="Abp.EntityFrameworkCore.EFPlus" Version="4.5.0" />
+    <PackageReference Include="Abp.Quartz" Version="4.5.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="2.10.0" />
     <PackageReference Include="Abp.EntityFrameworkCore" Version="4.5.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />

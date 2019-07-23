@@ -18,9 +18,13 @@ using Abp.Auditing;
 using Master.Auditing;
 using Abp.Localization;
 using Master.WorkFlow;
+using Abp.Quartz;
+using Quartz;
+using Master.Jobs;
 
 namespace Master
 {
+    [DependsOn(typeof(AbpQuartzModule))]
     public class MasterCoreModule : AbpModule
     {
         public override void PreInitialize()
@@ -77,6 +81,17 @@ namespace Master
 
             IocManager.Resolve<AppTimes>().StartupTime = Clock.Now;
             BuildDefaultForm();
+            //物料时间提醒采用quatz
+            var quartzManager = IocManager.Resolve<IQuartzScheduleJobManager>();
+            quartzManager.ScheduleAsync<SellOrderAutoVerifyJob>(
+                job => {
+
+                },
+                trigger => {
+                    trigger.StartNow()
+                    .WithCronSchedule("0 0 17 * * ?");//每天下午17点触发
+                    //.WithCronSchedule("0 0/10 8-18 * * ? ");//   工作时间内每30分钟
+                });
         }
 
         /// <summary>
@@ -128,17 +143,14 @@ namespace Master
         private void InitDictionary()
         {
             //往来单位性质
-            Configuration.Modules.Core().Dictionaries.Add(StaticDictionaryNames.UnitNature, new Dictionary<string, string>() { { "1", "客户" },{ "2","供应商"},{ "3", "客户及供应商" } });
-            //往来单位供应类别
-            Configuration.Modules.Core().Dictionaries.Add(StaticDictionaryNames.SupplierType, new Dictionary<string, string>() { { "采购", "采购" }, { "加工", "加工" }});
+            Configuration.Modules.Core().Dictionaries.Add(StaticDictionaryNames.UnitNature, new Dictionary<string, string>() { { "1", "客户" },{ "2","供应商"},{ "3", "客户及供应商" } });            
             //性别字典
             Configuration.Modules.Core().Dictionaries.Add(StaticDictionaryNames.Sex, new Dictionary<string, string>() { { "男", "男" }, { "女", "女" } });
             //学历字典
             Configuration.Modules.Core().Dictionaries.Add(StaticDictionaryNames.Degree, new Dictionary<string, string>() { { "小学", "小学" }, { "初中", "初中" }, { "高中", "高中" }, { "大学", "大学" }, { "硕士及以上", "硕士及以上" } });
             //婚姻状况
             Configuration.Modules.Core().Dictionaries.Add(StaticDictionaryNames.Marriage, new Dictionary<string, string>() { { "未婚", "未婚" }, { "已婚", "已婚" } });
-            //项目类型
-            Configuration.Modules.Core().Dictionaries.Add(StaticDictionaryNames.ProjectType, new Dictionary<string, string>() { { "普通", "普通" }});
+            
         }
 
         private void BuildDefaultForm()

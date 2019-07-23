@@ -21,10 +21,13 @@ namespace Master.Configuration
 
 
             var group = new SettingDefinitionGroup("Core", L("基本设置"));
+            var group2 = new SettingDefinitionGroup("Home", L("首页轮播"));
             return new SettingDefinition[]
             {
                 menuSettingDefinition,
-                new SettingDefinition(SettingNames.SoftTitle, "管理系统",L("系统标题"),group, scopes: SettingScopes.Tenant , isVisibleToClients: true)
+                new SettingDefinition(SettingNames.SoftTitle, "管理系统",L("系统标题"),group, scopes: SettingScopes.Tenant , isVisibleToClients: true),
+                new SettingDefinition("HomPics", "",L("首页轮播"),group, scopes: SettingScopes.Tenant , isVisibleToClients: true
+               ,customData:new SettingUIInfo(){ ColumnType=Module.ColumnTypes.Text,Renderer="lay-homepics"}),
             };
         }
 

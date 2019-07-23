@@ -55,9 +55,8 @@ namespace Master.Web.Startup
             {
                 scriptGeneratorWrapper.Object.GenerateScript();
             }
-
-
-                base.PostInitialize();
+            
+            base.PostInitialize();
         }
     }
 }

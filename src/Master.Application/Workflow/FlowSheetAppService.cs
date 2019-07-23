@@ -23,7 +23,7 @@ namespace Master.Workflow
                 .Include(o=>o.RelSheet)
                 .Where(o => o.Id == primary)
                 .FirstOrDefaultAsync();
-
+            var btns = await (Manager as FlowSheetManager).GetFlowBtns(primary);
             return new
             {
                 flowSheet.SheetSN,
@@ -32,7 +32,14 @@ namespace Master.Workflow
                 CreatorUserName=flowSheet.CreatorUser.Name,
                 CreationTime=flowSheet.CreationTime.ToString("yyyy-MM-dd HH:mm:ss"),
                 flowSheet.RevertReason,
-                RelSheetSN=flowSheet.RelSheet?.SheetSN
+                RelSheetSN=flowSheet.RelSheet?.SheetSN,
+                Btns= btns.Select(o => new
+                {
+                    o.ButtonKey,
+                    o.ButtonName,
+                    o.ButtonClass,
+                    o.ConfirmMsg
+                })
             };
         }
 
@@ -44,6 +51,29 @@ namespace Master.Workflow
         public virtual async Task Revert(int sheetId,string revertReason)
         {
             await (Manager as FlowSheetManager).Revert(sheetId, revertReason);
+        }
+
+        /// <summary>
+        /// 单据操作
+        /// </summary>
+        /// <param name="sheetId"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public virtual async Task Action(int sheetId,string action)
+        {
+            await (Manager as FlowSheetManager).Action(sheetId, action);
+        }
+
+        public virtual async Task<object> GetFlowBtns(int sheetId)
+        {
+            var btns=await (Manager as FlowSheetManager).GetFlowBtns(sheetId);
+            return btns.Select(o => new
+            {
+                o.ButtonKey,
+                o.ButtonName,
+                o.ButtonClass,
+                o.ConfirmMsg
+            });
         }
     }
 }

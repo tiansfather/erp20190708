@@ -1,4 +1,5 @@
 ﻿using Abp.Dependency;
+using Master.Module;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,5 +16,7 @@ namespace Master.WorkFlow
 
         Task CreateRevertSheet(FlowSheet flowSheet, string revertReason);
         Task HandleRevert(FlowSheet flowSheet);
+        Task Action(FlowSheet flowSheet, string action);
+        Task<IEnumerable<ModuleButton>> GetFlowBtns(FlowSheet flowSheet);
     }
 }

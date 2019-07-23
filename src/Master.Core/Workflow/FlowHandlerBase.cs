@@ -1,5 +1,6 @@
 ﻿using Abp.Dependency;
 using Abp.UI;
+using Master.Module;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using System;
@@ -86,6 +87,17 @@ namespace Master.WorkFlow
             {
                 return wrapper.Object;
             }
+        }
+
+        public async Task Action(FlowSheet flowSheet, string action)
+        {
+            
+        }
+
+        public async Task<IEnumerable<ModuleButton>> GetFlowBtns(FlowSheet flowSheet)
+        {
+            var result = new List<ModuleButton>();
+            return result;
         }
     }
 }
