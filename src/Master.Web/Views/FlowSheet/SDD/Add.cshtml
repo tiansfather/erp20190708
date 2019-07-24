@@ -19,6 +19,7 @@
                     <div class="layui-col-xs8">
                         <div class="LAY-app-message-btns" style="margin-bottom:10px;">
                             <unit-select nature="0" :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @@change="config.reloadTable"></unit-select>
+                            <button class="layui-btn  layui-btn-sm" style="float:right;margin-right:10px" :class="{'layui-btn-disabled':!currentItem.items.length}" fornonerow="1" buttonname="快速下单" type="button" confirmmsg="" buttonactiontype="Form" buttonactionurl="/FlowForm/InputByFormKey?formKey=SDD" onclick="func.callModuleButtonEvent()">快速下单</button>
                             <button class="layui-btn  layui-btn-sm" style="float:right;margin-right:10px" :class="{'layui-btn-disabled':!currentItem.items.length}" fornonerow="1" buttonname="去购物车下单" type="button" confirmmsg="" id="submitBtn" buttonactiontype="Form" buttonactionurl="" @@click="gotoCart">去购物车下单</button>
                         </div>
                         <table id="Material" lay-filter="Material"></table>
