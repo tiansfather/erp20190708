@@ -1,0 +1,14 @@
+﻿
+
+<button class="layui-btn  layui-btn-sm" style="display:none" fornonerow="1" buttonname="票劵出库单" type="button" confirmmsg="" id="submitBtn" buttonactiontype="Form" buttonactionurl="/FlowForm/InputByFormKey?formKey=SCK" onclick="func.callModuleButtonEvent()">票劵出库单</button>
+
+@section scripts{
+    <script>
+        config.ready = function () {
+            $("#submitBtn").click();
+        }
+        config.refresh = function () {
+            location.reload();
+        }
+    </script>
+}

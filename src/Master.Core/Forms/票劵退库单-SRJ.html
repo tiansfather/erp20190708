@@ -1,16 +1,13 @@
 ﻿<div id="app" v-cloak>
-    <el-form :inline="true" size="mini" v-if="!_formOption.readonly">
-        <el-form-item label="供货商">
-            <unit-select nature="1" :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @change="refreshData"></unit-select>
+    <el-form :inline="true" size="mini" >
+        <el-form-item label="代理商">
+            <unit-select nature="0" :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @change="refreshData"></unit-select>
         </el-form-item>
-        <el-form-item label="采购入库时间">
+        <el-form-item label="订购时间">
             <el-date-picker type="date" placeholder="选择日期" v-model="currentItem.startDate" @change="refreshData"></el-date-picker>~至今
         </el-form-item>
-    </el-form>
-    <el-divider></el-divider>
-    <el-form :inline="true" size="mini">
-        <el-form-item label="退货仓库">
-            <el-select v-model="currentItem.storeId" placeholder="退货仓库" size="medium" style="width:120px">
+        <el-form-item label="退入仓库">
+            <el-select v-model="currentItem.storeId" placeholder="退入仓库" size="mini" style="width:120px">
                 <el-option v-for="item in currentItem.stores"
                            :key="item.id"
                            :label="item.name"
@@ -19,13 +16,14 @@
             </el-select>
         </el-form-item>
     </el-form>
+    <el-divider></el-divider>
     <table class="layui-table">
         <thead>
             <tr>
                 <th>品名</th>
                 <th>规格</th>
                 <th>市场单价</th>
-                <th>采购总数量</th>
+                <th>订购总数量</th>
                 <th>已退数量</th>
                 <th>本次退货数量</th>
                 <th>退货折扣</th>
@@ -38,9 +36,9 @@
                 <td>{{item.name}}</td>
                 <td>{{item.specification}}</td>
                 <td>{{item.price}}</td>
-                <td>{{item.buyNumber}}</td>
+                <td>{{item.sellNumber}}</td>
                 <td>{{item.backNumber}}</td>
-                <td><el-input-number v-model="item.number" min="0" :max="item.buyNumber-item.backNumber" label="退货数量"></el-input-number></td>
+                <td><el-input-number v-model="item.number" min="0" :max="item.sellNumber-item.backNumber" label="退货数量"></el-input-number></td>
                 <td>
                     <el-input-number v-model="item.discount" :precision="2" :step="0.1" :max="1" :min="0"></el-input-number></td>
                 <td>{{(item.price*item.discount).toFixed(2)}}</td>
@@ -57,7 +55,7 @@
         <el-form-item label="其它费用">
             <el-input v-model="currentItem.otherFee" typeof="number"></el-input>
         </el-form-item>
-        <el-form-item label="本单应收金额">
+        <el-form-item label="本单应退金额">
             <el-input v-model="totalFee" readonly="true"></el-input>
         </el-form-item>
 
@@ -103,7 +101,7 @@
                     if (!this.currentItem.unitId || !this.currentItem.startDate) {
                         return;
                     }
-                    func.runAsync(abp.services.app.materialBuy.getUnitBuyedMaterial(this.currentItem.unitId, this.currentItem.startDate).done(res => {
+                    func.runAsync(abp.services.app.materialSell.getUnitSellMaterialForBack(this.currentItem.unitId, this.currentItem.startDate).done(res => {
                         
                         this.currentItem.items = res;
                     }))
@@ -129,10 +127,10 @@
     function getFormData() {
         var data = app.currentItem.items;
         if (!app.currentItem.unitId) {
-            throw "请选择供货商";
+            throw "请选择代理商";
         }
         if (!app.currentItem.storeId) {
-            throw "请选择退货仓库";
+            throw "请选择退入仓库";
         }
         if (!data.length) {
             throw "请至少录入一条数据";

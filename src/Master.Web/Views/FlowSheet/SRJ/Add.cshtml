@@ -1,0 +1,14 @@
+﻿
+
+<button class="layui-btn  layui-btn-sm" style="display:none" fornonerow="1" buttonname="票劵退库单" type="button" confirmmsg="" id="submitBtn" buttonactiontype="Form" buttonactionurl="/FlowForm/InputByFormKey?formKey=SRJ" onclick="func.callModuleButtonEvent()">票劵退库单</button>
+
+@section scripts{
+    <script>
+        config.ready = function () {
+            $("#submitBtn").click();
+        }
+        config.refresh = function () {
+            location.reload();
+        }
+    </script>
+}

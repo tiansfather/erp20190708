@@ -1,4 +1,5 @@
-﻿using Master.Module;
+﻿using Abp.Domain.Repositories;
+using Master.Module;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,34 @@ namespace Master.Storage
                 .ToListAsync();
             data["StoreCount"] = storeCountInfo;
             data["TotalCount"] = storeCountInfo.Sum(o => o.Number);
+        }
+        /// <summary>
+        /// 获取商品的供应商折扣
+        /// </summary>
+        /// <param name="material"></param>
+        /// <param name="unitId"></param>
+        /// <returns></returns>
+        public virtual async Task<decimal> GetMaterialUnitDiscount(Material material,int unitId)
+        {
+            decimal result = 1;
+            var discountRepository = Resolve<IRepository<UnitMaterialDiscount, int>>();
+            var disCount = await discountRepository.FirstOrDefaultAsync(o => o.MaterialId == material.Id && o.UnitId == unitId);
+            if (disCount == null || disCount.UnitDiscount == UnitDiscount.默认)
+            {
+                result= material.DefaultSellDiscount ?? 1;
+            }else if (disCount.UnitDiscount == UnitDiscount.折扣1)
+            {
+                result = material.SellDiscount1 ?? 1;
+            }
+            else if (disCount.UnitDiscount == UnitDiscount.折扣2)
+            {
+                result = material.SellDiscount1 ?? 1;
+            }
+            else if (disCount.UnitDiscount == UnitDiscount.折扣3)
+            {
+                result =  material.SellDiscount1 ?? 1;
+            }
+            return result;
         }
     }
 }

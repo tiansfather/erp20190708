@@ -29,5 +29,16 @@ namespace Master.Storage
                 .Where(o=>o.CanBackNumber>0)
                 .ToListAsync();
         }
+        /// <summary>
+        /// 卡号检查
+        /// </summary>
+        /// <param name="featureCode"></param>
+        /// <param name="codeNumber"></param>
+        /// <returns></returns>
+        public virtual async Task<bool> CheckCode(string featureCode,string codeNumber)
+        {
+            //todo:
+            return false;
+        }
     }
 }

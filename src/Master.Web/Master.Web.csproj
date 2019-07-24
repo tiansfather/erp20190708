@@ -472,6 +472,18 @@
     <Content Update="Views\FlowSheet\IAS\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\FlowSheet\SRJ\Add.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\FlowSheet\SRJ\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\FlowSheet\SCK\Add.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\FlowSheet\SCK\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\FlowSheet\SDD\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

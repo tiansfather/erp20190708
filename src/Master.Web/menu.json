@@ -24,21 +24,42 @@
         "displayName": "票劵订单查询",
         "icon": "iconfont icon-celve",
         "url": "/Home/Show?name=../FlowSheet/SDD/Index",
-        "order": 2
-      },
-      {
-        "name": "Buy.Tenancy.PRR",
-        "displayName": "采购退货",
-        "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../FlowSheet/PRR/Add",
         "order": 3
       },
       {
-        "name": "Buy.Tenancy.PRRSheet",
-        "displayName": "退货单查询",
+        "name": "Buy.Tenancy.SCK",
+        "displayName": "票劵商品出库",
         "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../FlowSheet/PRR/Index",
+        "url": "/Home/Show?name=../FlowSheet/SCK/Add",
         "order": 4
+      },
+      {
+        "name": "Buy.Tenancy.SCKSheet",
+        "displayName": "票劵出库单查询",
+        "icon": "iconfont icon-celve",
+        "url": "/Home/Show?name=../FlowSheet/SCK/Index",
+        "order": 5
+      },
+      {
+        "name": "Buy.Tenancy.SRJ",
+        "displayName": "票劵商品退货",
+        "icon": "iconfont icon-celve",
+        "url": "/Home/Show?name=../FlowSheet/SRJ/Add",
+        "order": 6
+      },
+      {
+        "name": "Buy.Tenancy.PRRSheet",
+        "displayName": "票劵退库单查询",
+        "icon": "iconfont icon-celve",
+        "url": "/Home/Show?name=../FlowSheet/SRJ/Index",
+        "order": 7
+      },
+      {
+        "name": "Buy.Tenancy.BackCardCheck",
+        "displayName": "退货卡号检查",
+        "icon": "iconfont icon-celve",
+        "url": "/Home/Show?name=../Material/BackCardCheck",
+        "order": 7
       }
     ]
   },
