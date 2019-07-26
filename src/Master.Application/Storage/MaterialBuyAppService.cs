@@ -1,4 +1,5 @@
 ﻿using Abp.Authorization;
+using Abp.UI;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -33,12 +34,17 @@ namespace Master.Storage
         /// 卡号检查
         /// </summary>
         /// <param name="featureCode"></param>
-        /// <param name="codeNumber"></param>
+        /// <param name="codeNumberStr"></param>
         /// <returns></returns>
-        public virtual async Task<bool> CheckCode(string featureCode,string codeNumber)
+        public virtual async Task<bool> CheckCode(string featureCode,string codeNumberStr)
         {
-            //todo:
-            return false;
+            long codeNumber;
+            if(!long.TryParse(codeNumberStr, out codeNumber))
+            {
+                throw new UserFriendlyException("卡号必须为数字类型");
+            }
+            var count=await Manager.GetAll().FromSql($"select * from materialbuy where FeatureCode='{featureCode}' and CAST(CodeStartNumber AS Decimal(24))<{codeNumber} and CAST(CodeEndNumber AS Decimal(24))>{codeNumber}").CountAsync();
+            return count>0;
         }
     }
 }

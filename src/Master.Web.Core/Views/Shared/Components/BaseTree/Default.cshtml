@@ -35,7 +35,9 @@
 	style="padding: 2px; border: 1px solid #ddd; overflow: auto;"></ul>
 
 <script>
-	var baseTree = function () {
+    
+    var baseTree = function () {
+
 		var zTreeObj;
 		var setting = {
 			view: { selectedMulti: false },
@@ -59,11 +61,15 @@
 				}
 			}
 		};
-		var load = function () {
+        var load = function () {
+            var showInner=@Model.ShowInner;
 			abp.services.app.baseTree.getTreeJson('@Model.TreeKey', null).done(function (json) {
 				zTreeObj = $.fn.zTree.init($("#baseTree"), setting);
 				var newNode = { displayName: "@Html.Raw(Model.TreeName)", id: null, parentId: "" };
                 json.push(newNode);
+                if (!showInner) {
+                    json = json.filter(o => o.nature == 0);//只显示对外
+                }
                 //json.push({ displayName: '未分类', id: -1, parentId: null });
 				zTreeObj.addNodes(null, json);
 				//mainList({ orgId: "" });

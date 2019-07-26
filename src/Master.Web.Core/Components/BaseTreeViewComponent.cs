@@ -25,6 +25,10 @@ namespace Master.Web.Components
         /// 树名称
         /// </summary>
         public string TreeName { get; set; }
+        /// <summary>
+        /// 是否显示对内
+        /// </summary>
+        public int ShowInner { get; set; } = 1;
         public bool EnableAdd { get; set; } = true;
         public bool EnableEdit { get; set; } = true;
         public bool EnableDelete { get; set; } = true;
