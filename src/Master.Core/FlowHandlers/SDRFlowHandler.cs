@@ -18,9 +18,9 @@ using System.Threading.Tasks;
 namespace Master.FlowHandlers
 {
     /// <summary>
-    /// 票劵订货单
+    /// 实物订货单
     /// </summary>
-    public class SDDFlowHandler : FlowHandlerBase
+    public class SDRFlowHandler : FlowHandlerBase
     {
         
         public MaterialManager MaterialManager { get; set; }
@@ -41,10 +41,10 @@ namespace Master.FlowHandlers
             flowSheet.Remarks = sheetHeader["remarks"].ToObjectWithDefault<string>();
             var unitId = sheetHeader["unitId"].ToObject<int>();//代理商id
             flowSheet.UnitId = unitId;
-            flowSheet.OrderStatus=CurrentUser.IsCenterUser?"待出库": "待审核";
+            flowSheet.OrderStatus="待审核";
             flowSheet.SetPropertyValue("OrderType", CurrentUser.IsCenterUser?"中心代为下单": "代理商自助下单");
-            //清空对应代理商的票劵购物车
-            await CartRepository.DeleteAsync(o => o.CreatorUserId == AbpSession.UserId && o.UnitId == unitId && o.Material.MaterialNature == MaterialNature.票券);
+            //清空对应代理商的实物购物车
+            await CartRepository.DeleteAsync(o => o.CreatorUserId == AbpSession.UserId && o.UnitId == unitId && o.Material.MaterialNature == MaterialNature.实物);
 
             foreach (var sheetItem in sheetData["body"])
             {
@@ -74,16 +74,27 @@ namespace Master.FlowHandlers
         public override async Task<IEnumerable<ModuleButton>> GetFlowBtns(FlowSheet flowSheet)
         {
             var btns = new List<ModuleButton>();
-            //if (flowSheet.GetPropertyValue<string>("OrderStatus") == "待审核")
-            if (true)
-                {
+            if (flowSheet.OrderStatus == "待审核")
+            {
                 btns.Add(new ModuleButton()
                 {
                     ButtonKey = "backToCart",
                     ButtonName = "放回购物车修改",
                     ConfirmMsg="确认将订单放回购物车?此订单将失效"
                 });
-               
+                btns.Add(new ModuleButton()
+                {
+                    ButtonKey = "verify",
+                    ButtonName = "审核",
+                    ConfirmMsg = "确认审核通过此订单？"
+                });
+                btns.Add(new ModuleButton()
+                {
+                    ButtonKey = "cancel",
+                    ButtonName = "取消",
+                    ButtonClass = "layui-btn-danger",
+                    ConfirmMsg = "确认取消此单据？"
+                });
             }
             return btns;
         }
@@ -121,6 +132,14 @@ namespace Master.FlowHandlers
                 }
                 //删除订单
                 await FlowSheetManager.DeleteAsync(flowSheet);
+            }
+            else if (action == "verify")
+            {
+                flowSheet.OrderStatus = "待发货";
+            }
+            else if (action == "cancel")
+            {
+                flowSheet.OrderStatus = "已取消";
             }
         }
     }

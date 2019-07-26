@@ -39,7 +39,7 @@ namespace Master.WorkFlow
                 FlowInstanceId = instance.Id,
                 SheetName = instance.InstanceName,
                 FormKey = formKey,
-                SheetNature=SheetNature.待审核
+                SheetNature=SheetNature.正单
             };
             var sheetId = await FlowSheetManager.InsertAndGetIdAsync(flowSheet);
             return flowSheet;

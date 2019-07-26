@@ -20,7 +20,7 @@
                         <div class="LAY-app-message-btns" style="margin-bottom:10px;">
                             <unit-select nature="0" :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @@change="config.reloadTable"></unit-select>
                             <button class="layui-btn  layui-btn-sm" style="float:right;margin-right:10px" :class="{'layui-btn-disabled':!currentItem.items.length}" fornonerow="1" buttonname="去购物车下单" type="button" confirmmsg="" id="submitBtn" buttonactiontype="Form" buttonactionurl="" @@click="gotoCart">去购物车下单</button>
-                            <button class="layui-btn  layui-btn-sm layui-btn-normal" style="float:right;margin-right:10px" :class="{'layui-btn-disabled':!currentItem.items.length}" fornonerow="1" buttonname="快速下单" type="button" confirmmsg="" buttonactiontype="Form" buttonactionurl="/FlowForm/InputByFormKey?formKey=SDD" onclick="app.doSubmit(this)">快速下单</button>
+                            <button class="layui-btn  layui-btn-sm layui-btn-normal" style="float:right;margin-right:10px" :class="{'layui-btn-disabled':!currentItem.items.length}" fornonerow="1" buttonname="快速下单" type="button" confirmmsg="" buttonactiontype="Form" buttonactionurl="/FlowForm/InputByFormKey?formKey=SDR" onclick="app.doSubmit(this)">快速下单</button>
 
                         </div>
                         <table id="Material" lay-filter="Material"></table>
@@ -82,11 +82,11 @@
                 },
                 methods: {
                     gotoCart: function () {
-                        location.href = '/Home/Show?name=../FlowSheet/SDD/Cart&unitId=' + this.currentItem.unitId;
+                        location.href = '/Home/Show?name=../FlowSheet/SDR/Cart&unitId=' + this.currentItem.unitId;
                     },
                     //同步购物车至后台
                     syncCart: function () {
-                        abp.services.app.materialSell.syncCart(app.currentItem.unitId, 0, app.currentItem.items);
+                        abp.services.app.materialSell.syncCart(app.currentItem.unitId, 1, app.currentItem.items);
                     },
                     updateInfo: function (info) {
                         if (isNaN(info.number)) { info.number = 0;}
@@ -115,7 +115,7 @@
                             //    return { id: o.id, number: o.number };
                             //})
                         };
-                        $(obj).attr("buttonactionurl", '/FlowForm/InputByFormKey?formKey=SDD&data=' + encodeURIComponent(JSON.stringify(data)));
+                        $(obj).attr("buttonactionurl", '/FlowForm/InputByFormKey?formKey=SDR&data=' + encodeURIComponent(JSON.stringify(data)));
                         func.callModuleButtonEvent($(obj));
                     }
                 },
@@ -162,7 +162,7 @@
             searchKeys.SellUnitId = app.currentItem.unitId;
             if (app.currentItem.unitId) {
                 //加载购物车数据
-                func.runAsync(abp.services.app.materialSell.getCartInfo(app.currentItem.unitId, 0).done(res => {
+                func.runAsync(abp.services.app.materialSell.getCartInfo(app.currentItem.unitId, 1).done(res => {
                     app.currentItem.items = res;
                     layui.table.reload('Material', {
                         where: getWhere()
@@ -184,7 +184,7 @@
         function getWhere() {
             var where = { searchKeys: JSON.stringify(searchKeys) };
             
-            where.where = "MaterialNature=0 ";//只显示票劵商品
+            where.where = "MaterialNature=1 ";//只显示实物商品
             where.searchCondition = func.buildSearchCondition('Material');
             if (!(app && app.currentItem && app.currentItem.unitId)) { where.where = "1>2"; }
 			return where;

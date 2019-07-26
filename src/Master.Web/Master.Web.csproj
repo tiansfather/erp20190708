@@ -472,6 +472,15 @@
     <Content Update="Views\FlowSheet\IAS\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\FlowSheet\ICH\Verify.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\FlowSheet\SDR\Verify.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\FlowSheet\SDR\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\FlowSheet\SRJ\Add.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
@@ -532,9 +541,11 @@
     <Content Update="Views\Store\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Voucher\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\新文件夹\" />
     <Folder Include="wwwroot\lib\swiper\" />
   </ItemGroup>
   <ProjectExtensions><VisualStudio><UserProperties bundleconfig_1json__JSONSchema="" /></VisualStudio></ProjectExtensions>

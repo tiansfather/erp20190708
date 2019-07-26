@@ -6,17 +6,27 @@
         <el-form-item label="当前结余">
             <el-input v-model="currentItem.unitInfo.nowFee" readonly="true" tips="负数代表对方欠我方，正数代表我方欠对方。"></el-input>
         </el-form-item>
+    </el-form>
+    <el-form :inline="true" size="mini">
         <el-form-item label="收款方式">
             <el-radio-group v-model="currentItem.payType">
-                <el-radio label="0">现金收款</el-radio>
-                <el-radio label="1">转账收款</el-radio>
-                <el-radio label="2">支票收款</el-radio>
+                <el-radio label="0">现金付款</el-radio>
+                <el-radio label="1">转账付款</el-radio>
+                <el-radio label="2">支票付款</el-radio>
             </el-radio-group>
         </el-form-item>
-
+        <el-form-item label="" style="margin-left:50px">
+            <el-switch v-model="currentItem.affectRemain"
+                       active-text="影响结余"
+                       inactive-text="不影响结余">
+            </el-switch>
+        </el-form-item>
     </el-form>
     <el-divider></el-divider>
-    <el-form ref="form" label-width="80px">
+    <el-form ref="form" label-width="120px">
+        <el-form-item label="对方单位名称">
+            <el-input v-model="currentItem.companyName" type="text"></el-input>
+        </el-form-item>
         <el-form-item :label="currentItem.payType=='0'?'现金':'转账'" v-if="currentItem.payType!='2'">
             <el-col :span="10">
                 <el-input placeholder="" v-model="currentItem.inputedFee">
@@ -64,7 +74,6 @@
     <el-divider></el-divider>
     <div>
         <label>本单收款总额（元）：{{totalFee}}</label>
-        <label style="margin-left:50px">收款后结余（元）：{{remainFee}}</label>
     </div>
 </div>
 <script>
@@ -75,7 +84,8 @@
                 currentItem: _formOption.formData ? _formOption.formData.layoutData : {
                     sheetDate: new Date().pattern("yyyy-MM-dd"),
                     inputedFee: 0,
-                    payType:'0',
+                    payType: '0',
+                    affectRemain: false,//是否影响结余
                     unitId: null,
                     unitInfo: { nowFee: 0 },
                     accounts: [],
@@ -165,7 +175,8 @@
                 accountId: app.currentItem.accountId,
                 payType: app.currentItem.payType,
                 totalFee: app.totalFee,
-                feeCheck: app.currentItem.feeCheck
+                feeCheck: app.currentItem.feeCheck,
+                affectRemain: app.currentItem.affectRemain,
             },
             body: []
         };

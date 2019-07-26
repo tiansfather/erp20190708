@@ -16,5 +16,8 @@ namespace Master.WorkFlow.Modules
         [NotMapped]
         [InterColumn(ColumnName = "仓库", ValuePath = "Property", Sort = 21)]
         public string StoreName { get; set; }
+        [InterColumn(ColumnName = "当前状态", Sort = 22)]
+        public override string OrderStatus { get; set; }
+        public override SheetNature SheetNature { get => base.SheetNature; set => base.SheetNature = value; }
     }
 }

@@ -37,7 +37,10 @@
 
     </el-form>
     <el-divider></el-divider>
-    <el-form ref="form" label-width="80px">
+    <el-form ref="form" label-width="120px">
+        <el-form-item label="对方单位名称">
+            <el-input v-model="currentItem.companyName" type="text"></el-input>
+        </el-form-item>
         <el-form-item :label="currentItem.payType=='0'?'现金':'转账'" v-if="currentItem.payType!='2'">
             <el-col :span="10">
                 <el-input placeholder="" v-model="currentItem.inputedFee">

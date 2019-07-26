@@ -1,0 +1,90 @@
+﻿
+@{
+}
+
+<div class="layui-fluid" id="LAY-app-message">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <div id="app" v-cloak>
+                <el-row :gutter="20">
+                    <el-col :span="12">
+                        <el-form ref="form" :model="form" label-width="80px">
+                            <el-form-item label="代理商">
+                                <unit-select nature="1" :unit.sync="currentItem.unitId" :value-isid="true"></unit-select>
+                            </el-form-item>
+                            <el-form-item label="发生金额">
+                                <el-input-number v-model="currentItem.fee" :min="0" step="100"></el-input-number>
+                            </el-form-item>
+                            <el-form-item label="备注">
+                                <el-input type="textarea" v-model="currentItem.remarks"></el-input>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-button type="primary" @@click="onSubmit">提交</el-button>
+                            </el-form-item>
+                        </el-form>
+                    </el-col>
+                    <el-col :span="12">
+                        <div class="my-partName-img picupload" tips="@L("点击上传凭证")">
+                            <img :src="currentItem.filePath" style="width:400px;height:400px;" />
+                        </div>
+                    </el-col>
+                </el-row>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts{ 
+	<script>
+        var app;
+        func.renderUpload('.picupload', {
+            trigger: 'click', callback: function (res) {
+                var item = $(upload.element);
+                console.log(item);
+                console.log(res);
+                app.currentItem.filePath = res.filePath;
+            }
+        })
+		config.ready = function () {
+			
+			app = new Vue({
+				el: '#app',
+				data: {
+                    currentItem: {
+                        filePath:''
+                    }
+                },
+                methods: {
+                    onSubmit: function () {
+                        if (!this.currentItem.unitId) {
+                            this.$message.error('请选择代理商');
+                            return;
+                        }
+                        if (!this.currentItem.fee) {
+                            this.$message.error('请输入发生金额');
+                            return;
+                        }
+                        if (!this.currentItem.filePath) {
+                            this.$message.error('请上传凭证');
+                            return;
+                        }
+                        abp.message.confirm("确认提交?", function () {
+                            func.runAsync(abp.services.app.voucher.submit(app.currentItem).done(res => {
+                                top.layer.msg("提交成功");
+                                location.reload();
+                            }))
+                        })
+                        
+                    }
+                },
+                mounted: function () {
+
+				}
+			})
+		}
+
+	</script>
+}

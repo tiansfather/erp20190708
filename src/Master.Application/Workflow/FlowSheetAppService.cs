@@ -1,4 +1,5 @@
 ﻿using Abp.Authorization;
+using Master.Entity;
 using Master.WorkFlow;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -32,6 +33,7 @@ namespace Master.Workflow
                 CreatorUserName=flowSheet.CreatorUser.Name,
                 CreationTime=flowSheet.CreationTime.ToString("yyyy-MM-dd HH:mm:ss"),
                 flowSheet.RevertReason,
+                flowSheet.OrderStatus,
                 RelSheetSN=flowSheet.RelSheet?.SheetSN,
                 Btns= btns.Select(o => new
                 {

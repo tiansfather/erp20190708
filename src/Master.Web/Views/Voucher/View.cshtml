@@ -1,0 +1,118 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutDialog.cshtml";
+}
+
+<div class="layui-fluid" id="LAY-app-message">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <div id="app" v-cloak>
+                <el-row>
+                    <el-col :span="16">
+                        <el-form :inline="true" v-if="currentItem.voucherStatus!=2">
+                            <el-form-item label="关联单据">
+                                <el-input v-model="currentItem.relSheetSN" style="width:150px" :disabled="currentItem.voucherStatus!=1" ></el-input>
+                                <el-button type="primary" @@click="doRel" :disabled="currentItem.voucherStatus!=1" >关联</el-button>
+                                <span style="color:#909399">只有确认接收的凭证才能关联单据</span>
+                            </el-form-item>
+                        </el-form>                        
+                    </el-col>
+                    <el-col :span="8">
+                        <el-form :inline="true">
+                            <el-form-item v-if="currentItem.voucherStatus==0">
+                                <el-button type="success" @@click="doConfirm">确认接收</el-button>
+                                <el-button type="danger" @@click="doClose">关闭</el-button>
+                            </el-form-item>
+                        </el-form>
+                    </el-col>
+                </el-row>
+                <el-divider></el-divider>
+                <el-row :gutter="20">
+                    <el-col :span="12">
+                        <el-form ref="form" label-width="80px">
+                            <el-form-item label="代理商">
+                                <el-input v-model="currentItem.unitName" readonly></el-input>
+                            </el-form-item>
+                            <el-form-item label="提交时间">
+                                <el-input v-model="currentItem.creationTime" readonly></el-input>
+                            </el-form-item>
+                            <el-form-item label="发生金额">
+                                <el-input v-model="currentItem.fee" readonly></el-input>
+                            </el-form-item>
+                            <el-form-item label="状态">
+                                <el-input v-model="currentItem.voucherStatusName" readonly></el-input>
+                            </el-form-item>
+                            <el-form-item label="备注">
+                                <el-input type="textarea" v-model="currentItem.remarks" readonly></el-input>
+                            </el-form-item>
+                        </el-form>
+                    </el-col>
+                    <el-col :span="12">
+                        <div class="my-partName-img " >
+                            <img :src="currentItem.filePath" style="width:400px;height:400px;" />
+                        </div>
+                    </el-col>
+                </el-row>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts{
+    <script>
+        var app;
+        var id = $.getUrlParam("data");
+        config.ready = function () {
+
+            app = new Vue({
+                el: '#app',
+                data: {
+                    currentItem: {
+                        filePath: ''
+                    }
+                },
+                methods: {
+                    doConfirm: function () {                        
+                        abp.message.confirm("确认接收此凭证?", function () {
+                            func.runAsync(abp.services.app.voucher.setVoucherStatus(id,1).done(res => {
+                                top.layer.msg("提交成功");
+                                parent.config.reloadTable();
+                                location.reload();
+                            }))
+                        })
+                    },
+                    doClose: function () {
+                        abp.message.confirm("确认关闭此凭证?", function () {
+                            func.runAsync(abp.services.app.voucher.setVoucherStatus(id, 2).done(res => {
+                                top.layer.msg("提交成功");
+                                parent.config.reloadTable();
+                                location.reload();
+                            }))
+                        })
+                    },
+                    doRel: function () {
+                        if (!this.currentItem.relSheetSN) {
+                            this.$message.error('请输入关联单据');
+                            return;
+                        }
+                        func.runAsync(abp.services.app.voucher.setRelSheet(id, this.currentItem.relSheetSN).done(res => {
+                            top.layer.msg("提交成功");
+                            parent.config.reloadTable();
+                            parent.layer.closeAll('iframe');
+                        }))
+                    }
+                },
+                mounted: function () {
+                    var that = this;
+                    func.runAsync(abp.services.app.voucher.getById(id).done(res => {
+                        that.currentItem = res;
+                    }))
+                }
+            })
+        }
+
+    </script>
+}

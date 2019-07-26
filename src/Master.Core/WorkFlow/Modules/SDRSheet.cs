@@ -7,8 +7,8 @@ using System.Text;
 
 namespace Master.WorkFlow.Modules
 {
-    [InterModule("票劵订单", BaseType = typeof(FlowSheet), GenerateDefaultButtons = false, GenerateDefaultColumns = false)]
-    public class SDDSheet : FlowSheet
+    [InterModule("实物订单", BaseType = typeof(FlowSheet), GenerateDefaultButtons = false, GenerateDefaultColumns = false)]
+    public class SDRSheet : FlowSheet
     {
         [InterColumn(ColumnName = "订单编号", Templet = "<a dataid=\"{{d.id}}\" class=\"layui-btn layui-btn-xs layui-btn-normal\" buttonname=\"单据\" params=\"{&quot;btn&quot;:[]}\"   buttonactiontype=\"Form\" buttonactionurl=\"/FlowSheet/SheetView\" onclick=\"func.callModuleButtonEvent()\">{{d.sheetSN}}</a>", Sort = 1)]
         public override string SheetSN { get => base.SheetSN; set => base.SheetSN = value; }

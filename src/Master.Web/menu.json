@@ -6,60 +6,88 @@
     "order": 2,
     "items": [
       {
-        "name": "Buy.Tenancy.SDD",
+        "name": "Sell.Tenancy.SDD",
         "displayName": "票劵商品订货",
         "icon": "iconfont icon-celve",
         "url": "/Home/Show?name=../FlowSheet/SDD/Add",
         "order": 1
       },
       {
-        "name": "Buy.Tenancy.SSDCart",
+        "name": "Sell.Tenancy.SDDCart",
         "displayName": "票劵购物车",
         "icon": "iconfont icon-celve",
         "url": "/Home/Show?name=../FlowSheet/SDD/Cart",
         "order": 2
       },
       {
-        "name": "Buy.Tenancy.SSDSheet",
+        "name": "Sell.Tenancy.SDDSheet",
         "displayName": "票劵订单查询",
         "icon": "iconfont icon-celve",
         "url": "/Home/Show?name=../FlowSheet/SDD/Index",
         "order": 3
       },
       {
-        "name": "Buy.Tenancy.SCK",
+        "name": "Sell.Tenancy.SCK",
         "displayName": "票劵商品出库",
         "icon": "iconfont icon-celve",
         "url": "/Home/Show?name=../FlowSheet/SCK/Add",
         "order": 4
       },
       {
-        "name": "Buy.Tenancy.SCKSheet",
+        "name": "Sell.Tenancy.SCKSheet",
         "displayName": "票劵出库单查询",
         "icon": "iconfont icon-celve",
         "url": "/Home/Show?name=../FlowSheet/SCK/Index",
         "order": 5
       },
       {
-        "name": "Buy.Tenancy.SRJ",
+        "name": "Sell.Tenancy.SRJ",
         "displayName": "票劵商品退货",
         "icon": "iconfont icon-celve",
         "url": "/Home/Show?name=../FlowSheet/SRJ/Add",
         "order": 6
       },
       {
-        "name": "Buy.Tenancy.PRRSheet",
+        "name": "Sell.Tenancy.PRRSheet",
         "displayName": "票劵退库单查询",
         "icon": "iconfont icon-celve",
         "url": "/Home/Show?name=../FlowSheet/SRJ/Index",
         "order": 7
       },
       {
-        "name": "Buy.Tenancy.BackCardCheck",
+        "name": "Sell.Tenancy.BackCardCheck",
         "displayName": "退货卡号检查",
         "icon": "iconfont icon-celve",
         "url": "/Home/Show?name=../Material/BackCardCheck",
-        "order": 7
+        "order": 8
+      },
+      {
+        "name": "Sell.Tenancy.SDR",
+        "displayName": "实物商品订货",
+        "icon": "iconfont icon-celve",
+        "url": "/Home/Show?name=../FlowSheet/SDR/Add",
+        "order": 9
+      },
+      {
+        "name": "Sell.Tenancy.SDRCart",
+        "displayName": "实物购物车",
+        "icon": "iconfont icon-celve",
+        "url": "/Home/Show?name=../FlowSheet/SDR/Cart",
+        "order": 10
+      },
+      {
+        "name": "Sell.Tenancy.SDRVerify",
+        "displayName": "实物订单审核",
+        "icon": "iconfont icon-celve",
+        "url": "/Home/Show?name=../FlowSheet/SDR/Verify",
+        "order": 11
+      },
+      {
+        "name": "Sell.Tenancy.SDRSheet",
+        "displayName": "实物订单查询",
+        "icon": "iconfont icon-celve",
+        "url": "/Home/Show?name=../FlowSheet/SDR/Index",
+        "order": 12
       }
     ]
   },
@@ -250,6 +278,18 @@
         "displayName": "账户调拨单",
         "icon": "iconfont icon-mingxizhang",
         "url": "/Home/Show?name=../FlowSheet/CRR/Index"
+      },
+      {
+        "name": "Finance.Tenancy.Voucher",
+        "displayName": "凭证上传",
+        "icon": "iconfont icon-mingxizhang",
+        "url": "/Home/Show?name=../Voucher/Add"
+      },
+      {
+        "name": "Finance.Tenancy.Voucher",
+        "displayName": "凭证管理",
+        "icon": "iconfont icon-mingxizhang",
+        "url": "/Home/Show?name=../Voucher/Index"
       },
       {
         "name": "Finance.Tenancy.FeeCheck",

@@ -75,7 +75,7 @@ namespace Master.Storage
             var sellMaterials= await Manager.GetAll().Include(o => o.FlowSheet).Include(o => o.Material)
                 .Where(o => o.Material.MaterialNature == MaterialNature.票券)
                 .Where(o=>o.UnitId==unitId)
-                .Where(o=>MasterDbContext.GetJsonValueString(o.FlowSheet.Property,"$.OrderStatus")!="待审核")//不显示待审核的商品
+                .Where(o=>o.FlowSheet.OrderStatus!="待审核")//不显示待审核的商品
                 .Where(o=>o.SellNumber>o.OutNumber)//不显示已完全出库的商品
                 .ToListAsync();
 
@@ -112,7 +112,7 @@ namespace Master.Storage
             var materialManager = Resolve<MaterialManager>();
             var sellMaterials = (await Manager.GetAll().Include(o => o.FlowSheet).Include(o => o.Material)
                 .Where(new MaterialSellSpecification(unitId,startDate))
-                .Where(o => MasterDbContext.GetJsonValueString(o.FlowSheet.Property, "$.OrderStatus") != "待审核")//不显示待审核的商品
+                .Where(o => o.FlowSheet.OrderStatus != "待审核")//不显示待审核的商品
                 .Where(o => o.SellNumber > o.BackNumber)//
                 .GroupBy(o => o.Material)
                 .ToListAsync())

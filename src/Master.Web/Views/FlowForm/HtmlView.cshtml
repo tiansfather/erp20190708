@@ -33,8 +33,11 @@
         <el-form-item label="经办人">
             <el-input v-model="sheetInfo.creatorUserName" readonly="true"></el-input>
         </el-form-item>
-        <el-form-item label="单据性质">
+        @*<el-form-item label="单据性质">
             <el-input v-model="sheetInfo.sheetNatureName" readonly="true"></el-input>
+        </el-form-item>*@
+        <el-form-item label="单据状态" >
+            <el-input v-model="orderStatusName" readonly="true"></el-input>
         </el-form-item>
         <el-form-item label="对应单号" v-if="sheetInfo.sheetNature==1 || sheetInfo.sheetNature==2">
             <el-input v-model="sheetInfo.relSheetSN" readonly="true"></el-input>
@@ -43,7 +46,10 @@
             <el-input v-model="sheetInfo.revertReason" readonly="true"></el-input>
         </el-form-item>
     </el-form>
-    <button type="button" v-for="(btn,index) in sheetInfo.btns" class="layui-btn " :class="btn.buttonClass" style="float:right" @@click="action(btn)">{{btn.buttonName}}</button>
+    <div style="text-align:right">
+        <button type="button" v-for="(btn,index) in sheetInfo.btns" class="layui-btn " :class="btn.buttonClass" @@click="action(btn)">{{btn.buttonName}}</button>
+    </div>
+    
     @*<button type="button" class="layui-btn layui-btn-danger" v-if="sheetInfo.sheetNature==0" style="float:right" @@click="revertSheet">冲红</button>*@
     <hr>
 </div>
@@ -56,7 +62,13 @@
                 sheetInfo: {}
             },
             computed: {
-
+                orderStatusName: function () {
+                    if (this.sheetInfo.sheetNature == 1 || this.sheetInfo.sheetNature == 2) {
+                        return this.sheetInfo.sheetNatureName;
+                    } else {
+                        return this.sheetInfo.orderStatus || '正单';
+                    }
+                }
             },
             methods: {
                 revertSheet: function () {

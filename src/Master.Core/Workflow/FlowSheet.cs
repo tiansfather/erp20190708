@@ -67,7 +67,7 @@ namespace Master.WorkFlow
         /// </summary>
         public virtual User Handler { get; set; } 
         [InterColumn(ColumnName ="性质",ColumnType =Module.ColumnTypes.Select,DictionaryName ="Master.WorkFlow.SheetNature",Templet ="{{d.sheetNature_display}}",Sort =30)]
-        public SheetNature SheetNature { get; set; }
+        public virtual SheetNature SheetNature { get; set; }
         [InterColumn(ColumnName = "备注",Sort =40)]
         public override string Remarks { get; set; }
         /// <summary>
@@ -114,7 +114,7 @@ namespace Master.WorkFlow
                 return this.SheetNature == SheetNature.正单 ? this.SheetName : $"{this.SheetName}冲红";
             }
         }
-
+        public virtual string OrderStatus { get; set; }
     }
 
     /// <summary>
