@@ -88,6 +88,20 @@
         "icon": "iconfont icon-celve",
         "url": "/Home/Show?name=../FlowSheet/SDR/Index",
         "order": 12
+      },
+      {
+        "name": "Sell.Tenancy.SDRSend",
+        "displayName": "实物订单发货",
+        "icon": "iconfont icon-celve",
+        "url": "/Home/Show?name=../FlowSheet/SDR/Send",
+        "order": 13
+      },
+      {
+        "name": "Sell.Tenancy.SDRBack",
+        "displayName": "实物订单退货",
+        "icon": "iconfont icon-celve",
+        "url": "/Home/Show?name=../FlowSheet/SDR/Back",
+        "order": 14
       }
     ]
   },

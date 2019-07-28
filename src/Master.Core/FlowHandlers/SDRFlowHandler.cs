@@ -96,6 +96,24 @@ namespace Master.FlowHandlers
                     ConfirmMsg = "确认取消此单据？"
                 });
             }
+            else if (flowSheet.OrderStatus == "待发货")
+            {
+                btns.Add(new ModuleButton()
+                {
+                    ButtonKey = "send",
+                    ButtonName = "发货",
+                    ConfirmMsg = "确认发货？"
+                });
+            }
+            else if (flowSheet.OrderStatus == "已发货")
+            {
+                btns.Add(new ModuleButton()
+                {
+                    ButtonKey = "back",
+                    ButtonName = "退货",
+                    ConfirmMsg = "确认发货？"
+                });
+            }
             return btns;
         }
 
@@ -140,6 +158,25 @@ namespace Master.FlowHandlers
             else if (action == "cancel")
             {
                 flowSheet.OrderStatus = "已取消";
+            }
+            else if (action == "send")
+            {
+                var totalFee = sheetHeader["totalFee"].ToObjectWithDefault<decimal>();
+                //更改往来单位金额
+                await UnitManager.ChangeFee(unitId, null, -totalFee, flowSheet);
+                var materialSellIds = new List<int>();
+                var toOutMaterials = new Dictionary<int, int>();
+                foreach (var sheetItem in sheetData["body"])
+                {
+                    var materialId = sheetItem["materialId"].ToObjectWithDefault<int>();//商品Id
+                    //todo:出库
+
+                }
+                flowSheet.OrderStatus = "已发货";
+            }
+            else if (action == "back")
+            {
+                flowSheet.OrderStatus = "已退货";
             }
         }
     }

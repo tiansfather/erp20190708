@@ -16,7 +16,7 @@
             <el-input v-model="currentItem.receiverMobile"></el-input>
         </el-form-item>
     </el-form>
-    <el-form  ref="form" label-width="80px">
+    <el-form ref="form" label-width="80px">
         <el-form-item label="送货地址">
             <el-input v-model="currentItem.receiverAddress"></el-input>
         </el-form-item>
@@ -34,6 +34,12 @@
                 <th>订购数量</th>
                 <th>计量单位</th>
                 <th>适用区域</th>
+                <template v-if="isSend">
+                    <th>折扣</th>
+                    <th>发货单价</th>
+                    <th>小计</th>
+                </template>
+
             </tr>
         </thead>
         <tbody>
@@ -45,9 +51,31 @@
                 <td>{{item.number}}</td>
                 <td>{{item.measureMentUnit}}</td>
                 <td>{{item.location}}</td>
+                <template v-if="isSend">
+                    <td><el-input-number v-model="item.discount" min="0" :max="1" label="折扣"></el-input-number></td>
+                    <td>
+                        {{(item.price*item.discount).toFixed(2)}}
+                    </td>
+                    <td>
+                        {{getSum(item)}}
+                    </td>
+                </template>
+
             </tr>
         </tbody>
     </table>
+    <el-form :inline="true" size="mini" v-if="isSend">
+        <el-form-item label="货款总额">
+            <el-input v-model="materialFee" readonly="true"></el-input>
+        </el-form-item>
+        <el-form-item label="其它费用">
+            <el-input v-model="currentItem.otherFee" typeof="number"></el-input>
+        </el-form-item>
+        <el-form-item label="本单应收金额">
+            <el-input v-model="totalFee" readonly="true"></el-input>
+        </el-form-item>
+
+    </el-form>
 </div>
 <script>
     config.ready = function () {
@@ -63,7 +91,28 @@
                     items: [],
                 }
             },
+            computed: {
+                materialFee: function () {
+                    var fee = 0;
+                    this.currentItem.items.forEach(o => fee += o.price * o.number * o.discount || 0);
+                    return fee.toFixed(2);
+                },
+                totalFee: function () {
+                    return (parseFloat(this.materialFee) + parseFloat(this.currentItem.otherFee)).toFixed(2);
+                },
+                //是否待发货状态
+                isSend: function () {
+                    return _formOption.orderStatus == '待发货';
+                }
+            },
             methods: {
+                getSum(item) {
+                    if (!item.number) {
+                        return '';
+                    } else {
+                        return (item.number * item.price * item.discount).toFixed(2);
+                    }
+                },
             },
             created() {
                 var that = this;

@@ -33,7 +33,7 @@ namespace Master.FlowSheets
             var manager = Manager as FlowSheetManager;
             foreach(var id in ids)
             {
-                await manager.Action(id, "verify");
+                await manager.Action( id, "verify");
 
             }
             
@@ -53,5 +53,15 @@ namespace Master.FlowSheets
             }
 
         }
+    }
+
+    [AbpAuthorize]
+    public class SDRSendAppService : SDRSheetAppService
+    {
+    }
+
+    [AbpAuthorize]
+    public class SDRBackAppService : SDRSheetAppService
+    {
     }
 }

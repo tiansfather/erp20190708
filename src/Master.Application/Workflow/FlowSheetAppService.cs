@@ -61,9 +61,20 @@ namespace Master.Workflow
         /// <param name="sheetId"></param>
         /// <param name="action"></param>
         /// <returns></returns>
-        public virtual async Task Action(int sheetId,string actionName)
+        //public virtual async Task Action(int sheetId,string actionName)
+        //{
+        //    await (Manager as FlowSheetManager).Action(sheetId, actionName);
+        //}
+
+        /// <summary>
+        /// 单据操作
+        /// </summary>
+        /// <param name="sheetId"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public virtual async Task Action(FlowSheetActionDto flowSheetActionDto)
         {
-            await (Manager as FlowSheetManager).Action(sheetId, actionName);
+            await (Manager as FlowSheetManager).Action(flowSheetActionDto.SheetId, flowSheetActionDto.ActionName,flowSheetActionDto.FormData);
         }
 
         public virtual async Task<object> GetFlowBtns(int sheetId)

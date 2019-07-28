@@ -47,13 +47,15 @@ namespace Master.Storage
         /// <returns></returns>
         public virtual async Task<object> GetCartInfo(int unitId,MaterialNature materialNature)
         {
+            var result = new List<object>();
             var cartRepository = Resolve<IRepository<MaterialSellCart, int>>();
-            return await cartRepository.GetAll()
+            var sellMaterials = await cartRepository.GetAll()
                 .Include(o=>o.Material)
                 .Where(o => o.UnitId == unitId && o.Material.MaterialNature == materialNature && o.CreatorUserId==AbpSession.UserId)
                 .Select(o => new
                 {
                     Id=o.MaterialId,
+                    o.Material,
                     o.Material.Specification,
                     o.Material.Location,
                     o.Material.Price,
@@ -62,6 +64,25 @@ namespace Master.Storage
                     Number=o.Number
                 })
                 .ToListAsync();
+            var materialManager = Resolve<MaterialManager>();
+            foreach (var sellMaterial in sellMaterials)
+            {
+                //获取对应代理商的折扣
+
+                result.Add(new
+                {
+                    sellMaterial.Id,
+                    MaterialId=sellMaterial.Material.Id,
+                    sellMaterial.Name,
+                    sellMaterial.Specification,
+                    sellMaterial.Price,
+                    sellMaterial.MeasureMentUnit,
+                    sellMaterial.Number,
+                    discount = await materialManager.GetMaterialUnitDiscount(sellMaterial.Material, unitId)
+                });
+            }
+
+            return result;
         }
 
         /// <summary>

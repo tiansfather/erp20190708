@@ -19,7 +19,8 @@
     var _formOption = {
         readonly: true,
         formData:@Html.Raw(ViewBag.FormData),
-        mode:"@ViewBag.Mode"
+        mode: "@ViewBag.Mode",
+        orderStatus:"@Html.Raw(ViewBag.OrderStatus)",
     };
 </script>
 <div id="header" v-cloak v-if="sheetId">
@@ -106,7 +107,7 @@
                                 layer.close(index);
                             });
                         } else {
-                            func.runAsync(abp.services.app.flowSheet.action(sheetId, btn.buttonKey).done(function () {
+                            func.runAsync(abp.services.app.flowSheet.action({ sheetId: sheetId, actionName: btn.buttonKey, formData: JSON.stringify(formData) }).done(function () {
                                 parent.layer.msg("提交成功");
                                 parent.config.reloadTable();
                                 parent.layer.closeAll('iframe');

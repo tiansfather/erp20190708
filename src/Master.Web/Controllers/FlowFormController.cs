@@ -106,18 +106,23 @@ namespace Master.Controllers
         /// <returns></returns>
         public async Task<IActionResult> InstanceView(int data,string mode)
         {
-            var instance = await FlowInstanceManager.GetAll().IgnoreQueryFilters().Where(o => o.Id == data).FirstOrDefaultAsync();
+            var instance = await FlowInstanceManager.GetAll().Include(o=>o.FlowForm).IgnoreQueryFilters().Where(o => o.Id == data).FirstOrDefaultAsync();
             if (instance == null)
             {
                 return Error(L("此单据已不存在"));
             }
-            
+            var flowSheet = await FlowSheetManager.GetByInstanceId(data);
+
+            var defaultForms = Configuration.Modules.Core().DefaultForms;
+            var defaultForm = defaultForms.FirstOrDefault(o => o.FormKey == instance.FlowForm.FormKey);
             switch (instance.FormType)
             {
                 case FormType.Html:
-                    ViewBag.FormContent = instance.FormContent;
+                    //ViewBag.FormContent = instance.FormContent;
+                    ViewBag.FormContent = string.IsNullOrEmpty(instance.FlowForm.FormContent) ? defaultForm?.FormContent : instance.FlowForm.FormContent;
                     ViewBag.FormData = instance.FormData;
                     ViewBag.Mode = mode;
+                    ViewBag.OrderStatus = flowSheet?.OrderStatus;
                     return View("HtmlView");
                 case FormType.Designer:
                     return View("DesignerView");

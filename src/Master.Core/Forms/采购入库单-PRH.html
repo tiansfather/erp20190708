@@ -17,6 +17,8 @@
                 <th>品名</th>
                 <th>规格</th>
                 <th>零售价</th>
+                <th>进货折扣</th>
+                <th>进货单价</th>
                 <th>备注</th>
                 <th>进货数量</th>
                 <th>计量单位</th>
@@ -31,6 +33,10 @@
                 <td>{{item.name}}</td>
                 <td>{{item.specification}}</td>
                 <td>{{item.price}}</td>
+                <td><el-input-number v-model="item.discount" min="0" :max="1" label="折扣"></el-input-number></td>
+                <td>
+                    {{(item.price*item.discount).toFixed(2)}}
+                </td>
                 <td>{{item.remarks}}</td>
                 <td><el-input-number v-model="item.number" :min="1" label="进货数量"></el-input-number></td>
                 <td>{{item.measureMentUnit}}</td>
@@ -91,7 +97,7 @@
             computed: {
                 materialFee: function () {
                     var fee = 0;
-                    this.currentItem.items.forEach(o => fee += o.price * o.number);
+                    this.currentItem.items.forEach(o => fee += o.price * o.number * o.discount || 0);
                     return fee.toFixed(2);
                 },
                 totalFee: function () {
@@ -118,7 +124,7 @@
                             var number = params.items.filter(i => i.id == o.id)[0].number;
                             var discount = o.defaultBuyDiscount || 1;
                             var price = o.price * discount;
-                            return $.extend(o, { number: number, price: price.toFixed(2) });
+                            return $.extend(o, { number: number, price: price.toFixed(2),discount:discount.toFixed(2) });
                         })
                     }))
                 }

@@ -51,10 +51,13 @@ namespace Master.FlowHandlers
                 //记录采购
                 var materialBuy = new MaterialBuy()
                 {
+                    UnitId=unitId,
                     MaterialId = materialId,
                     FlowSheetId = flowSheet.Id,
                     BuyNumber = number,
-                    FeatureCode=sheetItem["featureCode"].ToObjectWithDefault<string>(),
+                    Price=sheetItem["price"].ToObjectWithDefault<decimal>(),
+                    Discount=sheetItem["discount"].ToObjectWithDefault<decimal>(),
+                    FeatureCode =sheetItem["featureCode"].ToObjectWithDefault<string>(),
                     CodeStartNumber= sheetItem["codeStartNumber"].ToObjectWithDefault<string>(),
                     CodeEndNumber = sheetItem["codeEndNumber"].ToObjectWithDefault<string>(),
                 };
