@@ -42,8 +42,8 @@ namespace Master.FlowHandlers
             flowSheet.SetPropertyValue("InAccount", inAccount.Name);
 
             //账户金额变动
-            await FeeAccountManager.BuildFeeHistory(inAccount, fee, flowSheet);
-            await FeeAccountManager.BuildFeeHistory(outAccount, -fee, flowSheet);
+            await FeeAccountManager.BuildFeeHistory(inAccount,null, fee, flowSheet);
+            await FeeAccountManager.BuildFeeHistory(outAccount,null, -fee, flowSheet);
         }
 
         public override async Task HandleRevert(FlowSheet flowSheet)
@@ -54,8 +54,8 @@ namespace Master.FlowHandlers
             var outAccount = await FeeAccountManager.GetByIdAsync(outAccountId);
             var fee = flowSheet.GetPropertyValue<decimal>("Fee");
             //账户金额变动
-            await FeeAccountManager.BuildFeeHistory(inAccount, -fee, flowSheet);
-            await FeeAccountManager.BuildFeeHistory(outAccount, fee, flowSheet);
+            await FeeAccountManager.BuildFeeHistory(inAccount,null, -fee, flowSheet);
+            await FeeAccountManager.BuildFeeHistory(outAccount,null, fee, flowSheet);
         }
     }
 }

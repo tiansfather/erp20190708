@@ -54,6 +54,7 @@ namespace Master.FlowHandlers
             flowSheet.SetPropertyValue("Fee", totalFee);
             flowSheet.SetPropertyValue("PayType", GetPayTypeName(payType));
             flowSheet.SetPropertyValue("AffectRemain", affectRemain);
+            flowSheet.SetPropertyValue("RelCompanyName", sheetHeader["relCompanyName"].ToObject<string>());
             //读取对应的账号id
             if (payType == 0)
             {
@@ -83,7 +84,7 @@ namespace Master.FlowHandlers
             else
             {
                 //账户金额变动
-                await FeeAccountManager.BuildFeeHistory(feeAccount, -totalFee, flowSheet);
+                await FeeAccountManager.BuildFeeHistory(feeAccount,unitId, -totalFee, flowSheet);
             }
 
             
@@ -104,7 +105,7 @@ namespace Master.FlowHandlers
             else
             {
                 //账号金额变动
-                await FeeAccountManager.BuildFeeHistory(feeAccount, -totalFee, flowSheet);
+                await FeeAccountManager.BuildFeeHistory(feeAccount,flowSheet.UnitId, -totalFee, flowSheet);
             }
             //将对应的支票设置为收入退回
             if (flowSheet.GetPropertyValue<string>("PayType")== GetPayTypeName(2))

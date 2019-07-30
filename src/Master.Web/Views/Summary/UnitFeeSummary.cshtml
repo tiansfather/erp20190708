@@ -1,0 +1,126 @@
+﻿
+@{
+	ViewData["Title"] = "Index";
+}
+@section styles{
+    <style>
+        .el-form-item{
+            margin-bottom:0;
+        }
+    </style>
+}
+<div class="layui-fluid" id="LAY-app-message">
+    <div class="layui-card">
+        <div class="layui-card-header">@L("应收应付款汇总")</div>
+        <div class="layui-card-body">
+            <div id="app" class="LAY-app-message-btns" style="margin-bottom: 10px;" v-cloak>
+                <el-form :inline="true">
+                    <el-form-item label="往来单位">
+                        <unit-select :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @@change="doSearch"></unit-select>
+                    </el-form-item>
+                    <el-form-item label="往来单位性质">
+                        <el-select v-model="currentItem.unitNature" placeholder="请选择" size="mini" @@change="doSearch" clearable>
+                            <el-option v-for="item in unitNatureOptions"
+                                       :key="item.value"
+                                       :label="item.label"
+                                       :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="截止时间">
+                        <el-date-picker v-model="currentItem.endDate"
+                                        type="date"
+                                        placeholder="选择日期" size="mini" @@change="doSearch">
+                        </el-date-picker>
+                    </el-form-item>
+                </el-form>
+                <el-divider></el-divider>
+                <div>
+                    <span>应收款:{{sumIn}}</span>
+                    <span>应付款:{{sumOut}}</span>
+                    <span>合计:{{sum}}</span>
+                </div>
+            </div>
+            
+
+
+            <table autoevent="1" id="Summary" lay-filter="Summary" class="layui-table "></table>
+        </div>
+
+    </div>
+</div>
+@section scripts{
+<script>
+        var app
+        config.ready = function () {
+            app = new Vue({
+                el: '#app',
+                data: {
+                    currentItem: {
+                        unitId: null,
+                        unitNature:null,
+                    },
+                    unitNatureOptions: [
+                        { value: 0, label: '代理商' },
+                        { value: 1, label: '供应商' },
+                    ],
+                    items:[]
+                },
+                computed: {
+                    sumIn: function () {
+                        var sum = 0;
+                        this.items.filter(o => o.remainFee < 0).forEach(o => sum += o.remainFee);
+                        return sum;
+                    },
+                    sumOut: function () {
+                        var sum = 0;
+                        this.items.filter(o => o.remainFee > 0).forEach(o => sum += o.remainFee);
+                        return sum;
+                    },
+                    sum: function () {
+                        return this.sumIn +this.sumOut;
+                    }
+
+                },
+                methods: {
+                    doSearch: function () {
+                        func.runAsync(abp.services.app.unitFee.getUnitFeeSummary(this.currentItem.unitId, this.currentItem.unitNature, this.currentItem.endDate).done(res => {
+                            this.items = res;
+                            layui.table.render({
+                                elem: '#Summary',
+                                toolbar: false,
+                                cellMinWidth: '120',
+                                height: 'full-250',
+                                page: false,
+                                limit:1000,
+                                id: 'Summary',
+                                even: true,
+                                cols: [[
+                                    { field: 'unitName', title: '往来单位' },
+                                    { field: 'remainFee', title: '应收款/应付款' },
+                                    { field: 'sheetSN', title: '截至时间前最后一次交易记录' },
+                                    { field: 'creationTime', title: '截至时间前最后一次交易时间' },
+                                ]],
+                                toolbar: false,
+                                data:res,
+                                done: function () {
+                                    //console.log('tableDone');
+                                    config.onTableDone();
+                                }
+                            });
+                        }))
+                    }
+                },
+                mounted: function () {
+                    this.doSearch();
+                }
+            })
+        }
+        config.onTableDone = function () {
+
+        }
+        config.refresh = function () {
+
+        }
+</script>
+}

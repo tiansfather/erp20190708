@@ -111,7 +111,8 @@ namespace Master.WorkFlow
         {
             get
             {
-                return this.SheetNature == SheetNature.正单 ? this.SheetName : $"{this.SheetName}冲红";
+                return this.SheetNature == SheetNature.正单 ? "" : "冲红";
+                //return this.SheetNature == SheetNature.正单 ? this.SheetName : $"{this.SheetName}冲红";
             }
         }
         public virtual string OrderStatus { get; set; }

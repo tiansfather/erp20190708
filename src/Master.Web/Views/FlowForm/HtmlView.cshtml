@@ -107,7 +107,7 @@
                                 layer.close(index);
                             });
                         } else {
-                            func.runAsync(abp.services.app.flowSheet.action({ sheetId: sheetId, actionName: btn.buttonKey, formData: JSON.stringify(formData) }).done(function () {
+                            func.runAsync(abp.services.app.flowSheet.action({ sheetId: sheetId, actionName: btn.buttonKey, formData: JSON.stringify(getFormData()) }).done(function () {
                                 parent.layer.msg("提交成功");
                                 parent.config.reloadTable();
                                 parent.layer.closeAll('iframe');

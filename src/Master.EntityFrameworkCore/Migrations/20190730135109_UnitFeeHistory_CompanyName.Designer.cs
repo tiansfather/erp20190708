@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Master.Migrations
 {
     [DbContext(typeof(MasterDbContext))]
-    [Migration("20190714120641_FlowSheetRevert")]
-    partial class FlowSheetRevert
+    [Migration("20190730135109_UnitFeeHistory_CompanyName")]
+    partial class UnitFeeHistory_CompanyName
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -705,6 +705,287 @@ namespace Master.Migrations
                     b.ToTable("File");
                 });
 
+            modelBuilder.Entity("Master.Finance.FeeAccount", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreationTime");
+
+                    b.Property<long?>("CreatorUserId");
+
+                    b.Property<long?>("DeleterUserId");
+
+                    b.Property<DateTime?>("DeletionTime");
+
+                    b.Property<string>("ExtensionData");
+
+                    b.Property<decimal>("Fee");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime?>("LastModificationTime");
+
+                    b.Property<long?>("LastModifierUserId");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Property")
+                        .HasColumnType("json");
+
+                    b.Property<string>("Remarks");
+
+                    b.Property<decimal>("StartFee");
+
+                    b.Property<int>("TenantId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorUserId");
+
+                    b.HasIndex("DeleterUserId");
+
+                    b.HasIndex("LastModifierUserId");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("FeeAccount");
+                });
+
+            modelBuilder.Entity("Master.Finance.FeeAccountHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ChangeType");
+
+                    b.Property<DateTime>("CreationTime");
+
+                    b.Property<long?>("CreatorUserId");
+
+                    b.Property<long?>("DeleterUserId");
+
+                    b.Property<DateTime?>("DeletionTime");
+
+                    b.Property<string>("ExtensionData");
+
+                    b.Property<decimal>("Fee");
+
+                    b.Property<int>("FeeAccountId");
+
+                    b.Property<int>("FeeDirection");
+
+                    b.Property<int?>("FlowSheetId");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime?>("LastModificationTime");
+
+                    b.Property<long?>("LastModifierUserId");
+
+                    b.Property<string>("Property")
+                        .HasColumnType("json");
+
+                    b.Property<decimal>("RemainFee");
+
+                    b.Property<string>("Remarks");
+
+                    b.Property<int>("TenantId");
+
+                    b.Property<int?>("UnitId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorUserId");
+
+                    b.HasIndex("DeleterUserId");
+
+                    b.HasIndex("FeeAccountId");
+
+                    b.HasIndex("FlowSheetId");
+
+                    b.HasIndex("LastModifierUserId");
+
+                    b.HasIndex("TenantId");
+
+                    b.HasIndex("UnitId");
+
+                    b.ToTable("FeeAccountHistory");
+                });
+
+            modelBuilder.Entity("Master.Finance.FeeCheck", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CheckBank");
+
+                    b.Property<string>("CheckCompany");
+
+                    b.Property<DateTime>("CheckDate");
+
+                    b.Property<int>("CheckDaySpan");
+
+                    b.Property<decimal>("CheckFee");
+
+                    b.Property<string>("CheckNumber");
+
+                    b.Property<int>("CheckStatus");
+
+                    b.Property<DateTime>("CreationTime");
+
+                    b.Property<long?>("CreatorUserId");
+
+                    b.Property<long?>("DeleterUserId");
+
+                    b.Property<DateTime?>("DeletionTime");
+
+                    b.Property<string>("ExtensionData");
+
+                    b.Property<int?>("InFlowSheetId");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime?>("LastModificationTime");
+
+                    b.Property<long?>("LastModifierUserId");
+
+                    b.Property<int?>("OutFlowSheetId");
+
+                    b.Property<string>("Property")
+                        .HasColumnType("json");
+
+                    b.Property<string>("Remarks");
+
+                    b.Property<int>("TenantId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorUserId");
+
+                    b.HasIndex("DeleterUserId");
+
+                    b.HasIndex("InFlowSheetId");
+
+                    b.HasIndex("LastModifierUserId");
+
+                    b.HasIndex("OutFlowSheetId");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("FeeCheck");
+                });
+
+            modelBuilder.Entity("Master.Finance.UnitFeeHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ChangeType");
+
+                    b.Property<DateTime>("CreationTime");
+
+                    b.Property<long?>("CreatorUserId");
+
+                    b.Property<long?>("DeleterUserId");
+
+                    b.Property<DateTime?>("DeletionTime");
+
+                    b.Property<string>("ExtensionData");
+
+                    b.Property<decimal>("Fee");
+
+                    b.Property<int?>("FlowSheetId");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime?>("LastModificationTime");
+
+                    b.Property<long?>("LastModifierUserId");
+
+                    b.Property<string>("Property")
+                        .HasColumnType("json");
+
+                    b.Property<string>("RelCompanyName");
+
+                    b.Property<decimal>("RemainFee");
+
+                    b.Property<string>("Remarks");
+
+                    b.Property<int>("TenantId");
+
+                    b.Property<int>("UnitId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorUserId");
+
+                    b.HasIndex("DeleterUserId");
+
+                    b.HasIndex("FlowSheetId");
+
+                    b.HasIndex("LastModifierUserId");
+
+                    b.HasIndex("TenantId");
+
+                    b.HasIndex("UnitId");
+
+                    b.ToTable("UnitFeeHistory");
+                });
+
+            modelBuilder.Entity("Master.Finance.Voucher", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreationTime");
+
+                    b.Property<long?>("CreatorUserId");
+
+                    b.Property<long?>("DeleterUserId");
+
+                    b.Property<DateTime?>("DeletionTime");
+
+                    b.Property<string>("ExtensionData");
+
+                    b.Property<decimal>("Fee");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime?>("LastModificationTime");
+
+                    b.Property<long?>("LastModifierUserId");
+
+                    b.Property<string>("Property")
+                        .HasColumnType("json");
+
+                    b.Property<string>("RelSheetSN");
+
+                    b.Property<string>("Remarks");
+
+                    b.Property<int>("TenantId");
+
+                    b.Property<int>("UnitId");
+
+                    b.Property<int>("VoucherStatus");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorUserId");
+
+                    b.HasIndex("DeleterUserId");
+
+                    b.HasIndex("LastModifierUserId");
+
+                    b.HasIndex("TenantId");
+
+                    b.HasIndex("UnitId");
+
+                    b.ToTable("Voucher");
+                });
+
             modelBuilder.Entity("Master.Module.ColumnInfo", b =>
                 {
                     b.Property<int>("Id")
@@ -1288,55 +1569,6 @@ namespace Master.Migrations
                     b.ToTable("Resource");
                 });
 
-            modelBuilder.Entity("Master.Storage.FeeAccount", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CreationTime");
-
-                    b.Property<long?>("CreatorUserId");
-
-                    b.Property<long?>("DeleterUserId");
-
-                    b.Property<DateTime?>("DeletionTime");
-
-                    b.Property<string>("ExtensionData");
-
-                    b.Property<decimal>("Fee");
-
-                    b.Property<bool>("IsActive");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<DateTime?>("LastModificationTime");
-
-                    b.Property<long?>("LastModifierUserId");
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("Property")
-                        .HasColumnType("json");
-
-                    b.Property<string>("Remarks");
-
-                    b.Property<decimal>("StartFee");
-
-                    b.Property<int>("TenantId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatorUserId");
-
-                    b.HasIndex("DeleterUserId");
-
-                    b.HasIndex("LastModifierUserId");
-
-                    b.HasIndex("TenantId");
-
-                    b.ToTable("FeeAccount");
-                });
-
             modelBuilder.Entity("Master.Storage.Material", b =>
                 {
                     b.Property<int>("Id")
@@ -1399,6 +1631,8 @@ namespace Master.Migrations
 
                     b.Property<int>("TenantId");
 
+                    b.Property<decimal>("TotalNumber");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CreatorUserId");
@@ -1412,6 +1646,102 @@ namespace Master.Migrations
                     b.HasIndex("TenantId");
 
                     b.ToTable("Material");
+                });
+
+            modelBuilder.Entity("Master.Storage.MaterialBuy", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("BackNumber");
+
+                    b.Property<int>("BuyNumber");
+
+                    b.Property<string>("CodeEndNumber");
+
+                    b.Property<string>("CodeStartNumber");
+
+                    b.Property<DateTime>("CreationTime");
+
+                    b.Property<long?>("CreatorUserId");
+
+                    b.Property<decimal>("Discount");
+
+                    b.Property<string>("FeatureCode");
+
+                    b.Property<int>("FlowSheetId");
+
+                    b.Property<int>("MaterialId");
+
+                    b.Property<decimal>("Price");
+
+                    b.Property<int>("UnitId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FlowSheetId");
+
+                    b.HasIndex("MaterialId");
+
+                    b.HasIndex("UnitId");
+
+                    b.ToTable("MaterialBuy");
+                });
+
+            modelBuilder.Entity("Master.Storage.MaterialSell", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("BackNumber");
+
+                    b.Property<DateTime>("CreationTime");
+
+                    b.Property<long?>("CreatorUserId");
+
+                    b.Property<int>("FlowSheetId");
+
+                    b.Property<int>("MaterialId");
+
+                    b.Property<int>("OutNumber");
+
+                    b.Property<int>("SellNumber");
+
+                    b.Property<int>("UnitId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FlowSheetId");
+
+                    b.HasIndex("MaterialId");
+
+                    b.HasIndex("UnitId");
+
+                    b.ToTable("MaterialSell");
+                });
+
+            modelBuilder.Entity("Master.Storage.MaterialSellCart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreationTime");
+
+                    b.Property<long?>("CreatorUserId");
+
+                    b.Property<int>("MaterialId");
+
+                    b.Property<int>("Number");
+
+                    b.Property<int>("UnitId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MaterialId");
+
+                    b.HasIndex("UnitId");
+
+                    b.ToTable("MaterialSellCart");
                 });
 
             modelBuilder.Entity("Master.Storage.Store", b =>
@@ -2061,6 +2391,8 @@ namespace Master.Migrations
 
                     b.Property<long?>("LastModifierUserId");
 
+                    b.Property<string>("OrderStatus");
+
                     b.Property<string>("Property")
                         .HasColumnType("json");
 
@@ -2365,6 +2697,141 @@ namespace Master.Migrations
                         .HasForeignKey("LastModifierUserId");
                 });
 
+            modelBuilder.Entity("Master.Finance.FeeAccount", b =>
+                {
+                    b.HasOne("Master.Authentication.User", "CreatorUser")
+                        .WithMany()
+                        .HasForeignKey("CreatorUserId");
+
+                    b.HasOne("Master.Authentication.User", "DeleterUser")
+                        .WithMany()
+                        .HasForeignKey("DeleterUserId");
+
+                    b.HasOne("Master.Authentication.User", "LastModifierUser")
+                        .WithMany()
+                        .HasForeignKey("LastModifierUserId");
+
+                    b.HasOne("Master.MultiTenancy.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Master.Finance.FeeAccountHistory", b =>
+                {
+                    b.HasOne("Master.Authentication.User", "CreatorUser")
+                        .WithMany()
+                        .HasForeignKey("CreatorUserId");
+
+                    b.HasOne("Master.Authentication.User", "DeleterUser")
+                        .WithMany()
+                        .HasForeignKey("DeleterUserId");
+
+                    b.HasOne("Master.Finance.FeeAccount", "FeeAccount")
+                        .WithMany()
+                        .HasForeignKey("FeeAccountId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Master.WorkFlow.FlowSheet", "FlowSheet")
+                        .WithMany()
+                        .HasForeignKey("FlowSheetId");
+
+                    b.HasOne("Master.Authentication.User", "LastModifierUser")
+                        .WithMany()
+                        .HasForeignKey("LastModifierUserId");
+
+                    b.HasOne("Master.MultiTenancy.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Master.Units.Unit", "Unit")
+                        .WithMany()
+                        .HasForeignKey("UnitId");
+                });
+
+            modelBuilder.Entity("Master.Finance.FeeCheck", b =>
+                {
+                    b.HasOne("Master.Authentication.User", "CreatorUser")
+                        .WithMany()
+                        .HasForeignKey("CreatorUserId");
+
+                    b.HasOne("Master.Authentication.User", "DeleterUser")
+                        .WithMany()
+                        .HasForeignKey("DeleterUserId");
+
+                    b.HasOne("Master.WorkFlow.FlowSheet", "InFlowSheet")
+                        .WithMany()
+                        .HasForeignKey("InFlowSheetId");
+
+                    b.HasOne("Master.Authentication.User", "LastModifierUser")
+                        .WithMany()
+                        .HasForeignKey("LastModifierUserId");
+
+                    b.HasOne("Master.WorkFlow.FlowSheet", "OutFlowSheet")
+                        .WithMany()
+                        .HasForeignKey("OutFlowSheetId");
+
+                    b.HasOne("Master.MultiTenancy.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Master.Finance.UnitFeeHistory", b =>
+                {
+                    b.HasOne("Master.Authentication.User", "CreatorUser")
+                        .WithMany()
+                        .HasForeignKey("CreatorUserId");
+
+                    b.HasOne("Master.Authentication.User", "DeleterUser")
+                        .WithMany()
+                        .HasForeignKey("DeleterUserId");
+
+                    b.HasOne("Master.WorkFlow.FlowSheet", "FlowSheet")
+                        .WithMany()
+                        .HasForeignKey("FlowSheetId");
+
+                    b.HasOne("Master.Authentication.User", "LastModifierUser")
+                        .WithMany()
+                        .HasForeignKey("LastModifierUserId");
+
+                    b.HasOne("Master.MultiTenancy.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Master.Units.Unit", "Unit")
+                        .WithMany()
+                        .HasForeignKey("UnitId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Master.Finance.Voucher", b =>
+                {
+                    b.HasOne("Master.Authentication.User", "CreatorUser")
+                        .WithMany()
+                        .HasForeignKey("CreatorUserId");
+
+                    b.HasOne("Master.Authentication.User", "DeleterUser")
+                        .WithMany()
+                        .HasForeignKey("DeleterUserId");
+
+                    b.HasOne("Master.Authentication.User", "LastModifierUser")
+                        .WithMany()
+                        .HasForeignKey("LastModifierUserId");
+
+                    b.HasOne("Master.MultiTenancy.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Master.Units.Unit", "Unit")
+                        .WithMany()
+                        .HasForeignKey("UnitId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Master.Module.ColumnInfo", b =>
                 {
                     b.HasOne("Master.Module.ModuleInfo", "ModuleInfo")
@@ -2566,26 +3033,6 @@ namespace Master.Migrations
                         .HasForeignKey("TenantId");
                 });
 
-            modelBuilder.Entity("Master.Storage.FeeAccount", b =>
-                {
-                    b.HasOne("Master.Authentication.User", "CreatorUser")
-                        .WithMany()
-                        .HasForeignKey("CreatorUserId");
-
-                    b.HasOne("Master.Authentication.User", "DeleterUser")
-                        .WithMany()
-                        .HasForeignKey("DeleterUserId");
-
-                    b.HasOne("Master.Authentication.User", "LastModifierUser")
-                        .WithMany()
-                        .HasForeignKey("LastModifierUserId");
-
-                    b.HasOne("Master.MultiTenancy.Tenant", "Tenant")
-                        .WithMany()
-                        .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("Master.Storage.Material", b =>
                 {
                     b.HasOne("Master.Authentication.User", "CreatorUser")
@@ -2607,6 +3054,55 @@ namespace Master.Migrations
                     b.HasOne("Master.MultiTenancy.Tenant", "Tenant")
                         .WithMany()
                         .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Master.Storage.MaterialBuy", b =>
+                {
+                    b.HasOne("Master.WorkFlow.FlowSheet", "FlowSheet")
+                        .WithMany()
+                        .HasForeignKey("FlowSheetId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Master.Storage.Material", "Material")
+                        .WithMany()
+                        .HasForeignKey("MaterialId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Master.Units.Unit", "Unit")
+                        .WithMany()
+                        .HasForeignKey("UnitId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Master.Storage.MaterialSell", b =>
+                {
+                    b.HasOne("Master.WorkFlow.FlowSheet", "FlowSheet")
+                        .WithMany()
+                        .HasForeignKey("FlowSheetId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Master.Storage.Material", "Material")
+                        .WithMany()
+                        .HasForeignKey("MaterialId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Master.Units.Unit", "Unit")
+                        .WithMany()
+                        .HasForeignKey("UnitId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Master.Storage.MaterialSellCart", b =>
+                {
+                    b.HasOne("Master.Storage.Material", "Material")
+                        .WithMany()
+                        .HasForeignKey("MaterialId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Master.Units.Unit", "Unit")
+                        .WithMany()
+                        .HasForeignKey("UnitId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

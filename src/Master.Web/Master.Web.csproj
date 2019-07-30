@@ -547,6 +547,12 @@
     <Content Update="Views\Store\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Summary\UnitFeeHistory.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Summary\FeeAccountHistory.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Voucher\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

@@ -23,6 +23,24 @@
         <el-form-item label="备注">
             <el-input v-model="currentItem.remarks"></el-input>
         </el-form-item>
+        <el-form-item label="发货仓库" v-if="isSend">
+            <el-select v-model="currentItem.storeId" placeholder="发货仓库" size="medium" style="width:120px">
+                <el-option v-for="item in currentItem.stores"
+                           :key="item.id"
+                           :label="item.name"
+                           :value="item.id">
+                </el-option>
+            </el-select>
+        </el-form-item>
+        <el-form-item label="退入仓库" v-if="isBack">
+            <el-select v-model="currentItem.backStoreId" placeholder="退入仓库" size="medium" style="width:120px">
+                <el-option v-for="item in currentItem.stores"
+                           :key="item.id"
+                           :label="item.name"
+                           :value="item.id">
+                </el-option>
+            </el-select>
+        </el-form-item>
     </el-form>
     <table class="layui-table">
         <thead>
@@ -76,6 +94,11 @@
         </el-form-item>
 
     </el-form>
+    <el-form ref="form" label-width="80px">
+        <el-form-item label="退货原因">
+            <el-input v-model="currentItem.backReason"></el-input>
+        </el-form-item>
+    </el-form>
 </div>
 <script>
     config.ready = function () {
@@ -89,6 +112,10 @@
                     unitName:'',
                     unitId:null,
                     items: [],
+                    otherFee: 0,
+                    stores: [],
+                    storeId: null,
+                    backStoreId:null,
                 }
             },
             computed: {
@@ -100,9 +127,13 @@
                 totalFee: function () {
                     return (parseFloat(this.materialFee) + parseFloat(this.currentItem.otherFee)).toFixed(2);
                 },
-                //是否待发货状态
+                //是否需要发货状态
                 isSend: function () {
                     return _formOption.orderStatus == '待发货';
+                },
+                //是否可以退货状态
+                isBack: function () {
+                    return _formOption.orderStatus == "已发货";
                 }
             },
             methods: {
@@ -117,9 +148,14 @@
             created() {
                 var that = this;
                 if (!_formOption.formData) {
+                    var that = this;
                     //录入模式获取数据
                     var params = JSON.parse( $.getUrlParam("params"));
                     this.currentItem.unitId = params.unitId;
+                    //仓库信息
+                    abp.services.app.store.getAllStores().done(function (data) {
+                        that.currentItem.stores = data;
+                    })
                     //代理商信息
                     abp.services.app.unit.getById(params.unitId).done(data => this.currentItem.unitName = data.unitName);
                     //商品信息
@@ -144,7 +180,10 @@
             header: {
                 sheetDate: app.currentItem.sheetDate,
                 unitId: app.currentItem.unitId,
-                remarks: app.currentItem.remarks
+                remarks: app.currentItem.remarks,
+                storeId: app.currentItem.storeId,
+                backStoreId: app.currentItem.backStoreId,
+                backReason: app.currentItem.backReason
             },
             body: data
         };

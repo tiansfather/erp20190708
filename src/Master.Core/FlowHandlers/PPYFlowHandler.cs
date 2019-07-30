@@ -51,7 +51,8 @@ namespace Master.FlowHandlers
             var totalFee= sheetHeader["totalFee"].ToObject<decimal>();//
             flowSheet.UnitId = unitId;
             flowSheet.SetPropertyValue("Fee", totalFee);
-            flowSheet.SetPropertyValue("PayType", GetPayTypeName(payType));            
+            flowSheet.SetPropertyValue("PayType", GetPayTypeName(payType));
+            flowSheet.SetPropertyValue("RelCompanyName", sheetHeader["relCompanyName"].ToObject<string>());
             //读取对应的账号id
             if (payType == 0)
             {

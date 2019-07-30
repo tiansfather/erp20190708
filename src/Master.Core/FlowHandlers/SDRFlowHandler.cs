@@ -25,6 +25,7 @@ namespace Master.FlowHandlers
         
         public MaterialManager MaterialManager { get; set; }
         public MaterialSellManager MaterialSellManager { get; set; }
+        public StoreMaterialManager StoreMaterialManager { get; set; }
         public UnitManager UnitManager { get; set; }
        
         public IRepository<MaterialSellCart,int> CartRepository { get; set; }
@@ -111,7 +112,7 @@ namespace Master.FlowHandlers
                 {
                     ButtonKey = "back",
                     ButtonName = "退货",
-                    ConfirmMsg = "确认发货？"
+                    ConfirmMsg = "确认退货？"
                 });
             }
             return btns;
@@ -166,16 +167,47 @@ namespace Master.FlowHandlers
                 await UnitManager.ChangeFee(unitId, null, -totalFee, flowSheet);
                 var materialSellIds = new List<int>();
                 var toOutMaterials = new Dictionary<int, int>();
+                var outStoreId = sheetHeader["storeId"].ToObjectWithDefault<int?>();
+                if (outStoreId == null)
+                {
+                    throw new UserFriendlyException("请选择发货仓库");
+                }
                 foreach (var sheetItem in sheetData["body"])
                 {
                     var materialId = sheetItem["materialId"].ToObjectWithDefault<int>();//商品Id
-                    //todo:出库
+                    var number = sheetItem["number"].ToObjectWithDefault<int>();//出货数量
+                    var materialSell = await MaterialSellManager.GetAll()
+                        .Where(o => o.FlowSheetId == flowSheet.Id && o.MaterialId == materialId).FirstOrDefaultAsync();
+                    if (materialSell != null)
+                    {
+                        materialSell.OutNumber = materialSell.SellNumber;//设置销售记录的出货数量等于订货数量
+                    }
+                    //库存变化
+                    await StoreMaterialManager.CountMaterial(outStoreId.Value, materialId, -number, flowSheet);
 
                 }
                 flowSheet.OrderStatus = "已发货";
             }
             else if (action == "back")
             {
+                var totalFee = sheetHeader["totalFee"].ToObjectWithDefault<decimal>();
+                //更改往来单位金额
+                await UnitManager.ChangeFee(unitId, null, totalFee, flowSheet);
+                var materialSellIds = new List<int>();
+                var toOutMaterials = new Dictionary<int, int>();
+                var backStoreId = sheetHeader["backStoreId"].ToObjectWithDefault<int?>();
+                if (backStoreId == null)
+                {
+                    throw new UserFriendlyException("请选择退入仓库");
+                }
+                foreach (var sheetItem in sheetData["body"])
+                {
+                    var materialId = sheetItem["materialId"].ToObjectWithDefault<int>();//商品Id
+                    var number = sheetItem["number"].ToObjectWithDefault<int>();//出货数量
+                    //库存变化
+                    await StoreMaterialManager.CountMaterial(backStoreId.Value, materialId, number, flowSheet);
+
+                }
                 flowSheet.OrderStatus = "已退货";
             }
         }

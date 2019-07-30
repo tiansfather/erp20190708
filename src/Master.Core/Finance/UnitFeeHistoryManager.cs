@@ -1,11 +1,12 @@
 ﻿using Master.Domain;
+using Master.Module;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Master.Finance
 {
-    public class UnitFeeHistoryManager:DomainServiceBase<UnitFeeHistory,int>
+    public class UnitFeeHistoryManager: ModuleServiceBase<UnitFeeHistory,int>
     {
     }
 }

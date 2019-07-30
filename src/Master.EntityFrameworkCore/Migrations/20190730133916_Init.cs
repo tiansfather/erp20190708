@@ -199,6 +199,7 @@ namespace Master.Migrations
                     SellDiscount3 = table.Column<decimal>(nullable: true),
                     Location = table.Column<string>(nullable: true),
                     Remarks = table.Column<string>(nullable: true),
+                    TotalNumber = table.Column<decimal>(nullable: false),
                     IsDiyed = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
@@ -256,7 +257,7 @@ namespace Master.Migrations
                     LogEntityIdentifier = table.Column<string>(nullable: true),
                     LogContent = table.Column<string>(nullable: true),
                     TenantId = table.Column<int>(nullable: true),
-                    Property = table.Column<string>(nullable: true)
+                    Property = table.Column<string>(type: "json", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -267,6 +268,42 @@ namespace Master.Migrations
                         principalTable: "Tenant",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FeeAccountHistory",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    CreatorUserId = table.Column<long>(nullable: true),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierUserId = table.Column<long>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeleterUserId = table.Column<long>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
+                    ExtensionData = table.Column<string>(nullable: true),
+                    Remarks = table.Column<string>(nullable: true),
+                    Property = table.Column<string>(type: "json", nullable: true),
+                    TenantId = table.Column<int>(nullable: false),
+                    FeeAccountId = table.Column<int>(nullable: false),
+                    UnitId = table.Column<int>(nullable: true),
+                    Fee = table.Column<decimal>(nullable: false),
+                    FeeDirection = table.Column<int>(nullable: false),
+                    RemainFee = table.Column<decimal>(nullable: false),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    ChangeType = table.Column<string>(nullable: true),
+                    FlowSheetId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FeeAccountHistory", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FeeAccountHistory_Tenant_TenantId",
+                        column: x => x.TenantId,
+                        principalTable: "Tenant",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -441,7 +478,6 @@ namespace Master.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     CreationTime = table.Column<DateTime>(nullable: false),
-                    CreatorUserId = table.Column<long>(nullable: true),
                     LastModificationTime = table.Column<DateTime>(nullable: true),
                     LastModifierUserId = table.Column<long>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
@@ -458,11 +494,15 @@ namespace Master.Migrations
                     SheetSN = table.Column<string>(nullable: true),
                     SheetDate = table.Column<DateTime>(nullable: false),
                     BusinessType = table.Column<string>(nullable: true),
+                    CreatorUserId = table.Column<long>(nullable: true),
                     HandlerId = table.Column<long>(nullable: true),
                     SheetNature = table.Column<int>(nullable: false),
                     Remarks = table.Column<string>(nullable: true),
                     SheetStatus = table.Column<int>(nullable: false),
-                    Status = table.Column<string>(nullable: true)
+                    Status = table.Column<string>(nullable: true),
+                    RelSheetId = table.Column<int>(nullable: true),
+                    RevertReason = table.Column<string>(nullable: true),
+                    OrderStatus = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -474,7 +514,63 @@ namespace Master.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
+                        name: "FK_FlowSheet_FlowSheet_RelSheetId",
+                        column: x => x.RelSheetId,
+                        principalTable: "FlowSheet",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_FlowSheet_Tenant_TenantId",
+                        column: x => x.TenantId,
+                        principalTable: "Tenant",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FeeCheck",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorUserId = table.Column<long>(nullable: true),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierUserId = table.Column<long>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeleterUserId = table.Column<long>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
+                    ExtensionData = table.Column<string>(nullable: true),
+                    Property = table.Column<string>(type: "json", nullable: true),
+                    TenantId = table.Column<int>(nullable: false),
+                    CheckNumber = table.Column<string>(nullable: true),
+                    CheckFee = table.Column<decimal>(nullable: false),
+                    CheckDate = table.Column<DateTime>(nullable: false),
+                    CheckDaySpan = table.Column<int>(nullable: false),
+                    CheckCompany = table.Column<string>(nullable: true),
+                    CheckBank = table.Column<string>(nullable: true),
+                    CheckStatus = table.Column<int>(nullable: false),
+                    Remarks = table.Column<string>(nullable: true),
+                    InFlowSheetId = table.Column<int>(nullable: true),
+                    OutFlowSheetId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FeeCheck", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FeeCheck_FlowSheet_InFlowSheetId",
+                        column: x => x.InFlowSheetId,
+                        principalTable: "FlowSheet",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_FeeCheck_FlowSheet_OutFlowSheetId",
+                        column: x => x.OutFlowSheetId,
+                        principalTable: "FlowSheet",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_FeeCheck_Tenant_TenantId",
                         column: x => x.TenantId,
                         principalTable: "Tenant",
                         principalColumn: "Id",
@@ -522,6 +618,189 @@ namespace Master.Migrations
                         name: "FK_FlowSheetContent_Tenant_TenantId",
                         column: x => x.TenantId,
                         principalTable: "Tenant",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MaterialBuy",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorUserId = table.Column<long>(nullable: true),
+                    UnitId = table.Column<int>(nullable: false),
+                    MaterialId = table.Column<int>(nullable: false),
+                    FlowSheetId = table.Column<int>(nullable: false),
+                    BuyNumber = table.Column<int>(nullable: false),
+                    Price = table.Column<decimal>(nullable: false),
+                    Discount = table.Column<decimal>(nullable: false),
+                    BackNumber = table.Column<int>(nullable: false),
+                    FeatureCode = table.Column<string>(nullable: true),
+                    CodeStartNumber = table.Column<string>(nullable: true),
+                    CodeEndNumber = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MaterialBuy", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MaterialBuy_FlowSheet_FlowSheetId",
+                        column: x => x.FlowSheetId,
+                        principalTable: "FlowSheet",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MaterialBuy_Material_MaterialId",
+                        column: x => x.MaterialId,
+                        principalTable: "Material",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MaterialSell",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorUserId = table.Column<long>(nullable: true),
+                    UnitId = table.Column<int>(nullable: false),
+                    MaterialId = table.Column<int>(nullable: false),
+                    FlowSheetId = table.Column<int>(nullable: false),
+                    SellNumber = table.Column<int>(nullable: false),
+                    OutNumber = table.Column<int>(nullable: false),
+                    BackNumber = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MaterialSell", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MaterialSell_FlowSheet_FlowSheetId",
+                        column: x => x.FlowSheetId,
+                        principalTable: "FlowSheet",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MaterialSell_Material_MaterialId",
+                        column: x => x.MaterialId,
+                        principalTable: "Material",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StoreMaterialHistory",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorUserId = table.Column<long>(nullable: true),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierUserId = table.Column<long>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeleterUserId = table.Column<long>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
+                    ExtensionData = table.Column<string>(nullable: true),
+                    Remarks = table.Column<string>(nullable: true),
+                    Property = table.Column<string>(type: "json", nullable: true),
+                    TenantId = table.Column<int>(nullable: false),
+                    MaterialId = table.Column<int>(nullable: false),
+                    StoreId = table.Column<int>(nullable: false),
+                    MaterialName = table.Column<string>(nullable: true),
+                    Specification = table.Column<string>(nullable: true),
+                    Brand = table.Column<string>(nullable: true),
+                    UnitName = table.Column<string>(nullable: true),
+                    StoreName = table.Column<string>(nullable: true),
+                    MeasureMentUnitName = table.Column<string>(nullable: true),
+                    ChangeType = table.Column<string>(nullable: true),
+                    Number = table.Column<decimal>(nullable: false),
+                    FlowSheetId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StoreMaterialHistory", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_StoreMaterialHistory_FlowSheet_FlowSheetId",
+                        column: x => x.FlowSheetId,
+                        principalTable: "FlowSheet",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_StoreMaterialHistory_Material_MaterialId",
+                        column: x => x.MaterialId,
+                        principalTable: "Material",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_StoreMaterialHistory_Tenant_TenantId",
+                        column: x => x.TenantId,
+                        principalTable: "Tenant",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UnitFeeHistory",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    CreatorUserId = table.Column<long>(nullable: true),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierUserId = table.Column<long>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeleterUserId = table.Column<long>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
+                    ExtensionData = table.Column<string>(nullable: true),
+                    Remarks = table.Column<string>(nullable: true),
+                    Property = table.Column<string>(type: "json", nullable: true),
+                    TenantId = table.Column<int>(nullable: false),
+                    UnitId = table.Column<int>(nullable: false),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    Fee = table.Column<decimal>(nullable: false),
+                    RemainFee = table.Column<decimal>(nullable: false),
+                    ChangeType = table.Column<string>(nullable: true),
+                    FlowSheetId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UnitFeeHistory", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UnitFeeHistory_FlowSheet_FlowSheetId",
+                        column: x => x.FlowSheetId,
+                        principalTable: "FlowSheet",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_UnitFeeHistory_Tenant_TenantId",
+                        column: x => x.TenantId,
+                        principalTable: "Tenant",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MaterialSellCart",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorUserId = table.Column<long>(nullable: true),
+                    UnitId = table.Column<int>(nullable: false),
+                    MaterialId = table.Column<int>(nullable: false),
+                    Number = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MaterialSellCart", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MaterialSellCart_Material_MaterialId",
+                        column: x => x.MaterialId,
+                        principalTable: "Material",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -1707,6 +1986,63 @@ namespace Master.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Voucher",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierUserId = table.Column<long>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeleterUserId = table.Column<long>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
+                    ExtensionData = table.Column<string>(nullable: true),
+                    Property = table.Column<string>(type: "json", nullable: true),
+                    TenantId = table.Column<int>(nullable: false),
+                    UnitId = table.Column<int>(nullable: false),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorUserId = table.Column<long>(nullable: true),
+                    Fee = table.Column<decimal>(nullable: false),
+                    VoucherStatus = table.Column<int>(nullable: false),
+                    RelSheetSN = table.Column<string>(nullable: true),
+                    Remarks = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Voucher", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Voucher_User_CreatorUserId",
+                        column: x => x.CreatorUserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Voucher_User_DeleterUserId",
+                        column: x => x.DeleterUserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Voucher_User_LastModifierUserId",
+                        column: x => x.LastModifierUserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Voucher_Tenant_TenantId",
+                        column: x => x.TenantId,
+                        principalTable: "Tenant",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Voucher_Unit_UnitId",
+                        column: x => x.UnitId,
+                        principalTable: "Unit",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AuditLog_TenantId_ExecutionDuration",
                 table: "AuditLog",
@@ -1815,6 +2151,71 @@ namespace Master.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_FeeAccount_TenantId",
                 table: "FeeAccount",
+                column: "TenantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FeeAccountHistory_CreatorUserId",
+                table: "FeeAccountHistory",
+                column: "CreatorUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FeeAccountHistory_DeleterUserId",
+                table: "FeeAccountHistory",
+                column: "DeleterUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FeeAccountHistory_FeeAccountId",
+                table: "FeeAccountHistory",
+                column: "FeeAccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FeeAccountHistory_FlowSheetId",
+                table: "FeeAccountHistory",
+                column: "FlowSheetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FeeAccountHistory_LastModifierUserId",
+                table: "FeeAccountHistory",
+                column: "LastModifierUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FeeAccountHistory_TenantId",
+                table: "FeeAccountHistory",
+                column: "TenantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FeeAccountHistory_UnitId",
+                table: "FeeAccountHistory",
+                column: "UnitId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FeeCheck_CreatorUserId",
+                table: "FeeCheck",
+                column: "CreatorUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FeeCheck_DeleterUserId",
+                table: "FeeCheck",
+                column: "DeleterUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FeeCheck_InFlowSheetId",
+                table: "FeeCheck",
+                column: "InFlowSheetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FeeCheck_LastModifierUserId",
+                table: "FeeCheck",
+                column: "LastModifierUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FeeCheck_OutFlowSheetId",
+                table: "FeeCheck",
+                column: "OutFlowSheetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FeeCheck_TenantId",
+                table: "FeeCheck",
                 column: "TenantId");
 
             migrationBuilder.CreateIndex(
@@ -1983,6 +2384,11 @@ namespace Master.Migrations
                 column: "LastModifierUserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FlowSheet_RelSheetId",
+                table: "FlowSheet",
+                column: "RelSheetId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_FlowSheet_TenantId",
                 table: "FlowSheet",
                 column: "TenantId");
@@ -2046,6 +2452,46 @@ namespace Master.Migrations
                 name: "IX_Material_TenantId",
                 table: "Material",
                 column: "TenantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MaterialBuy_FlowSheetId",
+                table: "MaterialBuy",
+                column: "FlowSheetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MaterialBuy_MaterialId",
+                table: "MaterialBuy",
+                column: "MaterialId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MaterialBuy_UnitId",
+                table: "MaterialBuy",
+                column: "UnitId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MaterialSell_FlowSheetId",
+                table: "MaterialSell",
+                column: "FlowSheetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MaterialSell_MaterialId",
+                table: "MaterialSell",
+                column: "MaterialId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MaterialSell_UnitId",
+                table: "MaterialSell",
+                column: "UnitId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MaterialSellCart_MaterialId",
+                table: "MaterialSellCart",
+                column: "MaterialId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MaterialSellCart_UnitId",
+                table: "MaterialSellCart",
+                column: "UnitId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ModuleButton_CreatorUserId",
@@ -2318,6 +2764,41 @@ namespace Master.Migrations
                 column: "TenantId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_StoreMaterialHistory_CreatorUserId",
+                table: "StoreMaterialHistory",
+                column: "CreatorUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StoreMaterialHistory_DeleterUserId",
+                table: "StoreMaterialHistory",
+                column: "DeleterUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StoreMaterialHistory_FlowSheetId",
+                table: "StoreMaterialHistory",
+                column: "FlowSheetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StoreMaterialHistory_LastModifierUserId",
+                table: "StoreMaterialHistory",
+                column: "LastModifierUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StoreMaterialHistory_MaterialId",
+                table: "StoreMaterialHistory",
+                column: "MaterialId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StoreMaterialHistory_StoreId",
+                table: "StoreMaterialHistory",
+                column: "StoreId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StoreMaterialHistory_TenantId",
+                table: "StoreMaterialHistory",
+                column: "TenantId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SystemLog_TenantId",
                 table: "SystemLog",
                 column: "TenantId");
@@ -2381,6 +2862,36 @@ namespace Master.Migrations
                 name: "IX_Unit_TenantId",
                 table: "Unit",
                 column: "TenantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UnitFeeHistory_CreatorUserId",
+                table: "UnitFeeHistory",
+                column: "CreatorUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UnitFeeHistory_DeleterUserId",
+                table: "UnitFeeHistory",
+                column: "DeleterUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UnitFeeHistory_FlowSheetId",
+                table: "UnitFeeHistory",
+                column: "FlowSheetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UnitFeeHistory_LastModifierUserId",
+                table: "UnitFeeHistory",
+                column: "LastModifierUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UnitFeeHistory_TenantId",
+                table: "UnitFeeHistory",
+                column: "TenantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UnitFeeHistory_UnitId",
+                table: "UnitFeeHistory",
+                column: "UnitId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UnitMaterialDiscount_MaterialId",
@@ -2452,6 +2963,31 @@ namespace Master.Migrations
                 table: "UserRole",
                 columns: new[] { "TenantId", "UserId" });
 
+            migrationBuilder.CreateIndex(
+                name: "IX_Voucher_CreatorUserId",
+                table: "Voucher",
+                column: "CreatorUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Voucher_DeleterUserId",
+                table: "Voucher",
+                column: "DeleterUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Voucher_LastModifierUserId",
+                table: "Voucher",
+                column: "LastModifierUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Voucher_TenantId",
+                table: "Voucher",
+                column: "TenantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Voucher_UnitId",
+                table: "Voucher",
+                column: "UnitId");
+
             migrationBuilder.AddForeignKey(
                 name: "FK_Material_User_CreatorUserId",
                 table: "Material",
@@ -2513,6 +3049,54 @@ namespace Master.Migrations
                 table: "Tenant",
                 column: "LastModifierUserId",
                 principalTable: "User",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_FeeAccountHistory_User_CreatorUserId",
+                table: "FeeAccountHistory",
+                column: "CreatorUserId",
+                principalTable: "User",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_FeeAccountHistory_User_DeleterUserId",
+                table: "FeeAccountHistory",
+                column: "DeleterUserId",
+                principalTable: "User",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_FeeAccountHistory_User_LastModifierUserId",
+                table: "FeeAccountHistory",
+                column: "LastModifierUserId",
+                principalTable: "User",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_FeeAccountHistory_FeeAccount_FeeAccountId",
+                table: "FeeAccountHistory",
+                column: "FeeAccountId",
+                principalTable: "FeeAccount",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_FeeAccountHistory_FlowSheet_FlowSheetId",
+                table: "FeeAccountHistory",
+                column: "FlowSheetId",
+                principalTable: "FlowSheet",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_FeeAccountHistory_Unit_UnitId",
+                table: "FeeAccountHistory",
+                column: "UnitId",
+                principalTable: "Unit",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
@@ -2677,6 +3261,30 @@ namespace Master.Migrations
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
+                name: "FK_FeeCheck_User_CreatorUserId",
+                table: "FeeCheck",
+                column: "CreatorUserId",
+                principalTable: "User",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_FeeCheck_User_DeleterUserId",
+                table: "FeeCheck",
+                column: "DeleterUserId",
+                principalTable: "User",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_FeeCheck_User_LastModifierUserId",
+                table: "FeeCheck",
+                column: "LastModifierUserId",
+                principalTable: "User",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
                 name: "FK_FlowSheetContent_User_CreatorUserId",
                 table: "FlowSheetContent",
                 column: "CreatorUserId",
@@ -2699,6 +3307,94 @@ namespace Master.Migrations
                 principalTable: "User",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_MaterialBuy_Unit_UnitId",
+                table: "MaterialBuy",
+                column: "UnitId",
+                principalTable: "Unit",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_MaterialSell_Unit_UnitId",
+                table: "MaterialSell",
+                column: "UnitId",
+                principalTable: "Unit",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_StoreMaterialHistory_User_CreatorUserId",
+                table: "StoreMaterialHistory",
+                column: "CreatorUserId",
+                principalTable: "User",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_StoreMaterialHistory_User_DeleterUserId",
+                table: "StoreMaterialHistory",
+                column: "DeleterUserId",
+                principalTable: "User",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_StoreMaterialHistory_User_LastModifierUserId",
+                table: "StoreMaterialHistory",
+                column: "LastModifierUserId",
+                principalTable: "User",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_StoreMaterialHistory_Store_StoreId",
+                table: "StoreMaterialHistory",
+                column: "StoreId",
+                principalTable: "Store",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_UnitFeeHistory_User_CreatorUserId",
+                table: "UnitFeeHistory",
+                column: "CreatorUserId",
+                principalTable: "User",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_UnitFeeHistory_User_DeleterUserId",
+                table: "UnitFeeHistory",
+                column: "DeleterUserId",
+                principalTable: "User",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_UnitFeeHistory_User_LastModifierUserId",
+                table: "UnitFeeHistory",
+                column: "LastModifierUserId",
+                principalTable: "User",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_UnitFeeHistory_Unit_UnitId",
+                table: "UnitFeeHistory",
+                column: "UnitId",
+                principalTable: "Unit",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_MaterialSellCart_Unit_UnitId",
+                table: "MaterialSellCart",
+                column: "UnitId",
+                principalTable: "Unit",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_StoreMaterial_User_CreatorUserId",
@@ -2909,7 +3605,10 @@ namespace Master.Migrations
                 name: "FeatureSetting");
 
             migrationBuilder.DropTable(
-                name: "FeeAccount");
+                name: "FeeAccountHistory");
+
+            migrationBuilder.DropTable(
+                name: "FeeCheck");
 
             migrationBuilder.DropTable(
                 name: "File");
@@ -2922,6 +3621,15 @@ namespace Master.Migrations
 
             migrationBuilder.DropTable(
                 name: "FlowSheetContent");
+
+            migrationBuilder.DropTable(
+                name: "MaterialBuy");
+
+            migrationBuilder.DropTable(
+                name: "MaterialSell");
+
+            migrationBuilder.DropTable(
+                name: "MaterialSellCart");
 
             migrationBuilder.DropTable(
                 name: "ModuleButton");
@@ -2948,10 +3656,16 @@ namespace Master.Migrations
                 name: "StoreMaterial");
 
             migrationBuilder.DropTable(
+                name: "StoreMaterialHistory");
+
+            migrationBuilder.DropTable(
                 name: "SystemLog");
 
             migrationBuilder.DropTable(
                 name: "Template");
+
+            migrationBuilder.DropTable(
+                name: "UnitFeeHistory");
 
             migrationBuilder.DropTable(
                 name: "UnitMaterialDiscount");
@@ -2969,7 +3683,10 @@ namespace Master.Migrations
                 name: "UserRole");
 
             migrationBuilder.DropTable(
-                name: "FlowSheet");
+                name: "Voucher");
+
+            migrationBuilder.DropTable(
+                name: "FeeAccount");
 
             migrationBuilder.DropTable(
                 name: "ModuleInfo");
@@ -2982,6 +3699,9 @@ namespace Master.Migrations
 
             migrationBuilder.DropTable(
                 name: "Store");
+
+            migrationBuilder.DropTable(
+                name: "FlowSheet");
 
             migrationBuilder.DropTable(
                 name: "Material");

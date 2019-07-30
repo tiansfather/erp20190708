@@ -773,6 +773,8 @@ namespace Master.Migrations
 
                     b.Property<int>("FeeAccountId");
 
+                    b.Property<int>("FeeDirection");
+
                     b.Property<int?>("FlowSheetId");
 
                     b.Property<bool>("IsDeleted");
@@ -790,6 +792,8 @@ namespace Master.Migrations
 
                     b.Property<int>("TenantId");
 
+                    b.Property<int?>("UnitId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CreatorUserId");
@@ -803,6 +807,8 @@ namespace Master.Migrations
                     b.HasIndex("LastModifierUserId");
 
                     b.HasIndex("TenantId");
+
+                    b.HasIndex("UnitId");
 
                     b.ToTable("FeeAccountHistory");
                 });
@@ -899,6 +905,8 @@ namespace Master.Migrations
 
                     b.Property<string>("Property")
                         .HasColumnType("json");
+
+                    b.Property<string>("RelCompanyName");
 
                     b.Property<decimal>("RemainFee");
 
@@ -1655,17 +1663,25 @@ namespace Master.Migrations
 
                     b.Property<long?>("CreatorUserId");
 
+                    b.Property<decimal>("Discount");
+
                     b.Property<string>("FeatureCode");
 
                     b.Property<int>("FlowSheetId");
 
                     b.Property<int>("MaterialId");
 
+                    b.Property<decimal>("Price");
+
+                    b.Property<int>("UnitId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("FlowSheetId");
 
                     b.HasIndex("MaterialId");
+
+                    b.HasIndex("UnitId");
 
                     b.ToTable("MaterialBuy");
                 });
@@ -2726,6 +2742,10 @@ namespace Master.Migrations
                         .WithMany()
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Master.Units.Unit", "Unit")
+                        .WithMany()
+                        .HasForeignKey("UnitId");
                 });
 
             modelBuilder.Entity("Master.Finance.FeeCheck", b =>
@@ -3045,6 +3065,11 @@ namespace Master.Migrations
                     b.HasOne("Master.Storage.Material", "Material")
                         .WithMany()
                         .HasForeignKey("MaterialId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Master.Units.Unit", "Unit")
+                        .WithMany()
+                        .HasForeignKey("UnitId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

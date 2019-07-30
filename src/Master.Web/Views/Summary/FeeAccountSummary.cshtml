@@ -1,0 +1,113 @@
+﻿
+@{
+	ViewData["Title"] = "Index";
+}
+
+<div class="layui-fluid" id="LAY-app-message">
+	<div class="layui-card">
+		<div class="layui-card-header">@L("资金账户进出统计")</div>
+		<div class="layui-card-body">
+            <div id="app" class="LAY-app-message-btns" style="margin-bottom: 10px;">
+                <el-form :inline="true" >
+                    <el-date-picker v-model="searchDateRange"
+                                    type="daterange"
+                                    align="right"
+                                    unlink-panels
+                                    range-separator="至"
+                                    start-placeholder="开始日期"
+                                    end-placeholder="结束日期"
+                                    @@change="doSearch"
+                                    :picker-options="pickerOptions">
+                    </el-date-picker>
+                </el-form>
+            </div>
+           
+
+
+			<table autoevent="1" id="Summary" lay-filter="Summary" class="layui-table " lay-data="{cellMinWidth:'80',height:'full-170', url:'/api/services/app/FeeAccount/GetSummary', page:false,limit:1000, id:'Summary',  even: true,done:config.onTableDone}" @*lay-size="sm" *@>
+				<thead>
+					<tr>
+						<th lay-data="{field:'name',sort:true}">@L("资金账户")</th>
+						<th lay-data="{field:'totalIn'}">@L("收入合计")</th>
+                        <th lay-data="{field:'totalOut'}">@L("支出合计")</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+
+	</div>
+</div>
+@section scripts{
+	<script>
+        var app
+        config.ready = function () {
+            app = new Vue({
+                el: '#app',
+                data: {
+                    pickerOptions: {
+                        shortcuts: [{
+                            text: '最近一周',
+                            onClick(picker) {
+                                const end = new Date();
+                                const start = new Date();
+                                start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                                picker.$emit('pick', [start, end]);
+                            }
+                        }, {
+                            text: '最近一个月',
+                            onClick(picker) {
+                                const end = new Date();
+                                const start = new Date();
+                                start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                                picker.$emit('pick', [start, end]);
+                            }
+                        }, {
+                            text: '最近三个月',
+                            onClick(picker) {
+                                const end = new Date();
+                                const start = new Date();
+                                start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                                picker.$emit('pick', [start, end]);
+                            }
+                        }]
+                    },
+                    searchDateRange:''
+                },
+                methods: {
+                    doSearch: function (data) {
+                        var startDate = null;
+                        var endDate = null;
+                        if (data) {
+                            startDate = data[0].pattern('yyyy-MM-dd');
+                            endDate = data[1].pattern('yyyy-MM-dd');
+                        }
+                        layui.table.reload('Summary', {
+                            url: '/api/services/app/FeeAccount/GetSummary?startDate=' + startDate + "&endDate=" + endDate
+
+                        })
+                    }
+                }
+            })
+        }
+        config.onTableDone = function () {
+
+        }
+        config.refresh = function () {
+
+        }
+        function doSearch() {
+            var where = {where:'1=1'};
+            var roleName = $("#roleName").val();
+            if (roleName) {
+                where.where += " and DisplayName.Contains(\"" + roleName + "\") ";
+
+            }
+            layui.table.reload('Roles', {
+                where: where
+
+            })
+
+            return false;
+		}
+	</script>
+}

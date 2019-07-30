@@ -58,14 +58,16 @@ namespace Master.Finance
             await CurrentUnitOfWork.SaveChangesAsync();
         }
 
-        public virtual async Task BuildFeeHistory(FeeAccount account, decimal totalFee, FlowSheet flowSheet)
+        public virtual async Task BuildFeeHistory(FeeAccount account, int? unitId,decimal totalFee, FlowSheet flowSheet)
         {
             account.Fee += totalFee;
             var feeAccountHistory = new FeeAccountHistory()
             {
                 FeeAccountId = account.Id,
                 Fee = totalFee,
+                UnitId=unitId,
                 RemainFee = account.Fee + account.StartFee,//当前总结余,
+                FeeDirection=totalFee>0?FeeDirection.进:FeeDirection.出,
                 ChangeType = flowSheet.ChangeType,
                 FlowSheetId = flowSheet.Id
             };

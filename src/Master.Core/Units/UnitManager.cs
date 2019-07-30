@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Abp.Runtime.Caching;
 using Master.WorkFlow;
 using Master.Finance;
+using Master.Entity;
 
 namespace Master.Units
 {
@@ -65,7 +66,7 @@ namespace Master.Units
             {
                 var feeAccountManager = Resolve<FeeAccountManager>();
                 var account = await feeAccountManager.GetByIdAsync(accountId.Value);
-                await feeAccountManager.BuildFeeHistory(account, totalFee, flowSheet);
+                await feeAccountManager.BuildFeeHistory(account,unitId, totalFee, flowSheet);
             }
             
         }
@@ -81,11 +82,12 @@ namespace Master.Units
             unit.Fee += totalFee;
             var unitFeeHistory = new UnitFeeHistory()
             {
-                UnitId=unit.Id,
-                Fee=totalFee,
-                RemainFee=unit.Fee+unit.StartFee,//当前总结余,
-                ChangeType=flowSheet.ChangeType,
-                FlowSheetId=flowSheet.Id
+                UnitId = unit.Id,
+                Fee = totalFee,
+                RemainFee = unit.Fee + unit.StartFee,//当前总结余,
+                ChangeType = flowSheet.ChangeType,
+                FlowSheetId = flowSheet.Id,
+                RelCompanyName = flowSheet.GetPropertyValue<string>("RelCompanyName")
             };
 
             await Resolve<UnitFeeHistoryManager>().InsertAsync(unitFeeHistory);

@@ -1,5 +1,7 @@
 ﻿using Abp.Authorization;
+using Abp.Linq.Extensions;
 using Abp.UI;
+using Abp.Web.Models;
 using Master.Dto;
 using Master.Finance;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +16,7 @@ namespace Master.Storage
     [AbpAuthorize]
     public class FeeAccountAppService : ModuleDataAppServiceBase<FeeAccount, int>
     {
+        public FeeAccountHistoryManager FeeAccountHistoryManager { get; set; }
         protected override string ModuleKey()
         {
             return nameof(FeeAccount);
@@ -63,6 +66,36 @@ namespace Master.Storage
                     o.Id,
                     o.Name
                 });
+        }
+        /// <summary>
+        /// 获取账户进出统计
+        /// </summary>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <returns></returns>
+        [DontWrapResult]
+        public virtual async Task<object> GetSummary(DateTime? startDate,DateTime? endDate)
+        {
+            var result = new List<object>();
+            var allAccounts = await Manager.GetAllList();
+            foreach(var account in allAccounts)
+            {
+                var query = FeeAccountHistoryManager.GetAll().Where(o => o.FeeAccountId == account.Id)
+                    .WhereIf(startDate.HasValue, o => o.CreationTime >= startDate.Value)
+                    .WhereIf(endDate.HasValue, o => o.CreationTime < endDate.Value.AddDays(1));
+                var totalIn = await query.Where(o => o.Fee > 0).SumAsync(o => o.Fee);
+                var totalOut= await query.Where(o => o.Fee < 0).SumAsync(o => o.Fee);
+                result.Add(new
+                {
+                    account.Name,
+                    totalIn,
+                    totalOut
+                });
+            }
+            return new ResultDto() {
+                data=result
+            }
+                ;
         }
     }
 }
