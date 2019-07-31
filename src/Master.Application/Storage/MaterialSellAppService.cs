@@ -23,7 +23,8 @@ namespace Master.Storage
             return (await base.GetQueryable(request))
                 .Include(o=>o.FlowSheet)
                 .Include(o=>o.Material).ThenInclude(o=>o.MaterialType)
-                .Where(o=>o.FlowSheet.OrderStatus==null ||(o.FlowSheet.OrderStatus!="待审核" && o.FlowSheet.OrderStatus != "已退货"))
+                .Where(o => o.FlowSheet.SheetNature == WorkFlow.SheetNature.正单)
+                .Where(o=>o.FlowSheet.OrderStatus==null ||(o.FlowSheet.OrderStatus!="待审核" && o.FlowSheet.OrderStatus != "已退货" && o.FlowSheet.OrderStatus != "已取消"))
                 ;
         }
         protected override async Task<IQueryable<MaterialSell>> BuildSearchQueryAsync(IDictionary<string, string> searchKeys, IQueryable<MaterialSell> query)
@@ -46,6 +47,14 @@ namespace Master.Storage
                     }
 
                 }
+            }
+            if (searchKeys.ContainsKey("startDate"))
+            {
+                query = query.Where(o => o.CreationTime > DateTime.Parse(searchKeys["startDate"]));
+            }
+            if (searchKeys.ContainsKey("endDate"))
+            {
+                query = query.Where(o => o.CreationTime < DateTime.Parse(searchKeys["endDate"]));
             }
             return query;
         }

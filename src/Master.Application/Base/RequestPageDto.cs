@@ -63,5 +63,20 @@ namespace Master.Dto
         /// 排序方式:asc,desc
         /// </summary>
         public string OrderType { get; set; } = "desc";
+
+        public IDictionary<string,string> SearchKeyDic
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(SearchKeys))
+                {
+                    return new Dictionary<string, string>();
+                }
+                else
+                {
+                    return Newtonsoft.Json.JsonConvert.DeserializeObject<IDictionary<string, string>>(SearchKeys);
+                }
+            }
+        }
     }
 }

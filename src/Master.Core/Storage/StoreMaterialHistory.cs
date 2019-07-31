@@ -5,6 +5,7 @@ using Master.Units;
 using Master.WorkFlow;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Master.Storage
@@ -31,12 +32,15 @@ namespace Master.Storage
 
         [InterColumn(ColumnName = "单位",Sort =9)]
         public string MeasureMentUnitName { get; set; }
-        [InterColumn(ColumnName = "变动类型",Sort =10)]
+        [InterColumn(ColumnName = "发生环节", ValuePath = "FlowSheet.FlowInstance.FlowForm.FormName", DisplayPath = "FlowSheet.FlowInstance.FlowForm.FormName", Templet = "{{d.formName_display}}", Sort = 10)]
+        [NotMapped]
+        public string FormName => FlowSheet.FlowInstance.FlowForm.FormName;
+        [InterColumn(ColumnName = "摘要",Sort =11)]
         public string ChangeType { get; set; }
         /// <summary>
         /// 变动数量
         /// </summary>
-        [InterColumn(ColumnName = "变动数量",Sort =11)]
+        [InterColumn(ColumnName = "变动数量",Sort =12)]
         public decimal Number { get; set; }
         [InterColumn(ColumnName = "单据",DisplayPath ="FlowSheet.SheetSN" , Templet = "{{#if (d.flowSheetId){}}<a dataid=\"{{d.flowSheetId}}\" class=\"layui-btn layui-btn-xs layui-btn-normal\" buttonname=\"单据\" params=\"{&quot;btn&quot;:[]}\"   buttonactiontype=\"Form\" buttonactionurl=\"/FlowSheet/SheetView\" onclick=\"func.callModuleButtonEvent()\">{{d.flowSheetId_display||'未录入单号'}}</a>{{#}else{}}{{#}}}", Sort =12)]
         public int? FlowSheetId { get; set; } 

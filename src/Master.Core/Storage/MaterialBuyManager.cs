@@ -50,6 +50,7 @@ namespace Master.Storage
                         materialBuy.BackNumber = materialBuy.BuyNumber;
                     }
                 }
+                
             }
 
             if (toDoNumber > 0)

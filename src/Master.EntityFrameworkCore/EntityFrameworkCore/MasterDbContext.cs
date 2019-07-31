@@ -87,6 +87,7 @@ namespace Master.EntityFrameworkCore
         public virtual DbSet<Store> Store { get; set; }
         public virtual DbSet<Material> Material { get; set; }
         public virtual DbSet<MaterialBuy> MaterialBuy { get; set; }
+        public virtual DbSet<MaterialBuyBack> MaterialBuyBack { get; set; }
         public virtual DbSet<StoreMaterial> StoreMaterial { get; set; }
         public virtual DbSet<StoreMaterialHistory> StoreMaterialHistory { get; set; }       
         public virtual DbSet<UnitMaterialDiscount> UnitMaterialDiscount { get; set; }

@@ -31,6 +31,7 @@
                     <table id="Material" lay-filter="Material"></table>
                 </div>
                 
+
             </div>
 
 
@@ -50,7 +51,7 @@
             app = new Vue({
                 el: '#app',
                 data: {
-                    searchDateRange:null
+                    searchDateRange: null
                 },
                 methods: {
                     doSearch: function (data) {
@@ -76,7 +77,7 @@
                         toolbar: false,
                         //cellMinWidth: '60',
                         height: 'full-110',
-                        url: '/api/services/app/MaterialSell/GetPageResult',
+                        url: '/api/services/app/MaterialBuy/GetPageResult',
                         where: getWhere(),
                         page: true,
 
@@ -91,9 +92,10 @@
                             { field: 'materialNature', title: '商品性质' },
                             { field: 'price', title: '零售价' },
                             { field: 'measureMentUnit', title: '计量单位' },
-                            { field: 'sellNumber', title: '订货数量' },
-                            { field: 'outNumber', title: '已出库总数' },
-                            { field: '', title: '未出库总数', templet: function (d) { return d.sellNumber-d.outNumber} },
+                            { field: 'buyNumber', title: '入库数量' },
+                            { field: 'discount', title: '入库折扣' },
+                            { field: '', title: '入库单价', templet: function (d) { return (d.price * d.discount).toFixed(2) } },
+                            { field: '', title: '小计', templet: function (d) { return (d.price * d.discount * d.buyNumber).toFixed(2) } },
                         ]],
 
                         done: function () {

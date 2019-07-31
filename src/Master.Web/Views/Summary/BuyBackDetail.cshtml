@@ -31,6 +31,7 @@
                     <table id="Material" lay-filter="Material"></table>
                 </div>
                 
+
             </div>
 
 
@@ -50,7 +51,7 @@
             app = new Vue({
                 el: '#app',
                 data: {
-                    searchDateRange:null
+                    searchDateRange: null
                 },
                 methods: {
                     doSearch: function (data) {
@@ -76,24 +77,25 @@
                         toolbar: false,
                         //cellMinWidth: '60',
                         height: 'full-110',
-                        url: '/api/services/app/MaterialSell/GetPageResult',
+                        url: '/api/services/app/MaterialBuyBack/GetPageResult',
                         where: getWhere(),
                         page: true,
 
                         id: 'Material',
                         even: true,
                         cols: [[
-                            { field: 'sheetSN', title: '订单编号' },
+                            { field: 'sheetSN', title: '退货单编号' },
                             { field: 'materialTypeName', title: '分类' },
                             { field: 'name', title: '品名' },
-                            { field: 'unitName', title: '代理商' },
+                            { field: 'unitName', title: '供应商' },
                             { field: 'specifiation', title: '规格' },
                             { field: 'materialNature', title: '商品性质' },
                             { field: 'price', title: '零售价' },
                             { field: 'measureMentUnit', title: '计量单位' },
-                            { field: 'sellNumber', title: '订货数量' },
-                            { field: 'outNumber', title: '已出库总数' },
-                            { field: '', title: '未出库总数', templet: function (d) { return d.sellNumber-d.outNumber} },
+                            { field: 'backNumber', title: '已退货数量' },
+                            { field: 'discount', title: '退货折扣' },
+                            { field: '', title: '退货单价', templet: function (d) { return (d.price * d.discount).toFixed(2) } },
+                            { field: '', title: '小计', templet: function (d) { return (d.price * d.discount * d.backNumber).toFixed(2) } },
                         ]],
 
                         done: function () {
