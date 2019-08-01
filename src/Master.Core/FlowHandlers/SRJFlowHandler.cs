@@ -21,6 +21,7 @@ namespace Master.FlowHandlers
         
         public MaterialManager MaterialManager { get; set; }
         public MaterialSellManager MaterialSellManager { get; set; }
+        public MaterialSellBackManager MaterialSellBackManager { get; set; }
         public StoreMaterialManager StoreMaterialManager { get; set; }
         public UnitManager UnitManager { get; set; }
         public override async Task Handle(FlowSheet flowSheet)
@@ -50,7 +51,17 @@ namespace Master.FlowHandlers
                 
                 var number= sheetItem["number"].ToObjectWithDefault<int>();//退货数量
                 await MaterialSellManager.Back(unitId, startDate, materialId, storeId,number, flowSheet);
-                
+                //产生退货数据
+                var materialSellBack = new MaterialSellBack()
+                {
+                    UnitId = unitId,
+                    MaterialId = materialId,
+                    BackNumber = number,
+                    FlowSheetId = flowSheet.Id,
+                    Discount = sheetItem["discount"].ToObjectWithDefault<decimal>(),
+                    Price = sheetItem["price"].ToObjectWithDefault<decimal>(),
+                };
+                await MaterialSellBackManager.InsertAsync(materialSellBack);
             }
 
         }

@@ -28,16 +28,14 @@
                 <li class="off">@L("离职员工")<span class="layui-badge">0</span></li>
                 <li class="all">@L("全部员工")<span class="layui-badge">0</span></li>
                 <li class="account">@L("已启用账号")<span class="layui-badge">0</span></li>
-                <li class="toBeVerify">@L("待审核")<span class="layui-badge">0</span></li>
             </ul>
             <div class="layui-tab-content">
                 <div class="LAY-app-message-btns" style="margin-bottom: 10px;">
                     <vc:module-button module-key="User"></vc:module-button>
                     <input type="text" id="name-input" class="layui-input" style="width: 150px; display: inline-block;height: 30px;vertical-align: middle;" placeholder="输入名字检索" />
                     <button class="layui-btn  layui-btn-sm" onclick="config.reloadTable()">搜索</button>
-                    <button class="layui-btn laydialog layui-btn-sm layui-btn-normal" url="#imgHtml" width="350px" height="350px">快捷邀请</button>
                 </div>
-                <vc:module-table param="@(new ModuleTableViewParam() {ID="User",ModuleKey=nameof(Master.Authentication.User),Height="full-200",Where="JobDateEnd=null and (Status==null or !Status.Contains(\"NotVerified\"))"})"></vc:module-table>
+                <vc:module-table param="@(new ModuleTableViewParam() {ID="User",ModuleKey=nameof(Master.Authentication.User),Height="full-200",Where="JobDateEnd=null"})"></vc:module-table>
             </div>
         </div>
     </div>
@@ -106,7 +104,6 @@
                     $("li.off span").html(result.offCount);
                     $("li.all span").html(result.allCount);
                     $("li.account span").html(result.accountCount);
-                    $("li.toBeVerify span").html(result.toBeVerifyCount);
                 });
         }
     function getWhere(index) {
@@ -114,19 +111,16 @@
             var where = {};
             switch (index) {
                 case 0:
-                    where = { where: 'JobDateEnd=null and (Status==null or !Status.Contains(\"NotVerified\"))' };
+                    where = { where: 'JobDateEnd=null ' };
                     break;
                 case 1:
-                    where = { where: 'JobDateEnd!=null and (Status==null or !Status.Contains(\"NotVerified\"))' };
+                    where = { where: 'JobDateEnd!=null ' };
                     break;
                 case 2:
-                    where = { where: '(Status==null or !Status.Contains(\"NotVerified\"))' };
+                    where = { where: '' };
                     break;
                 case 3:
-                    where = { where: 'IsActive=true and (Status==null or !Status.Contains(\"NotVerified\"))' };
-                    break;
-                case 4:
-                    where = { where: 'Status.Contains(\"NotVerified\")' };
+                    where = { where: 'IsActive=true ' };
                     break;
             }
             var value = $('#name-input').val();

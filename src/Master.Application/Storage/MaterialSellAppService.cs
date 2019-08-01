@@ -176,6 +176,7 @@ namespace Master.Storage
                     sellMaterial.Material.Specification,
                     sellMaterial.Material.Price,
                     sellMaterial.FlowSheet.SheetSN,
+                    sellMaterial.FlowSheetId,
                     SheetDate=sellMaterial.FlowSheet.CreationTime.ToString("yyyy-MM-dd HH:mm"),
                     sellMaterial.SellNumber,
                     sellMaterial.OutNumber,

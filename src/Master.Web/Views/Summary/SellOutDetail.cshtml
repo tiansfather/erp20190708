@@ -1,0 +1,136 @@
+﻿@using Master.Web.Components
+@inherits Master.Web.Components.MasterRazorPage<TModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Master.Web.Core
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="layui-fluid" id="LAY-app-message">
+    <div class="layui-card">
+        <div class="layui-card-body" >
+
+            <div class="layui-row layui-col-space5">
+                <div class="layui-col-xs2">
+                    <vc:base-tree param="@(new BaseTreeViewParam() { TreeKey="MaterialType",TreeName="商品分类",EnableAdd=false,EnableEdit=false,EnableDelete=false})"></vc:base-tree>
+
+                </div>
+                <div class="layui-col-xs10">
+                    <div class="LAY-app-message-btns" style="margin-bottom:10px;" id="app" v-cloak>
+                        <el-form :inline="true">
+                            <el-date-picker v-model="searchDateRange"
+                                            type="datetimerange"
+                                            range-separator="至"
+                                            start-placeholder="开始日期"
+                                            end-placeholder="结束日期"
+                                            @@change="doSearch">
+                            </el-date-picker>
+                        </el-form>
+
+                    </div>
+                    <table id="Material" lay-filter="Material"></table>
+                </div>
+                
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        var searchKeys = {};
+        var app;
+		//layui加载完成后调用此方法，
+		config.ready = function () {
+			var element = layui.element;
+            var table = layui.table;
+            
+            app = new Vue({
+                el: '#app',
+                data: {
+                    searchDateRange: null
+                },
+                methods: {
+                    doSearch: function (data) {
+                        var startDate = null;
+                        var endDate = null;
+                        if (data) {
+                            startDate = data[0].pattern('yyyy-MM-dd HH:mm:ss');
+                            endDate = data[1].pattern('yyyy-MM-dd HH:mm:ss');
+                        }
+                        searchKeys.startDate = startDate;
+                        searchKeys.endDate = endDate;
+                        layui.table.reload('Material', {
+                            where: getWhere()
+
+                        })
+                    }
+                },
+                mounted: function () {
+                    var that = this;
+                    table.render({
+                        elem: '#Material',
+                        autoSort: false,
+                        toolbar: false,
+                        //cellMinWidth: '60',
+                        height: 'full-110',
+                        url: '/api/services/app/MaterialSellOut/GetPageResult',
+                        where: getWhere(),
+                        page: true,
+
+                        id: 'Material',
+                        even: true,
+                        cols: [[
+                            { field: 'sheetSN', title: '订单编号' },
+                            { field: 'materialTypeName', title: '分类' },
+                            { field: 'name', title: '品名' },
+                            { field: 'unitName', title: '代理商' },
+                            { field: 'specifiation', title: '规格' },
+                            { field: 'materialNature', title: '商品性质' },
+                            { field: 'price', title: '零售价' },
+                            { field: 'measureMentUnit', title: '计量单位' },
+                            { field: 'outNumber', title: '出库数量' },
+                            { field: 'discount', title: '出库折扣' },
+                            { field: '', title: '出库单价', templet: function (d) { return (d.price * d.discount).toFixed(2) } },
+                            { field: '', title: '小计', templet: function (d) { return (d.price * d.discount * d.outNumber).toFixed(2) } },
+                        ]],
+
+                        done: function () {
+                        
+                            config.onTableDone();
+                        }
+                    });
+                }
+            })
+
+			//监听树选中事件
+            baseTree.onSelect = function (node) {
+				searchKeys.MaterialTypeId = node.id;
+				config.reloadTable();
+			}
+		}
+		//当检索窗体提交后会调用此方法
+		config.reloadTable = function () {
+            layui.table.reload('Material', {
+				where: getWhere()
+
+			})
+		}
+        config.onTableDone = function () {
+            
+		}
+		//当编辑或删除或添加表单提交后会调用此方法
+		config.refresh = function () {
+            
+		}
+		function getWhere() {
+            var where = { searchKeys: JSON.stringify(searchKeys) };            
+            where.searchCondition = func.buildSearchCondition('Material');
+			return where;
+
+		}
+    </script>
+}

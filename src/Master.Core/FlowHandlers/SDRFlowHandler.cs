@@ -25,6 +25,8 @@ namespace Master.FlowHandlers
         
         public MaterialManager MaterialManager { get; set; }
         public MaterialSellManager MaterialSellManager { get; set; }
+        public MaterialSellBackManager MaterialSellBackManager { get; set; }
+        public MaterialSellOutManager MaterialSellOutManager { get; set; }
         public StoreMaterialManager StoreMaterialManager { get; set; }
         public UnitManager UnitManager { get; set; }
        
@@ -182,6 +184,17 @@ namespace Master.FlowHandlers
                     {
                         materialSell.OutNumber = materialSell.SellNumber;//设置销售记录的出货数量等于订货数量
                     }
+                    //建立销售出库记录
+                    var materialSellOut = new MaterialSellOut()
+                    {
+                        UnitId = unitId,
+                        FlowSheetId = flowSheet.Id,
+                        MaterialId = materialId,
+                        OutNumber = number,
+                        Price = sheetItem["price"].ToObjectWithDefault<decimal>(),
+                        Discount = sheetItem["discount"].ToObjectWithDefault<decimal>()
+                    };
+                    await MaterialSellOutManager.InsertAsync(materialSellOut);
                     //库存变化
                     await StoreMaterialManager.CountMaterial(outStoreId.Value, materialId, -number, flowSheet);
 
@@ -206,7 +219,17 @@ namespace Master.FlowHandlers
                     var number = sheetItem["number"].ToObjectWithDefault<int>();//出货数量
                     //库存变化
                     await StoreMaterialManager.CountMaterial(backStoreId.Value, materialId, number, flowSheet);
-
+                    //产生退货数据
+                    var materialSellBack = new MaterialSellBack()
+                    {
+                        UnitId = unitId,
+                        MaterialId = materialId,
+                        BackNumber = number,
+                        FlowSheetId = flowSheet.Id,
+                        Discount = sheetItem["discount"].ToObjectWithDefault<decimal>(),
+                        Price = sheetItem["price"].ToObjectWithDefault<decimal>(),
+                    };
+                    await MaterialSellBackManager.InsertAsync(materialSellBack);
                 }
                 flowSheet.OrderStatus = "已退货";
             }

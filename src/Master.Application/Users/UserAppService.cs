@@ -79,7 +79,7 @@ namespace Master.Users
             }
             else
             {
-                user.IsActive = request.Datas["isActive"] == "1";//是否启用账号
+                user.IsActive = request.Datas["isActive"] == "true";//是否启用账号
 
                 if (user.IsActive)
                 {

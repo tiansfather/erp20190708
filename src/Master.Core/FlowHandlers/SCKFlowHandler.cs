@@ -21,6 +21,7 @@ namespace Master.FlowHandlers
         
         public MaterialManager MaterialManager { get; set; }
         public MaterialSellManager MaterialSellManager { get; set; }
+        public MaterialSellOutManager MaterialSellOutManager { get; set; }
         public StoreMaterialManager StoreMaterialManager { get; set; }
         public UnitManager UnitManager { get; set; }
         public override async Task Handle(FlowSheet flowSheet)
@@ -53,6 +54,18 @@ namespace Master.FlowHandlers
                 {
                     continue;
                 }
+                //建立销售出库记录
+                var materialSellOut = new MaterialSellOut()
+                {
+                    UnitId=unitId,
+                    FlowSheetId=sheetItem["flowSheetId"].ToObjectWithDefault<int>(),
+                    MaterialId=materialId,
+                    OutNumber=number,
+                    Price=sheetItem["price"].ToObjectWithDefault<decimal>(),
+                    Discount=sheetItem["discount"].ToObjectWithDefault<decimal>()
+                };
+                await MaterialSellOutManager.InsertAsync(materialSellOut);
+
                 materialSellIds.Add(sellMaterialId);
                 //加入待出库集合
                 if (!toOutMaterials.ContainsKey(materialId))
