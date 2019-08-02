@@ -1,0 +1,47 @@
+﻿
+@{
+	Layout = "~/Views/Shared/_LayoutDialog.cshtml";
+}
+<form class="layui-form layui-form-pane" id="app" v-cloak>
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户名</label>
+        <div class="layui-input-block">
+            <input type="text" v-model="currentItem.userName" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">密码</label>
+        <div class="layui-input-block">
+            <input type="password" v-model="currentItem.password" class="layui-input">
+        </div>
+    </div>
+</form>
+
+
+@section scripts{ 
+	<script>
+        var app;
+        var id=$.getUrlParam("data")
+		config.ready = function () {
+			
+			app = new Vue({
+				el: '#app',
+				data: {
+					currentItem: {}
+				},
+                mounted: function () {
+                    func.runAsync(abp.services.app.unit.getAccountInfo(id).done(res => this.currentItem.userName=res.userName));
+
+				}
+			})
+		}
+
+        function submit() {
+            func.runAsync(abp.services.app.unit.submitAccountInfo(id, app.currentItem.userName, app.currentItem.password).done(res => {
+                top.layer.msg("提交成功");
+                parent.layer.closeAll('iframe');
+                parent.config.reloadTable();
+            }))
+		}
+	</script>
+}

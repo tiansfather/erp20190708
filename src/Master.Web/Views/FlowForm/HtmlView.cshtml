@@ -7,7 +7,10 @@
     ViewData["Title"] = "单据查看";
 }
 <style>
-
+    @@page{
+        size:auto;
+        margin:0mm;
+    }
     @@media screen and (max-width: 480px) {
         .layui-table {
             word-break: keep-all;
@@ -23,7 +26,7 @@
         orderStatus:"@Html.Raw(ViewBag.OrderStatus)",
     };
 </script>
-<div id="header" v-cloak v-if="sheetId">
+<div id="header" v-cloak v-if="sheetId && _formOption.mode!='print'">
     <el-form :inline="true" size="mini">
         <el-form-item label="单号">
             <el-input v-model="sheetInfo.sheetSN" readonly="true"></el-input>
@@ -48,7 +51,7 @@
         </el-form-item>
     </el-form>
     <div style="text-align:right">
-        <button type="button" v-for="(btn,index) in sheetInfo.btns" class="layui-btn " :class="btn.buttonClass" @@click="action(btn)">{{btn.buttonName}}</button>
+        <button type="button" v-for="(btn,index) in sheetInfo.btns" class="layui-btn layui-btn-sm" :class="btn.buttonClass" @@click="action(btn)">{{btn.buttonName}}</button>
     </div>
     
     @*<button type="button" class="layui-btn layui-btn-danger" v-if="sheetInfo.sheetNature==0" style="float:right" @@click="revertSheet">冲红</button>*@
@@ -90,6 +93,10 @@
                     })
                 },
                 action: function (btn) {
+                    if (btn.buttonKey == "print") {
+                        window.open('/FlowSheet/SheetView?data=' + sheetId + "&mode=print");
+                        return;
+                    }
                     var confirmMsg = btn.confirmMsg || '确认提交?';
                     abp.message.confirm(confirmMsg, function () {
                         if (btn.buttonKey == "revert") {
@@ -106,7 +113,8 @@
                                 }))
                                 layer.close(index);
                             });
-                        } else {
+                        } 
+                        else {
                             func.runAsync(abp.services.app.flowSheet.action({ sheetId: sheetId, actionName: btn.buttonKey, formData: JSON.stringify(getFormData()) }).done(function () {
                                 parent.layer.msg("提交成功");
                                 parent.config.reloadTable();
@@ -122,6 +130,7 @@
                 if (sheetId) {
                     abp.services.app.flowSheet.getById(sheetId).done(function (data) {
                         that.sheetInfo = data;
+                        _formOption.sheetInfo = data;
                     })
                 }
 

@@ -61,19 +61,7 @@ namespace Master.EntityFrameworkCore.Seed.BaseData
         public override List<ModuleButton> GetModuleButtons()
         {
             List<ModuleButton> moduleButtons = new List<ModuleButton>();
-            //增加通过按钮
-            var VerifyModuleButton = new ModuleButton()
-            {
-                ButtonKey = "Verify",
-                ButtonName = "通过",
-                ButtonType = ButtonType.ForSelectedRows,
-                ButtonActionType = ButtonActionType.Ajax,
-                ButtonActionUrl = "abp.services.app.user.verifyUser",
-                RequirePermission=false,
-                ButtonClass = "",
-                Sort = 6
-            };
-            moduleButtons.Add(VerifyModuleButton);
+            
             //增加权限按钮(有账号的显示)
             var PermissionModuleButton = new ModuleButton()
             {

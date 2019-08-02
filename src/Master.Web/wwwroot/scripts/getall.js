@@ -1062,15 +1062,6 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
-    // action 'verifyUser'
-    abp.services.app.user.verifyUser = function(userIds, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/User/VerifyUser',
-        type: 'POST',
-        data: JSON.stringify(userIds)
-      }, ajaxParams));;
-    };
-
     // action 'getUserInfoByName'
     abp.services.app.user.getUserInfoByName = function(name, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -1222,6 +1213,22 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/Unit/SubmitInvoice' + abp.utils.buildQueryString([{ name: 'id', value: id }]) + '',
         type: 'POST',
         data: JSON.stringify(unitInvoice)
+      }, ajaxParams));;
+    };
+
+    // action 'getAccountInfo'
+    abp.services.app.unit.getAccountInfo = function(id, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Unit/GetAccountInfo' + abp.utils.buildQueryString([{ name: 'id', value: id }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'submitAccountInfo'
+    abp.services.app.unit.submitAccountInfo = function(id, userName, password, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Unit/SubmitAccountInfo' + abp.utils.buildQueryString([{ name: 'id', value: id }, { name: 'userName', value: userName }, { name: 'password', value: password }]) + '',
+        type: 'POST'
       }, ajaxParams));;
     };
 

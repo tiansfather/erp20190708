@@ -6,6 +6,7 @@ using Master.Module;
 using Master.Module.Attributes;
 using Master.MultiTenancy;
 using Master.Organizations;
+using Master.Units;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
@@ -93,6 +94,9 @@ namespace Master.Authentication
         public virtual Organization Organization { get; set; }
         [Column(TypeName ="json")]
         public JsonObject<IDictionary<string, object>> Property { get; set; }
+
+        public int? UnitId { get; set; }
+        public virtual Unit Unit { get; set; }
 
         #region 非绑定数据
         /// <summary>

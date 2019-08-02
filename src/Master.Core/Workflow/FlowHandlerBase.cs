@@ -108,6 +108,13 @@ namespace Master.WorkFlow
         public virtual async Task<IEnumerable<ModuleButton>> GetFlowBtns(FlowSheet flowSheet)
         {
             var result = new List<ModuleButton>();
+            //加入打印按钮
+            result.Add(new ModuleButton()
+            {
+                ButtonKey = "print",
+                ButtonName = "打印",
+                ButtonClass = "layui-btn-normal"
+            });
             if (flowSheet.SheetNature == SheetNature.正单)
             {
                 //加入冲红按钮

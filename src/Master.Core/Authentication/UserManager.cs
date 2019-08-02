@@ -74,6 +74,25 @@ namespace Master.Authentication
         }
         #endregion
 
+        public override async Task ValidateEntity(User entity)
+        {
+            if (string.IsNullOrEmpty(entity.UserName) )
+            {
+                throw new UserFriendlyException(L("用户名不能为空"));
+            }
+
+            //重名验证
+            if (entity.Id > 0 && await Repository.CountAsync(o => (o.UserName == entity.UserName ) && o.Id != entity.Id && o.TenantId==entity.TenantId) > 0)
+            {
+                throw new UserFriendlyException(L("相同用户名已存在"));
+            }
+            if (entity.Id == 0 && await Repository.CountAsync(o => (o.UserName == entity.UserName ) && o.TenantId == entity.TenantId) > 0)
+            {
+                throw new UserFriendlyException(L("相同用户名已存在"));
+            }
+            await base.ValidateEntity(entity);
+        }
+
         #region 角色
         public virtual async Task SetRoles(User user, int[] roleIds)
         {

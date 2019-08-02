@@ -15,6 +15,10 @@ namespace Master.Session.Dto
         public string UserName { get; set; }
 
         public string HomeUrl { get; set; }
+        /// <summary>
+        /// 代理商ID
+        /// </summary>
+        public int? UnitId { get; set; }
 
         public List<string> RoleNames { get; set; } = new List<string>();
         public List<string> RoleDisplayNames { get; set; } = new List<string>();

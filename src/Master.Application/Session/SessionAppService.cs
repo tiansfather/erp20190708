@@ -61,12 +61,12 @@ namespace Master.Session
                 var user = await GetCurrentUserAsync();
                 output.User = ObjectMapper.Map<UserLoginInfoDto>(user);
                 //获取用户的角色
-                var roleNameList = (from userrole in _userRoleRepository.GetAll()
-                                    join role in _roleRepository.GetAll() on userrole.RoleId equals role.Id
-                                    where userrole.UserId == user.Id
-                                    select new { role.DisplayName ,role.Name}).ToList();
-                output.User.RoleNames = roleNameList.Select(o=>o.Name).ToList();
-                output.User.RoleDisplayNames = roleNameList.Select(o => o.DisplayName).ToList();
+                //var roleNameList = (from userrole in _userRoleRepository.GetAll()
+                //                    join role in _roleRepository.GetAll() on userrole.RoleId equals role.Id
+                //                    where userrole.UserId == user.Id
+                //                    select new { role.DisplayName ,role.Name}).ToList();
+                //output.User.RoleNames = roleNameList.Select(o=>o.Name).ToList();
+                //output.User.RoleDisplayNames = roleNameList.Select(o => o.DisplayName).ToList();
                 //获取用户部门
                 //var staff = await _staffRepository.FirstOrDefaultAsync(o => o.UserId == user.Id);
                 //if (staff != null)

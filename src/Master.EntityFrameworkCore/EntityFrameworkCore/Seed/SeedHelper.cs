@@ -135,6 +135,42 @@ namespace Master.EntityFrameworkCore.Seed
                 context.UserRole.Add(new UserRole(tenantId, adminUser.Id, adminRole.Id));
                 context.SaveChanges();
             }
+
+            //添加代理商角色
+            var unitRole = context.Role.IgnoreQueryFilters().FirstOrDefault(r => r.TenantId == tenantId && r.Name == StaticRoleNames.Tenants.Unit);
+            if (unitRole == null)
+            {
+                unitRole = context.Role.Add(new Role(tenantId, StaticRoleNames.Tenants.Unit, StaticRoleNames.Tenants.Unit) { IsStatic = true }).Entity;
+                context.SaveChanges();
+            }
+            // 代理商角色的权限
+
+            grantedPermissions = context.Permission.IgnoreQueryFilters()
+                .OfType<RolePermissionSetting>()
+                .Where(p => p.TenantId == tenantId && p.RoleId == unitRole.Id)
+                .Select(p => p.Name)
+                .ToList();
+
+            using (var provider = IocManager.Instance.ResolveAsDisposable<IPermissionManager>())
+            {
+                var permissionNames = new List<string>() { "Menu.Sell.Tenancy.SDD", "Menu.Sell.Tenancy.SDDSheet", "Menu.Sell.Tenancy.SDR", "Menu.Sell.Tenancy.SDRSheet" };
+                permissionNames = permissionNames.Where(p => !grantedPermissions.Contains(p)).ToList();
+
+
+                if (permissionNames.Any())
+                {
+                    context.Permission.AddRange(
+                        permissionNames.Select(permission => new RolePermissionSetting
+                        {
+                            TenantId = tenantId,
+                            Name = permission,
+                            IsGranted = true,
+                            RoleId = unitRole.Id
+                        })
+                    );
+                    context.SaveChanges();
+                }
+            }
         }
 
         private static void CreateDefaultTenant(MasterDbContext context)

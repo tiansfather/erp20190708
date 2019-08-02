@@ -73,6 +73,7 @@ namespace Master.Roles
                     Creator =o.CreatorUser==null?"":o.CreatorUser.Name,
                     CreationTime = o.CreationTime.ToString("yyyy-MM-dd HH:mm"),
                     o.DisplayName,
+                    o.Name,
                     o.IsStatic
                 }).ToListAsync();
 

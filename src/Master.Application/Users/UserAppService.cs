@@ -181,7 +181,7 @@ namespace Master.Users
         public virtual async Task<object> GetCountSummary()
         {
             var manager = Manager as UserManager;
-            var query = manager.GetFilteredQuery();
+            var query = manager.GetFilteredQuery().Where(o=>o.UnitId==null);
             var inJobCount = await query.Where(o => o.JobDateEnd == null && (o.Status==null || !o.Status.Contains(User.Status_NotVerified))).CountAsync();
             var offJobCount = await query.Where(o => o.JobDateEnd != null && (o.Status == null || !o.Status.Contains(User.Status_NotVerified))).CountAsync();
             var accountCount = await query.Where(o => o.IsActive && (o.Status == null || !o.Status.Contains(User.Status_NotVerified))).CountAsync();
@@ -337,20 +337,7 @@ namespace Master.Users
                 await manager.BindExternalLogin(user, userLoginInfo);
             }
         }
-        /// <summary>
-        /// 审核用户
-        /// </summary>
-        /// <param name="userIds"></param>
-        /// <returns></returns>
-        public virtual async Task VerifyUser(IEnumerable<long> userIds)
-        {
-            var users = await Manager.GetListByIdsAsync(userIds);
-            foreach(var user in users)
-            {
-                user.ToBeVerified = false;
-                user.IsActive = true;//审核后自动启用账号
-            }
-        }
+        
         /// <summary>
         /// 通过姓名获取用户相关信息
         /// </summary>

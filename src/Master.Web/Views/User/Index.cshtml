@@ -35,7 +35,7 @@
                     <input type="text" id="name-input" class="layui-input" style="width: 150px; display: inline-block;height: 30px;vertical-align: middle;" placeholder="输入名字检索" />
                     <button class="layui-btn  layui-btn-sm" onclick="config.reloadTable()">搜索</button>
                 </div>
-                <vc:module-table param="@(new ModuleTableViewParam() {ID="User",ModuleKey=nameof(Master.Authentication.User),Height="full-200",Where="JobDateEnd=null"})"></vc:module-table>
+                <vc:module-table param="@(new ModuleTableViewParam() {ID="User",ModuleKey=nameof(Master.Authentication.User),Height="full-200",Where="JobDateEnd=null and UnitId=null"})"></vc:module-table>
             </div>
         </div>
     </div>
@@ -117,7 +117,7 @@
                     where = { where: 'JobDateEnd!=null ' };
                     break;
                 case 2:
-                    where = { where: '' };
+                    where = { where: '1=1' };
                     break;
                 case 3:
                     where = { where: 'IsActive=true ' };
@@ -126,7 +126,8 @@
             var value = $('#name-input').val();
             if (value) {
                 where.where += " and Name.Contains(\"" + value + "\")"
-            }
+        }
+        where.where += " and unitId=null";
         where.searchCondition = func.buildSearchCondition('User');
         //where_cache["User"].where = where.where;
             return where;

@@ -17,6 +17,7 @@ namespace Master.Authentication
         public static class Tenants
         {
             public const string Admin = "Admin";
+            public const string Unit = "Unit";
         }
     }
 }

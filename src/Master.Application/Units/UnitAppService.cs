@@ -1,6 +1,8 @@
 ﻿using Abp.Authorization;
 using Abp.AutoMapper;
 using Abp.Extensions;
+using Abp.UI;
+using Master.Authentication;
 using Master.Entity;
 using Master.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +18,8 @@ namespace Master.Units
     public class UnitAppService : ModuleDataAppServiceBase<Unit, int>
     {
         public BaseTreeManager BaseTreeManager { get; set; }
+        public UserManager UserManager { get; set; }
+        public RoleManager RoleManager { get; set; }
 
         /// <summary>
         /// 通过往来单位名称获取往来单位
@@ -109,6 +113,56 @@ namespace Master.Units
             var unit = await Manager.GetByIdAsync(id);
             unit.UnitInvoice = unitInvoice;
             await Manager.UpdateAsync(unit);
+        }
+        #endregion
+
+        #region 账户
+        public virtual async Task<object> GetAccountInfo(int id){
+            var user = await UserManager.GetAll().Where(o => o.UnitId == id).FirstOrDefaultAsync();
+            return new
+            {
+                user?.UserName
+            };
+        }
+        public virtual async Task SubmitAccountInfo(int id,string userName,string password)
+        {
+            var users = await UserManager.GetAll().Where(o => o.UnitId == id).ToListAsync();
+            if (users.Count==0)
+            {
+                var unitRole = await RoleManager.GetAll().Where(o => o.Name == StaticRoleNames.Tenants.Unit).FirstOrDefaultAsync();
+                //新增用户
+                var newNames = new string[] { userName, userName + "1", userName + "2", userName + "3" };
+                foreach (var newName in newNames)
+                {
+                    var user = new User()
+                    {
+                        UserName = newName,
+                        Name = newName,
+                        IsActive = true,
+                        TenantId = AbpSession.TenantId,
+                        UnitId = id
+                    };
+                    await UserManager.InsertAsync(user);
+                    await CurrentUnitOfWork.SaveChangesAsync();
+                    await UserManager.SetPassword(user, password);
+                    await UserManager.SetRoles(user, new int[] { unitRole.Id });
+                }
+            }
+            else
+            {
+                //修改
+                if (users[0].UserName != userName)
+                {
+                    throw new UserFriendlyException("暂不支持修改往来单位账号");
+                }
+                else
+                {
+                    foreach(var user in users)
+                    {
+                        await UserManager.SetPassword(user, password);
+                    }
+                }
+            }
         }
         #endregion
     }

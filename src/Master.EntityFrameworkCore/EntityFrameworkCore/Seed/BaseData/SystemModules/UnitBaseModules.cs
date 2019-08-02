@@ -15,6 +15,19 @@ namespace Master.EntityFrameworkCore.Seed.BaseData.SystemModules
         public override List<ModuleButton> GetModuleButtons()
         {
             var btns = new List<ModuleButton>();
+            //增加账号按钮
+            var AccountNumberModuleButton = new ModuleButton()
+            {
+                ButtonKey = "Account",
+                ButtonName = "账号",
+                ButtonType = ButtonType.ForSingleRow,
+                ButtonActionType = ButtonActionType.Form,
+                ButtonActionUrl = $"/Home/Show?name=../Unit/Account",
+                ButtonActionParam = "{\"area\": [\"60%\", \"60%\"]}",
+                ButtonClass = "",
+                Sort = 6
+            };
+            btns.Add(AccountNumberModuleButton);
             btns.Add(new ModuleButton()
             {
                 ButtonKey = "Invoice",
