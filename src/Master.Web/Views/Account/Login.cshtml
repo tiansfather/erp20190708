@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="/assets/layuiadmin/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="/assets/layuiadmin/style/admin.css" media="all">
     <link rel="stylesheet" href="/assets/layuiadmin/style/login.css" media="all">
+    <link href="~/lib/swiper/swiper.min.css" rel="stylesheet" />
     <script src="/assets/layuiadmin/layui/layui.js" asp-append-version="true"></script>
     <script src="~/view-resources/Views/_Bundles/base.min.js" asp-append-version="true"></script>
     <script src="~/view-resources/Views/_Bundles/abp.min.js" asp-append-version="true"></script>
@@ -37,6 +38,7 @@
     @*<script src="~/AbpServiceProxies/GetAll?v=@(AppTimes.StartupTime.Ticks)" type="text/javascript"></script>*@
     <script src="~/AbpScripts/GetScripts" type="text/javascript"></script>
     @*<script>if (window.top !== window.self) { window.top.location = window.location; }</script>*@
+    <script src="~/lib/swiper/swiper.min.js"></script>
     <script>
         layui.config({
             base: config.layuiBase //静态资源所在路径
@@ -61,184 +63,195 @@
             background: #214D90 url(~/Views/MES/images/bg3.jpg);
             background-size: cover;
         }*/
+        .swiper-container {
+            width: 1240px;
+            height: 555px;
+        }
     </style>
 </head>
-<body style="background:#f2f2f2">
-
-    <div class="layadmin-user-login layadmin-user-display-show" id="LAY-user-login">
-
-        <div class="layadmin-user-login-main">
-            <div class="layadmin-user-login-box layadmin-user-login-header">
-                <h2>@softTitle</h2>
-                @*<p>@softTitle</p>*@
-            </div>
-            <div class="layadmin-user-login-box layadmin-user-login-body layui-form">
-                <input type="hidden" name="tenancyName" value="Default" />
-                <input type="hidden" name="returnurl" value="/" />
-                <div class="layui-form-item">
-                    <label class="layadmin-user-login-icon layui-icon layui-icon-username" for="LAY-user-login-username"></label>
-                    <input type="text" name="username" id="LAY-user-login-username" lay-verify="required" placeholder="用户名" class="layui-input">
+<body style="background:#f2f2f2;padding-top:calc(50vh - 320px)">
+    <div id="app">
+        <div style="width:100%;height:555px;background:#f5f1e8;">
+            <div style="width:1240px;position:relative;margin:0 auto;">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide" v-for="(item,index) in homepics"><img :src="item.filepath" width="900" height="555" /></div>
+                    </div>
+                    <!-- Add Pagination -->
+                    <div class="swiper-pagination"></div>
                 </div>
-                <div class="layui-form-item">
-                    <label class="layadmin-user-login-icon layui-icon layui-icon-password" for="LAY-user-login-password"></label>
-                    <input type="password" name="password" id="LAY-user-login-password" lay-verify="required" placeholder="密码" class="layui-input">
-                </div>
-                <div class="layui-form-item">
-                    <div class="layui-row">
-                        <div class="layui-col-xs7">
-                            <label class="layadmin-user-login-icon layui-icon layui-icon-vercode" for="LAY-user-login-vercode"></label>
-                            <input type="text" name="verifycode" id="LAY-user-login-vercode" lay-verify="required" placeholder="图形验证码" class="layui-input">
+                <div class="layadmin-user-login layadmin-user-display-show" id="LAY-user-login" style="padding:0;position:absolute;right:0;left:auto;width:350px;bottom: 0;background: rgba(244,244,244,0.8);z-index:100001">
+
+                    <div class="layadmin-user-login-main">
+                        <div class="layadmin-user-login-box layadmin-user-login-header">
+                            <h2>系统登录</h2>
+                            @*<p>@softTitle</p>*@
                         </div>
-                        <div class="layui-col-xs5">
-                            <div style="margin-left: 10px;">
-                                <img :src="verifyCodeUrl" class="layadmin-user-login-codeimg" id="LAY-user-get-vercode" @@click="reloadVerifyCode" style="cursor:pointer">
+                        <div class="layadmin-user-login-box layadmin-user-login-body layui-form">
+                            <input type="hidden" name="tenancyName" value="Default" />
+                            <input type="hidden" name="returnurl" value="/" />
+                            <div class="layui-form-item">
+                                <label class="layadmin-user-login-icon layui-icon layui-icon-username" for="LAY-user-login-username"></label>
+                                <input type="text" name="username" id="LAY-user-login-username" lay-verify="required" placeholder="用户名" class="layui-input">
                             </div>
+                            <div class="layui-form-item">
+                                <label class="layadmin-user-login-icon layui-icon layui-icon-password" for="LAY-user-login-password"></label>
+                                <input type="password" name="password" id="LAY-user-login-password" lay-verify="required" placeholder="密码" class="layui-input">
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-row">
+                                    <div class="layui-col-xs7">
+                                        <label class="layadmin-user-login-icon layui-icon layui-icon-vercode" for="LAY-user-login-vercode"></label>
+                                        <input type="text" name="verifycode" id="LAY-user-login-vercode" lay-verify="required" placeholder="图形验证码" class="layui-input">
+                                    </div>
+                                    <div class="layui-col-xs5">
+                                        <div style="margin-left: 10px;">
+                                            <img :src="verifyCodeUrl" class="layadmin-user-login-codeimg" id="LAY-user-get-vercode" @@click="reloadVerifyCode" style="cursor:pointer">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-form-item" style="margin-bottom: 20px;display:none">
+                                <input type="checkbox" name="remember" lay-skin="primary" title="记住密码">
+                                <a href="forget.html" class="layadmin-user-jump-change layadmin-link" style="margin-top: 7px;">忘记密码？</a>
+                            </div>
+                            <div class="layui-form-item">
+                                <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="LAY-user-login-submit" id="btnSubmit">@L("登录")</button>
+                            </div>
+
                         </div>
                     </div>
+
+                    <div class="layui-trans layadmin-user-login-footer">
+
+
+                    </div>
+
+
+
                 </div>
-                <div class="layui-form-item" style="margin-bottom: 20px;display:none">
-                    <input type="checkbox" name="remember" lay-skin="primary" title="记住密码">
-                    <a href="forget.html" class="layadmin-user-jump-change layadmin-link" style="margin-top: 7px;">忘记密码？</a>
-                </div>
-                <div class="layui-form-item">
-                    <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="LAY-user-login-submit" id="btnSubmit">@L("登录")</button>
-                </div>
-                
             </div>
         </div>
 
-        <div class="layui-trans layadmin-user-login-footer">
-
-
-        </div>
 
 
 
     </div>
 
 
+
     <script>
-		var app;
+        var app;
 
 
-		layui.use(config.layuiModules, function () {
-			var $ = layui.$
-				, setter = layui.setter
-				, admin = layui.admin
-				, form = layui.form
-				, router = layui.router()
-				, search = router.search;
+        layui.use(config.layuiModules, function () {
 
-			app = new Vue({
-				el: '#LAY-user-login',
-				data: {
+
+
+            var $ = layui.$
+                , setter = layui.setter
+                , admin = layui.admin
+                , form = layui.form
+                , router = layui.router()
+                , search = router.search;
+
+            app = new Vue({
+                el: '#app',
+                data: {
                     providers: [],
-                    verifyCodeUrl:'/VerifyCode/NumberVerifyCode'
-				},
-				methods: {
-					
+                    verifyCodeUrl: '/VerifyCode/NumberVerifyCode',
+                },
+                computed: {
+                    homepics: function () {
+                        var homePicStr = abp.setting.values.HomPics;
+                        return homePicStr ? JSON.parse(homePicStr) : [];
+                    }
+                },
+                methods: {
+
                     reloadVerifyCode: function () {
                         this.verifyCodeUrl = '/VerifyCode/NumberVerifyCode?' + Math.random();
                     },
-					showAuthUrl: function (provider) {
-						layer.open({
-							type: 2,
-							title: '登录',
-							shade: 0.8,
-							area: ['400px', '400px'],
-							content: provider.authUrl
-						});
-					}
-				},
-				mounted: function () {
-				}
-			})
+                    showAuthUrl: function (provider) {
+                        layer.open({
+                            type: 2,
+                            title: '登录',
+                            shade: 0.8,
+                            area: ['400px', '400px'],
+                            content: provider.authUrl
+                        });
+                    }
+                },
+                mounted: function () {
+                    var mySwiper = new Swiper('.swiper-container', {
+                        loop: true, // 循环模式选项
+                        speed:1000,
+                        autoplay: true,
+                        pagination: {
+                            el: '.swiper-pagination',
+                          },
+                    })
+                }
+            })
 
 
-			form.render();
-			$('input[type=text]:first-child').focus();
-			//提交
-			form.on('submit(LAY-user-login-submit)', function (obj) {
-				console.log(obj);
+            form.render();
+            $('input[type=text]:first-child').focus();
+            //提交
+            form.on('submit(LAY-user-login-submit)', function (obj) {
+                console.log(obj);
 
-				abp.ui.setBusy(
-					$('body'),
+                abp.ui.setBusy(
+                    $('body'),
 
-					abp.ajax({
-						contentType: 'application/x-www-form-urlencoded',
-						url: "/api/tokenauth/authenticate",
-						data: obj.field,
-						success: function (data) {
-							console.log(data);
-							var returnUrl = $("input[name='returnUrl']").val();
+                    abp.ajax({
+                        contentType: 'application/x-www-form-urlencoded',
+                        url: "/api/tokenauth/authenticate",
+                        data: obj.field,
+                        success: function (data) {
+                            console.log(data);
+                            var returnUrl = $("input[name='returnUrl']").val();
                             $.cookie("token", data.encryptedAccessToken, { path: '/' });
                             $.removeCookie("simulateLogin", { path: '/' });
-							layer.msg('登入成功', {
-								icon: 1
-								, time: 1000
-							}, function () {
-								location.href = $("input[name='returnurl']").val();
-							})
+                            layer.msg('登入成功', {
+                                icon: 1
+                                , time: 1000
+                            }, function () {
+                                location.href = $("input[name='returnurl']").val();
+                            })
 
-						}
-					})
-				);
-				//请求登入接口
-				//admin.req({
-				//    url: "/Account/Login" //实际使用请改成服务端真实接口
+                        }
+                    })
+                );
+                //请求登入接口
+                //admin.req({
+                //    url: "/Account/Login" //实际使用请改成服务端真实接口
 
-				//    ,type:"post"
-				//    , data: obj.field
-				//    , done: function (res) {
+                //    ,type:"post"
+                //    , data: obj.field
+                //    , done: function (res) {
 
-				//        //请求成功后，写入 access_token
-				//        layui.data(setter.tableName, {
-				//            key: setter.request.tokenName
-				//            , value: res.data.access_token
-				//        });
+                //        //请求成功后，写入 access_token
+                //        layui.data(setter.tableName, {
+                //            key: setter.request.tokenName
+                //            , value: res.data.access_token
+                //        });
 
-				//        //登入成功的提示与跳转
-				//        layer.msg('登入成功', {
-				//            offset: '15px'
-				//            , icon: 1
-				//            , time: 1000
-				//        }, function () {
-				//            location.href = '../'; //后台主页
-				//        });
-				//    }
-				//});
+                //        //登入成功的提示与跳转
+                //        layer.msg('登入成功', {
+                //            offset: '15px'
+                //            , icon: 1
+                //            , time: 1000
+                //        }, function () {
+                //            location.href = '../'; //后台主页
+                //        });
+                //    }
+                //});
 
-			});
+            });
 
 
-		});
-		//第三方登录接口
-		function doExternalAuthentication(authModel) {
-			console.log(authModel);
-			layer.closeAll("iframe");
-			abp.ui.setBusy(
-				$('body'),
-
-				abp.ajax({
-					contentType: "application/x-www-form-urlencoded",
-					url: "/api/tokenauth/externalAuthenticate",
-					data: authModel,
-					success: function (data) {
-						console.log(data);
-						var returnUrl = $("input[name='returnUrl']").val();
-                        $.cookie("token", data.encryptedAccessToken, { path: '/' });
-                        $.removeCookie("simulateLogin", { path: '/' });
-						layer.msg('登入成功', {
-							icon: 1
-							, time: 1000
-						}, function () {
-							location.href = $("input[name='returnurl']").val();
-						})
-
-					}
-				})
-			);
-        }
+        });
 
 
         $(document).on("keyup", function (data) {

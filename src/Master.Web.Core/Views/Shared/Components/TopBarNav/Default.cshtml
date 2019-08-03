@@ -17,8 +17,9 @@
     @foreach (var item in Model)
     {
         <li class="layui-nav-item  menuitem" lay-unselect>
-            <a href="javascript:void(0)" tips="@L(item.DisplayName)" onclick="index.showMenu('@item.Name')" menuName="@item.Name">
-                <i class="@item.Icon"></i>
+            <a href="javascript:void(0)" onclick="index.showMenu('@item.Name')" menuName="@item.Name">
+                @*<i class="@item.Icon"></i>*@
+                @L(item.DisplayName)
             </a>
         </li>
 

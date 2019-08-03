@@ -6,103 +6,122 @@
     "order": 2,
     "items": [
       {
-        "name": "Sell.Tenancy.SDD",
-        "displayName": "票劵商品订货",
+        "name": "Sell.Tenancy.Wrapper1",
+        "displayName": "票劵订货",
         "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../FlowSheet/SDD/Add",
-        "order": 1
+        "order": 1,
+        "items": [
+          {
+            "name": "Sell.Tenancy.SDD",
+            "displayName": "票劵商品订货",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../FlowSheet/SDD/Add",
+            "order": 1
+          },
+          {
+            "name": "Sell.Tenancy.SDDSheet",
+            "displayName": "票劵订单查询",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../FlowSheet/SDD/Index",
+            "order": 3
+          }
+        ]
       },
       {
-        "name": "Sell.Tenancy.SDDCart",
-        "displayName": "票劵购物车",
+        "name": "Sell.Tenancy.Wrapper2",
+        "displayName": "票劵出库|退库",
         "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../FlowSheet/SDD/Cart",
-        "order": 2
+        "order": 1,
+        "items": [
+          {
+            "name": "Sell.Tenancy.SCK",
+            "displayName": "票劵商品出库",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../FlowSheet/SCK/Add",
+            "order": 4
+          },
+          {
+            "name": "Sell.Tenancy.SCKSheet",
+            "displayName": "票劵出库单查询",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../FlowSheet/SCK/Index",
+            "order": 5
+          },
+          {
+            "name": "Sell.Tenancy.SRJ",
+            "displayName": "票劵商品退货",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../FlowSheet/SRJ/Add",
+            "order": 6
+          },
+          {
+            "name": "Sell.Tenancy.PRRSheet",
+            "displayName": "票劵退库单查询",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../FlowSheet/SRJ/Index",
+            "order": 7
+          },
+          {
+            "name": "Sell.Tenancy.BackCardCheck",
+            "displayName": "退货卡号检查",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../Material/BackCardCheck",
+            "order": 8
+          }
+        ]
       },
       {
-        "name": "Sell.Tenancy.SDDSheet",
-        "displayName": "票劵订单查询",
+        "name": "Sell.Tenancy.Wrapper3",
+        "displayName": "实物订货",
         "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../FlowSheet/SDD/Index",
-        "order": 3
+        "order": 1,
+        "items": [
+          {
+            "name": "Sell.Tenancy.SDR",
+            "displayName": "实物商品订货",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../FlowSheet/SDR/Add",
+            "order": 9
+          },
+          {
+            "name": "Sell.Tenancy.SDRVerify",
+            "displayName": "实物订单审核",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../FlowSheet/SDR/Verify",
+            "order": 11
+          },
+          {
+            "name": "Sell.Tenancy.SDRSheet",
+            "displayName": "实物订单查询",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../FlowSheet/SDR/Index",
+            "order": 12
+          }
+        ]
       },
       {
-        "name": "Sell.Tenancy.SCK",
-        "displayName": "票劵商品出库",
+        "name": "Sell.Tenancy.Wrapper4",
+        "displayName": "实物出库|退库",
         "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../FlowSheet/SCK/Add",
-        "order": 4
-      },
-      {
-        "name": "Sell.Tenancy.SCKSheet",
-        "displayName": "票劵出库单查询",
-        "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../FlowSheet/SCK/Index",
-        "order": 5
-      },
-      {
-        "name": "Sell.Tenancy.SRJ",
-        "displayName": "票劵商品退货",
-        "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../FlowSheet/SRJ/Add",
-        "order": 6
-      },
-      {
-        "name": "Sell.Tenancy.PRRSheet",
-        "displayName": "票劵退库单查询",
-        "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../FlowSheet/SRJ/Index",
-        "order": 7
-      },
-      {
-        "name": "Sell.Tenancy.BackCardCheck",
-        "displayName": "退货卡号检查",
-        "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../Material/BackCardCheck",
-        "order": 8
-      },
-      {
-        "name": "Sell.Tenancy.SDR",
-        "displayName": "实物商品订货",
-        "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../FlowSheet/SDR/Add",
-        "order": 9
-      },
-      {
-        "name": "Sell.Tenancy.SDRCart",
-        "displayName": "实物购物车",
-        "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../FlowSheet/SDR/Cart",
-        "order": 10
-      },
-      {
-        "name": "Sell.Tenancy.SDRVerify",
-        "displayName": "实物订单审核",
-        "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../FlowSheet/SDR/Verify",
-        "order": 11
-      },
-      {
-        "name": "Sell.Tenancy.SDRSheet",
-        "displayName": "实物订单查询",
-        "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../FlowSheet/SDR/Index",
-        "order": 12
-      },
-      {
-        "name": "Sell.Tenancy.SDRSend",
-        "displayName": "实物订单发货",
-        "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../FlowSheet/SDR/Send",
-        "order": 13
-      },
-      {
-        "name": "Sell.Tenancy.SDRBack",
-        "displayName": "实物订单退货",
-        "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../FlowSheet/SDR/Back",
-        "order": 14
+        "order": 1,
+        "items": [
+          {
+            "name": "Sell.Tenancy.SDRSend",
+            "displayName": "实物订单发货",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../FlowSheet/SDR/Send",
+            "order": 13
+          },
+          {
+            "name": "Sell.Tenancy.SDRBack",
+            "displayName": "实物订单退货",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../FlowSheet/SDR/Back",
+            "order": 14
+          }
+        ]
       }
+
     ]
   },
   {
@@ -148,82 +167,99 @@
     "order": 10,
     "items": [
       {
-        "name": "Storage.Tenancy.StoreMaterial",
-        "displayName": "库存查看",
+        "name": "Storage.Tenancy.Wrapper1",
+        "displayName": "库存管理",
         "icon": "iconfont icon-celve",
-        "url": "/Material/StoreMaterial",
-        "order": 1
+        "order": 1,
+        "items": [
+          {
+            "name": "Storage.Tenancy.StoreMaterial",
+            "displayName": "库存查看",
+            "icon": "iconfont icon-celve",
+            "url": "/Material/StoreMaterial",
+            "order": 1
+          },
+          {
+            "name": "Storage.Tenancy.StoreMaterialHistory",
+            "displayName": "库存变动明细",
+            "icon": "iconfont icon-m-fileFormat",
+            "url": "/Material/History",
+            "order": 2
+          },
+          {
+            "name": "Storage.Tenancy.ICH",
+            "displayName": "报损报溢",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../FlowSheet/ICH/Add",
+            "order": 3
+          },
+          {
+            "name": "Storage.Tenancy.ICHVerify",
+            "displayName": "报损报溢审核",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../FlowSheet/ICH/Verify",
+            "order": 4
+          },
+          {
+            "name": "Storage.Tenancy.ICHSheet",
+            "displayName": "报损报溢查询",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../FlowSheet/ICH/Index",
+            "order": 5
+          },
+          {
+            "name": "Storage.Tenancy.IAL",
+            "displayName": "仓库调拨",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../FlowSheet/IAL/Add",
+            "order": 6
+          },
+          {
+            "name": "Storage.Tenancy.IALSheet",
+            "displayName": "调拨单查询",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../FlowSheet/IAL/Index",
+            "order": 7
+          }
+        ]
       },
       {
-        "name": "Storage.Tenancy.StoreMaterialHistory",
-        "displayName": "库存变动明细",
-        "icon": "iconfont icon-m-fileFormat",
-        "url": "/Material/History",
-        "order": 2
-      },
-      {
-        "name": "Storage.Tenancy.ICH",
-        "displayName": "报损报溢",
+        "name": "Storage.Tenancy.Wrapper2",
+        "displayName": "装配管理",
         "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../FlowSheet/ICH/Add",
-        "order": 3
-      },
-      {
-        "name": "Storage.Tenancy.ICHVerify",
-        "displayName": "报损报溢审核",
-        "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../FlowSheet/ICH/Verify",
-        "order": 4
-      },
-      {
-        "name": "Storage.Tenancy.ICHSheet",
-        "displayName": "报损报溢查询",
-        "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../FlowSheet/ICH/Index",
-        "order": 5
-      },
-      {
-        "name": "Storage.Tenancy.IAL",
-        "displayName": "仓库调拨",
-        "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../FlowSheet/IAL/Add",
-        "order": 6
-      },
-      {
-        "name": "Storage.Tenancy.IALSheet",
-        "displayName": "调拨单查询",
-        "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../FlowSheet/IAL/Index",
-        "order": 7
-      },
-      {
-        "name": "Storage.Tenancy.IAS",
-        "displayName": "散货装配",
-        "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../FlowSheet/IAS/Add",
-        "order": 8
-      },
-      {
-        "name": "Storage.Tenancy.IASSheet",
-        "displayName": "装配单查询",
-        "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../FlowSheet/IAS/Index",
-        "order": 9
-      },
-      {
-        "name": "Storage.Tenancy.IBK",
-        "displayName": "成品拆散",
-        "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../FlowSheet/IBK/Add",
-        "order": 10
-      },
-      {
-        "name": "Storage.Tenancy.IBKSheet",
-        "displayName": "拆散单查询",
-        "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../FlowSheet/IBK/Index",
-        "order": 11
+        "order": 8,
+        "items": [
+          {
+            "name": "Storage.Tenancy.IAS",
+            "displayName": "散货装配",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../FlowSheet/IAS/Add",
+            "order": 8
+          },
+          {
+            "name": "Storage.Tenancy.IASSheet",
+            "displayName": "装配单查询",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../FlowSheet/IAS/Index",
+            "order": 9
+          },
+          {
+            "name": "Storage.Tenancy.IBK",
+            "displayName": "成品拆散",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../FlowSheet/IBK/Add",
+            "order": 10
+          },
+          {
+            "name": "Storage.Tenancy.IBKSheet",
+            "displayName": "拆散单查询",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../FlowSheet/IBK/Index",
+            "order": 11
+          }
+        ]
       }
+
     ]
   },
   {
@@ -234,83 +270,112 @@
     "order": 20,
     "items": [
       {
-        "name": "Finance.Tenancy.SSK",
-        "displayName": "销售收款",
-        "icon": "iconfont icon-zongzhangjiqita",
-        "url": "/Home/Show?name=../FlowSheet/SSK/Add"
+        "name": "Finance.Tenancy.Wrapper1",
+        "displayName": "收款",
+        "order": 1,
+        "items": [
+          {
+            "name": "Finance.Tenancy.SSK",
+            "displayName": "销售收款",
+            "icon": "iconfont icon-zongzhangjiqita",
+            "url": "/Home/Show?name=../FlowSheet/SSK/Add"
+          },
+          {
+            "name": "Finance.Tenancy.SSKSheet",
+            "displayName": "销售收款单",
+            "icon": "iconfont icon-mingxizhang",
+            "url": "/Home/Show?name=../FlowSheet/SSK/Index"
+          },
+          {
+            "name": "Finance.Tenancy.OSK",
+            "displayName": "其它收款",
+            "icon": "iconfont icon-zongzhangjiqita",
+            "url": "/Home/Show?name=../FlowSheet/OSK/Add"
+          },
+          {
+            "name": "Finance.Tenancy.OSKSheet",
+            "displayName": "其它收款单",
+            "icon": "iconfont icon-mingxizhang",
+            "url": "/Home/Show?name=../FlowSheet/OSK/Index"
+          }
+        ]
       },
       {
-        "name": "Finance.Tenancy.SSKSheet",
-        "displayName": "销售收款单",
-        "icon": "iconfont icon-mingxizhang",
-        "url": "/Home/Show?name=../FlowSheet/SSK/Index"
+        "name": "Finance.Tenancy.Wrapper2",
+        "displayName": "付款",
+        "order": 2,
+        "items": [
+          {
+            "name": "Finance.Tenancy.PPY",
+            "displayName": "采购付款",
+            "icon": "iconfont icon-zongzhangjiqita",
+            "url": "/Home/Show?name=../FlowSheet/PPY/Add"
+          },
+          {
+            "name": "Finance.Tenancy.PPYSheet",
+            "displayName": "采购付款单",
+            "icon": "iconfont icon-mingxizhang",
+            "url": "/Home/Show?name=../FlowSheet/PPY/Index"
+          },
+          {
+            "name": "Finance.Tenancy.OPY",
+            "displayName": "其它付款",
+            "icon": "iconfont icon-zongzhangjiqita",
+            "url": "/Home/Show?name=../FlowSheet/OPY/Add"
+          },
+          {
+            "name": "Finance.Tenancy.OPYSheet",
+            "displayName": "其它付款单",
+            "icon": "iconfont icon-mingxizhang",
+            "url": "/Home/Show?name=../FlowSheet/OPY/Index"
+          }
+        ]
       },
       {
-        "name": "Finance.Tenancy.OSK",
-        "displayName": "其它收款",
-        "icon": "iconfont icon-zongzhangjiqita",
-        "url": "/Home/Show?name=../FlowSheet/OSK/Add"
+        "name": "Finance.Tenancy.Wrapper3",
+        "displayName": "其他",
+        "order": 3,
+        "items": [
+          {
+            "name": "Finance.Tenancy.CRR",
+            "displayName": "账户间调拨",
+            "icon": "iconfont icon-zongzhangjiqita",
+            "url": "/Home/Show?name=../FlowSheet/CRR/Add"
+          },
+          {
+            "name": "Finance.Tenancy.CRRSheet",
+            "displayName": "账户调拨单",
+            "icon": "iconfont icon-mingxizhang",
+            "url": "/Home/Show?name=../FlowSheet/CRR/Index"
+          }
+        ]
       },
       {
-        "name": "Finance.Tenancy.OSKSheet",
-        "displayName": "其它收款单",
-        "icon": "iconfont icon-mingxizhang",
-        "url": "/Home/Show?name=../FlowSheet/OSK/Index"
-      },
-      {
-        "name": "Finance.Tenancy.PPY",
-        "displayName": "采购付款",
-        "icon": "iconfont icon-zongzhangjiqita",
-        "url": "/Home/Show?name=../FlowSheet/PPY/Add"
-      },
-      {
-        "name": "Finance.Tenancy.PPYSheet",
-        "displayName": "采购付款单",
-        "icon": "iconfont icon-mingxizhang",
-        "url": "/Home/Show?name=../FlowSheet/PPY/Index"
-      },
-      {
-        "name": "Finance.Tenancy.OPY",
-        "displayName": "其它付款",
-        "icon": "iconfont icon-zongzhangjiqita",
-        "url": "/Home/Show?name=../FlowSheet/OPY/Add"
-      },
-      {
-        "name": "Finance.Tenancy.OPYSheet",
-        "displayName": "其它付款单",
-        "icon": "iconfont icon-mingxizhang",
-        "url": "/Home/Show?name=../FlowSheet/OPY/Index"
-      },
-      {
-        "name": "Finance.Tenancy.CRR",
-        "displayName": "账户间调拨",
-        "icon": "iconfont icon-zongzhangjiqita",
-        "url": "/Home/Show?name=../FlowSheet/CRR/Add"
-      },
-      {
-        "name": "Finance.Tenancy.CRRSheet",
-        "displayName": "账户调拨单",
-        "icon": "iconfont icon-mingxizhang",
-        "url": "/Home/Show?name=../FlowSheet/CRR/Index"
-      },
-      {
-        "name": "Finance.Tenancy.VoucherAdd",
-        "displayName": "凭证上传",
-        "icon": "iconfont icon-mingxizhang",
-        "url": "/Home/Show?name=../Voucher/Add"
-      },
-      {
-        "name": "Finance.Tenancy.Voucher",
-        "displayName": "凭证列表",
-        "icon": "iconfont icon-mingxizhang",
-        "url": "/Home/Show?name=../Voucher/Index"
-      },
-      {
-        "name": "Finance.Tenancy.FeeCheck",
-        "displayName": "支票查询",
-        "icon": "iconfont icon-mingxizhang",
-        "url": "/FeeCheck/Index"
+        "name": "Finance.Tenancy.Wrapper4",
+        "displayName": "票据",
+        "order": 4,
+        "items": [
+          {
+            "name": "Finance.Tenancy.VoucherAdd",
+            "displayName": "凭证上传",
+            "icon": "iconfont icon-mingxizhang",
+            "url": "/Home/Show?name=../Voucher/Add"
+          },
+          {
+            "name": "Finance.Tenancy.Voucher",
+            "displayName": "凭证列表",
+            "icon": "iconfont icon-mingxizhang",
+            "url": "/Home/Show?name=../Voucher/Index"
+          },
+          {
+            "name": "Finance.Tenancy.FeeCheck",
+            "displayName": "支票查询",
+            "icon": "iconfont icon-mingxizhang",
+            "url": "/FeeCheck/Index"
+          }
+        ]
       }
+
     ]
   },
   {
@@ -320,89 +385,114 @@
     "order": 21,
     "items": [
       {
-        "name": "Summary.Tenancy.SellSummary",
-        "displayName": "订货商品汇总",
+        "name": "Summary.Tenancy.Wrapper1",
+        "displayName": "销货",
         "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../Summary/SellSummary",
-        "order": 1
+        "order": 1,
+        "items": [
+          {
+            "name": "Summary.Tenancy.SellSummary",
+            "displayName": "订货商品汇总",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../Summary/SellSummary",
+            "order": 1
+          },
+          {
+            "name": "Summary.Tenancy.SellDetail",
+            "displayName": "订货商品明细",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../Summary/SellDetail",
+            "order": 2
+          },
+          {
+            "name": "Summary.Tenancy.SellOutSummary",
+            "displayName": "销售出库商品汇总",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../Summary/SellOutSummary",
+            "order": 3
+          },
+          {
+            "name": "Summary.Tenancy.SellOutDetail",
+            "displayName": "销售出库商品明细",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../Summary/SellOutDetail",
+            "order": 4
+          },
+          {
+            "name": "Summary.Tenancy.SellBackDetail",
+            "displayName": "销售退货明细",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../Summary/SellBackDetail",
+            "order": 5
+          }
+        ]
       },
       {
-        "name": "Summary.Tenancy.SellDetail",
-        "displayName": "订货商品明细",
+        "name": "Summary.Tenancy.Wrapper2",
+        "displayName": "进货",
         "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../Summary/SellDetail",
-        "order": 2
+        "order": 2,
+        "items": [
+          {
+            "name": "Summary.Tenancy.BuySummary",
+            "displayName": "采购入库商品汇总",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../Summary/BuySummary",
+            "order": 6
+          },
+          {
+            "name": "Summary.Tenancy.BuyDetail",
+            "displayName": "采购入库商品明细",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../Summary/BuyDetail",
+            "order": 7
+          },
+          {
+            "name": "Summary.Tenancy.BuyBackDetail",
+            "displayName": "采购退货明细",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../Summary/BuyBackDetail",
+            "order": 8
+          }
+        ]
       },
       {
-        "name": "Summary.Tenancy.SellOutSummary",
-        "displayName": "销售出库商品汇总",
+        "name": "Summary.Tenancy.Wrapper3",
+        "displayName": "财务",
         "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../Summary/SellOutSummary",
-        "order": 3
-      },
-      {
-        "name": "Summary.Tenancy.SellOutDetail",
-        "displayName": "销售出库商品明细",
-        "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../Summary/SellOutDetail",
-        "order": 4
-      },
-      {
-        "name": "Summary.Tenancy.SellBackDetail",
-        "displayName": "销售退货明细",
-        "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../Summary/SellBackDetail",
-        "order": 5
-      },
-      {
-        "name": "Summary.Tenancy.BuySummary",
-        "displayName": "采购入库商品汇总",
-        "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../Summary/BuySummary",
-        "order": 6
-      },
-      {
-        "name": "Summary.Tenancy.BuyDetail",
-        "displayName": "采购入库商品明细",
-        "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../Summary/BuyDetail",
-        "order": 7
-      },
-      {
-        "name": "Summary.Tenancy.BuyBackDetail",
-        "displayName": "采购退货明细",
-        "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../Summary/BuyBackDetail",
-        "order": 8
-      },
-      {
-        "name": "Summary.Tenancy.FeeAccountHistory",
-        "displayName": "资金往来明细",
-        "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../Summary/FeeAccountHistory",
-        "order": 9
-      },
-      {
-        "name": "Summary.Tenancy.FeeAccountSummary",
-        "displayName": "资金账户进出统计",
-        "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../Summary/FeeAccountSummary",
-        "order": 10
-      },
-      {
-        "name": "Summary.Tenancy.UnitFeeHistory",
-        "displayName": "往来单位结余明细",
-        "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../Summary/UnitFeeHistory",
-        "order": 11
-      },
-      {
-        "name": "Summary.Tenancy.UnitFeeSummary",
-        "displayName": "应收应付款汇总",
-        "icon": "iconfont icon-celve",
-        "url": "/Home/Show?name=../Summary/UnitFeeSummary",
-        "order": 12
+        "order": 3,
+        "items": [
+          {
+            "name": "Summary.Tenancy.FeeAccountHistory",
+            "displayName": "资金往来明细",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../Summary/FeeAccountHistory",
+            "order": 9
+          },
+          {
+            "name": "Summary.Tenancy.FeeAccountSummary",
+            "displayName": "资金账户进出统计",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../Summary/FeeAccountSummary",
+            "order": 10
+          },
+          {
+            "name": "Summary.Tenancy.UnitFeeHistory",
+            "displayName": "往来单位结余明细",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../Summary/UnitFeeHistory",
+            "order": 11
+          },
+          {
+            "name": "Summary.Tenancy.UnitFeeSummary",
+            "displayName": "应收应付款汇总",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../Summary/UnitFeeSummary",
+            "order": 12
+          }
+        ]
       }
+      
     ]
   },
   {

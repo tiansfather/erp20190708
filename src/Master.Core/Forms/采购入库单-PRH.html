@@ -89,7 +89,8 @@
                     storeName: '',
                     unitName:'',
                     storeId: null,
-                    unitId:null,
+                    unitId: null,
+                    unitInfo: {},
                     items: [],
                     remarks: '',
                     otherFee:0
@@ -117,7 +118,7 @@
                     //仓库信息
                     abp.services.app.store.getById(params.storeId).done(data => this.currentItem.storeName = data.name);
                     //供货商信息
-                    abp.services.app.unit.getById(params.unitId).done(data => this.currentItem.unitName = data.unitName);
+                    abp.services.app.unit.getById(params.unitId).done(data => { this.currentItem.unitName = data.unitName; this.currentItem.unitInfo = data; });
                     //商品信息
                     func.runAsync(abp.services.app.material.getUnitMaterialInfos(this.currentItem.unitId, params.items.map(o => o.id)).done(function (data) {
                         console.log(data);

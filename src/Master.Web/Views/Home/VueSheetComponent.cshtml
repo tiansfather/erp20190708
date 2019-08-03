@@ -714,7 +714,6 @@
                                     <div is="lay-tableselect-base" :column-info="tableSelectGetInfo(item.info,index,itemIndex)" :data="part[item.key]?part[item.key].displayValue:''" :value="part[item.key]?part[item.key].value:''" @@choose="getSetValue($event,index,item)" @@input="$emit('input',[index,item.key,$event] )"></div>
                                 </td>
                                 <td v-if="item.type=='upload'" :class="item.key.toLowerCase()">
-                                    {{part[item.key].filePath}}
                                     <button @@click="renderUpload(item,index)" class="layui-btn layui-btn-sm layui-btn-normal" type="button">上传</button>
                                 </td>
                                 @*<td style="padding:0;" v-if="item.type=='select'">
@@ -991,10 +990,12 @@
                 newValue: this.value,
                 items: [
                     {
-                        type: 'upload', title: '图片', key: 'file', onChange: ev => {
+                        type: 'upload', title: '图片', key: 'file',uploadFilePath:'filepath', onChange: ev => {
                             this.newValue = JSON.stringify(this.parts);
                         }
-                    },
+                    }, {
+                        type:'readonly',title:'路径',key:'filepath'
+                    }
                 ], parts: []
             }
         },

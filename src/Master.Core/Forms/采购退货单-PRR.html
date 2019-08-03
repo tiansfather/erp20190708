@@ -83,7 +83,8 @@
                     storeName: '',
                     unitName:'',
                     storeId: null,
-                    unitId:null,
+                    unitId: null,
+                    unitInfo: {},
                     items: [],
                     remarks: '',
                     otherFee:0
@@ -101,12 +102,17 @@
             },
             methods: {
                 refreshData() {
+                    var that = this;
                     if (!this.currentItem.unitId || !this.currentItem.startDate) {
                         return;
                     }
                     func.runAsync(abp.services.app.materialBuy.getUnitBuyedMaterial(this.currentItem.unitId, this.currentItem.startDate).done(res => {
                         
                         this.currentItem.items = res;
+                    }))
+                    //获取往来单位信息
+                    func.runAsync(abp.services.app.unit.getById(this.currentItem.unitId).done(function (data) {
+                        that.currentItem.unitInfo = data;
                     }))
                 }
             },

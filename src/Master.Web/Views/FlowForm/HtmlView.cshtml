@@ -252,6 +252,8 @@
                         that.sheetInfo = data;
                         _formOption.sheetInfo = data;
                         app.sheetInfo = data;
+                        _formOption.mode == 'print' && Vue.nextTick(window.print);
+                        
                     })
                 }
 

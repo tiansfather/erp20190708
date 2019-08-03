@@ -19,7 +19,8 @@ namespace Master.Settings
         {
             foreach(var settingDto in settingDtos)
             {
-                await SettingManager.ChangeSettingForTenantAsync(AbpSession.TenantId.Value, settingDto.Name, settingDto.Value);
+                //await SettingManager.ChangeSettingForTenantAsync(AbpSession.TenantId.Value, settingDto.Name, settingDto.Value);
+                await SettingManager.ChangeSettingForApplicationAsync(settingDto.Name, settingDto.Value);
             }
             
         }
