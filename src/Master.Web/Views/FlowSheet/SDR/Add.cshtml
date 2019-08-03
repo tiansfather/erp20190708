@@ -17,9 +17,9 @@
                 </div>
                 <div id="app" v-cloak>
                     <div class="layui-col-xs8">
-                        <div class="LAY-app-message-btns" style="margin-bottom:10px;">
-                            <unit-select nature="0" :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @@change="config.reloadTable"></unit-select>
-                            <button class="layui-btn  layui-btn-sm" style="float:right;margin-right:10px" :class="{'layui-btn-disabled':!currentItem.items.length}" fornonerow="1" buttonname="去购物车下单" type="button" confirmmsg="" id="submitBtn" buttonactiontype="Form" buttonactionurl="" @@click="gotoCart">去购物车下单</button>
+                        <div class="LAY-app-message-btns" style="margin-bottom:10px;height:35px;">
+                            <unit-select nature="0" v-if="!abp.session.user.unitId" :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @@change="config.reloadTable"></unit-select>
+                            @*<button class="layui-btn  layui-btn-sm" style="float:right;margin-right:10px" :class="{'layui-btn-disabled':!currentItem.items.length}" fornonerow="1" buttonname="去购物车下单" type="button" confirmmsg="" id="submitBtn" buttonactiontype="Form" buttonactionurl="" @@click="gotoCart">去购物车下单</button>*@
                             <button class="layui-btn  layui-btn-sm layui-btn-normal" style="float:right;margin-right:10px" :class="{'layui-btn-disabled':!currentItem.items.length}" fornonerow="1" buttonname="快速下单" type="button" confirmmsg="" buttonactiontype="Form" buttonactionurl="/FlowForm/InputByFormKey?formKey=SDR" onclick="app.doSubmit(this)">快速下单</button>
 
                         </div>
@@ -41,7 +41,7 @@
                                     <tr v-for="(item,index) in currentItem.items">
                                         <td>{{item.name}}</td>
                                         <td>{{item.number}}{{item.measureMentUnit}}</td>
-                                        <td><a title="删除" style="cursor: pointer;" @@click="currentItem.items.splice(index,1);config.reloadTable();syncCart()"><i class="layui-icon layui-icon-delete"></i></a></td>
+                                        <td><a title="删除" style="cursor: pointer;" @@click="removeCartItem(item);currentItem.items.splice(index,1);config.reloadTable();syncCart()"><i class="layui-icon layui-icon-delete"></i></a></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -77,7 +77,7 @@
                 data: {
                     currentItem: {
                         items: [],
-                        unitId:null
+                         unitId:abp.session.user.unitId
                     }
                 },
                 methods: {
@@ -87,6 +87,9 @@
                     //同步购物车至后台
                     syncCart: function () {
                         abp.services.app.materialSell.syncCart(app.currentItem.unitId, 1, app.currentItem.items);
+                    },
+                    removeCartItem: function (item) {
+                        $("#edit_" +item.id).val(null);
                     },
                     updateInfo: function (info) {
                         if (isNaN(info.number)) { info.number = 0;}
@@ -148,6 +151,7 @@
                             config.onTableDone();
                         }
                     });
+                     window.setTimeout(config.reloadTable, 100);
                 }
             })
 

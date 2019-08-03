@@ -85,21 +85,25 @@ namespace Master.FlowHandlers
                     ButtonName = "放回购物车修改",
                     ConfirmMsg="确认将订单放回购物车?此订单将失效"
                 });
-                btns.Add(new ModuleButton()
+                if (CurrentUser.IsCenterUser)
                 {
-                    ButtonKey = "verify",
-                    ButtonName = "审核",
-                    ConfirmMsg = "确认审核通过此订单？"
-                });
-                btns.Add(new ModuleButton()
-                {
-                    ButtonKey = "cancel",
-                    ButtonName = "取消",
-                    ButtonClass = "layui-btn-danger",
-                    ConfirmMsg = "确认取消此单据？"
-                });
+                    btns.Add(new ModuleButton()
+                    {
+                        ButtonKey = "verify",
+                        ButtonName = "审核",
+                        ConfirmMsg = "确认审核通过此订单？"
+                    });
+                    btns.Add(new ModuleButton()
+                    {
+                        ButtonKey = "cancel",
+                        ButtonName = "取消",
+                        ButtonClass = "layui-btn-danger",
+                        ConfirmMsg = "确认取消此单据？"
+                    });
+                }
+                
             }
-            else if (flowSheet.OrderStatus == "待发货")
+            else if (flowSheet.OrderStatus == "待发货" && CurrentUser.IsCenterUser)
             {
                 btns.Add(new ModuleButton()
                 {
@@ -108,7 +112,7 @@ namespace Master.FlowHandlers
                     ConfirmMsg = "确认发货？"
                 });
             }
-            else if (flowSheet.OrderStatus == "已发货")
+            else if (flowSheet.OrderStatus == "已发货" && CurrentUser.IsCenterUser)
             {
                 btns.Add(new ModuleButton()
                 {

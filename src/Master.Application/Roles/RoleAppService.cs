@@ -81,7 +81,7 @@ namespace Master.Roles
             foreach(var d in data)
             {
                 var users = (await UserManager.GetUsersInRoleAsync(d.Id)).Select(o => new { o.Id, o.Name });
-                resultData.Add(new { d.Id,d.Creator,d.CreationTime,d.DisplayName,d.IsStatic,Users=users});
+                resultData.Add(new { d.Id,d.Creator,d.CreationTime,d.DisplayName,d.IsStatic,Users=users,d.Name});
             }
 
             var result = new ResultPageDto()

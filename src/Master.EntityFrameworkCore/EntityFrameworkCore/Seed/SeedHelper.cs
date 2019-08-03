@@ -153,7 +153,17 @@ namespace Master.EntityFrameworkCore.Seed
 
             using (var provider = IocManager.Instance.ResolveAsDisposable<IPermissionManager>())
             {
-                var permissionNames = new List<string>() { "Menu.Sell.Tenancy.SDD", "Menu.Sell.Tenancy.SDDSheet", "Menu.Sell.Tenancy.SDR", "Menu.Sell.Tenancy.SDRSheet" };
+                var permissionNames = new List<string>() {
+                    "Menu.Sell.Tenancy.SDD",
+                    "Menu.Sell.Tenancy.SDDSheet",
+                    "Menu.Sell.Tenancy.SDR",
+                    "Menu.Sell.Tenancy.SDRSheet",
+                    "Menu.Finance.Tenancy.VoucherAdd",
+                    "Menu.Finance.Tenancy.Voucher",
+                    "Menu.Summary.Tenancy.SellSummary",
+                    "Menu.Summary.Tenancy.SellDetail",
+                    "Menu.Summary.Tenancy.UnitFeeHistory",
+                };
                 permissionNames = permissionNames.Where(p => !grantedPermissions.Contains(p)).ToList();
 
 

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Master.FlowSheets
 {
     [AbpAuthorize]
-    public class PPYSheetAppService : ModuleDataAppServiceBase<FlowSheet, int>
+    public class PPYSheetAppService : FlowSheetModuleAppServiceBase
     {
         protected override async Task<IQueryable<FlowSheet>> GetQueryable(RequestPageDto request)
         {

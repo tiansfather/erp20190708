@@ -114,6 +114,7 @@
         app = new Vue({
             el: "#app",
             data: {
+                sheetInfo: {},
                 currentItem: _formOption.formData ? _formOption.formData.layoutData : {
                     sheetDate: new Date().pattern("yyyy-MM-dd"),
                     inputedFee: 0,

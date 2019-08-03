@@ -294,14 +294,14 @@
         "url": "/Home/Show?name=../FlowSheet/CRR/Index"
       },
       {
-        "name": "Finance.Tenancy.Voucher",
+        "name": "Finance.Tenancy.VoucherAdd",
         "displayName": "凭证上传",
         "icon": "iconfont icon-mingxizhang",
         "url": "/Home/Show?name=../Voucher/Add"
       },
       {
         "name": "Finance.Tenancy.Voucher",
-        "displayName": "凭证管理",
+        "displayName": "凭证列表",
         "icon": "iconfont icon-mingxizhang",
         "url": "/Home/Show?name=../Voucher/Index"
       },

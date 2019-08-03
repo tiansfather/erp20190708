@@ -22,6 +22,7 @@ namespace Master.Workflow
         {
             var flowSheet = await Manager.GetAll().Include(o => o.CreatorUser)
                 .Include(o=>o.RelSheet)
+                .Include(o=>o.Unit)
                 .Where(o => o.Id == primary)
                 .FirstOrDefaultAsync();
             var btns = await (Manager as FlowSheetManager).GetFlowBtns(primary);
@@ -35,6 +36,7 @@ namespace Master.Workflow
                 flowSheet.RevertReason,
                 flowSheet.OrderStatus,
                 RelSheetSN=flowSheet.RelSheet?.SheetSN,
+                flowSheet.Unit?.UnitName,
                 Btns= btns.Select(o => new
                 {
                     o.ButtonKey,

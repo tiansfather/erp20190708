@@ -1,70 +1,134 @@
 ﻿<div id="app" v-cloak>
-    <el-form :inline="true" size="mini">
-        <el-form-item label="代理商">
-            <unit-select nature="0" :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @change="refreshData"></unit-select>
-        </el-form-item>
-        <el-form-item label="发货仓库">
-            <el-select v-model="currentItem.storeId" placeholder="发货仓库" size="mini" style="width:120px">
-                <el-option v-for="item in currentItem.stores"
-                           :key="item.id"
-                           :label="item.name"
-                           :value="item.id">
-                </el-option>
-            </el-select>
-        </el-form-item>
-    </el-form>
-    <el-divider></el-divider>
-    <table class="layui-table">
-        <thead>
-            <tr>
-                <th>订单编号</th>
-                <th>下单时间</th>
-                <th>品名</th>
-                <th>市场单价</th>
-                <th>折扣(%)</th>
-                <th>发货单价</th>
-                <th>订货数量</th>
-                <th>已发数量</th>
-                <th>本次发货</th>
-                <th>小计</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="(item,index) in currentItem.items">
-                <td>{{item.sheetSN}}</td>
-                <td>{{item.creationTime}}</td>
-                <td>{{item.name}}</td>
-                <td>{{item.price}}</td>
-                <td><el-input-number v-model="item.discount" min="0" :max="1" label="折扣"></el-input-number></td>
-                <td>
-                    {{(item.price*item.discount).toFixed(2)}}
-                </td>
-                <td>{{item.sellNumber}}</td>
-                <td>{{item.outNumber}}</td>
-                <td><el-input-number v-model="item.number" min="0" :max="item.sellNumber-item.outNumber" label=""></el-input-number></td>
-                <td>
-                    {{getSum(item)}}
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <el-form :inline="true" size="mini">
-        <el-form-item label="货款总额">
-            <el-input v-model="materialFee" readonly="true"></el-input>
-        </el-form-item>
-        <el-form-item label="其它费用">
-            <el-input v-model="currentItem.otherFee" typeof="number"></el-input>
-        </el-form-item>
-        <el-form-item label="本单应收金额">
-            <el-input v-model="totalFee" readonly="true"></el-input>
-        </el-form-item>
+    <template v-if="_formOption.mode!='print'">
+        <el-form :inline="true" size="mini">
+            <el-form-item label="代理商">
+                <unit-select nature="0" :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @change="refreshData"></unit-select>
+            </el-form-item>
+            <el-form-item label="发货仓库">
+                <el-select v-model="currentItem.storeId" placeholder="发货仓库" size="mini" style="width:120px">
+                    <el-option v-for="item in currentItem.stores"
+                               :key="item.id"
+                               :label="item.name"
+                               :value="item.id">
+                    </el-option>
+                </el-select>
+            </el-form-item>
+        </el-form>
+        <el-divider></el-divider>
+        <table class="layui-table">
+            <thead>
+                <tr>
+                    <th>订单编号</th>
+                    <th>下单时间</th>
+                    <th>品名</th>
+                    <th>市场单价</th>
+                    <th>折扣(%)</th>
+                    <th>发货单价</th>
+                    <th>订货数量</th>
+                    <th>已发数量</th>
+                    <th>本次发货</th>
+                    <th>小计</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(item,index) in currentItem.items">
+                    <td>{{item.sheetSN}}</td>
+                    <td>{{item.creationTime}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.price}}</td>
+                    <td><el-input-number v-model="item.discount" min="0" :max="1" label="折扣"></el-input-number></td>
+                    <td>
+                        {{(item.price*item.discount).toFixed(2)}}
+                    </td>
+                    <td>{{item.sellNumber}}</td>
+                    <td>{{item.outNumber}}</td>
+                    <td><el-input-number v-model="item.number" min="0" :max="item.sellNumber-item.outNumber" label=""></el-input-number></td>
+                    <td>
+                        {{getSum(item)}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <el-form :inline="true" size="mini">
+            <el-form-item label="货款总额">
+                <el-input v-model="materialFee" readonly="true"></el-input>
+            </el-form-item>
+            <el-form-item label="其它费用">
+                <el-input v-model="currentItem.otherFee" typeof="number"></el-input>
+            </el-form-item>
+            <el-form-item label="本单应收金额">
+                <el-input v-model="totalFee" readonly="true"></el-input>
+            </el-form-item>
 
-    </el-form>
-    <el-form size="mini">
-        <el-form-item label="备注">
-            <el-input type="textarea" v-model="currentItem.remarks"></el-input>
-        </el-form-item>
-    </el-form>
+        </el-form>
+        <el-form size="mini">
+            <el-form-item label="备注">
+                <el-input type="textarea" v-model="currentItem.remarks"></el-input>
+            </el-form-item>
+        </el-form>
+    </template>
+    
+    <template v-if="_formOption.mode=='print'">
+        <div id="print">
+            <p class="content-right">存根联—白色&nbsp; &nbsp; &nbsp; &nbsp; 客户联—红色&nbsp; &nbsp; &nbsp; &nbsp; 记账联—黄色</p>
+            <div class="content-left">
+                <h1>上海坤昌商务咨询有限公司（出库单）</h1>
+                <table id="table1" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td class="weight-font">出库单号：</td>
+                        <td>{{sheetInfo.sheetSN}}</td>
+                        <td class="weight-font">制单日期：</td>
+                        <td>{{new Date(sheetInfo.creationTime).pattern('yyyy-MM-dd')}}</td>
+                        <td class="weight-font">经办人：</td>
+                        <td>{{sheetInfo.creatorUserName}}</td>
+                    </tr>
+                    <tr>
+                        <td class="weight-font">客户名称：</td>
+                        <td>{{currentItem.unitInfo.unitName}}</td>
+                        <td class="weight-font">出库前结余：</td>
+                        <td>{{currentItem.unitInfo.nowFee}}</td>
+                        <td class="weight-font">出库后结余：</td>
+                        <td>{{currentItem.unitInfo.nowFee-totalFee}}</td>
+                    </tr>
+                    <tr>
+                        <td class="weight-font">本单应收：</td>
+                        <td>{{totalFee}}</td>
+                        <td class="weight-font">备注：</td>
+                        <td>{{currentItem.remarks}}</td>
+                    </tr>
+                </table>
+                <table id="table2" cellspacing="0">
+                    <tr style="text-align: center;" class="weight-font">
+                        <td>品名</td>
+                        <td>规格</td>
+                        <td>市场单价</td>
+                        <td>发货数量</td>
+                        <td>计量单位</td>
+                        <td>发货单价</td>
+                        <td>应收小计</td>
+                    </tr>
+                    <tr v-for="(item,index) in currentItem.items">
+                        <td class="tx-c">{{item.name}}</td>
+                        <td class="tx-c">{{item.specification}}</td>
+                        <td class="tx-r">{{item.price}}</td>
+                        <td class="tx-r">{{item.Number}}</td>
+                        <td class="tx-c">{{item.measureMentUnit}}</td>
+                        <td class="tx-r">{{(item.price*item.discount).toFixed(2)}}</td>
+                        <td class="tx-r">{{getSum(item)}}</td>
+                    </tr>
+                </table>
+                <p class="total-wrap">
+                    <span style="margin-right:30px;">货款总额：{{materialFee}}元</span>
+                    <span>其他费用：{{currentItem.otherFee}}元</span>
+                </p>
+                <p class="total-wrap weight-font sign">
+                    <span style="margin-right:30px;">发货人签名：</span>
+                    <span>客户签名：</span>
+                </p>
+            </div>
+
+        </div>
+    </template>
 
 </div>
 <script>
@@ -72,9 +136,11 @@
         app = new Vue({
             el: "#app",
             data: {
-                columns:[],          
+                columns: [],          
+                sheetInfo: {},
                 currentItem: _formOption.formData ? _formOption.formData.layoutData : {
-                    stores:[],
+                    stores: [],
+                    unitInfo: {},
                     sheetDate: new Date().pattern("yyyy-MM-dd"),
                     storeName: '',
                     unitName:'',
@@ -104,12 +170,16 @@
                     }
                 },
                 refreshData() {
+                    var that = this;
                     if (!this.currentItem.unitId ) {
                         return;
                     }
-                    func.runAsync(abp.services.app.materialSell.getUnitSellMaterialForOut(this.currentItem.unitId).done(res => {
-                        
+                    func.runAsync(abp.services.app.materialSell.getUnitSellMaterialForOut(this.currentItem.unitId).done(res => {                        
                         this.currentItem.items = res;
+                    }))
+                    //获取往来单位信息
+                    func.runAsync(abp.services.app.unit.getById(this.currentItem.unitId).done(function (data) {
+                        that.currentItem.unitInfo = data;
                     }))
                 }
             },

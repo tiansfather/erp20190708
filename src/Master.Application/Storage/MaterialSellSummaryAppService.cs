@@ -1,5 +1,6 @@
 ﻿using Abp.Authorization;
 using Abp.Domain.Repositories;
+using Abp.Linq.Extensions;
 using Abp.Web.Models;
 using Master.Dto;
 using Master.Entity;
@@ -54,6 +55,7 @@ namespace Master.Storage
         [DontWrapResult]
         public override async Task<ResultPageDto> GetPageResult(RequestPageDto request)
         {
+            var user = await GetCurrentUserAsync();
             var pageResult = await GetPageResultQueryable(request);
 
             var materials = await pageResult.Queryable.ToListAsync();
@@ -75,7 +77,9 @@ namespace Master.Storage
             var baseQuery = MaterialSellManager.GetAll()
                 .Where(o => o.FlowSheet.SheetNature == WorkFlow.SheetNature.正单)
                 .Where(o => o.FlowSheet.OrderStatus == null || (o.FlowSheet.OrderStatus != "待审核" && o.FlowSheet.OrderStatus != "已退货" && o.FlowSheet.OrderStatus != "已取消"))
-                .Where(o => o.CreationTime > startDate && o.CreationTime < endDate);
+                .Where(o => o.CreationTime > startDate && o.CreationTime < endDate)
+                .WhereIf(user.UnitId.HasValue, o => o.FlowSheet.UnitId == user.UnitId)//代理商登录只看到自己;
+                ;
 
             var data = new List<object>();
             foreach(var material in materials)
@@ -87,7 +91,7 @@ namespace Master.Storage
                 data.Add(new
                 {
                     material.Name,
-                    MaterialTypeName = material.MaterialType.DisplayName,
+                    MaterialTypeName = material.MaterialType?.DisplayName,
                     material.Specification,
                     material.MeasureMentUnit,
                     MaterialNature=material.MaterialNature.ToString(),

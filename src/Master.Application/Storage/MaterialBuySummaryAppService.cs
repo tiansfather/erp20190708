@@ -83,7 +83,7 @@ namespace Master.Storage
                 {
                     material.Name,
                     unit.UnitName,
-                    MaterialTypeName = material.MaterialType.DisplayName,
+                    MaterialTypeName = material.MaterialType?.DisplayName,
                     material.Specification,
                     material.MeasureMentUnit,
                     MaterialNature=material.MaterialNature.ToString(),

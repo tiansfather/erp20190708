@@ -75,7 +75,7 @@ namespace Master.FlowHandlers
         {
             var btns = new List<ModuleButton>();
             //if (flowSheet.GetPropertyValue<string>("OrderStatus") == "待审核")
-            if (true)
+            if (flowSheet.OrderStatus=="待出库" || flowSheet.OrderStatus == "待审核")
                 {
                 btns.Add(new ModuleButton()
                 {

@@ -1,5 +1,6 @@
 ﻿using Abp.Authorization;
 using Abp.Domain.Repositories;
+using Abp.Linq.Extensions;
 using Master.Dto;
 using Master.Entity;
 using Master.EntityFrameworkCore;
@@ -20,11 +21,13 @@ namespace Master.Storage
         #region 分页
         protected override async Task<IQueryable<MaterialSell>> GetQueryable(RequestPageDto request)
         {
+            var user = await GetCurrentUserAsync();
             return (await base.GetQueryable(request))
                 .Include(o=>o.FlowSheet)
                 .Include(o=>o.Material).ThenInclude(o=>o.MaterialType)
                 .Where(o => o.FlowSheet.SheetNature == WorkFlow.SheetNature.正单)
                 .Where(o=>o.FlowSheet.OrderStatus==null ||(o.FlowSheet.OrderStatus!="待审核" && o.FlowSheet.OrderStatus != "已退货" && o.FlowSheet.OrderStatus != "已取消"))
+                 .WhereIf(user.UnitId.HasValue, o => o.FlowSheet.UnitId == user.UnitId)//代理商登录只看到自己;
                 ;
         }
         protected override async Task<IQueryable<MaterialSell>> BuildSearchQueryAsync(IDictionary<string, string> searchKeys, IQueryable<MaterialSell> query)
@@ -174,6 +177,7 @@ namespace Master.Storage
                     sellMaterial.MaterialId,
                     sellMaterial.Material.Name,
                     sellMaterial.Material.Specification,
+                    sellMaterial.Material.MeasureMentUnit,
                     sellMaterial.Material.Price,
                     sellMaterial.FlowSheet.SheetSN,
                     sellMaterial.FlowSheetId,

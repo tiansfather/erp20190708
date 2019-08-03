@@ -3234,6 +3234,112 @@ abp.services = abp.services || {};
 
   })();
 
+  // controller 'flowSheetModuleAppServiceBase'
+  (function(){
+
+    abp.services.app.flowSheetModuleAppServiceBase = abp.services.app.flowSheetModuleAppServiceBase || {};
+
+    // action 'getPageResult'
+    abp.services.app.flowSheetModuleAppServiceBase.getPageResult = function(request, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FlowSheetModuleAppServiceBase/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'searchKeyDic', value: request.searchKeyDic }, { name: 'moduleKey', value: request.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getSuggestResult'
+    abp.services.app.flowSheetModuleAppServiceBase.getSuggestResult = function(requestSuggestDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FlowSheetModuleAppServiceBase/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'formSubmit'
+    abp.services.app.flowSheetModuleAppServiceBase.formSubmit = function(request, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FlowSheetModuleAppServiceBase/FormSubmit',
+        type: 'POST',
+        data: JSON.stringify(request)
+      }, ajaxParams));;
+    };
+
+    // action 'getFilterColumnPageResult'
+    abp.services.app.flowSheetModuleAppServiceBase.getFilterColumnPageResult = function(request, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FlowSheetModuleAppServiceBase/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'searchKeyDic', value: request.searchKeyDic }, { name: 'moduleKey', value: request.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getById'
+    abp.services.app.flowSheetModuleAppServiceBase.getById = function(primary, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FlowSheetModuleAppServiceBase/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getListByIds'
+    abp.services.app.flowSheetModuleAppServiceBase.getListByIds = function(primaries, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FlowSheetModuleAppServiceBase/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getGroupedField'
+    abp.services.app.flowSheetModuleAppServiceBase.getGroupedField = function(requestGroupFieldPageDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FlowSheetModuleAppServiceBase/GetGroupedField' + abp.utils.buildQueryString([{ name: 'field', value: requestGroupFieldPageDto.field }, { name: 'query', value: requestGroupFieldPageDto.query }, { name: 'limit', value: requestGroupFieldPageDto.limit }, { name: 'page', value: requestGroupFieldPageDto.page }, { name: 'where', value: requestGroupFieldPageDto.where }, { name: 'tableFilter', value: requestGroupFieldPageDto.tableFilter }, { name: 'filterField', value: requestGroupFieldPageDto.filterField }, { name: 'filterKey', value: requestGroupFieldPageDto.filterKey }, { name: 'filterColumns', value: requestGroupFieldPageDto.filterColumns }, { name: 'searchCondition', value: requestGroupFieldPageDto.searchCondition }, { name: 'filterSos', value: requestGroupFieldPageDto.filterSos }, { name: 'searchKeys', value: requestGroupFieldPageDto.searchKeys }, { name: 'keyword', value: requestGroupFieldPageDto.keyword }, { name: 'orderField', value: requestGroupFieldPageDto.orderField }, { name: 'orderType', value: requestGroupFieldPageDto.orderType }, { name: 'searchKeyDic', value: requestGroupFieldPageDto.searchKeyDic }, { name: 'moduleKey', value: requestGroupFieldPageDto.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getAllByKeyword'
+    abp.services.app.flowSheetModuleAppServiceBase.getAllByKeyword = function(keyword, take, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FlowSheetModuleAppServiceBase/GetAllByKeyword' + abp.utils.buildQueryString([{ name: 'keyword', value: keyword }, { name: 'take', value: take }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'deleteEntity'
+    abp.services.app.flowSheetModuleAppServiceBase.deleteEntity = function(ids, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FlowSheetModuleAppServiceBase/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
+        type: 'DELETE'
+      }, ajaxParams));;
+    };
+
+    // action 'setStatus'
+    abp.services.app.flowSheetModuleAppServiceBase.setStatus = function(primaries, status, isSet, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FlowSheetModuleAppServiceBase/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
+        type: 'POST',
+        data: JSON.stringify(primaries)
+      }, ajaxParams));;
+    };
+
+    // action 'setPropertyValue'
+    abp.services.app.flowSheetModuleAppServiceBase.setPropertyValue = function(propertySetDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FlowSheetModuleAppServiceBase/SetPropertyValue',
+        type: 'POST',
+        data: JSON.stringify(propertySetDto)
+      }, ajaxParams));;
+    };
+
+    // action 'getPropertyValue'
+    abp.services.app.flowSheetModuleAppServiceBase.getPropertyValue = function(primaries, propertyName, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FlowSheetModuleAppServiceBase/GetPropertyValue' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }, { name: 'propertyName', value: propertyName }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+  })();
+
   // controller 'iALSheet'
   (function(){
 

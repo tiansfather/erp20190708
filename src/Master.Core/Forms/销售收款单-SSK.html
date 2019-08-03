@@ -1,80 +1,146 @@
 ﻿<div id="app" v-cloak>
-    <el-form :inline="true" size="mini">
-        <el-form-item label="代理商">
-            <unit-select nature="0" :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @change="loadUnit"></unit-select>
-        </el-form-item>
-        <el-form-item label="当前结余">
-            <el-input v-model="currentItem.unitInfo.nowFee" readonly="true" tips="负数代表对方欠我方，正数代表我方欠对方。"></el-input>
-        </el-form-item>
-        <el-form-item label="收款方式">
-            <el-radio-group v-model="currentItem.payType">
-                <el-radio label="0">现金收款</el-radio>
-                <el-radio label="1">转账收款</el-radio>
-                <el-radio label="2">支票收款</el-radio>
-            </el-radio-group>
-        </el-form-item>
-
-    </el-form>
-    <el-divider></el-divider>
-    <el-form ref="form" label-width="120px">
-        <el-form-item label="对方单位名称">
-            <el-input v-model="currentItem.companyName" type="text"></el-input>
-        </el-form-item>
-        <el-form-item :label="currentItem.payType=='0'?'现金':'转账'" v-if="currentItem.payType!='2'">
-            <el-col :span="10">
-                <el-input placeholder="" v-model="currentItem.inputedFee">
-                    <template slot="append">
-                        元
-                    </template>
-                </el-input>
-            </el-col>
-            <el-col :span="10">
-                <el-select v-model="currentItem.accountId" placeholder="请选择账号" size="medium" v-if="currentItem.payType=='1'">
-                    <el-option v-for="item in currentItem.accounts"
-                               :key="item.id"
-                               :label="item.name"
-                               :value="item.id">
-                    </el-option>
-                </el-select>
-            </el-col>
-
-        </el-form-item>
-        <template v-if="currentItem.payType==2">
-            <el-form-item label="支票号码">
-                <el-input v-model="currentItem.feeCheck.checkNumber" type="text"></el-input>
+    <template v-if="_formOption.mode!='print'">
+        <el-form :inline="true" size="mini">
+            <el-form-item label="代理商">
+                <unit-select nature="0" :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @change="loadUnit"></unit-select>
             </el-form-item>
-            <el-form-item label="支票金额">
-                <el-input v-model="currentItem.feeCheck.checkFee" type="number"></el-input>
+            <el-form-item label="当前结余">
+                <el-input v-model="currentItem.unitInfo.nowFee" readonly="true" tips="负数代表对方欠我方，正数代表我方欠对方。"></el-input>
             </el-form-item>
-            <el-form-item label="开票日期">
-                <el-date-picker type="date" placeholder="选择日期" v-model="currentItem.feeCheck.checkDate"></el-date-picker>
-            </el-form-item>
-            <el-form-item label="兑现期限(天)">
-                <el-input v-model="currentItem.feeCheck.checkDaySpan" type="text"></el-input>
-            </el-form-item>
-            <el-form-item label="签发公司">
-                <el-input v-model="currentItem.feeCheck.checkCompany" type="text"></el-input>
-            </el-form-item>
-            <el-form-item label="银行">
-                <el-input v-model="currentItem.feeCheck.checkBank" type="text"></el-input>
+            <el-form-item label="收款方式">
+                <el-radio-group v-model="currentItem.payType">
+                    <el-radio label="0">现金收款</el-radio>
+                    <el-radio label="1">转账收款</el-radio>
+                    <el-radio label="2">支票收款</el-radio>
+                </el-radio-group>
             </el-form-item>
 
-        </template>
-        <el-form-item label="备注">
-            <el-input type="textarea" v-model="currentItem.remarks"></el-input>
-        </el-form-item>
-    </el-form>
-    <el-divider></el-divider>
-    <div>
-        <label>本单收款总额（元）：{{totalFee}}</label>
-        <label style="margin-left:50px">收款后结余（元）：{{remainFee}}</label>
-    </div>
+        </el-form>
+        <el-divider></el-divider>
+        <el-form ref="form" label-width="120px">
+            <el-form-item label="对方单位名称">
+                <el-input v-model="currentItem.companyName" type="text"></el-input>
+            </el-form-item>
+            <el-form-item :label="currentItem.payType=='0'?'现金':'转账'" v-if="currentItem.payType!='2'">
+                <el-col :span="10">
+                    <el-input placeholder="" v-model="currentItem.inputedFee">
+                        <template slot="append">
+                            元
+                        </template>
+                    </el-input>
+                </el-col>
+                <el-col :span="10">
+                    <el-select v-model="currentItem.accountId" placeholder="请选择账号" size="medium" v-if="currentItem.payType=='1'">
+                        <el-option v-for="item in currentItem.accounts"
+                                   :key="item.id"
+                                   :label="item.name"
+                                   :value="item.id">
+                        </el-option>
+                    </el-select>
+                </el-col>
+
+            </el-form-item>
+            <template v-if="currentItem.payType==2">
+                <el-form-item label="支票号码">
+                    <el-input v-model="currentItem.feeCheck.checkNumber" type="text"></el-input>
+                </el-form-item>
+                <el-form-item label="支票金额">
+                    <el-input v-model="currentItem.feeCheck.checkFee" type="number"></el-input>
+                </el-form-item>
+                <el-form-item label="开票日期">
+                    <el-date-picker type="date" placeholder="选择日期" v-model="currentItem.feeCheck.checkDate"></el-date-picker>
+                </el-form-item>
+                <el-form-item label="兑现期限(天)">
+                    <el-input v-model="currentItem.feeCheck.checkDaySpan" type="text"></el-input>
+                </el-form-item>
+                <el-form-item label="签发公司">
+                    <el-input v-model="currentItem.feeCheck.checkCompany" type="text"></el-input>
+                </el-form-item>
+                <el-form-item label="银行">
+                    <el-input v-model="currentItem.feeCheck.checkBank" type="text"></el-input>
+                </el-form-item>
+
+            </template>
+            <el-form-item label="备注">
+                <el-input type="textarea" v-model="currentItem.remarks"></el-input>
+            </el-form-item>
+        </el-form>
+        <el-divider></el-divider>
+        <div>
+            <label>本单收款总额（元）：{{totalFee}}</label>
+            <label style="margin-left:50px">收款后结余（元）：{{remainFee}}</label>
+        </div>
+    </template>
+
+    <template v-if="_formOption.mode=='print'">
+        <div id="print">
+            <p class="content-right">存根联—白色&nbsp; &nbsp; &nbsp; &nbsp; 客户联—红色&nbsp; &nbsp; &nbsp; &nbsp; 记账联—黄色</p>
+            <div class="content-left">
+                <h1>上海坤昌商务咨询有限公司（收款单）</h1>                
+                <table id="table2" cellspacing="0">
+                    
+                    <tr>
+                        <td class="tx-c weight-font">收款单号:</td>
+                        <td class="tx-l">{{sheetInfo.sheetSN}}</td>
+                        <td class="tx-c weight-font">制单日期:</td>
+                        <td class="tx-l">{{new Date(sheetInfo.creationTime).pattern('yyyy-MM-dd')}}</td>
+                        <td class="tx-c weight-font">经办人:</td>
+                        <td class="tx-l">{{sheetInfo.creatorUserName}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tx-c weight-font">付款单位:</td>
+                        <td class="tx-l">{{currentItem.unitInfo.unitName}}</td>
+                        <td class="tx-c weight-font">收款前结余:</td>
+                        <td class="tx-l">{{currentItem.unitInfo.nowFee}}</td>
+                        <td class="tx-c weight-font">收款后结余:</td>
+                        <td class="tx-l">{{remainFee}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tx-c weight-font">单位名称:</td>
+                        <td class="tx-l">{{currentItem.companyName}}</td>
+                        <td class="tx-c weight-font">收款总额:</td>
+                        <td class="tx-l">{{totalFee}}</td>
+                        <td class="tx-c weight-font">收款类型:</td>
+                        <td class="tx-l">{{payTypeName}}</td>
+                    </tr>
+                    <tr v-if="currentItem.payType=='2'">
+                        <td class="tx-c weight-font">支票号码:</td>
+                        <td class="tx-l">{{currentItem.feeCheck.checkNumber}}</td>
+                        <td class="tx-c weight-font">开票日期:</td>
+                        <td class="tx-l">{{currentItem.feeCheck.checkDate}}</td>
+                        <td class="tx-c weight-font">兑现期限(天):</td>
+                        <td class="tx-l">{{currentItem.feeCheck.checkDaySpan}}</td>
+                    </tr>
+                    <tr v-if="currentItem.payType=='2'">
+                        <td class="tx-c weight-font">银行:</td>
+                        <td class="tx-l">{{currentItem.feeCheck.checkBank}}</td>
+                        <td class="tx-c weight-font">签发公司:</td>
+                        <td class="tx-l" colspan="3">{{currentItem.feeCheck.checkCompany}}</td>
+                    </tr>
+                    <tr v-if="currentItem.payType=='1'">
+                        <td class="tx-c weight-font">付款账户:</td>
+                        <td class="tx-l" colspan="5">{{accountName}}</td>
+                    </tr>
+                    <tr >
+                        <td class="tx-c weight-font">备注:</td>
+                        <td class="tx-l" colspan="5">{{currentItem.remarks}}</td>
+                    </tr>
+                </table>
+                <p class="total-wrap weight-font sign">
+                    <span style="margin-right:30px;">付款人签名：</span>
+                    <span>收款人签名：</span>
+                </p>
+            </div>
+
+        </div>
+    </template>
 </div>
 <script>
     config.ready = function () {
         app = new Vue({
             el: "#app",
             data: {
+                sheetInfo: {},
                 currentItem: _formOption.formData ? _formOption.formData.layoutData : {
                     sheetDate: new Date().pattern("yyyy-MM-dd"),
                     inputedFee: 0,
@@ -101,7 +167,24 @@
                 },
                 remainFee: function () {
                     return (parseFloat(this.totalFee) + parseFloat(this.currentItem.unitInfo.nowFee)).toFixed(2);
+                },
+                payTypeName: function () {
+                    if (this.currentItem.payType == '0') {
+                        return "现金收款";
+                    }
+                    if (this.currentItem.payType == '1') {
+                        return "转账收款";
+                    }
+                    if (this.currentItem.payType == '2') {
+                        return "支票收款";
+                    }
+                },
+                accountName: function () {
+                    if (this.currentItem.accountId) {
+                        return  this.currentItem.accounts.filter(o => o.id == this.currentItem.accountId)[0].name;
+                    }
                 }
+
             },
             methods: {
                 loadUnit() {

@@ -1,5 +1,7 @@
 ﻿using Abp.Authorization;
 using Abp.AutoMapper;
+using Abp.Linq.Extensions;
+using Master.Dto;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,6 +14,13 @@ namespace Master.Finance
     [AbpAuthorize]
     public class VoucherAppService : ModuleDataAppServiceBase<Voucher, int>
     {
+        protected override async Task<IQueryable<Voucher>> GetQueryable(RequestPageDto request)
+        {
+            var user = await GetCurrentUserAsync();
+            return (await base.GetQueryable(request))
+                .WhereIf(user.UnitId.HasValue, o => o.UnitId == user.UnitId)//代理商登录只看到自己;
+                ;
+        }
         protected override string ModuleKey()
         {
             return nameof(Voucher);

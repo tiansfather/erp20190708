@@ -72,6 +72,7 @@
         app = new Vue({
             el: "#app",
             data: {
+                sheetInfo: {},
                 columns:[],          
                 currentItem: _formOption.formData ? _formOption.formData.layoutData : {
                     startDate: new Date().addDay(-3, 'm', "yyyy-MM-dd",),

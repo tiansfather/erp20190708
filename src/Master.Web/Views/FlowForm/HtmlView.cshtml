@@ -7,16 +7,136 @@
     ViewData["Title"] = "单据查看";
 }
 <style>
-    @@page{
-        size:auto;
-        margin:0mm;
+    @@page {
+        size: auto;
+        margin: 0mm;
     }
+
     @@media screen and (max-width: 480px) {
         .layui-table {
             word-break: keep-all;
         }
     }
 </style>
+<style>
+    html #print{
+        font-size: 14px;
+        font-family: '微软雅黑 Bold', '微软雅黑';
+        width:900px;
+    }
+
+    #print * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        
+    }
+
+    #print button {
+        cursor: pointer
+    }
+
+    #print ul,
+    #print li {
+        padding: 0;
+        margin: 0;
+        list-style: none
+    }
+
+    #print h1 {
+        margin: 25px 0;
+        font-family: '微软雅黑 Bold', '微软雅黑';
+        font-weight: 700;
+        font-style: normal;
+        font-size: 24px;
+        text-align: center;
+        height:;
+    }
+
+    #print #table1,
+    #print #table2 {
+        width: 100%
+    }
+
+   #print  #table1 {
+        margin-bottom: 15px;
+    }
+   
+   #print #table1 td {
+            line-height: 30px;
+        }
+
+    #print #table2 td {
+        height: 2.5em;
+        line-height: 2.5em;
+    }
+
+    #print table#table2 {
+        border-collapse: collapse;
+        border: 1px solid #69899F;
+    }
+
+    #print  table#table2 td {
+            border: 1px solid #000000;
+            padding:0 3px;
+        }
+
+    #print  table#table2 td:first-child {
+                border-left: 0px solid #000000;
+            }
+
+    #print #table1 .weight-font {
+        text-align: right;
+        width: 6em;
+    }
+
+   #print  .weight-font {
+        font-weight: 700;
+    }
+
+   #print .content-left {
+        margin: 0;
+        margin-right: 80px;
+    }
+
+   #print  .content-right {
+        width: 14px;
+        font-size: 14px;
+        word-wrap: break-word;
+        float: right;
+    }
+
+    #print .total-wrap {
+        border-bottom: 1px solid #000;
+        line-height: 3.5;
+        padding: 0 5px;
+    }
+
+    #print .sign {
+        border: none;
+    }
+
+    #print  .sign > span {
+            display: inline-block;
+            width: 47%;
+        }
+
+   #print .tx-c {
+        text-align: center;
+    }
+
+   #print .tx-r {
+        text-align: right;
+    }
+   #print .tx-c {
+        text-align: center;
+    }
+
+   #print .tx-l {
+        text-align: left;
+    }
+</style>
+
 <script>
     var sheetId = $.getUrlParam("sheetId");
     var _formOption = {
@@ -38,9 +158,9 @@
             <el-input v-model="sheetInfo.creatorUserName" readonly="true"></el-input>
         </el-form-item>
         @*<el-form-item label="单据性质">
-            <el-input v-model="sheetInfo.sheetNatureName" readonly="true"></el-input>
-        </el-form-item>*@
-        <el-form-item label="单据状态" >
+                <el-input v-model="sheetInfo.sheetNatureName" readonly="true"></el-input>
+            </el-form-item>*@
+        <el-form-item label="单据状态">
             <el-input v-model="orderStatusName" readonly="true"></el-input>
         </el-form-item>
         <el-form-item label="对应单号" v-if="sheetInfo.sheetNature==1 || sheetInfo.sheetNature==2">
@@ -53,7 +173,7 @@
     <div style="text-align:right">
         <button type="button" v-for="(btn,index) in sheetInfo.btns" class="layui-btn layui-btn-sm" :class="btn.buttonClass" @@click="action(btn)">{{btn.buttonName}}</button>
     </div>
-    
+
     @*<button type="button" class="layui-btn layui-btn-danger" v-if="sheetInfo.sheetNature==0" style="float:right" @@click="revertSheet">冲红</button>*@
     <hr>
 </div>
@@ -83,7 +203,7 @@
                             title: '请输入冲红原因',
                             //area: ['800px', '350px'] //自定义文本域宽高
                         }, function (value, index, elem) {
-                            func.runAsync(abp.services.app.flowSheet.revert(sheetId,value).done(function () {
+                            func.runAsync(abp.services.app.flowSheet.revert(sheetId, value).done(function () {
                                 parent.layer.msg("冲红成功");
                                 parent.config.reloadTable();
                                 parent.layer.closeAll('iframe');
@@ -113,7 +233,7 @@
                                 }))
                                 layer.close(index);
                             });
-                        } 
+                        }
                         else {
                             func.runAsync(abp.services.app.flowSheet.action({ sheetId: sheetId, actionName: btn.buttonKey, formData: JSON.stringify(getFormData()) }).done(function () {
                                 parent.layer.msg("提交成功");
@@ -121,7 +241,7 @@
                                 parent.layer.closeAll('iframe');
                             }))
                         }
-                        
+
                     })
                 }
             },
@@ -131,11 +251,12 @@
                     abp.services.app.flowSheet.getById(sheetId).done(function (data) {
                         that.sheetInfo = data;
                         _formOption.sheetInfo = data;
+                        app.sheetInfo = data;
                     })
                 }
 
             }
         })
     })
-    
+
 </script>

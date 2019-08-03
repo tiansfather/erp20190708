@@ -8,6 +8,24 @@ namespace Master.EntityFrameworkCore.Seed.BaseData.SystemModules
 {
     public class MaterialBaseModules : BaseSystemModules
     {
+        public override List<ModuleButton> GetModuleButtons()
+        {
+            var buttons = base.GetModuleButtons();
+
+            buttons.Add(new ModuleButton()
+            {
+                ButtonKey = "Import",
+                ButtonName = "导入",
+                ButtonActionType = ButtonActionType.Form,
+                ButtonType = ButtonType.ForNoneRow,
+                IsEnabled = true,
+                ButtonActionUrl = "/Import/?type=Master.Storage.MaterialImportDto",
+                ButtonActionParam = "{\"area\": [\"100%\", \"100%\"],\"btn\":[]}",
+                Sort = 0
+            });
+
+            return buttons;
+        }
         public override void SetColumnInfosMoreData(ICollection<ColumnInfo> ColumnInfos)
         {
             ColumnInfos.Remove(ColumnInfos.Single(o => o.ColumnKey == "CreatorUserId"));

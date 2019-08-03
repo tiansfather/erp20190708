@@ -202,7 +202,7 @@ namespace Master.Authentication
         {
             get
             {
-                return true;
+                return !UnitId.HasValue;
             }
         }
     }
