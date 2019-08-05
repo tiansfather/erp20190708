@@ -50,18 +50,22 @@ namespace Master.FlowHandlers
                 var materialId = Convert.ToInt32(sheetItem["id"]);//对应的物料Id
                 
                 var number= sheetItem["number"].ToObjectWithDefault<int>();//退货数量
-                await MaterialSellManager.Back(unitId, startDate, materialId, storeId,number, flowSheet);
-                //产生退货数据
-                var materialSellBack = new MaterialSellBack()
+                if (number > 0)
                 {
-                    UnitId = unitId,
-                    MaterialId = materialId,
-                    BackNumber = number,
-                    FlowSheetId = flowSheet.Id,
-                    Discount = sheetItem["discount"].ToObjectWithDefault<decimal>(),
-                    Price = sheetItem["price"].ToObjectWithDefault<decimal>(),
-                };
-                await MaterialSellBackManager.InsertAsync(materialSellBack);
+                    await MaterialSellManager.Back(unitId, startDate, materialId, storeId, number, flowSheet);
+                    //产生退货数据
+                    var materialSellBack = new MaterialSellBack()
+                    {
+                        UnitId = unitId,
+                        MaterialId = materialId,
+                        BackNumber = number,
+                        FlowSheetId = flowSheet.Id,
+                        Discount = sheetItem["discount"].ToObjectWithDefault<decimal>(),
+                        Price = sheetItem["price"].ToObjectWithDefault<decimal>(),
+                    };
+                    await MaterialSellBackManager.InsertAsync(materialSellBack);
+                }
+                
             }
 
         }
@@ -86,8 +90,11 @@ namespace Master.FlowHandlers
                 var materialId = Convert.ToInt32(sheetItem["id"]);//对应的物料Id
 
                 var number = sheetItem["number"].ToObjectWithDefault<int>();//退货数量
-
-                await MaterialSellManager.Back(unitId, startDate, materialId, storeId, -number, flowSheet);
+                if (number > 0)
+                {
+                    await MaterialSellManager.Back(unitId, startDate, materialId, storeId, -number, flowSheet);
+                }
+                
 
             }
         }

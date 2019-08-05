@@ -99,12 +99,13 @@
             },
             methods: {
                 refreshData() {
+                    var that = this;
                     if (!this.currentItem.unitId || !this.currentItem.startDate) {
                         return;
                     }
-                    func.runAsync(abp.services.app.materialSell.getUnitSellMaterialForBack(this.currentItem.unitId, this.currentItem.startDate).done(res => {
+                    func.runAsync(abp.services.app.materialSell.getUnitSellMaterialForBack(this.currentItem.unitId, this.currentItem.startDate).done(function(res) {
                         
-                        this.currentItem.items = res;
+                        that.currentItem.items = res;
                     }))
                 }
             },
@@ -116,6 +117,11 @@
                     var that = this;
                     abp.services.app.store.getAllStores().done(function (data) {
                         that.currentItem.stores = data;
+                    })
+                } else {
+                    //移除没有退库的
+                    this.currentItem.items = this.currentItem.items.filter(function (o) {
+                        return o.number && o.number > 0;
                     })
                 }
             },

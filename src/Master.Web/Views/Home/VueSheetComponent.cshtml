@@ -1,7 +1,7 @@
 ﻿<script>
     Vue.component('unit-select', {
         inheritAttrs: false,
-        data() {
+        data:function() {
             return {
                 options: [],
                 myUnit: this.unit
@@ -812,7 +812,7 @@
             },
             theSelectItemIndexArr: function () {
                 var arr = [];
-                this.items.forEach((el, index) => { if (el.type == 'select') { arr.push(index) } })
+                this.items.forEach(function(el, index) { if (el.type == 'select') { arr.push(index) } })
                 return arr
             }
         },
@@ -859,7 +859,7 @@
                 this.getSetValue(ev, index, item)
                 var part = this.parts[index];
                 //console.log(this.parts)
-                item.formulaArr && item.formulaArr.forEach(fn => {
+                item.formulaArr && item.formulaArr.forEach(function(fn) {
                     fn(part)
                 })
             },
@@ -939,8 +939,8 @@
                     console.log(that.items[itemIndex])
                     that.getSetValue(data.value, index, that.items[itemIndex])
                 }
-                this.parts.forEach((el, index) => {
-                    this.theSelectItemIndexArr.forEach((item, itemIndex) => {
+                this.parts.forEach(function(el, index)  {
+                    that.theSelectItemIndexArr.forEach(function(item, itemIndex)  {
                         var selector = `_mulsel${itemIndex}-${index}`;
                         //console.log($(`[lay-filter=${selector}]`));
                         form.on(`select(${selector})`, callBack)
@@ -949,19 +949,20 @@
             }
         },
         mounted: function () {
+            var that = this;
             //当传进来的parts===[{}];进行赋默认值
             if (this.parts.length === 1 && $.isEmptyObject(this.parts[0]) && !$.isEmptyObject(this.setDefaultData)) {
                 Vue.set(this.parts, 0, this.setDefaultData)
                 //this.parts[0] =this.setDefaultData;
             }
             //预处理公式
-            this.items.forEach((elm, index) => {
+            this.items.forEach(function(elm, index)  {
                 if (func.typeof(elm.formula) == 'function') {
                     let fn = function (part) {
                         part[elm.key] = elm.formula(part);
                     }
-                    elm.trigger.forEach((trigger, triggerIndex) => {
-                        let item = this.items.filter(item => item.key === trigger)[0]
+                    elm.trigger.forEach(function(trigger, triggerIndex)  {
+                        let item = that.items.filter(function (item) { return item.key === trigger })[0]
                         console.log(item)
                         item.formulaArr ? item.formulaArr.push(fn) : item.formulaArr = [fn]
                     })
@@ -990,13 +991,16 @@
                 newValue: this.value,
                 items: [
                     {
-                        type: 'upload', title: '图片', key: 'file',uploadFilePath:'filepath', onChange: ev => {
-                            this.newValue = JSON.stringify(this.parts);
-                        }
+                        type: 'upload', title: '图片', key: 'file',uploadFilePath:'filepath', onChange: refresh
                     }, {
                         type:'readonly',title:'路径',key:'filepath'
                     }
                 ], parts: []
+            }
+        },
+        methods: {
+            refresh: function () {
+                this.newValue = JSON.stringify(this.parts);
             }
         },
         created: function () {

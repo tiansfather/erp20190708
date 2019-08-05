@@ -51,7 +51,10 @@ namespace Master.FlowHandlers
                 
                 var number= sheetItem["number"].ToObjectWithDefault<int>();//退货数量
                 await MaterialBuyManager.Back(unitId, startDate, materialId, storeId,number, flowSheet);
-
+                if (number == 0)
+                {
+                    continue;
+                }
                 //产生退货数据
                 var materialBuyBack = new MaterialBuyBack()
                 {
@@ -81,13 +84,16 @@ namespace Master.FlowHandlers
             var startDate = sheetHeader["startDate"].ToObjectWithDefault<DateTime>();
             //更改往来单位金额
             await UnitManager.ChangeFee(unitId, null, totalFee, flowSheet);
-
+            
             foreach (var sheetItem in sheetData["body"])
             {
                 var materialId = Convert.ToInt32(sheetItem["id"]);//对应的物料Id
 
                 var number = sheetItem["number"].ToObjectWithDefault<int>();//退货数量
-
+                if (number == 0)
+                {
+                    continue;
+                }
                 await MaterialBuyManager.Back(unitId, startDate, materialId, storeId, -number, flowSheet);
 
             }

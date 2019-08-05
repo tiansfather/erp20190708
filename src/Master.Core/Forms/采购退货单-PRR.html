@@ -125,6 +125,11 @@
                     abp.services.app.store.getAllStores().done(function (data) {
                         that.currentItem.stores = data;
                     })
+                } else {
+                    //移除没有退库的
+                    this.currentItem.items = this.currentItem.items.filter(function (o) {
+                        return o.number && o.number > 0;
+                    })
                 }
             },
             mounted() {

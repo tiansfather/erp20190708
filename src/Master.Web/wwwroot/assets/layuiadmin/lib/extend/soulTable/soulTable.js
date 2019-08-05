@@ -242,13 +242,13 @@ layui.define(['tableFilter', 'tableChild'], function (exports) {
                                     hadMoved = false;
                                     //如果是模块的话，在移动位置后将向后台发送请求
                                     var sortData = [];
-                                        myTable.cols[0].forEach((elm, index) => {
+                                        myTable.cols[0].forEach(function(elm, index)  {
                                         if (elm.field) {
                                             sortData .push(elm.field)
                                         }
                                     });
                                     var tableId = $table.attr('id');
-                                    abp.services.app.moduleInfo.setColumnSort(tableId, sortData).done(res => console.log('排序成功'))
+                                    abp.services.app.moduleInfo.setColumnSort(tableId, sortData)
                                     console.log(myTable, sortData);
                                 }
                         
@@ -302,7 +302,7 @@ layui.define(['tableFilter', 'tableChild'], function (exports) {
                                                 var tableId = $table.attr('id');
                                                 var columnKey = $this.data('field');
                                                 //var columnKey = $this.data('field').replace(/^([a-z])/g, (L) => L.toUpperCase());
-                                                abp.services.app.moduleInfo.setColumnVisible(tableId, columnKey, false).done(res => console.log('隐藏成功'))
+                                                abp.services.app.moduleInfo.setColumnVisible(tableId, columnKey, false)
                                             })()
                                         }
 

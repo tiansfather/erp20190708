@@ -302,7 +302,7 @@
                 that.key = this.columnInfo.checkedKey || "id";
                 //获取显示数据
                 if (that.value) {
-                    var where = that.value.split(',').map(o => "id=" + o).join(' or '); //id=1 or id=2
+                    var where = that.value.split(',').map(function (o) { return "id=" + o; }).join(' or '); //id=1 or id=2
                     abp.ajax({
                         type: 'get',
                         url: this.columnInfo.RelativeDataString,

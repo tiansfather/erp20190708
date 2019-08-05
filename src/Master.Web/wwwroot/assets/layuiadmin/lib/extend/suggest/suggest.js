@@ -154,7 +154,7 @@ layui.define(['jquery', 'table'], function(exports) {
 			url: opt.urlBak+kw,
 			success: function(data) {
 				let html = "";
-				layui.each(data.data, (index, item) => {
+				layui.each(data.data, function(index, item)  {
 					//if (item[sessionStorage.getItem("inputId")].indexOf(decodeURI(kw)) >= 0) {
 						html +=
 							"<div class='item' style='padding: 5px 10px;cursor: pointer;' onmouseenter='getFocus(this)' onClick='getCon(this);'>" +
