@@ -84,11 +84,11 @@ namespace Master.Storage
                 var materialSellBackQuery = Resolve<MaterialSellBackManager>().GetAll().Where(o => o.MaterialId == material.Id && o.UnitId == unit.Id);
                 if (searchKeys.ContainsKey("startDate"))
                 {
-                    materialSellBackQuery = materialSellBackQuery.Where(o => o.CreationTime > DateTime.Parse(searchKeys["startDate"]));
+                    materialSellBackQuery = materialSellBackQuery.Where(o => o.CreationTime.Date >= DateTime.Parse(searchKeys["startDate"]));
                 }
                 if (searchKeys.ContainsKey("endDate"))
                 {
-                    materialSellBackQuery = materialSellBackQuery.Where(o => o.CreationTime < DateTime.Parse(searchKeys["endDate"]));
+                    materialSellBackQuery = materialSellBackQuery.Where(o => o.CreationTime.Date <= DateTime.Parse(searchKeys["endDate"]));
                 }
                 var backNumber = materialSellBackQuery.Sum(o => o.BackNumber);
                 var backFee = materialSellBackQuery.Sum(o => o.BackNumber * o.Price * o.Discount);

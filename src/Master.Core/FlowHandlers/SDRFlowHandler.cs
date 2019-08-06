@@ -178,6 +178,7 @@ namespace Master.FlowHandlers
                 {
                     throw new UserFriendlyException("请选择发货仓库");
                 }
+                flowSheet.OrderStatus = "已发货";
                 foreach (var sheetItem in sheetData["body"])
                 {
                     var materialId = sheetItem["materialId"].ToObjectWithDefault<int>();//商品Id
@@ -203,7 +204,7 @@ namespace Master.FlowHandlers
                     await StoreMaterialManager.CountMaterial(outStoreId.Value, materialId, -number, flowSheet);
 
                 }
-                flowSheet.OrderStatus = "已发货";
+                
             }
             else if (action == "back")
             {
@@ -217,6 +218,7 @@ namespace Master.FlowHandlers
                 {
                     throw new UserFriendlyException("请选择退入仓库");
                 }
+                flowSheet.OrderStatus = "已退货";
                 foreach (var sheetItem in sheetData["body"])
                 {
                     var materialId = sheetItem["materialId"].ToObjectWithDefault<int>();//商品Id
@@ -235,7 +237,7 @@ namespace Master.FlowHandlers
                     };
                     await MaterialSellBackManager.InsertAsync(materialSellBack);
                 }
-                flowSheet.OrderStatus = "已退货";
+                
             }
         }
     }

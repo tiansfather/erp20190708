@@ -94,14 +94,14 @@ namespace Master.Storage
                 var materialSells = await GetAll().Where(o => o.FlowSheetId == flowSheet.Id).ToListAsync();
                 if (materialSells.Count(o => o.OutNumber > 0) == 0)
                 {
-                    flowSheet.SetPropertyValue("OrderStatus", "待出库");
+                    flowSheet.OrderStatus= "待出库";
                 }else if (materialSells.Count(o => o.OutNumber != o.SellNumber) == 0)
                 {
-                    flowSheet.SetPropertyValue("OrderStatus", "出库完成");
+                    flowSheet.OrderStatus="出库完成";
                 }
                 else
                 {
-                    flowSheet.SetPropertyValue("OrderStatus", "部分出库");
+                    flowSheet.OrderStatus="部分出库";
                 }
             }
         }

@@ -6,7 +6,7 @@
     "order": 2,
     "items": [
       {
-        "name": "Sell.Tenancy.Wrapper1",
+        "name": "Sell.Tenancy.SellWrapper1",
         "displayName": "票劵订货",
         "icon": "iconfont icon-celve",
         "order": 1,
@@ -28,7 +28,7 @@
         ]
       },
       {
-        "name": "Sell.Tenancy.Wrapper2",
+        "name": "Sell.Tenancy.SellWrapper2",
         "displayName": "票劵出库|退库",
         "icon": "iconfont icon-celve",
         "order": 1,
@@ -71,7 +71,7 @@
         ]
       },
       {
-        "name": "Sell.Tenancy.Wrapper3",
+        "name": "Sell.Tenancy.SellWrapper3",
         "displayName": "实物订货",
         "icon": "iconfont icon-celve",
         "order": 1,
@@ -100,7 +100,7 @@
         ]
       },
       {
-        "name": "Sell.Tenancy.Wrapper4",
+        "name": "Sell.Tenancy.SellWrapper4",
         "displayName": "实物出库|退库",
         "icon": "iconfont icon-celve",
         "order": 1,
@@ -167,7 +167,7 @@
     "order": 10,
     "items": [
       {
-        "name": "Storage.Tenancy.Wrapper1",
+        "name": "Storage.Tenancy.StorageWrapper1",
         "displayName": "库存管理",
         "icon": "iconfont icon-celve",
         "order": 1,
@@ -224,7 +224,7 @@
         ]
       },
       {
-        "name": "Storage.Tenancy.Wrapper2",
+        "name": "Storage.Tenancy.StorageWrapper2",
         "displayName": "装配管理",
         "icon": "iconfont icon-celve",
         "order": 8,
@@ -270,7 +270,7 @@
     "order": 20,
     "items": [
       {
-        "name": "Finance.Tenancy.Wrapper1",
+        "name": "Finance.Tenancy.FinanceWrapper1",
         "displayName": "收款",
         "order": 1,
         "items": [
@@ -301,7 +301,7 @@
         ]
       },
       {
-        "name": "Finance.Tenancy.Wrapper2",
+        "name": "Finance.Tenancy.FinanceWrapper2",
         "displayName": "付款",
         "order": 2,
         "items": [
@@ -332,7 +332,7 @@
         ]
       },
       {
-        "name": "Finance.Tenancy.Wrapper3",
+        "name": "Finance.Tenancy.FinanceWrapper3",
         "displayName": "其他",
         "order": 3,
         "items": [
@@ -351,7 +351,7 @@
         ]
       },
       {
-        "name": "Finance.Tenancy.Wrapper4",
+        "name": "Finance.Tenancy.FinanceWrapper4",
         "displayName": "票据",
         "order": 4,
         "items": [
@@ -385,7 +385,7 @@
     "order": 21,
     "items": [
       {
-        "name": "Summary.Tenancy.Wrapper1",
+        "name": "Summary.Tenancy.SummaryWrapper1",
         "displayName": "销货",
         "icon": "iconfont icon-celve",
         "order": 1,
@@ -428,7 +428,7 @@
         ]
       },
       {
-        "name": "Summary.Tenancy.Wrapper2",
+        "name": "Summary.Tenancy.SummaryWrapper2",
         "displayName": "进货",
         "icon": "iconfont icon-celve",
         "order": 2,
@@ -457,7 +457,7 @@
         ]
       },
       {
-        "name": "Summary.Tenancy.Wrapper3",
+        "name": "Summary.Tenancy.SummaryWrapper3",
         "displayName": "财务",
         "icon": "iconfont icon-celve",
         "order": 3,
@@ -578,6 +578,12 @@
         "displayName": "员工信息",
         "icon": "iconfont icon-yuangongxinxi2",
         "url": "/User"
+      },
+      {
+        "name": "Admin.Tenancy.Notice",
+        "displayName": "公告管理",
+        "icon": "iconfont icon-yuangongxinxi2",
+        "url": "/Home/Show?name=../Notice/Index"
       }
     ]
   },

@@ -24,7 +24,8 @@ namespace Master.Notices
         {
             var notice = new Notice()
             {
-                NoticeTitle = title
+                NoticeTitle = title,
+                TenantId=AbpSession.TenantId
             };
             await Manager.InsertAsync(notice);
         }
@@ -42,6 +43,9 @@ namespace Master.Notices
             {
                 case "noticeTitle":
                     notice.NoticeTitle = value;
+                    break;
+                case "noticeContent":
+                    notice.NoticeContent = value;
                     break;
             }
             await Manager.UpdateAsync(notice);

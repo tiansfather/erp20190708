@@ -174,8 +174,8 @@
                     if (!this.currentItem.unitId ) {
                         return;
                     }
-                    func.runAsync(abp.services.app.materialSell.getUnitSellMaterialForOut(this.currentItem.unitId).done(res => {                        
-                        this.currentItem.items = res;
+                    func.runAsync(abp.services.app.materialSell.getUnitSellMaterialForOut(this.currentItem.unitId).done(function(res) {                        
+                        that.currentItem.items = res;
                     }))
                     //获取往来单位信息
                     func.runAsync(abp.services.app.unit.getById(this.currentItem.unitId).done(function (data) {
