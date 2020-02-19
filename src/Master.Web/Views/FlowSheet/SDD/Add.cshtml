@@ -189,7 +189,7 @@
             var where = { searchKeys: JSON.stringify(searchKeys) };
             
             where.where = "MaterialNature=0 ";//只显示票劵商品
-            where.searchCondition = func.buildSearchCondition('Material');
+            //where.searchCondition = func.buildSearchCondition('Material');
             if (!(app && app.currentItem && app.currentItem.unitId) ) { where.where = "1>2"; }
 			return where;
 

@@ -189,7 +189,7 @@
             var where = { searchKeys: JSON.stringify(searchKeys) };
             
             where.where = "MaterialNature=1 ";//只显示实物商品
-            where.searchCondition = func.buildSearchCondition('Material');
+            //where.searchCondition = func.buildSearchCondition('Material');
             if (!(app && app.currentItem && app.currentItem.unitId)) { where.where = "1>2"; }
 			return where;
 
