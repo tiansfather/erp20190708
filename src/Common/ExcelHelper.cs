@@ -77,7 +77,7 @@ namespace Common
                             ICell cell = firstRow.GetCell(i);
                             if (cell != null)
                             {
-                                string cellValue = cell.StringCellValue;
+                                string cellValue = cell.ToString().Trim();
                                 if (cellValue != null)
                                 {
                                     DataColumn column = new DataColumn(cellValue);
@@ -257,7 +257,7 @@ namespace Common
                     short format = cell.CellStyle.DataFormat;
                     if (format != 0) { return cell.DateCellValue; } else { return cell.NumericCellValue; }
                 case CellType.String: //STRING:  
-                    return cell.StringCellValue;
+                    return cell.StringCellValue.Trim();
                 case CellType.Error: //ERROR:  
                     return cell.ErrorCellValue;
                 case CellType.Formula: //FORMULA:  

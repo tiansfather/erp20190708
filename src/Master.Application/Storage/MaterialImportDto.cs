@@ -77,6 +77,7 @@ namespace Master.Storage
                 var baseTreeManager = scope.Resolve<BaseTreeManager>();
                 var outi = 0;
 
+
                 #region 判断分类
                 var MaterialTypeName = this.MaterialTypeName;
                 if (!string.IsNullOrEmpty(MaterialTypeName)) {

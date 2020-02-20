@@ -40,6 +40,10 @@ namespace Master.Roles
 
         public virtual async Task EditRole(int id, string name)
         {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new UserFriendlyException(L("角色名不能为空"));
+            }
             var role = await RoleManager.GetByIdAsync(id);
             role.Name = name;
             role.DisplayName = name;

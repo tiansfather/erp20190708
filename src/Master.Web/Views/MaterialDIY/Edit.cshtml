@@ -53,7 +53,7 @@
 
 @section scripts{
     <script type="text/html" id="editTpl">
-        <input type="number"  style="width:50px" id="edit_{{d.id}}" onblur="app.updateInfo({ materialId: {{d.id}},number:this.value,name:'{{d.name}}',measureMentUnit:'{{d.measureMentUnit}}'})"/>
+        <input type="number"  style="width:50px" id="edit_{{d.id}}" onkeyup="inputKeyUpHandler" onblur="app.updateInfo({ materialId: {{d.id}},number:this.value,name:'{{d.name}}',measureMentUnit:'{{d.measureMentUnit}}'})"/>
     </script>
     <script>
         var searchKeys = {materialDIYType:0};
@@ -123,7 +123,7 @@
                             even: true,
                             cols: [[
                                 {field:'name',title:'品名'},
-                                {field:'specifiation',title:'规格'},
+                                {field:'specification',title:'规格'},
                                 { field: 'price', title: '零售价' },
                                 { field: 'remarks', title: '备注' },
                                 { field: '', title: '分内数量',templet:'#editTpl' },
@@ -166,10 +166,15 @@
 		}
 		function getWhere() {
 			var where = { searchKeys: JSON.stringify(searchKeys) };
-            where.searchCondition = func.buildSearchCondition('MaterialDIY');
+            //where.searchCondition = func.buildSearchCondition('MaterialDIY');
 
 			return where;
 
-		}
+        }
+        function inputKeyUpHandler(e) {
+            var inputNumber = $(e.currentTarget).val();
+            inputNumber = inputNumber.replace(/[^1-9]/g, '');
+	         $("#inputNumberVal").val(inputNumber);
+        }
     </script>
 }

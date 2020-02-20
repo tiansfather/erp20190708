@@ -410,7 +410,8 @@ var func = {
 		var opt = $.extend({
             trigger: 'dblclick',
             uploadType: 'single',
-            multiple:false
+            multiple: false,
+            mode:'file|snap',
         }, options);
         //console.log(opt)
 		$("body").on(opt.trigger, selector, function () {
@@ -425,7 +426,7 @@ var func = {
 					shadeClose: false,
 					shade: 0.8,
                     area: ['500px','400px'],
-                    content: '/File/CommonUpload?multiple='+opt.multiple
+                    content: '/File/CommonUpload?multiple=' + opt.multiple + '&mode=' + opt.mode
 				});
 			} catch(e){
 				//console.log(e);

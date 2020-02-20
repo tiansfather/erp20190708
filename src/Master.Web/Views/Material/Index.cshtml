@@ -47,8 +47,8 @@
 		//当检索窗体提交后会调用此方法
 		config.reloadTable = function () {
 			layui.table.reload('Material', {
-				where: getWhere()
-
+				where: getWhere(),
+				page:1,
 			})
 		}
 		config.onTableDone = function () {

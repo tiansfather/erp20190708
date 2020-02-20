@@ -1,15 +1,18 @@
 ﻿@using Master.Web.Configuration
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor  _httpContextAccessor
 @model List<UploadProvider>
 @{
     Layout = "~/Views/Shared/_LayoutDialog.cshtml";
+    var mode = _httpContextAccessor.HttpContext.Request.Query["mode"].FirstOrDefault();
 }
 @section styles{
     <style>
-        .my-center{
-            text-align:center;
-            margin-top:20px;
+        .my-center {
+            text-align: center;
+            margin-top: 20px;
         }
-        .my-frame{
+
+        .my-frame {
             top: 0;
             position: absolute;
             width: 100%;
@@ -20,115 +23,115 @@
     </style>
 }
 <div class="layui-upload-list" id="uploadListContainer" style="padding:0 20px;display:none">
-	<table class="layui-table">
-		<thead>
-			<tr>
-				<th>文件名</th>
-				<th>大小</th>
-				<th>进度</th>
-				<th>状态</th>
-				<th>操作</th>
-			</tr>
-		</thead>
-		<tbody id="uploadList"></tbody>
-	</table>
+    <table class="layui-table">
+        <thead>
+            <tr>
+                <th>文件名</th>
+                <th>大小</th>
+                <th>进度</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody id="uploadList"></tbody>
+    </table>
 </div>
 
 <div class="layui-tab layui-tab-brief" lay-filter="UploadTab">
-	<ul class="layui-tab-title">
-		<li class="layui-this">@L("文件上传")</li>
-		<li>@L("截图上传")</li>
-		@foreach(var provider in Model)
-		{
-			<li>@provider.ProviderName</li>
-		}
-	</ul>
-	<div class="layui-tab-content">
-		<div class="layui-tab-item layui-show my-center">
-			<div class="layui-upload-drag" id="uploadBtn">
-				<i class="layui-icon"></i>
-				<p>点击上传，或将文件拖拽到此处</p>
-			</div>
-		</div>
-		<div class="layui-tab-item">
-			<div style="border:1px dashed #ccc;width:80%;">
-				<h2>截图粘贴到此处</h2>
-				<img id="pasteImg" />
-			</div>
-		</div>
-		@foreach (var provider in Model)
-		{
-			<div class="layui-tab-item" style="position:relative;">
-				<iframe frameborder="0" src="@provider.ProviderUrl" class="my-frame"></iframe>
-			</div>
-		}
-	</div>
+    <ul class="layui-tab-title">
+        <li class="layui-this">@L("文件上传")</li>
+        @*<li>@L("截图上传")</li>*@
+        @foreach (var provider in Model)
+        {
+            <li>@provider.ProviderName</li>
+        }
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show my-center">
+            <div class="layui-upload-drag" id="uploadBtn">
+                <i class="layui-icon"></i>
+                <p>点击上传，或将文件拖拽到此处</p>
+            </div>
+        </div>
+        @*<div class="layui-tab-item">
+            <div style="border:1px dashed #ccc;width:80%;">
+                <h2>截图粘贴到此处</h2>
+                <img id="pasteImg" />
+            </div>
+        </div>*@
+        @foreach (var provider in Model)
+        {
+            <div class="layui-tab-item" style="position:relative;">
+                <iframe frameborder="0" src="@provider.ProviderUrl" class="my-frame"></iframe>
+            </div>
+        }
+    </div>
 </div>
 
 @section scripts{
-	<script>
-		config.ready = function () {
-			(function () {
-				var imgReader = function (item) {
-					var blob = item.getAsFile(),
-						reader = new FileReader();
+    <script>
+        config.ready = function () {
+            (function () {
+                var imgReader = function (item) {
+                    var blob = item.getAsFile(),
+                        reader = new FileReader();
 
-					reader.onload = function (e) {
-						//if (window["clipimgCallback"]) {
-						//	window["clipimgCallback"](e.target.result);
-						//}
-						var src = e.target.result;
-						//显示预览
-						$("#pasteImg").attr("src", src);
-						//提交至服务器
-						$.post("/File/UploadByBase64", { data: src }, function (res) {
+                    reader.onload = function (e) {
+                        //if (window["clipimgCallback"]) {
+                        //	window["clipimgCallback"](e.target.result);
+                        //}
+                        var src = e.target.result;
+                        //显示预览
+                        $("#pasteImg").attr("src", src);
+                        //提交至服务器
+                        $.post("/File/UploadByBase64", { data: src }, function (res) {
                             console.log(res);
                             if (JSON.parse($.getUrlParam('multiple'))) {
                                 res.result = [res.result];
                             }
-							parent.upload.callback(res.result);
-							parent.layer.closeAll('iframe');
-						}, 'json');
-					};
+                            parent.upload.callback(res.result);
+                            parent.layer.closeAll('iframe');
+                        }, 'json');
+                    };
 
-					reader.readAsDataURL(blob);
-				};
-				document.addEventListener('paste', function (e) {
-					console.log(e);
-					var clipboardData = e.clipboardData,
-						i = 0,
-						items, item, types;
+                    reader.readAsDataURL(blob);
+                };
+                document.addEventListener('paste', function (e) {
+                    console.log(e);
+                    var clipboardData = e.clipboardData,
+                        i = 0,
+                        items, item, types;
 
-					if (clipboardData) {
-						items = clipboardData.items;
+                    if (clipboardData) {
+                        items = clipboardData.items;
 
-						if (!items) {
-							return;
-						}
+                        if (!items) {
+                            return;
+                        }
 
-						item = items[0];
-						types = clipboardData.types || [];
+                        item = items[0];
+                        types = clipboardData.types || [];
 
-						for (; i < types.length; i++) {
-							if (types[i] === 'Files') {
-								item = items[i];
-								break;
-							}
-						}
+                        for (; i < types.length; i++) {
+                            if (types[i] === 'Files') {
+                                item = items[i];
+                                break;
+                            }
+                        }
 
-						if (item && item.kind === 'file' && item.type.match(/^image\//i)) {
-							imgReader(item);
-						}
-					}
-				});
-			})();
+                        if (item && item.kind === 'file' && item.type.match(/^image\//i)) {
+                            imgReader(item);
+                        }
+                    }
+                });
+            })();
             layui.upload.render({
                 elem: '#uploadBtn',
                 field: 'file',
                 accept: 'file',
                 multiple: JSON.parse($.getUrlParam('multiple')),
                 number: 10,
-                size: JSON.parse($.getUrlParam('size'))||20480,
+                size: JSON.parse($.getUrlParam('size')) || 20480,
                 url: '/file/upload/'
                 , choose: function (obj) {
                     if (window.isReUpload) { window.isReUpload = false; return; }
@@ -207,7 +210,7 @@
                             parent.upload.callback(res.result);
                             parent.layer.closeAll('iframe');
                         }
-                        
+
                         //app.currentItem.files.push({ fileName: res.result.fileName, filePath: res.result.filePath, fileType: '' });
                         delete this.files[index];
                     }
@@ -234,31 +237,31 @@
                     parent.layer.closeAll('iframe');
                 }
             });
-			//layui.upload.render({
-			//	elem: '#uploadBtn',
-			//	size: 1024*20,
-			//	accept: 'file',
-			//	url: '/file/upload/'
-			//	, done: function (res, index, upload) {
-			//		//获取当前触发上传的元素，一般用于 elem 绑定 class 的情况，注意：此乃 layui 2.1.0 新增
-			//		var item = this.item;
-			//		//如果上传失败
-			//		if (!res.result.success) {
-			//			layer.msg(res.result.msg, { icon: 5, anim: 6 });
-			//		}
-			//		//上传成功
-			//		else {
-			//			console.log(res);
-			//			parent.upload.callback(res.result);
-			//			parent.layer.closeAll('iframe');
+            //layui.upload.render({
+            //	elem: '#uploadBtn',
+            //	size: 1024*20,
+            //	accept: 'file',
+            //	url: '/file/upload/'
+            //	, done: function (res, index, upload) {
+            //		//获取当前触发上传的元素，一般用于 elem 绑定 class 的情况，注意：此乃 layui 2.1.0 新增
+            //		var item = this.item;
+            //		//如果上传失败
+            //		if (!res.result.success) {
+            //			layer.msg(res.result.msg, { icon: 5, anim: 6 });
+            //		}
+            //		//上传成功
+            //		else {
+            //			console.log(res);
+            //			parent.upload.callback(res.result);
+            //			parent.layer.closeAll('iframe');
 
-			//		}
-			//	}
-			//})
-		};
-		window["clipimgCallback"] = function (src) {
-			
-		}
-			
-	</script>
+            //		}
+            //	}
+            //})
+        };
+        window["clipimgCallback"] = function (src) {
+
+        }
+
+    </script>
 }

@@ -122,7 +122,7 @@
                         app.from = 2;
                         app.step = 1;
                     }))
-                }
+                },mode:'file'
             })
 			//监听工具条
 			layui.table.on('tool(dataTable)', function (obj) {
@@ -244,7 +244,11 @@
 						//预览表格渲染
 						app.renderTable();
 					},
-					goToStep3: function () {
+                    goToStep3: function () {
+                        if (!layui.table.cache.dataTable.length) {
+                            abp.message.error("请先录入数据再导入");
+                            return;
+                        }
 						abp.message.confirm('确认导入?', function () {
 							//获取表格内数据
 							var param = {

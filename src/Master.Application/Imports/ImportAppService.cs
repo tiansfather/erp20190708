@@ -126,7 +126,8 @@ namespace Master.Imports
                 }
                 else
                 {
-                    throw new UserFriendlyException(ex.Message);
+                    //throw new UserFriendlyException(ex.Message);
+                    throw new UserFriendlyException("请上传Excel文件，首行为表头且不能重名");
                 }
                 
             }

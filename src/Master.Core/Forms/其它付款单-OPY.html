@@ -132,6 +132,7 @@
             },
             computed: {
                 totalFee: function () {
+                    if (!this.currentItem.inputedFee) { return 0;}
                     if (this.currentItem.payType == '0' || this.currentItem.payType == '1') {
                         return parseFloat(this.currentItem.inputedFee).toFixed(2);
                     } else {                        

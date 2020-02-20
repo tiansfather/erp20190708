@@ -15,10 +15,10 @@ namespace Master.Finance
     [InterModule("资金往来明细",GenerateDefaultButtons =false,GenerateDefaultColumns =false)]
     public class FeeAccountHistory : BaseFullEntityWithTenant
     {
-        [InterColumn(ColumnName ="资金账户",DisplayPath="FeeAccount.Name",Templet ="{{d.feeAccountId_display}}",Sort =1)]
+        [InterColumn(ColumnName ="资金账户",DisplayPath="FeeAccount.Name",Templet = "{{d.feeAccountId_display||'/'}}", Sort =1)]
         public int FeeAccountId { get; set; }
         public virtual FeeAccount FeeAccount { get; set; }
-        [InterColumn(ColumnName = "往来单位", DisplayPath = "Unit.UnitName", Templet = "{{d.unitId_display}}", Sort = 2)]
+        [InterColumn(ColumnName = "往来单位", DisplayPath = "Unit.UnitName", Templet = "{{d.unitId_display||'/'}}", Sort = 2)]
         public int? UnitId { get; set; }
         public virtual Unit Unit { get; set; }
         /// <summary>
