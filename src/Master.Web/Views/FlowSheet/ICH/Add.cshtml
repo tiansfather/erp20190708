@@ -65,7 +65,7 @@
 @section scripts{
     <script type="text/html" id="editTpl">
         <div info="">
-            <input type="number" style="width:50px" id="edit_{{d.id}}" onblur="app.updateInfo({ id: {{d.id}},number:this.value,name:'{{d.name}}',measureMentUnit:'{{d.measureMentUnit}}'})" />
+            <input type="number" style="width:50px" id="edit_{{d.id}}" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onblur="app.updateInfo({ id: {{d.id}},number:this.value,name:'{{d.name}}',measureMentUnit:'{{d.measureMentUnit}}'})" />
         </div>
         
     </script>
@@ -136,7 +136,7 @@
                         even: true,
                         cols: [[
                             { field: 'name', title: '品名' },
-                            { field: 'specifiation', title: '规格' },
+                            { field: 'specification', title: '规格' },
                             { field: 'price', title: '零售价' },
                             { field: 'remarks', title: '备注' },
                             {

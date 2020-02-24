@@ -1,5 +1,5 @@
 ﻿<div id="app" v-cloak>
-    <el-form :inline="true" size="mini">
+    <el-form :inline="true" size="mini" :disabled="_formOption.readonly">
         <el-form-item label="交货日期">
             <el-date-picker v-model="currentItem.sheetDate" :readonly="_formOption.readonly" type="date" placeholder="选择交货日期" format="yyyy-MM-dd" value-format="yyyy-MM-dd">
             </el-date-picker>
@@ -10,31 +10,34 @@
 
 
     </el-form>
-    <table class="layui-table">
-        <thead>
-            <tr>
-                <th>品名</th>
-                <th>规格</th>
-                <th>备注</th>
-                <th>当前库存</th>
-                <th>装配数量</th>
-                <th>计量单位</th>
-                <th>操作</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="(item,index) in currentItem.items">
-                <td>{{item.name}}</td>
-                <td>{{item.specification}}</td>
-                <td>{{item.remarks}}</td>
-                <td>{{item.storeNumber}}</td>
-                <td><el-input-number v-model="item.number" :min="1"  label="装配数量"></el-input-number></td>
-                <td>{{item.measureMentUnit}}</td>
-                <td><a title="删除" style="cursor: pointer;" @click="currentItem.items.splice(index,1);"><i class="layui-icon layui-icon-delete"></i></a></td>
-            </tr>
-        </tbody>
-    </table>
-    <el-form size="mini">
+    <el-form :disabled="_formOption.readonly">
+        <table class="layui-table">
+            <thead>
+                <tr>
+                    <th>品名</th>
+                    <th>规格</th>
+                    <th>备注</th>
+                    <th>当前库存</th>
+                    <th>装配数量</th>
+                    <th>计量单位</th>
+                    <th v-if="!_formOption.readonly">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(item,index) in currentItem.items">
+                    <td>{{item.name}}</td>
+                    <td>{{item.specification}}</td>
+                    <td>{{item.remarks}}</td>
+                    <td>{{item.storeNumber}}</td>
+                    <td><el-input-number v-model="item.number" :min="1" label="装配数量"></el-input-number></td>
+                    <td>{{item.measureMentUnit}}</td>
+                    <td v-if="!_formOption.readonly"><a title="删除" style="cursor: pointer;" @click="currentItem.items.splice(index,1);"><i class="layui-icon layui-icon-delete"></i></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </el-form>
+    
+    <el-form size="mini" :disabled="_formOption.readonly">
         <el-form-item label="备注">
             <el-input type="textarea" v-model="currentItem.remarks"></el-input>
         </el-form-item>

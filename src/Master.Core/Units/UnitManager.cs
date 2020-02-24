@@ -93,6 +93,14 @@ namespace Master.Units
             await Resolve<UnitFeeHistoryManager>().InsertAsync(unitFeeHistory);
         }
 
+        public override async Task DeleteAsync(IEnumerable<int> ids)
+        {
+            if(await Resolve<UnitFeeHistoryManager>().GetAll().CountAsync(o => ids.Contains(o.UnitId)) > 0)
+            {
+                throw new UserFriendlyException("已产生往来金额的往来单位不能删除");
+            }
+            await base.DeleteAsync(ids);
+        }
         //public void HandleEvent(EntityChangedEventData<Unit> eventData)
         //{
         //    var key = "Unit" + "@" + eventData.Entity.TenantId;

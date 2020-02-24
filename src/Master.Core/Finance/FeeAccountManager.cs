@@ -74,5 +74,15 @@ namespace Master.Finance
 
             await Resolve<FeeAccountHistoryManager>().InsertAsync(feeAccountHistory);
         }
+
+        public override async Task DeleteAsync(IEnumerable<int> ids)
+        {
+            var historyCount = await Resolve<FeeAccountHistoryManager>().GetAll().CountAsync(o => ids.Contains(o.FeeAccountId));
+            if (historyCount > 0)
+            {
+                throw new UserFriendlyException("已发生金额变动的账户不能删除");
+            }
+            await base.DeleteAsync(ids);
+        }
     }
 }

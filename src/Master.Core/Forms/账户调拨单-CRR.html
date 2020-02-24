@@ -1,5 +1,5 @@
 ﻿<div id="app" v-cloak>    
-    <el-form ref="form" label-width="80px">
+    <el-form ref="form" label-width="80px" :disabled="_formOption.readonly">
         <el-form-item label="调出账号">
             <el-select v-model="currentItem.outAccountId">
                 <el-option v-for="(item,index) in currentItem.accounts" :label="item.name" :value="item.id"></el-option>

@@ -146,7 +146,7 @@
     };
 </script>
 <div id="header" v-cloak v-if="sheetId && _formOption.mode!='print'">
-    <el-form :inline="true" size="mini">
+    <el-form :inline="true" size="mini" :disabled="true">
         <el-form-item label="单号">
             <el-input v-model="sheetInfo.sheetSN" readonly="true"></el-input>
         </el-form-item>

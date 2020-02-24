@@ -16,10 +16,10 @@
                         <div class="layui-input-inline">
                             <input type="text" id="name" name="name" autocomplete="off" class="layui-input">
                         </div>
-                        <label class="layui-form-label">所属单位</label>
+                        @*<label class="layui-form-label">所属单位</label>
                         <div cyType="dropDownTool" cyProps="url:'/api/services/app/Organization/GetTreeJson?maxlevel=2',search:'false',checkbox:'false',key_name:'briefName'"
                              name="OrganizationId" value="" class="layui-input-inline" style="position:relative">
-                        </div>
+                        </div>*@
                         <button class="layui-btn layui-btn-primary" type="button" onclick="doSearch()">@L("查询")</button>
                         <button type="button" class="layui-btn  layui-btn-normal" onclick="func.bringBack('User');">@L("选择")</button>
                         <button type="button" class="layui-btn  layui-btn-normal" onclick="func.bringBack('User',true);">@L("选择并返回")</button>
@@ -65,7 +65,7 @@
 
             config.refresh();
 
-            $('div[cytype="dropDownTool"]').dropDownTool();
+            //$('div[cytype="dropDownTool"]').dropDownTool();
         };
         config.onTableDone = function () {
 

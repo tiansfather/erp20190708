@@ -221,10 +221,10 @@
                     },
                     goToStep1: function () {
                         if (this.from == 1) {
-                            if (!this.content) {
+                            if (!this.content.trim()) {
                                 abp.message.error(L('请填入导入内容'));
                             } else {
-                                app.rows = app.content.split('\n');
+                                app.rows = app.content.trim().split('\n');
                                 app.headers = app.rows[0].split('\t');
                                 app.step = 1;
                             }

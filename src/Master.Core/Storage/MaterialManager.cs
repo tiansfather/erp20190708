@@ -1,4 +1,5 @@
 ﻿using Abp.Domain.Repositories;
+using Abp.UI;
 using Master.Module;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -29,6 +30,25 @@ namespace Master.Storage
             data["StoreCount"] = storeCountInfo;
             data["TotalCount"] = storeCountInfo.Sum(o => o.Number);
         }
+        public override async Task ValidateEntity(Material entity)
+        {
+            if(!CheckDiscountNumberValid(entity.DefaultBuyDiscount) 
+                || !CheckDiscountNumberValid(entity.DefaultSellDiscount) 
+                || !CheckDiscountNumberValid(entity.SellDiscount1) 
+                || !CheckDiscountNumberValid(entity.SellDiscount2)
+                || !CheckDiscountNumberValid(entity.SellDiscount3))
+            {
+                throw new UserFriendlyException("折扣必须为0到1之间");
+            }
+
+            await base.ValidateEntity(entity);
+        }
+
+        private bool CheckDiscountNumberValid(decimal? DiscountNumber)
+        {
+            return DiscountNumber.HasValue && DiscountNumber.Value <= 1 && DiscountNumber.Value>=0 || !DiscountNumber.HasValue;
+        }
+
         /// <summary>
         /// 获取商品的供应商折扣
         /// </summary>
@@ -56,6 +76,13 @@ namespace Master.Storage
                 result =  material.SellDiscount1 ?? 1;
             }
             return result;
+        }
+
+        public override async Task DeleteAsync(IEnumerable<int> ids)
+        {
+            var materialBuyCount = await Resolve<MaterialBuyManager>().GetAll().CountAsync(o => ids.Contains(o.MaterialId));
+            var materialSellCount = await Resolve<MaterialSellManager>().GetAll().CountAsync(o => ids.Contains(o.MaterialId));
+            await base.DeleteAsync(ids);
         }
     }
 }

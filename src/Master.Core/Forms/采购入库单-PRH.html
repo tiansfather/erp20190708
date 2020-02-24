@@ -1,5 +1,5 @@
 ﻿<div id="app" v-cloak>
-    <el-form :inline="true" size="mini">
+    <el-form :inline="true" size="mini" :disabled="_formOption.readonly">
         <el-form-item label="入库日期">
             <el-input v-model="currentItem.sheetDate" readonly="true"></el-input>
         </el-form-item>
@@ -11,53 +11,56 @@
         </el-form-item>
 
     </el-form>
-    <table class="layui-table">
-        <thead>
-            <tr>
-                <th>品名</th>
-                <th>规格</th>
-                <th>零售价</th>
-                <th>进货折扣</th>
-                <th>进货单价</th>
-                <th>备注</th>
-                <th>进货数量</th>
-                <th>计量单位</th>
-                <th>适用区域</th>
-                <th>特征符</th>
-                <th>卡号</th>
-                <th>操作</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="(item,index) in currentItem.items">
-                <td>{{item.name}}</td>
-                <td>{{item.specification}}</td>
-                <td>{{item.price}}</td>
-                <td><el-input-number v-model="item.discount" min="0" :max="1" label="折扣" style="width:120px"></el-input-number></td>
-                <td>
-                    {{(item.price*item.discount).toFixed(2)}}
-                </td>
-                <td>{{item.remarks}}</td>
-                <td><el-input-number v-model="item.number" :min="1" label="进货数量" style="width:120px"></el-input-number></td>
-                <td>{{item.measureMentUnit}}</td>
-                <td>{{item.location}}</td>
-                <td>
-                    <el-input v-model="item.featureCode"></el-input>
-                </td>
-                <td>
-                    <el-col :span="11">
-                        <el-input v-model="item.codeStartNumber"></el-input>
-                    </el-col>
-                    <el-col class="line" :span="2">-</el-col>
-                    <el-col :span="11">
-                        <el-input v-model="item.codeEndNumber"></el-input>
-                    </el-col>
-                </td>
-                <td><a title="删除" style="cursor: pointer;" @click="currentItem.items.splice(index,1);"><i class="layui-icon layui-icon-delete"></i></a></td>
-            </tr>
-        </tbody>
-    </table>
-    <el-form :inline="true" size="mini">
+    <el-form :disabled="_formOption.readonly">
+        <table class="layui-table" style="min-width:1600px">
+            <thead>
+                <tr>
+                    <th>品名</th>
+                    <th>规格</th>
+                    <th>零售价</th>
+                    <th>进货折扣</th>
+                    <th>进货单价</th>
+                    <th>备注</th>
+                    <th>进货数量</th>
+                    <th>计量单位</th>
+                    <th>适用区域</th>
+                    <th>特征符</th>
+                    <th >卡号</th>
+                    <th v-if="!_formOption.readonly">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(item,index) in currentItem.items">
+                    <td>{{item.name}}</td>
+                    <td>{{item.specification}}</td>
+                    <td>{{item.price}}</td>
+                    <td><el-input-number v-model="item.discount" :min="0" :max="1" :step="0.1" label="折扣" style="width:140px"></el-input-number></td>
+                    <td>
+                        {{(item.price*item.discount).toFixed(2)}}
+                    </td>
+                    <td>{{item.remarks}}</td>
+                    <td><el-input-number v-model="item.number" :min="1" label="进货数量" style="width:140px"></el-input-number></td>
+                    <td>{{item.measureMentUnit}}</td>
+                    <td>{{item.location}}</td>
+                    <td>
+                        <el-input v-model="item.featureCode" style="width:100px"></el-input>
+                    </td>
+                    <td>
+                        <el-col :span="11">
+                            <el-input v-model="item.codeStartNumber" style="width:120px"></el-input>
+                        </el-col>
+                        <el-col class="line" :span="2">至</el-col>
+                        <el-col :span="11">
+                            <el-input v-model="item.codeEndNumber" style="width:120px"></el-input>
+                        </el-col>
+                    </td>
+                    <td v-if="!_formOption.readonly"><a title="删除" style="cursor: pointer;" @click="currentItem.items.splice(index,1);"><i class="layui-icon layui-icon-delete"></i></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </el-form>
+    
+    <el-form :inline="true" size="mini" :disabled="_formOption.readonly">
         <el-form-item label="货款总额">
             <el-input v-model="materialFee" readonly="true"></el-input>
         </el-form-item>
@@ -69,7 +72,7 @@
         </el-form-item>
 
     </el-form>
-    <el-form size="mini">
+    <el-form size="mini" :disabled="_formOption.readonly">
         <el-form-item label="备注">
             <el-input type="textarea" v-model="currentItem.remarks"></el-input>
         </el-form-item>

@@ -42,7 +42,7 @@ namespace Master.Units
         /// <returns></returns>
         public virtual async Task<List<UnitDto>> GetAllByUnitNature(int? unitNature,string key,int take=200)
         {
-            var query = Manager.GetAll();
+            var query = Manager.GetAll().Where(o=>o.IsActive);
             if (unitNature == 0)
             {
                 query = query.Where(o => o.UnitNature == UnitNature.代理商 );

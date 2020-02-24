@@ -122,7 +122,7 @@ namespace Master.WorkFlow
             lock (_obj)
             {
                 //当天数量
-                var todayNum = GetAll().Where(o => o.FormKey == formKey && o.CreationTime.Year == DateTime.Now.Year && o.CreationTime.Month == DateTime.Now.Month && o.CreationTime.Day == DateTime.Now.Day && !string.IsNullOrEmpty(o.SheetSN)).Count();
+                var todayNum = GetAll().IgnoreQueryFilters().Where(o => o.FormKey == formKey && o.CreationTime.Year == DateTime.Now.Year && o.CreationTime.Month == DateTime.Now.Month && o.CreationTime.Day == DateTime.Now.Day && !string.IsNullOrEmpty(o.SheetSN)).Count();
                 var newNum = todayNum + 1;
 
                 var sheetSN = formKey + DateTime.Now.ToString("yyyyMMdd") + newNum.ToString().PadLeft(4, '0');

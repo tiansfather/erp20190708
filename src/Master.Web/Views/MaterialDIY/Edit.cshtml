@@ -53,7 +53,7 @@
 
 @section scripts{
     <script type="text/html" id="editTpl">
-        <input type="number"  style="width:50px" id="edit_{{d.id}}" onkeyup="inputKeyUpHandler" onblur="app.updateInfo({ materialId: {{d.id}},number:this.value,name:'{{d.name}}',measureMentUnit:'{{d.measureMentUnit}}'})"/>
+        <input type="number"  style="width:50px" id="edit_{{d.id}}" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"  onblur="app.updateInfo({ materialId: {{d.id}},number:this.value,name:'{{d.name}}',measureMentUnit:'{{d.measureMentUnit}}'})"/>
     </script>
     <script>
         var searchKeys = {materialDIYType:0};

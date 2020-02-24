@@ -125,6 +125,7 @@ namespace Master.Storage
                     o.Material.Specification,
                     o.Material.Location,
                     o.Material.Price,
+                    o.Material.Remarks,
                     Name=o.Material.Name,
                     MeasureMentUnit=o.Material.MeasureMentUnit,
                     Number=o.Number
@@ -144,6 +145,8 @@ namespace Master.Storage
                     sellMaterial.Price,
                     sellMaterial.MeasureMentUnit,
                     sellMaterial.Number,
+                    sellMaterial.Location,
+                    sellMaterial.Remarks,
                     discount = await materialManager.GetMaterialUnitDiscount(sellMaterial.Material, unitId)
                 });
             }

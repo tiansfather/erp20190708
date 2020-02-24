@@ -20,7 +20,7 @@
 
 </style>
 <div id="app" v-cloak>
-    <el-form :inline="true" size="mini">
+    <el-form :inline="true" size="mini" :disabled="_formOption.readonly">
         <el-form-item label="供应商">
             <unit-select nature="1" :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @change="loadUnit"></unit-select>
         </el-form-item>
@@ -37,13 +37,13 @@
 
     </el-form>
     <el-divider></el-divider>
-    <el-form ref="form" label-width="120px">
+    <el-form ref="form" label-width="120px" :disabled="_formOption.readonly">
         <el-form-item label="对方单位名称">
             <el-input v-model="currentItem.companyName" type="text"></el-input>
         </el-form-item>
         <el-form-item :label="currentItem.payType=='0'?'现金':'转账'" v-if="currentItem.payType!='2'">
             <el-col :span="10">
-                <el-input placeholder="" v-model="currentItem.inputedFee">
+                <el-input placeholder="" v-model="currentItem.inputedFee" type="number">
                     <template slot="append">
                         元
                     </template>
