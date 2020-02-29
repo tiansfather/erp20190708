@@ -89,6 +89,8 @@ namespace Master.FlowHandlers
                 var sheetHeader = sheetData["header"];
 
                 var storeId = sheetHeader["storeId"].ToObject<int>();//仓库id;
+                //设置为审核状态
+                flowSheet.OrderStatus = "已审核";
                 foreach (var sheetItem in sheetData["body"])
                 {
                     var materialId = Convert.ToInt32(sheetItem["id"]);//对应的物料Id
@@ -98,8 +100,7 @@ namespace Master.FlowHandlers
                     await StoreMaterialManager.CountMaterial(storeId, materialId, number, flowSheet);
 
                 }
-                //设置为审核状态
-                flowSheet.OrderStatus = "已审核";
+                
             }else if (action == "cancel")
             {
                 flowSheet.OrderStatus = "已取消";

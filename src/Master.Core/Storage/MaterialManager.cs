@@ -69,19 +69,39 @@ namespace Master.Storage
             }
             else if (disCount.UnitDiscount == UnitDiscount.折扣2)
             {
-                result = material.SellDiscount1 ?? 1;
+                result = material.SellDiscount2 ?? 1;
             }
             else if (disCount.UnitDiscount == UnitDiscount.折扣3)
             {
-                result =  material.SellDiscount1 ?? 1;
+                result =  material.SellDiscount3 ?? 1;
             }
             return result;
         }
-
+        /// <summary>
+        /// 获取商品对供应商的销售方式
+        /// </summary>
+        /// <param name="material"></param>
+        /// <param name="unitId"></param>
+        /// <returns></returns>
+        public virtual async Task<UnitSellMode> GetMaterialUnitSellMode(Material material,int unitId)
+        {
+            var discountRepository = Resolve<IRepository<UnitMaterialDiscount, int>>();
+            var disCount = await discountRepository.FirstOrDefaultAsync(o => o.MaterialId == material.Id && o.UnitId == unitId);
+            if (disCount == null)
+            {
+                return UnitSellMode.始终销售;
+            }
+            return disCount.UnitSellMode;
+        }
         public override async Task DeleteAsync(IEnumerable<int> ids)
         {
             var materialBuyCount = await Resolve<MaterialBuyManager>().GetAll().CountAsync(o => ids.Contains(o.MaterialId));
             var materialSellCount = await Resolve<MaterialSellManager>().GetAll().CountAsync(o => ids.Contains(o.MaterialId));
+            var materialHistoryCount = await Resolve<StoreMaterialHistoryManager>().GetAll().CountAsync(o => ids.Contains(o.MaterialId));
+            if(materialBuyCount>0 || materialSellCount>0 || materialHistoryCount > 0)
+            {
+                throw new UserFriendlyException("已使用过的商品不能删除");
+            }
             await base.DeleteAsync(ids);
         }
     }

@@ -15,16 +15,28 @@ namespace Master.Storage
 {
     public class StoreMaterialManager : ModuleServiceBase<StoreMaterial, int>
     {
+        #region 商品库存
         /// <summary>
         /// 获取商品在某个仓库的库存
         /// </summary>
         /// <param name="storeId"></param>
         /// <param name="materialId"></param>
         /// <returns></returns>
-        public virtual async Task<decimal> GetStoreMaterialNumber(int storeId,int materialId)
+        public virtual async Task<decimal> GetStoreMaterialNumber(int storeId, int materialId)
         {
             return (await GetAll().Where(o => o.StoreId == storeId && o.MaterialId == materialId).FirstOrDefaultAsync())?.Number ?? 0;
         }
+        /// <summary>
+        /// 获取商品库存
+        /// </summary>
+        /// <param name="materialId"></param>
+        /// <returns></returns>
+        public virtual async Task<decimal> GetMaterialNumber(int materialId)
+        {
+            return (await GetAll().Where(o => o.MaterialId == materialId).FirstOrDefaultAsync())?.Number ?? 0;
+        } 
+        #endregion
+
         #region 入库
         public virtual async Task InMaterial(int storeId, int materialId, int number, FlowSheet flowSheet)
         {
@@ -182,7 +194,7 @@ namespace Master.Storage
         {
             var changeType = flowSheet.ChangeType;
             var materialManager = Resolve<MaterialManager>();
-            var material = await materialManager.GetByIdAsync(materialId);
+            //var material = await materialManager.GetByIdAsync(materialId);
             var storeMaterial = new StoreMaterial()
             {
                 MaterialId = materialId,

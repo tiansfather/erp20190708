@@ -1,4 +1,9 @@
-﻿<div id="app" v-cloak>
+﻿<style>
+    .overlimit {
+        color: red;
+    }
+</style>
+<div id="app" v-cloak>
     <el-form :inline="true" size="mini" >
         <el-form-item label="代理商">
             <el-input v-model="currentItem.unitName" readonly="true"></el-input>
@@ -23,7 +28,7 @@
                 <td>{{item.specification}}</td>
                 <td>{{item.price}}</td>
                 <td>{{item.remarks}}</td>
-                <td>{{item.number}}</td>
+                <td>{{item.number}} <span v-if="!item.canSell">库存不足</span></td>
                 <td>{{item.measureMentUnit}}</td>
                 <td>{{item.location}}</td>
             </tr>
@@ -72,6 +77,9 @@
         var data = app.currentItem.items;
         if (!data.length) {
             throw "请至少录入一条数据";
+        }
+        if (data.filter(function (o) { return !o.canSell }).length > 0) {
+            throw "库存不足，无法提交";
         }
         var sheetData = {
             header: {

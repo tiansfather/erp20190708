@@ -168,6 +168,7 @@ namespace Master.FlowHandlers
             }
             else if (action == "send")
             {
+                flowSheet.OrderStatus = "已发货";
                 var totalFee = sheetHeader["totalFee"].ToObjectWithDefault<decimal>();
                 //更改往来单位金额
                 await UnitManager.ChangeFee(unitId, null, -totalFee, flowSheet);
@@ -178,7 +179,7 @@ namespace Master.FlowHandlers
                 {
                     throw new UserFriendlyException("请选择发货仓库");
                 }
-                flowSheet.OrderStatus = "已发货";
+                
                 foreach (var sheetItem in sheetData["body"])
                 {
                     var materialId = sheetItem["materialId"].ToObjectWithDefault<int>();//商品Id

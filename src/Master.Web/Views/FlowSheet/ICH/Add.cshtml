@@ -65,7 +65,7 @@
 @section scripts{
     <script type="text/html" id="editTpl">
         <div info="">
-            <input type="number" style="width:50px" id="edit_{{d.id}}" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onblur="app.updateInfo({ id: {{d.id}},number:this.value,name:'{{d.name}}',measureMentUnit:'{{d.measureMentUnit}}'})" />
+            <input type="number" style="width:50px" id="edit_{{d.id}}" onblur="app.updateInfo({ id: {{ d.id }}, number:this.value,name:'{{d.name}}',measureMentUnit:'{{d.measureMentUnit}}'})" />
         </div>
         
     </script>
@@ -88,7 +88,10 @@
                 },
                 methods: {
                     updateInfo: function (info) {
-                        if (isNaN(info.number)) { info.number = 0;}
+                        if (isNaN(info.number)) { info.number = 0; }
+                        info.number = parseFloat(info.number);
+                        info.storeNumber = layui.table.cache.Material.filter(function (o) { return o.id == info.id })[0].storeCount.filter(o => o.storeId == app.currentItem.storeId)[0].number;
+                        console.log(info);
                         var existInfo = this.currentItem.items.filter(o => o.id == info.id)[0];
                         //等于0直接移除
                         if (info.number == 0) {
@@ -107,6 +110,13 @@
                             return;
                         }
                         var that = this;
+                        for (var i = 0; i < this.currentItem.items.length; i++) {
+                            var item = this.currentItem.items[0];
+                            if ((item.storeNumber + item.number) < 0) {
+                                abp.message.error("商品" + item.name + "报损溢后库存数量小于0");
+                                return false;
+                            }
+                        }
                         var data = {
                             storeId: this.currentItem.storeId,
                             items: this.currentItem.items.map(function (o) {
@@ -187,7 +197,7 @@
             var where = { searchKeys: JSON.stringify(searchKeys) };
             
             where.where = "1=1 ";
-            where.searchCondition = func.buildSearchCondition('Material');
+            //where.searchCondition = func.buildSearchCondition('Material');
             if (!(app && app.currentItem && app.currentItem.storeId)) { where.where = "1>2"; }
 			return where;
 

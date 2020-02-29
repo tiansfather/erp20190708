@@ -170,7 +170,7 @@
         </el-form-item>
     </el-form>
     <div style="text-align:right">
-        <button type="button" v-for="(btn,index) in sheetInfo.btns" class="layui-btn layui-btn-sm" :class="btn.buttonClass" @@click="action(btn)">{{btn.buttonName}}</button>
+        <button type="button" v-for="(btn,index) in filterBtn(sheetInfo.btns)" class="layui-btn layui-btn-sm" :class="btn.buttonClass" @@click="action(btn)">{{btn.buttonName}}</button>
     </div>
 
     @*<button type="button" class="layui-btn layui-btn-danger" v-if="sheetInfo.sheetNature==0" style="float:right" @@click="revertSheet">冲红</button>*@
@@ -194,6 +194,13 @@
                 }
             },
             methods: {
+                filterBtn: function (btns) {
+                    //只读模式下只允许打印或冲红
+                    if (_formOption.mode == "readonly") {
+                        btns = btns.filter(function (o) { return o.buttonKey == 'print' || o.buttonKey == 'revert' });
+                    }
+                    return btns;
+                },
                 revertSheet: function () {
                     abp.message.confirm("确认冲红此单据?", function () {
                         layer.prompt({

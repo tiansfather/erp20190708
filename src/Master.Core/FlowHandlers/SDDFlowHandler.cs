@@ -41,7 +41,9 @@ namespace Master.FlowHandlers
             flowSheet.Remarks = sheetHeader["remarks"].ToObjectWithDefault<string>();
             var unitId = sheetHeader["unitId"].ToObject<int>();//代理商id
             flowSheet.UnitId = unitId;
-            flowSheet.OrderStatus=CurrentUser.IsCenterUser?"待出库": "待审核";
+            //flowSheet.OrderStatus=CurrentUser.IsCenterUser?"待出库": "待审核";
+            //todo:暂不做票劵订单的审核 20200227
+            flowSheet.OrderStatus = "待出库";
             flowSheet.SetPropertyValue("OrderType", CurrentUser.IsCenterUser?"中心代为下单": "代理商自助下单");
             //清空对应代理商的票劵购物车
             await CartRepository.DeleteAsync(o => o.CreatorUserId == AbpSession.UserId && o.UnitId == unitId && o.Material.MaterialNature == MaterialNature.票券);
@@ -59,10 +61,8 @@ namespace Master.FlowHandlers
                     SellNumber = number,
                     UnitId=unitId
                 };
-                await MaterialSellManager.InsertAsync(materialSell);
-                
+                await MaterialSellManager.InsertAsync(materialSell);                
             }
-
         }
 
         public override async Task HandleRevert(FlowSheet flowSheet)

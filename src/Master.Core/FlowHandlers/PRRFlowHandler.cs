@@ -49,23 +49,22 @@ namespace Master.FlowHandlers
             {
                 var materialId = Convert.ToInt32(sheetItem["id"]);//对应的物料Id
                 
-                var number= sheetItem["number"].ToObjectWithDefault<int>();//退货数量
-                await MaterialBuyManager.Back(unitId, startDate, materialId, storeId,number, flowSheet);
-                if (number == 0)
+                var number= sheetItem["number"].ToObjectWithDefault<int>();//退货数量                
+                if (number > 0)
                 {
-                    continue;
+                    await MaterialBuyManager.Back(unitId, startDate, materialId, storeId, number, flowSheet);
+                    //产生退货数据
+                    var materialBuyBack = new MaterialBuyBack()
+                    {
+                        UnitId = unitId,
+                        MaterialId = materialId,
+                        BackNumber = number,
+                        FlowSheetId = flowSheet.Id,
+                        Discount = sheetItem["discount"].ToObjectWithDefault<decimal>(),
+                        Price = sheetItem["price"].ToObjectWithDefault<decimal>(),
+                    };
+                    await MaterialBuyBackManager.InsertAsync(materialBuyBack);
                 }
-                //产生退货数据
-                var materialBuyBack = new MaterialBuyBack()
-                {
-                    UnitId = unitId,
-                    MaterialId = materialId,
-                    BackNumber = number,
-                    FlowSheetId = flowSheet.Id,
-                    Discount = sheetItem["discount"].ToObjectWithDefault<decimal>(),
-                    Price = sheetItem["price"].ToObjectWithDefault<decimal>(),
-                };
-                await MaterialBuyBackManager.InsertAsync(materialBuyBack);
             }
 
         }

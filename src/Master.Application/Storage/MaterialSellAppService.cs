@@ -115,6 +115,8 @@ namespace Master.Storage
         {
             var result = new List<object>();
             var cartRepository = Resolve<IRepository<MaterialSellCart, int>>();
+            var materialManager = Resolve<MaterialManager>();
+            var storeMaterialManager = Resolve<StoreMaterialManager>();
             var sellMaterials = await cartRepository.GetAll()
                 .Include(o=>o.Material)
                 .Where(o => o.UnitId == unitId && o.Material.MaterialNature == materialNature && o.CreatorUserId==AbpSession.UserId)
@@ -131,11 +133,14 @@ namespace Master.Storage
                     Number=o.Number
                 })
                 .ToListAsync();
-            var materialManager = Resolve<MaterialManager>();
+            
             foreach (var sellMaterial in sellMaterials)
             {
                 //获取对应代理商的折扣
-
+                var sellMode = await materialManager.GetMaterialUnitSellMode(sellMaterial.Material, unitId);
+                var storeNumber = await storeMaterialManager.GetMaterialNumber(sellMaterial.Id);
+                //是否可以销售，售完为止的且数量大于库存的为false
+                var canSell = sellMode == UnitSellMode.始终销售 || sellMode == UnitSellMode.售完为止 && storeNumber > sellMaterial.Number;
                 result.Add(new
                 {
                     sellMaterial.Id,
@@ -147,7 +152,9 @@ namespace Master.Storage
                     sellMaterial.Number,
                     sellMaterial.Location,
                     sellMaterial.Remarks,
-                    discount = await materialManager.GetMaterialUnitDiscount(sellMaterial.Material, unitId)
+                    discount = await materialManager.GetMaterialUnitDiscount(sellMaterial.Material, unitId),
+                    storeNumber,
+                    canSell
                 });
             }
 

@@ -72,9 +72,10 @@ namespace Master.Storage
             };
         }
 
-        public virtual async Task<object> GetUnitBuyedMaterial(int unitId,DateTime startDate)
+        public virtual async Task<object> GetUnitBuyedMaterial(int unitId,int storeId,DateTime startDate)
         {
-            return await Manager.GetAll().Include(o => o.FlowSheet).Include(o => o.Material)
+            var storeMaterialManager = Resolve<StoreMaterialManager>();
+            return (await Manager.GetAll().Include(o => o.FlowSheet).Include(o => o.Material)
                 .Where(new MaterialBuySpecification(unitId,startDate))
                 .GroupBy(o => o.Material)
                 .Select(o => new
@@ -86,10 +87,22 @@ namespace Master.Storage
                     Discount=o.Key.DefaultBuyDiscount??1,
                     BuyNumber=o.Sum(b=>b.BuyNumber),
                     BackNumber=o.Sum(b=>b.BackNumber),
-                    CanBackNumber=o.Sum(b=>b.CanBackNumber)
+                    CanBackNumber=o.Sum(b=>b.CanBackNumber),                    
                 })
                 .Where(o=>o.CanBackNumber>0)
-                .ToListAsync();
+                .ToListAsync())
+                .Select(o=>new
+                {
+                    o.Id,
+                    o.Name,
+                    o.Specification,
+                    o.Price,
+                    o.Discount,
+                    o.BuyNumber,
+                    o.BackNumber,
+                    o.CanBackNumber,
+                    StoreNumber = storeMaterialManager.GetStoreMaterialNumber(storeId, o.Id).Result
+                });
         }
         /// <summary>
         /// 卡号检查

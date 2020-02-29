@@ -213,7 +213,7 @@
 		function getWhere() {
             var where = { searchKeys: JSON.stringify(searchKeys),where:'1=1' };
             
-            where.searchCondition = func.buildSearchCondition('Material');
+            //where.searchCondition = func.buildSearchCondition('Material');
             if (!(app && app.currentItem && app.currentItem.outStoreId)) { where.where = "1>2"; }
 			return where;
 

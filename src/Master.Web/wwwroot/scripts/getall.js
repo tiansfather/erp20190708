@@ -5928,9 +5928,9 @@ abp.services = abp.services || {};
     abp.services.app.materialBuy = abp.services.app.materialBuy || {};
 
     // action 'getUnitBuyedMaterial'
-    abp.services.app.materialBuy.getUnitBuyedMaterial = function(unitId, startDate, ajaxParams) {
+    abp.services.app.materialBuy.getUnitBuyedMaterial = function(unitId, storeId, startDate, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MaterialBuy/GetUnitBuyedMaterial' + abp.utils.buildQueryString([{ name: 'unitId', value: unitId }, { name: 'startDate', value: startDate }]) + '',
+        url: abp.appPath + 'api/services/app/MaterialBuy/GetUnitBuyedMaterial' + abp.utils.buildQueryString([{ name: 'unitId', value: unitId }, { name: 'storeId', value: storeId }, { name: 'startDate', value: startDate }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };

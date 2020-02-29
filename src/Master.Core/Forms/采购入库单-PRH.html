@@ -43,16 +43,23 @@
                     <td>{{item.measureMentUnit}}</td>
                     <td>{{item.location}}</td>
                     <td>
-                        <el-input v-model="item.featureCode" style="width:100px"></el-input>
+                        <el-input v-model="item.featureCode" style="width:100px" v-if="!_formOption.readonly"></el-input>
+                        <div v-else>{{item.featureCode}}</div>
                     </td>
                     <td>
-                        <el-col :span="11">
-                            <el-input v-model="item.codeStartNumber" style="width:120px"></el-input>
-                        </el-col>
-                        <el-col class="line" :span="2">至</el-col>
-                        <el-col :span="11">
-                            <el-input v-model="item.codeEndNumber" style="width:120px"></el-input>
-                        </el-col>
+                        <template v-if="!_formOption.readonly">
+                            <el-col :span="10">
+                                <el-input v-model="item.codeStartNumber" style="width:120px;"></el-input>                                
+                            </el-col>
+                            <el-col class="line" :span="2" style="padding:8px">至</el-col>
+                            <el-col :span="10">
+                                <el-input v-model="item.codeEndNumber" style="width:120px;" v-if="!_formOption.readonly"></el-input>
+                            </el-col>
+                        </template>
+                        <template v-else>
+                            <div style="word-break:break-all">{{item.codeStartNumber}}&nbsp;至&nbsp;{{item.codeEndNumber}}</div>
+                        </template>
+                        
                     </td>
                     <td v-if="!_formOption.readonly"><a title="删除" style="cursor: pointer;" @click="currentItem.items.splice(index,1);"><i class="layui-icon layui-icon-delete"></i></a></td>
                 </tr>
@@ -65,7 +72,7 @@
             <el-input v-model="materialFee" readonly="true"></el-input>
         </el-form-item>
         <el-form-item label="其它费用">
-            <el-input v-model="currentItem.otherFee" typeof="number"></el-input>
+            <el-input v-model="currentItem.otherFee" type="number"></el-input>
         </el-form-item>
         <el-form-item label="本单应付金额">
             <el-input v-model="totalFee" readonly="true"></el-input>
@@ -106,7 +113,7 @@
                     return fee.toFixed(2);
                 },
                 totalFee: function () {
-                    return (parseFloat(this.materialFee) + parseFloat(this.currentItem.otherFee)).toFixed(2);
+                    return (parseFloat(this.materialFee) + parseFloat(this.currentItem.otherFee||0)).toFixed(2);
                 }
             },
             methods: {

@@ -35,8 +35,8 @@ namespace Master.EntityFrameworkCore.Seed.BaseData.SystemModules
         }
         public override void SetButtonsInfosMoreData(ICollection<ModuleButton> ButtonInfos)
         {
-            var delBtn = ButtonInfos.Where(o => o.ButtonKey == "Delete").Single();
-            ButtonInfos.Remove(delBtn);
+            //var delBtn = ButtonInfos.Where(o => o.ButtonKey == "Delete").Single();
+            //ButtonInfos.Remove(delBtn);
         }
     }
 }
