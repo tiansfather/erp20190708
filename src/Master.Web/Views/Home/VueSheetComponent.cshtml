@@ -28,21 +28,21 @@
             }
         },
         methods: {
-            changeHandle($event) {
-                var obj = this.options.filter(el => el[this.valueIsid ? 'id' : 'unitName'] == $event)[0];
+            changeHandle: function ($event) {
+                var that = this;
+                var obj = this.options.filter(function (el) { el[that.valueIsid ? 'id' : 'unitName'] == $event })[0];
                 this.$emit('update:unit', $event)
                 this.$emit('change', obj)
             }
         },
-        created() {
+        created:function() {
             console.log(this.valueIsid ? 'id' : 'unitName')
-            abp.services.app.unit.getAllByUnitNature(this.nature).done(res => {
-                this.options = res;
+            var that = this;
+            abp.services.app.unit.getAllByUnitNature(this.nature).done(function (res) {
+                that.options = res;
             })
         },
-        template: `<el-select v-bind="$attrs" v-model="myUnit" clearable @@change="changeHandle" filterable :placeholder="'请选择'+placeHolder">
-            <el-option v-for="item in options" :key="item.id"  :label="item.unitName"  :value="item[valueIsid?'id':'unitName']"></el-option>
-        </el-select>`
+        template: '<el-select v-bind="$attrs" v-model="myUnit" clearable @@change="changeHandle" filterable :placeholder="\'请选择\'+placeHolder"><el-option v-for="item in options" :key="item.id"  :label="item.unitName"  :value="item[valueIsid?\'id\':\'unitName\']"></el-option> </el-select>'
     })
 </script>
 
@@ -158,15 +158,7 @@
             return { inputShow: false }
         },
         props: ['value', 'verify'],
-        template: `
-        <td @@click="tableEdit">
-            <input v-show="inputShow" class="layui-input layui-table-edit" type="number" :value="value"
-                   @@blur="updateVal" @@keydown.esc="cancelUpdate" v-focus="inputShow" :lay-verify="verify" />
-            {{ value }}
-        </td>
-                <td v-if="item.type=='number'" :class="item.key.toLowerCase()">
-                    <input type="number" class="layui-input layui-table-edit" :value="part[item.key]" @@input="getSetNumberValue($event.target.value,index,item)">
-                </td>`,
+        template: '<td @@click="tableEdit"><input v-show="inputShow" class="layui-input layui-table-edit" type="number" :value="value" @@blur="updateVal" @@keydown.esc="cancelUpdate" v-focus="inputShow" :lay-verify="verify" /> {{ value }}</td><td v-if="item.type==\'number\'" :class="item.key.toLowerCase()"><input type="number" class="layui-input layui-table-edit" :value="part[item.key]" @@input="getSetNumberValue($event.target.value,index,item)"></td>',
         methods: {
             updateVal: function (event) {
                 this.$emit('input', event.target.value)
@@ -825,7 +817,10 @@
                     Vue.set(part._selectOptions, key, value);
                 } else {
                     //第一次需要放整个obj
-                    Vue.set(part, "_selectOptions", { [key]: value });
+                    var obj = {};
+                    obj[key] = value;
+                    //Vue.set(part, "_selectOptions", { [key]: value });
+                    Vue.set(part, "_selectOptions", obj);
                 }
             },
             selectOptions: function (item, part) {
@@ -941,9 +936,10 @@
                 }
                 this.parts.forEach(function(el, index)  {
                     that.theSelectItemIndexArr.forEach(function(item, itemIndex)  {
-                        var selector = `_mulsel${itemIndex}-${index}`;
+                        //var selector = `_mulsel${itemIndex}-${index}`;
+                        var selector = '_mulsel'+itemIndex+'-'+index;
                         //console.log($(`[lay-filter=${selector}]`));
-                        form.on(`select(${selector})`, callBack)
+                        form.on('select('+selector+')', callBack)
                     })
                 })
             }
@@ -979,12 +975,7 @@
 </script>
 <script>
     Vue.component('lay-homepics', {
-        template: `
-    <div class="layui-form-item">
-        <input type="hidden" :name="columnInfo.ColumnKey" :value="newValue" />
-        <multi-data-add :items="items" :parts="parts" ></multi-data-add>
-    </div>
-`,
+        template: '<div class="layui-form-item"><input type="hidden" :name="columnInfo.ColumnKey" :value="newValue" /><multi-data-add :items="items" :parts="parts" ></multi-data-add></div>',
         props: ['columnInfo', 'value'],
         data: function () {
             return {

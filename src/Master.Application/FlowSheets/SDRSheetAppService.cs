@@ -64,4 +64,8 @@ namespace Master.FlowSheets
     public class SDRBackAppService : SDRSheetAppService
     {
     }
+    [AbpAuthorize]
+    public class SDRVerifyAppService : SDRSheetAppService
+    {
+    }
 }

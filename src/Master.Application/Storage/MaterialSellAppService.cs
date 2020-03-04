@@ -140,7 +140,7 @@ namespace Master.Storage
                 var sellMode = await materialManager.GetMaterialUnitSellMode(sellMaterial.Material, unitId);
                 var storeNumber = await storeMaterialManager.GetMaterialNumber(sellMaterial.Id);
                 //是否可以销售，售完为止的且数量大于库存的为false
-                var canSell = sellMode == UnitSellMode.始终销售 || sellMode == UnitSellMode.售完为止 && storeNumber > sellMaterial.Number;
+                var canSell = sellMode == UnitSellMode.始终销售 || sellMode == UnitSellMode.售完为止 && storeNumber >= sellMaterial.Number;
                 result.Add(new
                 {
                     sellMaterial.Id,

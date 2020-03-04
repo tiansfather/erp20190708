@@ -80,7 +80,7 @@
                 methods: {
                     doConfirm: function () {                        
                         abp.message.confirm("确认接收此凭证?", function () {
-                            func.runAsync(abp.services.app.voucher.setVoucherStatus(id,1).done(res => {
+                            func.runAsync(abp.services.app.voucher.setVoucherStatus(id,1).done(function(res) {
                                 top.layer.msg("提交成功");
                                 parent.config.reloadTable();
                                 location.reload();
@@ -89,7 +89,7 @@
                     },
                     doClose: function () {
                         abp.message.confirm("确认关闭此凭证?", function () {
-                            func.runAsync(abp.services.app.voucher.setVoucherStatus(id, 2).done(res => {
+                            func.runAsync(abp.services.app.voucher.setVoucherStatus(id, 2).done(function(res) {
                                 top.layer.msg("提交成功");
                                 parent.config.reloadTable();
                                 location.reload();
@@ -101,7 +101,7 @@
                             this.$message.error('请输入关联单据');
                             return;
                         }
-                        func.runAsync(abp.services.app.voucher.setRelSheet(id, this.currentItem.relSheetSN).done(res => {
+                        func.runAsync(abp.services.app.voucher.setRelSheet(id, this.currentItem.relSheetSN).done(function(res) {
                             top.layer.msg("提交成功");
                             parent.config.reloadTable();
                             parent.layer.closeAll('iframe');
@@ -110,7 +110,7 @@
                 },
                 mounted: function () {
                     var that = this;
-                    func.runAsync(abp.services.app.voucher.getById(id).done(res => {
+                    func.runAsync(abp.services.app.voucher.getById(id).done(function(res) {
                         that.currentItem = res;
                     }))
                 }

@@ -89,7 +89,7 @@
                 methods: {
                     updateInfo: function (info) {
                         if (isNaN(info.number)) { info.number = 0; }
-                        var existInfo = this.currentItem.items.filter(o => o.id == info.id)[0];
+                        var existInfo = this.currentItem.items.filter(function (o) { return o.id == info.id })[0];
                         //小于0直接移除
                         if (info.number <= 0) {
                             existInfo && this.currentItem.items.splice(this.currentItem.items.indexOf(existInfo), 1);
@@ -141,7 +141,7 @@
                             { field: 'remarks', title: '备注' },
                             {
                                 field: 'storeCount', title: '当前库存', templet: function (d) {
-                                    var storeInfo = d.storeCount.filter(o => o.storeId == app.currentItem.storeId)[0];
+                                    var storeInfo = d.storeCount.filter(function (o) { return o.storeId == app.currentItem.storeId })[0];
                                     if (storeInfo) {
                                         return storeInfo.number;
                                     } else {

@@ -110,10 +110,10 @@
                         }))
                     },
                     doMultiDiscount: function (discount) {
-                        this.unitInfos.forEach(o => o.unitDiscount = discount);
+                        this.unitInfos.forEach(function (o) { o.unitDiscount = discount });
                     },
                     doMultiSellMode: function (sellMode) {
-                        this.unitInfos.forEach(o => o.unitSellMode = sellMode);
+                        this.unitInfos.forEach(function (o) { o.unitSellMode = sellMode });
                     }
                 },
                 mounted: function () {

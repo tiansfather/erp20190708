@@ -13,5 +13,6 @@ namespace Master.Finance
         public int UnitId { get; set; }
         public string Remarks { get; set; }
         public string FilePath { get; set; }
+        public string FileName { get; set; }
     }
 }

@@ -73,7 +73,7 @@
                 methods: {
                     updateInfo: function (info) {
                         if (isNaN(info.number)) { info.number = 0;}
-                        var existInfo = this.currentItem.diyInfos.filter(o => o.materialId == info.materialId)[0];
+                        var existInfo = this.currentItem.diyInfos.filter(function (o) { return o.materialId == info.materialId })[0];
                         //小于0直接移除
                         if (info.number <= 0) {
                             existInfo && this.currentItem.diyInfos.splice(this.currentItem.diyInfos.indexOf(existInfo), 1);

@@ -10,7 +10,7 @@
 	if (string.IsNullOrEmpty(rules)) { rules = ""; }
 	if (!rules.Contains("numberOrempty"))
 	{
-		rules = string.IsNullOrEmpty(rules) ? "numberOrempty" : rules + "|numberOrempty";
+		//rules = string.IsNullOrEmpty(rules) ? "numberOrempty" : rules + "|numberOrempty";
 	}
 
 	var renderer = !string.IsNullOrEmpty(column.Renderer) ? column.Renderer : "lay-number";

@@ -34,7 +34,7 @@ namespace Master.Storage
                 .Where(o => o.SellNumber > o.BackNumber)//
                 .Where(o => o.MaterialId == materialId)
                 .ToListAsync())
-                .Where(o=>o.FlowSheet.GetPropertyValue<string>("OrderStatus")!="待审核");
+                .Where(o=>o.FlowSheet.OrderStatus!="待审核");
 
             foreach (var materialSell in materialSells)
             {

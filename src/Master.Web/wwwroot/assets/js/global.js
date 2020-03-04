@@ -10,10 +10,9 @@ var config = {
         treeGrid: '../lib/extend/treegrid/treegrid',
         verifyInit: '../lib/extend/verifyInit/verifyInit',
         multiSelect: '../lib/extend/multiSelect/multiSelect',
-        suggest: '../lib/extend/suggest/suggest',
         soulTable:'../lib/extend/soulTable/soulTable'
     },
-    layuiModules: ['index', 'table', 'layer', 'form', 'element', 'laydate', 'tree', 'upload', 'colorpicker', 'tableSelect', 'verifyInit', 'multiSelect', 'suggest','soulTable'],
+    layuiModules: ['index', 'table', 'layer', 'form', 'element', 'laydate', 'tree', 'upload', 'colorpicker', 'tableSelect', 'verifyInit', 'multiSelect', 'soulTable'],
     //页面layui加载完后调用
     ready: function () {
         console.log("onready not implemented");
@@ -88,7 +87,8 @@ var config = {
     Object.defineProperty(arrayMethods, 'push', {
         value: function mutator() {
             const original = arrayProto['push']
-            let args = Array.from(arguments)
+            let args = arguments;
+            //let args = Array.from(arguments)
             //缓存原生方法，之后调用
             if (func.typeof(args[0]) == 'function') {
                 //塞进去

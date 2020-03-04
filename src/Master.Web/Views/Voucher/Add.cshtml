@@ -15,6 +15,15 @@
                             <el-form-item label="发生金额">
                                 <el-input-number v-model="currentItem.fee" :min="0" step="100"></el-input-number>
                             </el-form-item>
+                            <el-form-item label="凭证上传">
+                                <el-col :span="20" style="padding-left:0">
+                                    <el-input v-model="currentItem.fileName" disabled></el-input>
+                                </el-col>
+                                <el-col :span="4">
+                                    <button class="layui-btn picupload" id="uploadBtn" type="button" >上传</button>
+                                </el-col>
+                                
+                            </el-form-item>
                             <el-form-item label="备注">
                                 <el-input type="textarea" v-model="currentItem.remarks"></el-input>
                             </el-form-item>
@@ -24,8 +33,8 @@
                         </el-form>
                     </el-col>
                     <el-col :span="12">
-                        <div class="my-partName-img picupload" tips="@L("点击上传凭证")">
-                            <img :src="currentItem.filePath" style="width:400px;height:400px;" />
+                        <div class="my-partName-img picupload" v-if="currentItem.filePath">
+                            <img :src="currentItem.filePath" style="max-width:400px;max-height:400px;" />
                         </div>
                     </el-col>
                 </el-row>
@@ -40,14 +49,28 @@
 @section scripts{ 
 	<script>
         var app;
-        func.renderUpload('.picupload', {
-            trigger: 'click', callback: function (res) {
-                var item = $(upload.element);
-                console.log(item);
-                console.log(res);
-                app.currentItem.filePath = res.filePath;
-            }
-        })
+        //func.renderUpload('.picupload', {
+        //    trigger: 'click', callback: function (res) {
+        //        var item = $(upload.element);
+        //        console.log(item);
+        //        console.log(res);
+        //        if (!isImage(res.filePath)) {
+        //            abp.message.error("请上传图片类型文件");
+        //            return false;
+        //        }
+        //        layer.msg('上传成功');
+        //        app.currentItem.filePath = res.filePath;
+        //        app.currentItem.fileName = res.fileName;
+        //    }
+        //})
+        function isImage(filePath) {
+            //获取最后一个.的位置
+            var index= filePath.lastIndexOf(".");
+            //获取后缀
+            var ext = filePath.substr(index + 1).toLowerCase();
+            console.log(ext);
+            return ['jpg', 'bmp', 'gif', 'png'].indexOf(ext) >= 0;
+        }
 		config.ready = function () {
 			
 			app = new Vue({
@@ -73,7 +96,7 @@
                             return;
                         }
                         abp.message.confirm("确认提交?", function () {
-                            func.runAsync(abp.services.app.voucher.submit(app.currentItem).done(res => {
+                            func.runAsync(abp.services.app.voucher.submit(app.currentItem).done(function(res) {
                                 top.layer.msg("提交成功");
                                 location.reload();
                             }))
@@ -82,7 +105,36 @@
                     }
                 },
                 mounted: function () {
+                    layui.upload.render({
+            	        elem: '#uploadBtn',
+            	        size: 1024*20,
+            	        accept: 'image',
+                        url: '/file/upload/'
+                        , before: function (obj) {
+                            loadLayerIndex = top.layer.msg('正在拼命上传中...', {
+                                icon: 16
+                                , shade: false, time: 0, offset: 't'
+                            });
+                        }
+                        , done: function (res, index, upload) {
+                            top.layer.close(loadLayerIndex);
+            		        //获取当前触发上传的元素，一般用于 elem 绑定 class 的情况，注意：此乃 layui 2.1.0 新增
+            		        var item = this.item;
+            		        //如果上传失败
+            		        if (!res.result.success) {
+            			        layer.msg(res.result.msg, { icon: 5, anim: 6 });
+            		        }
+            		        //上传成功
+            		        else {
+                                console.log(res);
+                                app.currentItem.filePath = res.result.filePath;
+                                app.currentItem.fileName = res.result.fileName;
+            			        //parent.upload.callback(res.result);
+            			        //parent.layer.closeAll('iframe');
 
+            		        }
+            	        }
+                    })
 				}
 			})
 		}

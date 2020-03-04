@@ -60,9 +60,10 @@
                         if (data) {
                             startDate = data[0].pattern('yyyy-MM-dd HH:mm:ss');
                             endDate = data[1].pattern('yyyy-MM-dd HH:mm:ss');
+                            searchKeys.startDate = startDate;
+                            searchKeys.endDate = endDate;
                         }
-                        searchKeys.startDate = startDate;
-                        searchKeys.endDate = endDate;
+                        
                         layui.table.reload('Material', {
                             where: getWhere()
 

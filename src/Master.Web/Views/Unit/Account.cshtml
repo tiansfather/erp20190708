@@ -30,14 +30,15 @@
 					currentItem: {}
 				},
                 mounted: function () {
-                    func.runAsync(abp.services.app.unit.getAccountInfo(id).done(res => this.currentItem.userName=res.userName));
+                    var that = this;
+                    func.runAsync(abp.services.app.unit.getAccountInfo(id).done(function (res) { that.currentItem.userName = res.userName }));
 
 				}
 			})
 		}
 
         function submit() {
-            func.runAsync(abp.services.app.unit.submitAccountInfo(id, app.currentItem.userName, app.currentItem.password).done(res => {
+            func.runAsync(abp.services.app.unit.submitAccountInfo(id, app.currentItem.userName, app.currentItem.password).done(function(res) {
                 top.layer.msg("提交成功");
                 parent.layer.closeAll('iframe');
                 parent.config.reloadTable();

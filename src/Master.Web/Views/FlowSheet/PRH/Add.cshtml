@@ -101,7 +101,7 @@
                 methods: {
                     updateInfo: function (info) {
                         if (isNaN(info.number) || info.number<0) { info.number = 0;}
-                        var existInfo = this.currentItem.items.filter(o => o.id == info.id)[0];
+                        var existInfo = this.currentItem.items.filter(function (o) { return o.id == info.id })[0];
                         //小于0直接移除
                         if (info.number <= 0) {
                             existInfo && this.currentItem.items.splice(this.currentItem.items.indexOf(existInfo), 1);

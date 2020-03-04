@@ -42,14 +42,15 @@
 					currentItem: {}
 				},
                 mounted: function () {
-                    func.runAsync(abp.services.app.unit.getInvoice(id).done(res => this.currentItem = res));
+                    var that = this;
+                    func.runAsync(abp.services.app.unit.getInvoice(id).done(function (res) { that.currentItem = res }));
 
 				}
 			})
 		}
 
         function submit() {
-            func.runAsync(abp.services.app.unit.submitInvoice(id, app.currentItem).done(res => {
+            func.runAsync(abp.services.app.unit.submitInvoice(id, app.currentItem).done(function(res) {
                 top.layer.msg("提交成功");
                 parent.layer.closeAll('iframe');
                 parent.config.reloadTable();

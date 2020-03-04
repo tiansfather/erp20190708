@@ -9,6 +9,7 @@ using Abp.Runtime.Caching;
 using Master.Module;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Abp.UI;
 
 namespace Master.WorkFlow
 {
@@ -53,6 +54,10 @@ namespace Master.WorkFlow
         {
             var flowInstanceManager = Resolve<FlowInstanceManager>();
             var flowSheet = await GetAll().Include(o => o.FlowInstance).ThenInclude(o => o.FlowForm).Where(o => o.Id == sheetId).SingleOrDefaultAsync();
+            if (flowSheet == null)
+            {
+                throw new UserFriendlyException($"找不到对应的单据,Id:{sheetId}");
+            }
             var flowHandler = Resolve<IFlowHandlerFinder>().FindFlowHandler(flowSheet.FormKey);
             return await flowHandler.GetFlowBtns(flowSheet);
         }

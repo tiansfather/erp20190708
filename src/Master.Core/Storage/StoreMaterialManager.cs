@@ -33,7 +33,7 @@ namespace Master.Storage
         /// <returns></returns>
         public virtual async Task<decimal> GetMaterialNumber(int materialId)
         {
-            return (await GetAll().Where(o => o.MaterialId == materialId).FirstOrDefaultAsync())?.Number ?? 0;
+            return await GetAll().Where(o => o.MaterialId == materialId).SumAsync(o => o.Number);
         } 
         #endregion
 

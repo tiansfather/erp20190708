@@ -54,7 +54,7 @@ namespace Master.FlowHandlers
             flowSheet.SetPropertyValue("Fee", totalFee);
             flowSheet.SetPropertyValue("PayType", GetPayTypeName(payType));
             flowSheet.SetPropertyValue("AffectRemain", affectRemain);
-            flowSheet.SetPropertyValue("RelCompanyName", sheetHeader["relCompanyName"].ToObject<string>());
+            flowSheet.SetPropertyValue("RelCompanyName", sheetHeader["relCompanyName"]?.ToObject<string>());
             //读取对应的账号id
             if (payType == 0)
             {

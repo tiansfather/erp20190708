@@ -626,22 +626,6 @@
                                 <td>{{item.fileSize}}kb</td>
                                 <td><button type="button" class="layui-btn layui-btn-sm layui-btn-danger demo-delete filelist" @@click="files.splice(index,1)">@L("删除")</button></td>
                             </tr>
-                            @*@if (!string.IsNullOrEmpty(value))
-                                {
-                                    var fileids = value.Split(',').ToList().ConvertAll(o => int.Parse(o));
-                                    var files = await FileManager.GetListByIdsAsync(fileids);
-                                    foreach (var file in files)
-                                    {
-                                        <tr class="pending">
-                                            <td><a href="/File/GetFile?fileid=@file.Id" target="_blank">@file.FileName</a></td>
-                                            <td>@(file.FileSize)kb</td>
-                                            <td></td>
-                                            <td><button fileID="@file.Id" type="button" class="layui-btn layui-btn-sm layui-btn-danger demo-delete filelist">@L("删除")</button></td>
-                                        </tr>
-
-                                    }
-
-                                }*@
                         </tbody>
                     </table>
                 </div>

@@ -123,7 +123,7 @@
                     }
                 }
             },
-            created() {
+            created:function() {
                 var that = this;
                 if (!_formOption.formData) {
                     //录入模式获取数据                    
@@ -133,8 +133,6 @@
                     })
                 }
             },
-            mounted() {
-            }
         })
     }
 
@@ -179,7 +177,7 @@
                 totalFee: app.totalFee,
                 feeCheck: app.currentItem.feeCheck,
                 affectRemain: app.currentItem.affectRemain,
-                relCompanyName: app.currentItem.companyName,
+                relCompanyName: app.currentItem.companyName||'',
             },
             body: []
         };

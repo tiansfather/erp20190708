@@ -181,14 +181,15 @@
                     }
                 },
                 accountName: function () {
+                    var that = this;
                     if (this.currentItem.accountId) {
-                        return  this.currentItem.accounts.filter(o => o.id == this.currentItem.accountId)[0].name;
+                        return this.currentItem.accounts.filter(function (o) { return o.id == that.currentItem.accountId })[0].name;
                     }
                 }
 
             },
             methods: {
-                loadUnit() {
+                loadUnit:function() {
                     var that = this;
                     if (this.currentItem.unitId) {
                         //获取往来单位信息
@@ -198,7 +199,7 @@
                     }
                 }
             },
-            created() {
+            created:function() {
                 var that = this;
                 if (!_formOption.formData) {
                     //录入模式获取数据                    
@@ -208,8 +209,6 @@
                     })
                 }
             },
-            mounted() {
-            }
         })
     }
 
@@ -253,7 +252,7 @@
                 payType: app.currentItem.payType,
                 totalFee: app.totalFee,
                 feeCheck: app.currentItem.feeCheck,
-                relCompanyName: app.currentItem.companyName,
+                relCompanyName: app.currentItem.companyName||'',
             },
             body: []
         };

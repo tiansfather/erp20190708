@@ -11,7 +11,7 @@ namespace Master.Finance
     [InterModule("凭证查询",  GenerateDefaultButtons = false, GenerateDefaultColumns = false)]
     public class Voucher: BaseFullEntityWithTenant
     {
-        [InterColumn(ColumnName = "提交代理商", DisplayPath = "Unit.UnitName", Templet = "{{d.unitId_display}}", Sort = 1)]
+        [InterColumn(ColumnName = "提交代理商", DisplayPath = "Unit.UnitName", Templet = "{{d.unitId_display||'/'}}", Sort = 1)]
         public int UnitId { get; set; }
         public virtual Unit Unit { get; set; }
         [InterColumn(ColumnName = "发生日期", Sort = 2, ColumnType = Module.ColumnTypes.DateTime, DisplayFormat = "yyyy-MM-dd HH:mm")]
@@ -36,6 +36,18 @@ namespace Master.Finance
             set
             {
                 this.SetPropertyValue("FilePath", value);
+            }
+        }
+        [NotMapped]
+        public string FileName
+        {
+            get
+            {
+                return this.GetPropertyValue<string>("FileName");
+            }
+            set
+            {
+                this.SetPropertyValue("FileName", value);
             }
         }
     }

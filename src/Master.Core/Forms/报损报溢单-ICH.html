@@ -56,25 +56,25 @@
             },
             methods: {
             },
-            created() {
+            created:function() {
                 var that = this;
                 if (!_formOption.formData) {
                     //录入模式获取数据
                     var params = JSON.parse($.getUrlParam("params"));
                     this.currentItem.storeId = params.storeId;
                     //仓库信息
-                    abp.services.app.store.getById(params.storeId).done(data => this.currentItem.storeName = data.name);
+                    abp.services.app.store.getById(params.storeId).done(function (data) { return that.currentItem.storeName = data.name });
                     //商品信息
-                    func.runAsync(abp.services.app.material.getStoreMaterialInfos(params.storeId, params.items.map(o => o.id)).done(function (data) {
+                    func.runAsync(abp.services.app.material.getStoreMaterialInfos(params.storeId, params.items.map(function (o) { return o.id })).done(function (data) {
                         console.log(data);
                         that.currentItem.items = data.map(function (o) {
-                            var number = params.items.filter(i => i.id == o.id)[0].number;
+                            var number = params.items.filter(function (i) { return i.id == o.id })[0].number;
                             return $.extend(o, { number: number });
                         })
                     }))
                 }
             },
-            mounted() {
+            mounted:function() {
             }
         })
     }

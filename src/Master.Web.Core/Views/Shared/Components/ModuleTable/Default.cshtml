@@ -140,7 +140,7 @@
         var table = layui.table;
         abp.services.app.moduleInfo.getColumnLayData("@Model.ID").done(function (data) {
             var cols = data.columns;
-            var hasTotalRow = cols.some(o => o.totalRow);
+            var hasTotalRow = cols.some(function (o) { return o.totalRow });
             if ("@Model.ShowCheckbox" == "True") {
                 cols.splice(0, 0, { fixed: 'left', type: 'checkbox' });
                 if (hasTotalRow) {

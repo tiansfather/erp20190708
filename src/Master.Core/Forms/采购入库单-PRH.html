@@ -109,7 +109,7 @@
             computed: {
                 materialFee: function () {
                     var fee = 0;
-                    this.currentItem.items.forEach(o => fee += o.price * o.number * o.discount || 0);
+                    this.currentItem.items.forEach(function (o) { fee += o.price * o.number * o.discount || 0 });
                     return fee.toFixed(2);
                 },
                 totalFee: function () {
@@ -118,7 +118,7 @@
             },
             methods: {
             },
-            created() {
+            created:function() {
                 var that = this;
                 if (!_formOption.formData) {
                     //录入模式获取数据
@@ -126,14 +126,14 @@
                     this.currentItem.storeId = params.storeId;
                     this.currentItem.unitId = params.unitId;
                     //仓库信息
-                    abp.services.app.store.getById(params.storeId).done(data => this.currentItem.storeName = data.name);
+                    abp.services.app.store.getById(params.storeId).done(function (data) { that.currentItem.storeName = data.name });
                     //供货商信息
-                    abp.services.app.unit.getById(params.unitId).done(data => { this.currentItem.unitName = data.unitName; this.currentItem.unitInfo = data; });
+                    abp.services.app.unit.getById(params.unitId).done(function (data) { that.currentItem.unitName = data.unitName; that.currentItem.unitInfo = data; });
                     //商品信息
-                    func.runAsync(abp.services.app.material.getUnitMaterialInfos(this.currentItem.unitId, params.items.map(o => o.id)).done(function (data) {
+                    func.runAsync(abp.services.app.material.getUnitMaterialInfos(this.currentItem.unitId, params.items.map(function (o) { return o.id })).done(function (data) {
                         console.log(data);
                         that.currentItem.items = data.map(function (o) {
-                            var number = params.items.filter(i => i.id == o.id)[0].number;
+                            var number = params.items.filter(function (i) { return i.id == o.id })[0].number;
                             var discount = o.defaultBuyDiscount || 1;
                             var price = o.price * discount;
                             return $.extend(o, { number: number, price: price.toFixed(2),discount:discount.toFixed(2) });
@@ -141,7 +141,7 @@
                     }))
                 }
             },
-            mounted() {
+            mounted:function() {
             }
         })
     }

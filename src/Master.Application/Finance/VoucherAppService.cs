@@ -1,6 +1,7 @@
 ﻿using Abp.Authorization;
 using Abp.AutoMapper;
 using Abp.Linq.Extensions;
+using Abp.UI;
 using Master.Dto;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -35,6 +36,10 @@ namespace Master.Finance
         public override async Task<object> GetById(int primary)
         {
             var entity = await Manager.GetAll().Include(o => o.Unit).Where(o => o.Id == primary).SingleOrDefaultAsync();
+            if (entity == null)
+            {
+                throw new UserFriendlyException("数据已被删除,请联系管理员");
+            }
             return new
             {
                 entity.Unit.UnitName,

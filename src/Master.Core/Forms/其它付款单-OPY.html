@@ -148,8 +148,8 @@
                     this.currentItem.feeCheck = value;
                 },
                 querySearchAsync(queryString, cb) {
-                    abp.services.app.feeCheck.getAllAvailable().done(res => {
-                        var results = queryString ? res.filter(o => o.checkNumber.indexOf(queryString) >= 0) : res;
+                    abp.services.app.feeCheck.getAllAvailable().done(function(res) {
+                        var results = queryString ? res.filter(function (o) { return o.checkNumber.indexOf(queryString) >= 0 }) : res;
                         cb(results);
                     })
                 },
@@ -163,7 +163,7 @@
                     }
                 }
             },
-            created() {
+            created:function() {
                 var that = this;
                 if (!_formOption.formData) {
                     //录入模式获取数据                    
@@ -173,8 +173,6 @@
                     })
                 }
             },
-            mounted() {
-            }
         })
     }
 
@@ -204,7 +202,7 @@
                 totalFee: app.totalFee,
                 feeCheck: app.currentItem.feeCheck,
                 affectRemain: app.currentItem.affectRemain,
-                relCompanyName: app.currentItem.companyName,
+                relCompanyName: app.currentItem.companyName||'',
             },
             body: []
         };

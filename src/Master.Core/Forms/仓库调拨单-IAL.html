@@ -74,13 +74,13 @@
                     this.currentItem.outStoreId = params.outStoreId;
                     this.currentItem.inStoreId = params.inStoreId;
                     //仓库信息
-                    abp.services.app.store.getById(params.outStoreId).done(data => this.currentItem.outStoreName = data.name);
-                    abp.services.app.store.getById(params.inStoreId).done(data => this.currentItem.inStoreName = data.name);
+                    abp.services.app.store.getById(params.outStoreId).done(function (data) { that.currentItem.outStoreName = data.name });
+                    abp.services.app.store.getById(params.inStoreId).done(function (data) { that.currentItem.inStoreName = data.name });
                     //商品信息
-                    func.runAsync(abp.services.app.material.getStoreMaterialInfos(params.outStoreId, params.items.map(o => o.id)).done(function (data) {
+                    func.runAsync(abp.services.app.material.getStoreMaterialInfos(params.outStoreId, params.items.map(function (o) { return o.id })).done(function (data) {
                         console.log(data);
                         that.currentItem.items = data.map(function (o) {
-                            var number = params.items.filter(i => i.id == o.id)[0].number;
+                            var number = params.items.filter(function (i) { return i.id == o.id })[0].number;
                             return $.extend(o, { number: number });
                         })
                     }))
@@ -97,7 +97,7 @@
         if (!data.length) {
             throw "请至少录入一条数据";
         }
-        if (data.filter(o => o.number < 0 || o.number > o.storeNumber || o.number % 1 !== 0).length) {
+        if (data.filter(function (o) { return o.number < 0 || o.number > o.storeNumber || o.number % 1 !== 0 }).length) {
             throw "调拨数量必须是大于0整数且小于当前库存";
         }
         var sheetData = {

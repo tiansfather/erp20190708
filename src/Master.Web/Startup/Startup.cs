@@ -32,6 +32,8 @@ using Master.Json;
 using Master.Json.Converters;
 using Microsoft.AspNetCore.Http.Features;
 using Common.Configuration;
+using Microsoft.Net.Http.Headers;
+using Microsoft.AspNetCore.Http;
 
 namespace Master.Web.Startup
 {
@@ -133,6 +135,20 @@ namespace Master.Web.Startup
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IOptions<SenparcSetting> senparcSetting, IOptions<SenparcWeixinSetting> senparcWeixinSetting)
         {
             app.UseAbp(); //Initializes ABP framework.
+            app.Use(async (context, next) =>
+            {                
+                if (context.Request.Path.Value.ToLower().Contains("api/services"))
+                {
+                    //context.Response.Headers[HeaderNames.CacheControl] = "no-cache";
+                    context.Response.GetTypedHeaders().CacheControl =
+                        new Microsoft.Net.Http.Headers.CacheControlHeaderValue()
+                        {
+                            NoCache=true
+                        };
+                }
+
+                await next();
+            });
             app.UseSession();
             
             //app.UseSignalR(routes =>

@@ -69,23 +69,24 @@
                 computed: {
                     sumIn: function () {
                         var sum = 0;
-                        this.items.filter(o => o.remainFee < 0).forEach(o => sum += o.remainFee);
+                        this.items.filter(function (o) { return o.remainFee < 0 }).forEach(function (o) { sum += o.remainFee });
                         return sum;
                     },
                     sumOut: function () {
                         var sum = 0;
-                        this.items.filter(o => o.remainFee > 0).forEach(o => sum += o.remainFee);
+                        this.items.filter(function (o) { return o.remainFee > 0 }).forEach(function (o) { sum += o.remainFee });
                         return sum;
                     },
                     sum: function () {
-                        return this.sumIn +this.sumOut;
+                        return (this.sumIn +this.sumOut).toFixed(2);
                     }
 
                 },
                 methods: {
                     doSearch: function () {
-                        func.runAsync(abp.services.app.unitFee.getUnitFeeSummary(this.currentItem.unitId, this.currentItem.unitNature, this.currentItem.endDate).done(res => {
-                            this.items = res;
+                        var that = this;
+                        func.runAsync(abp.services.app.unitFee.getUnitFeeSummary(this.currentItem.unitId, this.currentItem.unitNature, this.currentItem.endDate).done(function(res) {
+                            that.items = res;
                             layui.table.render({
                                 elem: '#Summary',
                                 toolbar: false,

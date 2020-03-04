@@ -131,7 +131,7 @@
 					layer.confirm('真的删除行么', function (index) {
 						obj.del();
 						//todo:删除后table数据不更新
-                        layui.table.cache.dataTable = layui.table.cache.dataTable.filter(o => func.typeof(o) != 'array');
+                        layui.table.cache.dataTable = layui.table.cache.dataTable.filter(function (o) { return func.typeof(o) != 'array' });
 						layer.close(index);
 					});
 				}
@@ -263,9 +263,9 @@
 							func.runAsync(abp.services.app.import.doImport(param).done(function (data) {
 								console.log(data);
                                 if (data.success) { 
-                                    var msg = data.importResultDetails.filter(x => x.message);
+                                    var msg = data.importResultDetails.filter(function (x) { return x.message });
                                     var msgStr = "";
-                                      msg.forEach(o => {
+                                      msg.forEach(function(o) {
                                           if (o.message) {
                                               msgStr += '<li>行'+(o.row+1) + o.message + '</li>';
                                           }

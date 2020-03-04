@@ -130,7 +130,7 @@
             computed: {
                 materialFee: function () {
                     var fee = 0;
-                    this.currentItem.items.forEach(o => fee += o.price * o.number * o.discount || 0);
+                    this.currentItem.items.forEach(function (o) { fee += o.price * o.number * o.discount || 0 });
                     return fee.toFixed(2);
                 },
                 totalFee: function () {
@@ -146,7 +146,7 @@
                 }
             },
             methods: {
-                getSum(item) {
+                getSum:function(item) {
                     if (!item.number) {
                         return '';
                     } else {
@@ -154,7 +154,7 @@
                     }
                 },
             },
-            created() {
+            created:function() {
                 var that = this;
                 if (!_formOption.formData) {
                     var that = this;
@@ -166,7 +166,7 @@
                         that.currentItem.stores = data;
                     })
                     //代理商信息
-                    abp.services.app.unit.getById(params.unitId).done(data => this.currentItem.unitName = data.unitName);
+                    abp.services.app.unit.getById(params.unitId).done(function (data) { that.currentItem.unitName = data.unitName });
                     //商品信息
                     func.runAsync(abp.services.app.materialSell.getCartInfo(this.currentItem.unitId, 1).done(function (data) {
                         console.log(data);
@@ -174,8 +174,6 @@
                     }))
                 }
             },
-            mounted() {
-            }
         })
     }
 

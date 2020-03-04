@@ -135,16 +135,16 @@
                 }
             },
             methods: {
-                handleSelect(value) {
+                handleSelect:function(value) {
                     this.currentItem.feeCheck = value;
                 },
-                querySearchAsync(queryString, cb) {
-                    abp.services.app.feeCheck.getAllAvailable().done(res => {
-                        var results = queryString ? res.filter(o => o.checkNumber.indexOf(queryString) >= 0) : res;
+                querySearchAsync:function(queryString, cb) {
+                    abp.services.app.feeCheck.getAllAvailable().done(function(res) {
+                        var results = queryString ? res.filter(function (o) { return o.checkNumber.indexOf(queryString) >= 0 }) : res;
                         cb(results);
                     })
                 },
-                loadUnit() {
+                loadUnit:function() {
                     var that = this;
                     if (this.currentItem.unitId) {
                         //获取往来单位信息
@@ -154,7 +154,7 @@
                     }
                 }
             },
-            created() {
+            created:function() {
                 var that = this;
                 if (!_formOption.formData) {
                     //录入模式获取数据                    
@@ -164,7 +164,7 @@
                     })
                 }
             },
-            mounted() {
+            mounted:function() {
             }
         })
     }
@@ -194,7 +194,7 @@
                 payType: app.currentItem.payType,
                 totalFee: app.totalFee,
                 feeCheck: app.currentItem.feeCheck,
-                relCompanyName: app.currentItem.companyName,
+                relCompanyName: app.currentItem.companyName||'',
             },
             body: []
         };

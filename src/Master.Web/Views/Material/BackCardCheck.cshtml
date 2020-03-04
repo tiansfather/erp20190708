@@ -41,7 +41,7 @@
                             this.$message.error('请输入特征码及卡号再进行检查');
                             return;
                         }
-                        func.runAsync(abp.services.app.materialBuy.checkCode(this.featureCode, this.codeNumber).done(res => {
+                        func.runAsync(abp.services.app.materialBuy.checkCode(this.featureCode, this.codeNumber).done(function(res) {
                             if (res) {
                                 abp.message.success("检查通过");
                             } else {

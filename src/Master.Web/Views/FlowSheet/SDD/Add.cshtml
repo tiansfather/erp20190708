@@ -93,7 +93,7 @@
                     },
                     updateInfo: function (info) {
                         if (isNaN(info.number)) { info.number = 0;}
-                        var existInfo = this.currentItem.items.filter(o => o.id == info.id)[0];
+                        var existInfo = this.currentItem.items.filter(function (o) { return o.id == info.id })[0];
                         //等于0直接移除
                         if (info.number == 0) {
                             existInfo && this.currentItem.items.splice(this.currentItem.items.indexOf(existInfo), 1);
@@ -166,7 +166,7 @@
             searchKeys.SellUnitId = app.currentItem.unitId;
             if (app.currentItem.unitId) {
                 //加载购物车数据
-                func.runAsync(abp.services.app.materialSell.getCartInfo(app.currentItem.unitId, 0).done(res => {
+                func.runAsync(abp.services.app.materialSell.getCartInfo(app.currentItem.unitId, 0).done(function(res) {
                     app.currentItem.items = res;
                     layui.table.reload('Material', {
                         where: getWhere()

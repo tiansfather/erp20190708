@@ -157,7 +157,7 @@
             computed: {
                 materialFee: function () {
                     var fee = 0;
-                    this.currentItem.items.forEach(o => fee += o.price * o.number*o.discount||0);
+                    this.currentItem.items.forEach(function (o) { fee += o.price * o.number * o.discount || 0 });
                     return fee.toFixed(2);
                 },
                 totalFee: function () {
@@ -165,14 +165,14 @@
                 }
             },
             methods: {
-                getSum(item) {
+                getSum:function(item) {
                     if (!item.number) {
                         return '';
                     } else {
                         return (item.number * item.price * item.discount).toFixed(2);
                     }
                 },
-                refreshData() {
+                refreshData:function() {
                     var that = this;
                     if (!this.currentItem.unitId ) {
                         return;
@@ -186,7 +186,7 @@
                     }))
                 }
             },
-            created() {
+            created:function() {
                 var that = this;
                 if (!_formOption.formData) {
                     //录入模式获取数据
@@ -202,8 +202,6 @@
                     })
                 }
             },
-            mounted() {
-            }
         })
     }
 
@@ -226,7 +224,7 @@
                 remarks: app.currentItem.remarks,
                 unitId: app.currentItem.unitId,
                 storeId: app.currentItem.storeId,
-                storeName: app.currentItem.stores.filter(o => o.id == app.currentItem.storeId)[0].name,
+                storeName: app.currentItem.stores.filter(function (o) { return o.id == app.currentItem.storeId })[0].name,
                 totalFee: app.totalFee
             },
             body: data

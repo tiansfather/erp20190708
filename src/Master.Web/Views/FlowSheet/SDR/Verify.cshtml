@@ -14,7 +14,7 @@
                 <button class="layui-btn  layui-btn-sm" type="button" buttonname="批量审核" modulekey="SDRSheet" params="" lay-event="Verify" confirmmsg="确认审核通过这些单据？" buttonactiontype="Ajax" buttonactionurl="abp.services.app.sDRSheet.verify" onclick="func.callModuleButtonEvent()">批量审核</button>
                 <button class="layui-btn  layui-btn-sm layui-btn-normal" type="button" buttonname="批量审核" modulekey="SDRSheet" params="" lay-event="Cancel" confirmmsg="确认取消这些单据？" buttonactiontype="Ajax" buttonactionurl="abp.services.app.sDRSheet.cancel" onclick="func.callModuleButtonEvent()">批量取消</button>
             </div>
-			<vc:module-table param="@(new ModuleTableViewParam() {ID="SDRSheet",ShowCheckbox=true,ModuleKey=nameof(Master.WorkFlow.Modules.SDRSheet),Height="full-100",Where="OrderStatus=\"待审核\"" })"></vc:module-table>
+			<vc:module-table param="@(new ModuleTableViewParam() {ID="SDRVerify",ShowCheckbox=true,ModuleKey=nameof(Master.WorkFlow.Modules.SDRVerify),Height="full-100",Where="OrderStatus=\"待审核\"" })"></vc:module-table>
 		</div>
 		
 	</div>
@@ -30,7 +30,7 @@
 		}
 		//当检索窗体提交后会调用此方法
 		config.reloadTable = function () {
-            layui.table.reload('SDRSheet', {
+            layui.table.reload('SDRVerify', {
 				where: getWhere()
 
 			})
@@ -45,7 +45,7 @@
 		function getWhere() {
 			var where = {};
 
-            where.searchCondition = func.buildSearchCondition('SDRSheet');
+            where.searchCondition = func.buildSearchCondition('SDRVerify');
 
 			return where;
 

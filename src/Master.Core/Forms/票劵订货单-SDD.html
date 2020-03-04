@@ -52,14 +52,14 @@
             },
             methods: {
             },
-            created() {
+            created:function() {
                 var that = this;
                 if (!_formOption.formData) {
                     //录入模式获取数据
                     var params = JSON.parse( $.getUrlParam("params"));
                     this.currentItem.unitId = params.unitId;
                     //代理商信息
-                    abp.services.app.unit.getById(params.unitId).done(data => this.currentItem.unitName = data.unitName);
+                    abp.services.app.unit.getById(params.unitId).done(function (data) { that.currentItem.unitName = data.unitName });
                     //商品信息
                     func.runAsync(abp.services.app.materialSell.getCartInfo(this.currentItem.unitId, 0).done(function (data) {
                         console.log(data);
@@ -67,8 +67,6 @@
                     }))
                 }
             },
-            mounted() {
-            }
         })
     }
 
