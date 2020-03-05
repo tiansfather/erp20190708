@@ -50,6 +50,15 @@ namespace Master.BaseTrees
             if (baseTreeDto.Id == 0)
             {
                 baseTree = baseTreeDto.MapTo<BaseTree>();
+                if (baseTreeDto.ParentId.HasValue)
+                {
+                    var parentNode = await Manager.GetByIdAsync(baseTreeDto.ParentId.Value);
+                    if (parentNode == null)
+                    {
+                        baseTree.ParentId = null;
+                    }
+                }
+                
                 await BaseTreeManager.CreateAsync(baseTree);
             }
             else

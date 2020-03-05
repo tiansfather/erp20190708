@@ -213,7 +213,7 @@ namespace Master.Storage
             var materialManager = Resolve<MaterialManager>();
             var sellMaterials = (await Manager.GetAll().Include(o => o.FlowSheet).Include(o => o.Material)
                 .Where(new MaterialSellSpecification(unitId,startDate))
-                .Where(o => o.FlowSheet.OrderStatus != "待审核")//不显示待审核的商品
+                .Where(o => o.FlowSheet.OrderStatus != "待审核" && o.FlowSheet.OrderStatus!= "待出库")//不显示待审核待出库的商品
                 .Where(o => o.SellNumber > o.BackNumber)//
                 .GroupBy(o => o.Material)
                 .ToListAsync())
