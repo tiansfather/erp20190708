@@ -62,7 +62,16 @@
         </el-form-item>
         <template v-if="currentItem.payType==2">
             <el-form-item label="支票号码">
-                <el-autocomplete popper-class="my-autocomplete"
+                <el-select v-model="currentItem.checkNumber" placeholder="请选择支票" filterable @change="handleSelect">
+                    <el-option v-for="item in currentItem.checks"
+                               :key="item.checkNumber"
+                               :label="item.checkNumber"
+                               :value="item.checkNumber" >
+                        <!--<div class="name">{{ item.checkNumber }}【{{item.checkBank}}】</div>
+                        <span class="addr">{{ item.checkFee }}【{{new Date( item.checkDate).pattern('yyyy-MM-dd') }}】</span>-->
+                    </el-option>
+                </el-select>
+                <!--<el-autocomplete popper-class="my-autocomplete"
                                  value-key="checkNumber"
                                  v-model="currentItem.feeCheckNumber"
                                  @select="handleSelect"
@@ -72,13 +81,13 @@
                         <div class="name">{{ item.checkNumber }}【{{item.checkBank}}】</div>
                         <span class="addr">{{ item.checkFee }}【{{new Date( item.checkDate).pattern('yyyy-MM-dd') }}】</span>
                     </template>
-                </el-autocomplete>
+                </el-autocomplete>-->
             </el-form-item>
             <el-form-item label="支票金额">
                 <el-input v-model="currentItem.feeCheck.checkFee" type="number" readonly="true"></el-input>
             </el-form-item>
             <el-form-item label="开票日期">
-                <el-date-picker type="date" placeholder="选择日期" v-model="currentItem.feeCheck.checkDate" readonly="true"></el-date-picker>
+                <el-input v-model="currentItem.feeCheck.checkDate" type="text" readonly="true"></el-input>
             </el-form-item>
             <el-form-item label="兑现期限(天)">
                 <el-input v-model="currentItem.feeCheck.checkDaySpan" type="text" readonly="true"></el-input>
@@ -114,17 +123,18 @@
                     unitId: null,
                     unitInfo: { nowFee: 0 },
                     accounts: [],
+                    checks:[],
                     accountId:null,
                     remarks: '',
-                    feeCheck: {
-                    }
+                    checkNumber:'',
+                    feeCheck: {}
                 },
 
             },
             computed: {
-                totalFee: function () {
-                    if (!this.currentItem.inputedFee) { return 0;}
+                totalFee: function () {                    
                     if (this.currentItem.payType == '0' || this.currentItem.payType == '1') {
+                        if (!this.currentItem.inputedFee) { return 0;}
                         return parseFloat(this.currentItem.inputedFee).toFixed(2);
                     } else {                        
                         return parseFloat(this.currentItem.feeCheck.checkFee).toFixed(2);
@@ -135,8 +145,8 @@
                 }
             },
             methods: {
-                handleSelect:function(value) {
-                    this.currentItem.feeCheck = value;
+                handleSelect: function (value) {
+                    this.currentItem.feeCheck = this.currentItem.checks.filter(function (o) { return o.checkNumber==value })[0];
                 },
                 querySearchAsync:function(queryString, cb) {
                     abp.services.app.feeCheck.getAllAvailable().done(function(res) {
@@ -161,6 +171,9 @@
                     //获取所有账号
                     abp.services.app.feeAccount.getNormalAccounts().done(function (data) {
                         that.currentItem.accounts = data;
+                    })
+                    abp.services.app.feeCheck.getAllAvailable().done(function(data) {
+                        that.currentItem.checks = data;
                     })
                 }
             },

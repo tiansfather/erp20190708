@@ -59,15 +59,15 @@ namespace Master.Storage
         {
             return new
             {
-                entity.FlowSheet.SheetSN,
-                entity.Material.Name,
-                MaterialTypeName = entity.Material.MaterialType.DisplayName,
-                UnitName = entity.Unit.UnitName,
-                entity.Material.Specification,
-                MaterialNature = entity.Material.MaterialNature.ToString(),
+                entity.FlowSheet?.SheetSN,
+                entity.Material?.Name,
+                MaterialTypeName = entity.Material?.MaterialType?.DisplayName,
+                UnitName = entity.Unit?.UnitName,
+                entity.Material?.Specification,
+                MaterialNature = entity.Material?.MaterialNature.ToString(),
                 entity.Price,
                 entity.Discount,
-                entity.Material.MeasureMentUnit,
+                entity.Material?.MeasureMentUnit,
                 entity.BuyNumber
             };
         }

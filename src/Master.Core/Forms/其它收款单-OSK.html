@@ -100,9 +100,9 @@
 
             },
             computed: {
-                totalFee: function () {
-                    if (!this.currentItem.inputedFee) { return 0;}
+                totalFee: function () {                    
                     if (this.currentItem.payType == '0' || this.currentItem.payType == '1') {
+                        if (!this.currentItem.inputedFee) { return 0;}
                         return parseFloat(this.currentItem.inputedFee).toFixed(2);
                     } else {                        
                         return parseFloat(this.currentItem.feeCheck.checkFee).toFixed(2);
@@ -113,7 +113,7 @@
                 }
             },
             methods: {
-                loadUnit() {
+                loadUnit:function() {
                     var that = this;
                     if (this.currentItem.unitId) {
                         //获取往来单位信息

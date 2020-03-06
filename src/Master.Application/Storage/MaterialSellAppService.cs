@@ -66,14 +66,14 @@ namespace Master.Storage
         {
             return new
             {
-                entity.FlowSheet.SheetSN,
-                entity.Material.Name,
-                MaterialTypeName=entity.Material.MaterialType.DisplayName,
-                UnitName=entity.Unit.UnitName,
-                entity.Material.Specification,
-                MaterialNature=entity.Material.MaterialNature.ToString(),
-                entity.Material.Price,
-                entity.Material.MeasureMentUnit,
+                entity.FlowSheet?.SheetSN,
+                entity.Material?.Name,
+                MaterialTypeName=entity.Material?.MaterialType?.DisplayName,
+                UnitName=entity.Unit?.UnitName,
+                entity.Material?.Specification,
+                MaterialNature=entity.Material?.MaterialNature.ToString(),
+                entity.Material?.Price,
+                entity.Material?.MeasureMentUnit,
                 entity.SellNumber,
                 entity.OutNumber
             };
