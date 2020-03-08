@@ -101,7 +101,14 @@ namespace Master.FlowHandlers
                 {
                     var materialId = Convert.ToInt32(sheetItem["id"]);//对应的物料Id
                     var number = sheetItem["number"].ToObjectWithDefault<int>();//订购数量
-
+                    //销售记录取消
+                    var materialSell = await MaterialSellManager.GetAll()
+                        .Where(o => o.MaterialId == materialId && o.FlowSheetId == flowSheet.Id && o.SellNumber == number && o.UnitId == unitId).FirstOrDefaultAsync();
+                    if (materialSell != null)
+                    {
+                        await MaterialSellManager.DeleteAsync(materialSell);
+                    }
+                    
                     var materialCart = await CartRepository.GetAll().Where(o => o.UnitId == unitId && o.CreatorUserId == AbpSession.UserId && o.MaterialId == materialId).FirstOrDefaultAsync();
                     if (materialCart != null)
                     {

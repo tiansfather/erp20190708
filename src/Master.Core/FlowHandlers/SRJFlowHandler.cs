@@ -4,6 +4,7 @@ using Master.Extensions;
 using Master.Storage;
 using Master.Units;
 using Master.WorkFlow;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -93,6 +94,14 @@ namespace Master.FlowHandlers
                 if (number > 0)
                 {
                     await MaterialSellManager.Back(unitId, startDate, materialId, storeId, -number, flowSheet);
+                    //清除退货数据
+                    var materialSellBack = await MaterialSellBackManager.GetAll()
+                        .Where(o => o.UnitId == unitId && o.MaterialId == materialId && o.BackNumber == number && o.FlowSheetId == flowSheet.Id)
+                        .FirstOrDefaultAsync();
+                    if (materialSellBack != null)
+                    {
+                        await MaterialSellBackManager.DeleteAsync(materialSellBack);
+                    }
                 }
                 
 

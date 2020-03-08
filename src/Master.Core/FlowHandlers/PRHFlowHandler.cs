@@ -4,6 +4,7 @@ using Master.Extensions;
 using Master.Storage;
 using Master.Units;
 using Master.WorkFlow;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -89,7 +90,14 @@ namespace Master.FlowHandlers
                 var materialId = Convert.ToInt32(sheetItem["id"]);//对应的物料Id
 
                 var number = sheetItem["number"].ToObjectWithDefault<int>();//入库数量
-
+                //清除采购记录
+                var materialBuy = await MaterialBuyManager.GetAll()
+                    .Where(o => o.UnitId == unitId && o.MaterialId == materialId && o.FlowSheetId == flowSheet.Id && o.BuyNumber == number)
+                    .FirstOrDefaultAsync();
+                if (materialBuy != null)
+                {
+                    await MaterialBuyManager.DeleteAsync(materialBuy);
+                }
                 await StoreMaterialManager.CountMaterial(storeId, materialId, -number, flowSheet);
 
             }

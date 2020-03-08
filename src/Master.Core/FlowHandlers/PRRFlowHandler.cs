@@ -4,6 +4,7 @@ using Master.Extensions;
 using Master.Storage;
 using Master.Units;
 using Master.WorkFlow;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -94,6 +95,15 @@ namespace Master.FlowHandlers
                     continue;
                 }
                 await MaterialBuyManager.Back(unitId, startDate, materialId, storeId, -number, flowSheet);
+                //清除退货数据
+                var materialBuyBack = await MaterialBuyBackManager.GetAll()
+                    .Where(o => o.UnitId == unitId && o.MaterialId == materialId && o.BackNumber == number && o.FlowSheetId == flowSheet.Id)
+                    .FirstOrDefaultAsync();
+                if (materialBuyBack != null)
+                {
+                    await MaterialBuyBackManager.DeleteAsync(materialBuyBack);
+
+                }
 
             }
         }

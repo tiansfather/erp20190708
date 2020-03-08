@@ -49,9 +49,14 @@
             app = new Vue({
                 el: '#app',
                 data: {
-                    searchDateRange: null
+                    //searchDateRange: [new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()), new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1)]
+                    searchDateRange:null
                 },
                 methods: {
+                    syncSearchData: function () {
+                        searchKeys.startDate = this.searchDateRange[0].pattern('yyyy-MM-dd HH:mm:ss');
+                        searchKeys.endDate = this.searchDateRange[1].pattern('yyyy-MM-dd HH:mm:ss');
+                    },
                     doSearch: function (data) {
                         var startDate = null;
                         var endDate = null;
@@ -61,11 +66,13 @@
                             searchKeys.startDate = startDate;
                             searchKeys.endDate = endDate;
                         }
+                        //this.syncSearchData();
                         
                         config.reloadTable();
                     }
                 },
                 mounted: function () {
+                    //this.syncSearchData();
                     var that = this;
                     table.render({
                         elem: '#Material',

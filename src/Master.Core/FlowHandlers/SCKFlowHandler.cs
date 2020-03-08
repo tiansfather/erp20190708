@@ -4,6 +4,7 @@ using Master.Extensions;
 using Master.Storage;
 using Master.Units;
 using Master.WorkFlow;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -112,6 +113,15 @@ namespace Master.FlowHandlers
                 {
                     continue;
                 }
+                //取消销售出库记录
+                var materialSellOut = await MaterialSellOutManager.GetAll()
+                    .Where(o => o.UnitId == unitId && o.FlowSheetId == sheetItem["flowSheetId"].ToObjectWithDefault<int>() && o.OutNumber == number && o.MaterialId==materialId)
+                    .FirstOrDefaultAsync();
+                if (materialSellOut != null)
+                {
+                    await MaterialSellOutManager.DeleteAsync(materialSellOut);
+                }
+
                 materialSellIds.Add(sellMaterialId);
                 //加入待出库集合
                 if (!toOutMaterials.ContainsKey(materialId))

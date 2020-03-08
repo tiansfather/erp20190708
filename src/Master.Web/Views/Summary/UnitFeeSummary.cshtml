@@ -36,9 +36,9 @@
                 </el-form>
                 <el-divider></el-divider>
                 <div>
-                    <span>应收款:{{sumIn}}</span>
-                    <span>应付款:{{sumOut}}</span>
-                    <span>合计:{{sum}}</span>
+                    <span>应收款:{{sumIn.toFixed(2)}}</span>
+                    <span>应付款:{{sumOut.toFixed(2)}}</span>
+                    <span>合计:{{sum.toFixed(2)}}</span>
                 </div>
             </div>
             
@@ -78,7 +78,7 @@
                         return sum;
                     },
                     sum: function () {
-                        return (this.sumIn +this.sumOut).toFixed(2);
+                        return (this.sumIn +this.sumOut);
                     }
 
                 },
