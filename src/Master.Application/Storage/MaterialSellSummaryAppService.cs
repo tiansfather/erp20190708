@@ -133,6 +133,11 @@ namespace Master.Storage
                 //获取订货总数量及库存数量
                 var sellNumber = await baseQuery.Where(o => o.MaterialId == material.Id).SumAsync(o => o.SellNumber);
                 var outNumber = await baseQuery.Where(o => o.MaterialId == material.Id).SumAsync(o => o.OutNumber);
+                //todo:需要减掉退货数量
+                var materialSellBackQuery = Resolve<MaterialSellBackManager>().GetAll().Where(o => o.MaterialId == material.Id )
+                    .Where(o => o.CreationTime >= startDate)
+                    .Where(o => o.CreationTime < endDate);
+                var backNumber = materialSellBackQuery.Sum(o => o.BackNumber);
                 var storeNumber = await StoreMaterialManager.GetAll().Where(o => o.MaterialId == material.Id).SumAsync(o => o.Number);
                 result.Add(new MaterialSellSummaryDto()
                 {
@@ -143,7 +148,7 @@ namespace Master.Storage
                     MeasureMentUnit=material.MeasureMentUnit,
                     MaterialNature = material.MaterialNature.ToString(),
                     SellNumber=sellNumber,
-                    OutNumber=outNumber,
+                    OutNumber=outNumber-backNumber,
                     StoreNumber=storeNumber
                 });
             }

@@ -64,7 +64,7 @@ namespace Master.FlowHandlers
                 var feeCheckId = sheetHeader["feeCheck"]["id"].ToObject<int>();
                 //设置对应支票信息为已支出
                 var feeCheck = await FeeCheckManager.GetByIdAsync(feeCheckId);
-                if (feeCheck.CheckStatus != CheckStatus.收入)
+                if (feeCheck.CheckStatus != CheckStatus.收入 && feeCheck.CheckStatus!=CheckStatus.支出退票)
                 {
                     throw new UserFriendlyException("支票状态不是收入，无法进行使用");
                 }

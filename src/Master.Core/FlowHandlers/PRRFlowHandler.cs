@@ -97,7 +97,7 @@ namespace Master.FlowHandlers
                 await MaterialBuyManager.Back(unitId, startDate, materialId, storeId, -number, flowSheet);
                 //清除退货数据
                 var materialBuyBack = await MaterialBuyBackManager.GetAll()
-                    .Where(o => o.UnitId == unitId && o.MaterialId == materialId && o.BackNumber == number && o.FlowSheetId == flowSheet.Id)
+                    .Where(o => o.UnitId == unitId && o.MaterialId == materialId && o.BackNumber == number && o.FlowSheetId == flowSheet.RelSheetId)
                     .FirstOrDefaultAsync();
                 if (materialBuyBack != null)
                 {

@@ -92,7 +92,7 @@ namespace Master.FlowHandlers
                 var number = sheetItem["number"].ToObjectWithDefault<int>();//入库数量
                 //清除采购记录
                 var materialBuy = await MaterialBuyManager.GetAll()
-                    .Where(o => o.UnitId == unitId && o.MaterialId == materialId && o.FlowSheetId == flowSheet.Id && o.BuyNumber == number)
+                    .Where(o => o.UnitId == unitId && o.MaterialId == materialId && o.FlowSheetId == flowSheet.RelSheetId && o.BuyNumber == number)
                     .FirstOrDefaultAsync();
                 if (materialBuy != null)
                 {

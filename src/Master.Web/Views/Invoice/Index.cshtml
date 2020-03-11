@@ -1,0 +1,88 @@
+﻿@using Master.Web.Components
+@{
+    ViewData["Title"] = "Index";
+}
+@section MainBody{
+}
+<div class="layui-fluid" id="LAY-app-message">
+    <div class="layui-card">
+        <div class="layui-tab layui-tab-brief" lay-filter="invoiceTab">
+            <ul class="layui-tab-title">
+                <li class="layui-this all">@L("所有")<span class="layui-badge">0</span></li>
+                <li class="off">@L("待审核")<span class="layui-badge">0</span></li>
+                <li class="all">@L("已审核")<span class="layui-badge">0</span></li>
+                <li class="account">@L("已关闭")<span class="layui-badge">0</span></li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="LAY-app-message-btns" style="margin-bottom: 10px;">
+                    <vc:module-button module-key="Invoice"></vc:module-button>
+                    @*<input type="text" id="name-input" class="layui-input" style="width: 150px; display: inline-block;height: 30px;vertical-align: middle;" placeholder="输入名字检索" />
+                    <button class="layui-btn  layui-btn-sm" onclick="config.reloadTable()">搜索</button>*@
+                </div>
+                <vc:module-table param="@(new ModuleTableViewParam() {ID="Invoice",ModuleKey="Invoice",Height="full-200",Where="1=1"})"></vc:module-table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        config.ready = function () {
+            
+            var element = layui.element;
+            var table = layui.table;
+            //一些事件监听
+            element.on('tab(invoiceTab)', function (data) {
+                config.reloadTable();
+            });
+            config.refresh();
+        }
+        //当检索窗体提交后会调用此方法
+        config.reloadTable = function () {
+            layui.table.reload('Invoice', {
+                where: getWhere($(".layui-tab-title .layui-this").index())
+
+            })
+        }
+        config.onTableDoneExport = function () {
+            //console.log('a')
+        }
+        //当编辑或删除或添加表单提交后会调用此方法
+        config.refresh = function () {
+            //重新加载汇总数据
+            abp.services.app.invoice.getCountSummary()
+                .done(function (result) {
+                    $("li.all span").html(result.allCount);
+                    $("li.unverify span").html(result.unVerifyCount);
+                    $("li.verifed span").html(result.verifiedCount);
+                    $("li.closed span").html(result.closedCount);
+                });
+        }
+    function getWhere(index) {
+        console.log(index);
+            var where = {};
+            switch (index) {
+                case 0:
+                    where = { where: '1=1' };
+                    break;
+                case 1:
+                    where = { where: 'invoiceStatus=0' };
+                    break;
+                case 2:
+                    where = { where: 'invoiceStatus=1' };
+                    break;
+                case 3:
+                    where = { where: 'invoiceStatus=2 ' };
+                    break;
+            }
+            var value = $('#name-input').val();
+            if (value) {
+                where.where += " and Name.Contains(\"" + value + "\")"
+        }
+        where.searchCondition = func.buildSearchCondition('Invoice');
+        //where_cache["User"].where = where.where;
+            return where;
+
+        }
+    </script>
+}

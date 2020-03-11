@@ -356,6 +356,12 @@
         "order": 4,
         "items": [
           {
+            "name": "Finance.Tenancy.Invoice",
+            "displayName": "发票管理",
+            "icon": "iconfont icon-mingxizhang",
+            "url": "/Home/Show?name=../Invoice/Index"
+          },
+          {
             "name": "Finance.Tenancy.VoucherAdd",
             "displayName": "凭证上传",
             "icon": "iconfont icon-mingxizhang",

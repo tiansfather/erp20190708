@@ -22,7 +22,7 @@ namespace Master.Storage
 
         public virtual async Task<object> GetAllAvailable()
         {
-            return (await Manager.GetAll().Where(o => o.CheckStatus == CheckStatus.收入)
+            return (await Manager.GetAll().Where(o => o.CheckStatus == CheckStatus.收入 || o.CheckStatus==CheckStatus.支出退票)
                 .ToListAsync())
                 .MapTo<List<FeeCheckDto>>();
         }

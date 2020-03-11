@@ -78,7 +78,8 @@
 					currentItem: {}
 				},
                 mounted: function () {
-                    func.runAsync(abp.services.app.feeCheck.getById(id).done(res => this.currentItem = res));
+                    var that = this;
+                    func.runAsync(abp.services.app.feeCheck.getById(id).done(function (res) { that.currentItem = res }));
 
 				}
 			})
