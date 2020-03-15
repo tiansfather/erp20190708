@@ -337,6 +337,18 @@
         "order": 3,
         "items": [
           {
+            "name": "Finance.Tenancy.PST",
+            "displayName": "过账登记",
+            "icon": "iconfont icon-zongzhangjiqita",
+            "url": "/Home/Show?name=../FlowSheet/PST/Add"
+          },
+          {
+            "name": "Finance.Tenancy.PSTSheet",
+            "displayName": "过账登记单",
+            "icon": "iconfont icon-mingxizhang",
+            "url": "/Home/Show?name=../FlowSheet/PST/Index"
+          },
+          {
             "name": "Finance.Tenancy.CRR",
             "displayName": "账户间调拨",
             "icon": "iconfont icon-zongzhangjiqita",
@@ -348,6 +360,7 @@
             "icon": "iconfont icon-mingxizhang",
             "url": "/Home/Show?name=../FlowSheet/CRR/Index"
           }
+
         ]
       },
       {
@@ -355,6 +368,18 @@
         "displayName": "票据",
         "order": 4,
         "items": [
+          {
+            "name": "Finance.Tenancy.InvoiceAdd1",
+            "displayName": "发票申请(增票)",
+            "icon": "iconfont icon-mingxizhang",
+            "url": "/Home/Show?name=../Invoice/Add1"
+          },
+          {
+            "name": "Finance.Tenancy.InvoiceAdd2",
+            "displayName": "发票申请(普票)",
+            "icon": "iconfont icon-mingxizhang",
+            "url": "/Home/Show?name=../Invoice/Add2"
+          },
           {
             "name": "Finance.Tenancy.Invoice",
             "displayName": "发票管理",

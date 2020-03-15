@@ -475,6 +475,12 @@
     <Content Update="Views\FlowSheet\ICH\Verify.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\FlowSheet\PST\Add.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\FlowSheet\PST\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\FlowSheet\SDR\Back.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

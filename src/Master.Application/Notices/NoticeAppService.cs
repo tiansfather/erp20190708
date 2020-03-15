@@ -60,7 +60,7 @@ namespace Master.Notices
         {
             using (CurrentUnitOfWork.DisableFilter(AbpDataFilters.MayHaveTenant))
             {
-                return (await Manager.GetAll().Where(o => o.IsActive && o.TenantId==null)
+                return (await Manager.GetAll().Where(o => o.IsActive )
                 .OrderByDescending(o => o.Id)
                 .ToListAsync())
                 .MapTo<List<NoticeDto>>();

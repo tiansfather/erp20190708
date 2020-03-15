@@ -46,6 +46,11 @@ namespace Master.Finance
             {
                 await InsertAsync(new FeeAccount()
                 {
+                    Name = FeeAccount.StaticAccountName3,
+                    IsActive = true,
+                });
+                await InsertAsync(new FeeAccount()
+                {
                     Name = FeeAccount.StaticAccountName2,
                     IsActive = true,
                 });

@@ -258,6 +258,21 @@ abp.services = abp.services || {};
 
   })();
 
+  // controller 'home'
+  (function(){
+
+    abp.services.app.home = abp.services.app.home || {};
+
+    // action 'getSummary'
+    abp.services.app.home.getSummary = function(ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Home/GetSummary',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+  })();
+
   // controller 'test'
   (function(){
 
@@ -1213,6 +1228,14 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/Unit/SubmitInvoice' + abp.utils.buildQueryString([{ name: 'id', value: id }]) + '',
         type: 'POST',
         data: JSON.stringify(unitInvoice)
+      }, ajaxParams));;
+    };
+
+    // action 'getInvoiceDetail'
+    abp.services.app.unit.getInvoiceDetail = function(id, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Unit/GetInvoiceDetail' + abp.utils.buildQueryString([{ name: 'id', value: id }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -4294,6 +4317,112 @@ abp.services = abp.services || {};
 
   })();
 
+  // controller 'pSTSheet'
+  (function(){
+
+    abp.services.app.pSTSheet = abp.services.app.pSTSheet || {};
+
+    // action 'getPageResult'
+    abp.services.app.pSTSheet.getPageResult = function(request, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/PSTSheet/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'searchKeyDic', value: request.searchKeyDic }, { name: 'moduleKey', value: request.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getSuggestResult'
+    abp.services.app.pSTSheet.getSuggestResult = function(requestSuggestDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/PSTSheet/GetSuggestResult' + abp.utils.buildQueryString([{ name: 'columnKey', value: requestSuggestDto.columnKey }, { name: 'keyword', value: requestSuggestDto.keyword }, { name: 'moduleKey', value: requestSuggestDto.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'formSubmit'
+    abp.services.app.pSTSheet.formSubmit = function(request, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/PSTSheet/FormSubmit',
+        type: 'POST',
+        data: JSON.stringify(request)
+      }, ajaxParams));;
+    };
+
+    // action 'getFilterColumnPageResult'
+    abp.services.app.pSTSheet.getFilterColumnPageResult = function(request, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/PSTSheet/GetFilterColumnPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'searchKeyDic', value: request.searchKeyDic }, { name: 'moduleKey', value: request.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getById'
+    abp.services.app.pSTSheet.getById = function(primary, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/PSTSheet/GetById' + abp.utils.buildQueryString([{ name: 'primary', value: primary }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getListByIds'
+    abp.services.app.pSTSheet.getListByIds = function(primaries, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/PSTSheet/GetListByIds' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getGroupedField'
+    abp.services.app.pSTSheet.getGroupedField = function(requestGroupFieldPageDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/PSTSheet/GetGroupedField' + abp.utils.buildQueryString([{ name: 'field', value: requestGroupFieldPageDto.field }, { name: 'query', value: requestGroupFieldPageDto.query }, { name: 'limit', value: requestGroupFieldPageDto.limit }, { name: 'page', value: requestGroupFieldPageDto.page }, { name: 'where', value: requestGroupFieldPageDto.where }, { name: 'tableFilter', value: requestGroupFieldPageDto.tableFilter }, { name: 'filterField', value: requestGroupFieldPageDto.filterField }, { name: 'filterKey', value: requestGroupFieldPageDto.filterKey }, { name: 'filterColumns', value: requestGroupFieldPageDto.filterColumns }, { name: 'searchCondition', value: requestGroupFieldPageDto.searchCondition }, { name: 'filterSos', value: requestGroupFieldPageDto.filterSos }, { name: 'searchKeys', value: requestGroupFieldPageDto.searchKeys }, { name: 'keyword', value: requestGroupFieldPageDto.keyword }, { name: 'orderField', value: requestGroupFieldPageDto.orderField }, { name: 'orderType', value: requestGroupFieldPageDto.orderType }, { name: 'searchKeyDic', value: requestGroupFieldPageDto.searchKeyDic }, { name: 'moduleKey', value: requestGroupFieldPageDto.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getAllByKeyword'
+    abp.services.app.pSTSheet.getAllByKeyword = function(keyword, take, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/PSTSheet/GetAllByKeyword' + abp.utils.buildQueryString([{ name: 'keyword', value: keyword }, { name: 'take', value: take }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'deleteEntity'
+    abp.services.app.pSTSheet.deleteEntity = function(ids, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/PSTSheet/DeleteEntity' + abp.utils.buildQueryString([{ name: 'ids', value: ids }]) + '',
+        type: 'DELETE'
+      }, ajaxParams));;
+    };
+
+    // action 'setStatus'
+    abp.services.app.pSTSheet.setStatus = function(primaries, status, isSet, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/PSTSheet/SetStatus' + abp.utils.buildQueryString([{ name: 'status', value: status }, { name: 'isSet', value: isSet }]) + '',
+        type: 'POST',
+        data: JSON.stringify(primaries)
+      }, ajaxParams));;
+    };
+
+    // action 'setPropertyValue'
+    abp.services.app.pSTSheet.setPropertyValue = function(propertySetDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/PSTSheet/SetPropertyValue',
+        type: 'POST',
+        data: JSON.stringify(propertySetDto)
+      }, ajaxParams));;
+    };
+
+    // action 'getPropertyValue'
+    abp.services.app.pSTSheet.getPropertyValue = function(primaries, propertyName, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/PSTSheet/GetPropertyValue' + abp.utils.buildQueryString([{ name: 'primaries', value: primaries }, { name: 'propertyName', value: propertyName }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+  })();
+
   // controller 'sCKSheet'
   (function(){
 
@@ -5325,11 +5454,46 @@ abp.services = abp.services || {};
 
     abp.services.app.invoice = abp.services.app.invoice || {};
 
+    // action 'submit'
+    abp.services.app.invoice.submit = function(invoiceSubmitDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Invoice/Submit',
+        type: 'POST',
+        data: JSON.stringify(invoiceSubmitDto)
+      }, ajaxParams));;
+    };
+
+    // action 'doImport'
+    abp.services.app.invoice.doImport = function(filePath, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Invoice/DoImport' + abp.utils.buildQueryString([{ name: 'filePath', value: filePath }]) + '',
+        type: 'POST'
+      }, ajaxParams));;
+    };
+
     // action 'getCountSummary'
     abp.services.app.invoice.getCountSummary = function(ajaxParams) {
       return abp.ajax($.extend(true, {
         url: abp.appPath + 'api/services/app/Invoice/GetCountSummary',
         type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'verify'
+    abp.services.app.invoice.verify = function(ids, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Invoice/Verify',
+        type: 'POST',
+        data: JSON.stringify(ids)
+      }, ajaxParams));;
+    };
+
+    // action 'close'
+    abp.services.app.invoice.close = function(ids, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Invoice/Close',
+        type: 'POST',
+        data: JSON.stringify(ids)
       }, ajaxParams));;
     };
 

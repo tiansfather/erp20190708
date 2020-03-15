@@ -11,5 +11,6 @@ namespace Master.Notices
         public string NoticeTitle { get; set; }
         public string NoticeContent { get; set; }
         public bool IsActive { get; set; }
+        public DateTime CreationTime { get; set; }
     }
 }

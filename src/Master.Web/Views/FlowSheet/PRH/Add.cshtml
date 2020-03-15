@@ -12,13 +12,13 @@
 
             <div class="layui-row layui-col-space5">
                 <div class="layui-col-xs2">
-                    <vc:base-tree param="@(new BaseTreeViewParam() { TreeKey="MaterialType",TreeName="商品分类",EnableAdd=false,EnableEdit=false,EnableDelete=false})"></vc:base-tree>
+                    <vc:base-tree param="@(new BaseTreeViewParam() { TreeKey="MaterialType",TreeName="商品分类",EnableAdd=false,EnableEdit=false,EnableDelete=false,EnableSearch=true})"></vc:base-tree>
 
                 </div>
                 <div id="app" v-cloak>
                     <div class="layui-col-xs8">
                         <div class="LAY-app-message-btns" style="margin-bottom:10px;">
-                            <unit-select nature="1" :unit.sync="currentItem.unitId" :value-isid="true" size="medium" ></unit-select>
+                            <unit-select nature="1" :unit.sync="currentItem.unitId" :value-isid="true" size="medium"></unit-select>
                             <el-select v-model="currentItem.storeId" placeholder="收货仓库" size="medium" style="width:120px">
                                 <el-option v-for="item in stores"
                                            :key="item.id"
@@ -26,17 +26,18 @@
                                            :value="item.id">
                                 </el-option>
                             </el-select>
+                            <el-input v-model="currentItem.keyword" placeholder="品名查询" @@input="config.reloadTable" size="medium" style="width:120px"></el-input>
                             <button class="layui-btn  layui-btn-sm" style="float:right;margin-right:10px" :class="{'layui-btn-disabled':!currentItem.items.length}" fornonerow="1" buttonname="生成进货单" type="button" confirmmsg="" id="submitBtn" buttonactiontype="Form" buttonactionurl="" onclick="app.doSubmit(this)">生成进货单</button>
                             @*<el-form :inline="true" size="mini">
-                                <el-form-item label="调出仓库">
+            <el-form-item label="调出仓库">
 
-                                </el-form-item>
-                                <el-form-item label="调入仓库">
+            </el-form-item>
+            <el-form-item label="调入仓库">
 
-                                </el-form-item>
+            </el-form-item>
 
 
-                            </el-form>*@
+        </el-form>*@
 
 
                         </div>
@@ -193,8 +194,9 @@
 		}
 		function getWhere() {
             var where = { searchKeys: JSON.stringify(searchKeys),where:'1=1' };
-            
+            where.keyword = '';
             //where.searchCondition = func.buildSearchCondition('Material');
+             if ((app && app.currentItem && app.currentItem.keyword)) { where.keyword = app.currentItem.keyword; }
 			return where;
 
 		}

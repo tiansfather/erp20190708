@@ -12,13 +12,14 @@
 
             <div class="layui-row layui-col-space5">
                 <div class="layui-col-xs2">
-                    <vc:base-tree param="@(new BaseTreeViewParam() { TreeKey="MaterialType",TreeName="商品分类",ShowInner=0,EnableAdd=false,EnableEdit=false,EnableDelete=false})"></vc:base-tree>
+                    <vc:base-tree param="@(new BaseTreeViewParam() { TreeKey="MaterialType",TreeName="商品分类",ShowInner=0,EnableAdd=false,EnableEdit=false,EnableDelete=false,EnableSearch=true})"></vc:base-tree>
 
                 </div>
                 <div id="app" v-cloak>
                     <div class="layui-col-xs8">
                         <div class="LAY-app-message-btns" style="margin-bottom:10px;height:35px;">
-                            <unit-select v-if="!abp.session.user.unitId" nature="0" :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @@change="config.reloadTable" ></unit-select>
+                            <unit-select v-if="!abp.session.user.unitId" nature="0" :unit.sync="currentItem.unitId" :value-isid="true"size="medium"  @@change="config.reloadTable"></unit-select>
+                            <el-input v-model="currentItem.keyword" placeholder="品名查询" @@input="config.reloadTable" size="medium"  style="width:120px"></el-input>
                             @*<button class="layui-btn  layui-btn-sm" style="float:right;margin-right:10px" :class="{'layui-btn-disabled':!currentItem.items.length}" fornonerow="1" buttonname="去购物车下单" type="button" confirmmsg="" id="submitBtn" buttonactiontype="Form" buttonactionurl="" @@click="gotoCart">去购物车下单</button>*@
                             <button class="layui-btn  layui-btn-sm layui-btn-normal" style="float:right;margin-right:10px" :class="{'layui-btn-disabled':!currentItem.items.length}" fornonerow="1" buttonname="快速下单" type="button" confirmmsg="" buttonactiontype="Form" buttonactionurl="/FlowForm/InputByFormKey?formKey=SDD" onclick="app.doSubmit(this)">快速下单</button>
 
@@ -76,6 +77,7 @@
                 el: '#app',
                 data: {
                     currentItem: {
+                        keyword:'',
                         items: [],
                         unitId:abp.session.user.unitId
                     }
@@ -187,10 +189,11 @@
 		}
         function getWhere() {
             var where = { searchKeys: JSON.stringify(searchKeys) };
-            
+            where.keyword = '';
             where.where = "MaterialNature=0 ";//只显示票劵商品
             //where.searchCondition = func.buildSearchCondition('Material');
-            if (!(app && app.currentItem && app.currentItem.unitId) ) { where.where = "1>2"; }
+            if (!(app && app.currentItem && app.currentItem.unitId)) { where.where = "1>2"; }
+            if ((app && app.currentItem && app.currentItem.keyword)) { where.keyword = app.currentItem.keyword; }
 			return where;
 
 		}

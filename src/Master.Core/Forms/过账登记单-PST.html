@@ -1,0 +1,135 @@
+﻿<style>
+    .el-select .el-input__inner{
+        padding-right:15px;
+    }
+</style>
+<div id="app" v-cloak>
+    <el-form :inline="true" label-width="120px" size="mini" :disabled="_formOption.readonly">
+        <el-row>
+            <el-form-item label="付款代理商">
+                <unit-select nature="0" :unit.sync="currentItem.payUnit.id" :value-isid="true" size="mini" @change="loadPayUnit"></unit-select>
+            </el-form-item>
+            <el-form-item label="收款供应商">
+                <unit-select nature="1" :unit.sync="currentItem.receiveUnit.id" :value-isid="true" size="mini" @change="loadReceiveUnit"></unit-select>
+            </el-form-item>
+        </el-row>
+        <el-row>
+            <el-form-item label="付款单位名称">
+                <el-input v-model="currentItem.payUnit.companyName" type="text"></el-input>
+            </el-form-item>
+            <el-form-item label="收款单位名称">
+                <el-input v-model="currentItem.receiveUnit.companyName" type="text"></el-input>
+            </el-form-item>
+        </el-row>
+        <el-row>
+            <el-form-item label="收款前结余(元)">
+                <el-input v-model="currentItem.payUnit.nowFee" readonly="true" tips="负数代表对方欠我方，正数代表我方欠对方。"></el-input>
+            </el-form-item>
+            <el-form-item label="付款前结余(元)">
+                <el-input v-model="currentItem.receiveUnit.nowFee" readonly="true" tips="负数代表对方欠我方，正数代表我方欠对方。"></el-input>
+            </el-form-item>
+        </el-row>
+        <el-row>
+            <el-form-item label="发生金额">
+                <el-input v-model="currentItem.fee" type="number"></el-input>
+            </el-form-item>
+            <el-form-item label="发生日期">
+                <el-date-picker type="date" placeholder="选择日期" v-model="currentItem.sheetDate" style="width:180px"></el-date-picker>
+            </el-form-item>
+        </el-row>
+        <el-row>
+            <el-form-item label="收款后结余">
+                <el-input v-model="payRemainFee" readonly="true" tips="负数代表对方欠我方，正数代表我方欠对方。"></el-input>
+            </el-form-item>
+            <el-form-item label="付款后结余">
+                <el-input v-model="receiveRemainFee" readonly="true" tips="负数代表对方欠我方，正数代表我方欠对方。"></el-input>
+            </el-form-item>
+        </el-row>        
+        <el-row>
+            <el-form-item label="备注" >
+                <el-input type="textarea" v-model="currentItem.remarks"></el-input>
+            </el-form-item>
+        </el-row>
+    </el-form>
+    
+</div>
+<script>
+    config.ready = function () {
+        app = new Vue({
+            el: "#app",
+            data: {
+                sheetInfo: {},
+                currentItem: _formOption.formData ? _formOption.formData.layoutData : {
+                    sheetDate: new Date().pattern("yyyy-MM-dd"),
+                    fee:0,
+                    payUnit: { id: null, companyName: '', nowFee: 0, remainFee: 0 },
+                    receiveUnit: { id: null, companyName: '', nowFee: 0, remainFee: 0 },
+                },
+
+            },
+            computed: {
+                payRemainFee: function () {
+                    return (parseFloat(this.currentItem.payUnit.nowFee) + parseFloat(this.currentItem.fee)).toFixed(2);
+                },
+                receiveRemainFee: function () {
+                    return (parseFloat(this.currentItem.receiveUnit.nowFee) - parseFloat(this.currentItem.fee)).toFixed(2);
+                }
+            },
+            methods: {                
+                loadPayUnit:function() {
+                    var that = this;
+                    if (this.currentItem.payUnit.id) {
+                        //获取往来单位信息
+                        func.runAsync(abp.services.app.unit.getById(this.currentItem.payUnit.id).done(function (data) {
+                            that.currentItem.payUnit = data;
+                        }))
+                    }
+                },
+                loadReceiveUnit:function() {
+                    var that = this;
+                    if (this.currentItem.receiveUnit.id) {
+                        //获取往来单位信息
+                        func.runAsync(abp.services.app.unit.getById(this.currentItem.receiveUnit.id).done(function (data) {
+                            that.currentItem.receiveUnit = data;
+                        }))
+                    }
+                }
+            },
+            created:function() {
+                var that = this;
+                if (!_formOption.formData) {
+                    //录入模式获取数据                    
+                    
+                }
+            },
+            mounted:function() {
+            }
+        })
+    }
+
+    //模板中必须实现的方法，用于获取表单数据，返回一个对象，如果需要取消提交，可抛出一个异常
+    function getFormData() {
+        if (!app.currentItem.payUnit.id || !app.currentItem.receiveUnit.id) {
+            throw "请先选择供应商及代理商";
+        }
+        if (app.currentItem.fee == 0) {
+            throw "发生金额不能为0";
+        }
+        
+        var sheetData = {
+            header: {
+                sheetDate: app.currentItem.sheetDate,
+                remarks: app.currentItem.remarks,
+                payUnit: app.currentItem.payUnit,
+                receiveUnit: app.currentItem.receiveUnit,
+                fee: app.currentItem.fee,
+            },
+            body: []
+        };
+        //约定，formData由两部分组成,一为layoutData,即用于表单呈现数据,另一部分是单据数据,用于后台进行数据处理,一般由呈现数据进行处理后得到
+        return {
+            layoutData: app.currentItem,
+            sheetData: sheetData
+        };
+    }
+</script>

@@ -1,1 +1,253 @@
-﻿
+﻿@using Abp.Localization
+@inherits Master.Web.Components.MasterRazorPage<TModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Master.Web.Core
+@using Master.Web.Components
+@{
+    //设置页
+    ViewData["Title"] = "首页";
+}
+@section styles{
+    <style>
+        /*控制整个滚动条*/
+        ::-webkit-scrollbar {
+            background-color: lightgray;
+            width: 4px;
+            height: 10px;
+            background-clip: padding-box;
+        }
+
+        /*滚动条两端方向按钮*/
+        ::-webkit-scrollbar-button {
+            /*background-color: #b8b8b8;*/
+        }
+
+        /*滚动条中间滑动部分*/
+        ::-webkit-scrollbar-thumb {
+            background-color: #858dad;
+            border-radius: 5px;
+        }
+
+        /*滚动条右下角区域*/
+        ::-webkit-scrollbar-corner {
+            background-color: #b8b8b8;
+        }
+
+        .layui-tab-item {
+            color: #303133
+        }
+
+        cite {
+            font-style: normal;
+        }
+
+        .layadmin-shortcut li .iconfont {
+            display: inline-block;
+            width: 100%;
+            height: 60px;
+            line-height: 60px;
+            text-align: center;
+            border-radius: 2px;
+            font-size: 31px;
+            background-color: #F8F8F8;
+            color: #333;
+            transition: all .3s;
+            -webkit-transition: all .3s;
+        }
+
+        .r-list-wrap {
+            line-height: 1.5;
+            padding: 5px;
+            cursor: pointer;
+        }
+
+            .r-list-wrap:hover {
+                box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+            }
+    </style>
+
+}
+<div id="app" v-cloak>
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md9">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md6" v-if="!abp.session.user.unitId">
+                        <div class="layui-card">
+                            <div class="layui-card-header">待办任务</div>
+                            <div class="layui-card-body">
+
+                                <div class="layui-carousel layadmin-carousel layadmin-backlog" lay-anim="" lay-indicator="inside" lay-arrow="none" style="width: 100%; height: 280px;">
+                                    <div carousel-item="">
+                                        <ul class="layui-row layui-col-space10 layui-this">
+                                            <li class="layui-col-xs4" v-if="abp.auth.isGranted('Menu.Sell.Tenancy.SDRVerify')">
+                                                <a lay-href="/Home/Show?name=../FlowSheet/SDR/Verify" class="layadmin-backlog-body">
+                                                    <h3>待审核实物订单</h3>
+                                                    <p><cite>{{summary.count1}}</cite></p>
+                                                </a>
+                                            </li>
+                                            <li class="layui-col-xs4" v-if="abp.auth.isGranted('Menu.Storage.Tenancy.ICHVerify')">
+                                                <a lay-href="/Home/Show?name=../FlowSheet/ICH/Verify" class="layadmin-backlog-body">
+                                                    <h3>待审核报损报溢单</h3>
+                                                    <p><cite>{{summary.count2}}</cite></p>
+                                                </a>
+                                            </li>
+                                            <li class="layui-col-xs4" v-if="abp.auth.isGranted('Menu.Finance.Tenancy.Invoice')">
+                                                <a lay-href="/Home/Show?name=../Invoice/Index#tab=2" class="layadmin-backlog-body">
+                                                    <h3>待审核发票申请</h3>
+                                                    <p><cite>{{summary.count3}}</cite></p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="layui-carousel-ind">
+                                        <ul><li class="layui-this"></li></ul>
+                                    </div>
+                                    <button class="layui-icon layui-carousel-arrow" lay-type="sub">
+                                        
+                                    </button>
+                                    <button class="layui-icon layui-carousel-arrow" lay-type="add">
+                                        
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-md6" v-if="!abp.session.user.unitId">
+                        <div class="layui-card">
+                            <div class="layui-card-header">快捷面板</div>
+                            <div class="layui-card-body">
+                                <div class="layui-carousel layadmin-carousel layadmin-shortcut" lay-anim="" lay-indicator="inside" lay-arrow="none" style="width: 100%; height: 280px;">
+                                    <div carousel-item="">
+                                        <ul class="layui-row layui-col-space10 layui-this">
+                                            <li class="layui-col-xs3" v-if="abp.auth.isGranted('Menu.Admin.Tenancy.Material')">
+                                                <a lay-href="/Material">
+                                                    <i class="iconfont icon-wuliao"></i>
+                                                    <cite>商品档案</cite>
+                                                </a>
+                                            </li>
+                                            <li class="layui-col-xs3" v-if="abp.auth.isGranted('Menu.Admin.Tenancy.Unit')">
+                                                <a href="/Unit">
+                                                    <i class="iconfont icon-jiaohusheji"></i>
+                                                    <cite>往来单位档案</cite>
+                                                </a>
+                                            </li>
+                                            <li class="layui-col-xs3" v-if="abp.auth.isGranted('Menu.Admin.Tenancy.Store') ">
+                                                <a lay-href="/Store">
+                                                    <i class="iconfont icon-ziyuan"></i>
+                                                    <cite>仓库档案</cite>
+                                                </a>
+                                            </li>
+                                            <li class="layui-col-xs3" v-if="abp.auth.isGranted('Menu.Admin.Tenancy.FeeAccount') ">
+                                                <a lay-href="/FeeAccount">
+                                                    <i class="iconfont icon-zongzhangjiqita"></i>
+                                                    <cite>资金账户档案</cite>
+                                                </a>
+                                            </li>
+                                            <li class="layui-col-xs3" v-if="abp.auth.isGranted('Menu.Admin.Tenancy.User') ">
+                                                <a lay-href="/User">
+                                                    <i class="iconfont icon-yuangongxinxi2"></i>
+                                                    <cite>员工信息</cite>
+                                                </a>
+                                            </li>
+                                        </ul>
+
+                                    </div>
+                                    <div class="layui-carousel-ind"><ul><li class="layui-this"></li></ul></div><button class="layui-icon layui-carousel-arrow" lay-type="sub"></button><button class="layui-icon layui-carousel-arrow" lay-type="add"></button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-header">
+                                公告
+                            </div>
+                            <div class="layui-card-body content-wrap" >
+                                <table class="layui-table">
+                                    <colgroup>
+                                        <col width="150">
+                                        <col width="200">
+                                        <col>
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <th>公告日期</th>
+                                            <th>公告标题</th>
+                                            <th>公告内容</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(item,index) in notices">
+                                            <td>{{new Date(item.creationTime).pattern('yyyy-MM-dd')}}</td>
+                                            <td>{{item.noticeTitle}}</td>
+                                            <td>{{item.noticeContent}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md3">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-header">
+                                企业文化
+                                <i class="layui-icon layui-icon-tips" lay-tips="" lay-offset="5"></i>
+                            </div>
+                            <div class="layui-card-body layui-text layadmin-text">
+                                <p>市场是海，企业是船，质量是帆，人是舵手。</p>
+                                <p>—— </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        config.ready = function () {
+            window.app = new Vue({
+            el: "#app",
+            data: {
+                summary: {
+                    count1: 0,
+                    count2: 0,
+                    count3: 0,
+                },
+                notices:[]
+            },
+            methods: {
+                getSummary: function () {
+                    var that = this;
+                    abp.services.app.home.getSummary().done(function(result)  {
+                        that.summary = result;
+                    });
+                },
+                getNotices: function () {
+                    var that = this;
+                    abp.services.app.notice.getActiveNotices().done(function (res) {
+                        that.notices = res;
+                    })
+                }
+
+            },
+            created() {
+                this.getSummary();
+                this.getNotices();
+            }
+        })
+        }
+        
+    </script>
+}

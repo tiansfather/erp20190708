@@ -5,21 +5,41 @@
 @{
 	ViewData["Title"] = "Index";
 }
-
+<style>
+	.el-form-item{
+		margin-bottom:5px !important;
+	}
+</style>
 <div class="layui-fluid" id="LAY-app-message">
 	<div class="layui-card">
 		<div class="layui-card-body">
 
-			<div class="layui-row">
+			<div class="layui-row layui-col-space5 ">
 				<div class="layui-col-xs2">
 					<vc:base-tree param="@(new BaseTreeViewParam() { TreeKey="MaterialType",TreeName="商品分类"})"></vc:base-tree>
 
 				</div>
 				<div class="layui-col-xs10">
-					<div class="LAY-app-message-btns" style="margin-bottom: 10px;">
+					<div id="app" v-cloak>
+						<el-form :inline="true" :model="searchData" class="demo-form-inline" size="mini">
+							<el-form-item label="关键字">
+								<el-input v-model="searchData.keyword" placeholder="商品名称/规格"></el-input>
+							</el-form-item>
+							<el-form-item label="状态">
+								<el-checkbox-group v-model="searchData.activeStatus">
+									<el-checkbox label="true">上架</el-checkbox>
+									<el-checkbox label="false">下架</el-checkbox>
+								</el-checkbox-group>
+							</el-form-item>
+							<el-form-item>
+								<el-button type="primary" @@click="doSearch">查询</el-button>
+							</el-form-item>
+						</el-form>
+					</div>
+					<div class="LAY-app-message-btns" style="margin-bottom:5px;">
 						<vc:module-button module-key="Material"></vc:module-button>
 					</div>
-					<vc:module-table param="@(new ModuleTableViewParam() {ID="Material",ModuleKey="Material",Height="full-150" })"></vc:module-table>
+					<vc:module-table param="@(new ModuleTableViewParam() {ID="Material",ModuleKey="Material",Height="full-150" ,Where="isActive=true"})"></vc:module-table>
 				</div>
 			</div>
 
@@ -35,7 +55,34 @@
 		config.ready = function () {
 			var element = layui.element;
 			var table = layui.table;
+			app = new Vue({
+                el: '#app',
+                data: {
+                    searchData: {
+                        activeStatus: ["true"]
+                    }
+                },
+                computed: {
+                    where: function () {
+                        var where = {};
+                        var strWhere = '1=1';
+                        this.searchData.keyword && (where.keyword = this.searchData.keyword);
+                        if (this.searchData.activeStatus.length) {
+							var whereWrapper = [];
+                            this.searchData.activeStatus.forEach(function (o) { whereWrapper.push(' isActive=' + o) });
+                            strWhere += ' and ('+whereWrapper.join(' or ')+')';
+                        }
+                        where.where = strWhere;
+                        return where;
+                    }
+                },
+                methods: {                    
+                    doSearch: function () {
+                        config.reloadTable();
 
+                    }
+                }
+            })
 			config.refresh();
 
 			//监听树选中事件
@@ -58,8 +105,9 @@
 		config.refresh = function () {
 
 		}
-		function getWhere() {
-			var where = { searchKeys: JSON.stringify(searchKeys) };
+        function getWhere() {
+            var where = app.where;
+            where.searchKeys = JSON.stringify(searchKeys);
 			where.searchCondition = func.buildSearchCondition('Material');
 
 			return where;

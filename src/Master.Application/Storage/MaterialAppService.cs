@@ -20,7 +20,11 @@ namespace Master.Storage
         {
             return nameof(Material);
         }
-
+        protected override async Task<IQueryable<Material>> BuildKeywordQueryAsync(string keyword, IQueryable<Material> query)
+        {
+            query = query.Where(o => o.Name.Contains(keyword) || o.Specification.Contains(keyword));
+            return query;
+        }
         protected override async Task<IQueryable<Material>> BuildSearchQueryAsync(IDictionary<string, string> searchKeys, IQueryable<Material> query)
         {
             if (searchKeys.ContainsKey("From"))
@@ -127,5 +131,7 @@ namespace Master.Storage
             }
             return result;
         }
+
+        
     }
 }

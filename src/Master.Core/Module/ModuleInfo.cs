@@ -486,7 +486,7 @@ namespace Master.Module
                 ButtonName = "添加",
                 ButtonType = ButtonType.ForNoneRow,
                 ButtonActionType = ButtonActionType.Form,
-                ButtonActionParam = "{\"area\": [\"80%\", \"90%\"]}",
+                //ButtonActionParam = "{\"area\": [\"80%\", \"90%\"]}",
                 ButtonActionUrl = $"/{serviceName}/Add",
                 ButtonClass = "",
                 Sort = 1
@@ -499,7 +499,7 @@ namespace Master.Module
                 ButtonName = "编辑",
                 ButtonType = ButtonType.ForSingleRow,
                 ButtonActionType = ButtonActionType.Form,
-                ButtonActionParam = "{\"area\": [\"80%\", \"90%\"]}",
+                //ButtonActionParam = "{\"area\": [\"80%\", \"90%\"]}",
                 ButtonActionUrl = $"/{serviceName}/Edit",
                 ButtonClass = "",
                 Sort = 0
@@ -512,7 +512,7 @@ namespace Master.Module
                 ButtonName = "查看",
                 ButtonType = ButtonType.ForSingleRow,
                 ButtonActionType = ButtonActionType.Form,
-                ButtonActionParam = "{\"area\": [\"80%\", \"90%\"],\"btn\":null}",
+                //ButtonActionParam = "{\"area\": [\"80%\", \"90%\"],\"btn\":null}",
                 ButtonActionUrl = $"/{serviceName}/View",
                 ButtonClass = "",
                 Sort = 0
@@ -538,7 +538,7 @@ namespace Master.Module
                 ButtonName = "标记",
                 ButtonType = ButtonType.ForSingleRow,
                 ButtonActionType = ButtonActionType.Form,
-                ButtonActionParam = "{\"area\": [\"80%\", \"90%\"]}",
+                //ButtonActionParam = "{\"area\": [\"80%\", \"90%\"]}",
                 ButtonActionUrl = $"/Flags/SetFlags?type={EntityFullName}",
                 ButtonClass = "layui-btn-normal",
                 Sort = 1

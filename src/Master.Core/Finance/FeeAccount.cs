@@ -12,6 +12,7 @@ namespace Master.Finance
     {
         public const string StaticAccountName1 = "现金账户";
         public const string StaticAccountName2 = "支票账户";
+        public const string StaticAccountName3 = "过账账户";
         [InterColumn(ColumnName = "账户名称", VerifyRules = "required",Sort =1)]
         public string Name { get; set; }
         [InterColumn(ColumnName = "状态",DefaultValue ="true", ColumnType = Module.ColumnTypes.Switch, Templet = "{{#if(d.isActive){}}<span class=\"layui-badge layui-bg-green\">有效</span>{{#}else{}}<span class=\"layui-badge layui-bg-gray\">无效</span>{{#}}}",Sort =2)]

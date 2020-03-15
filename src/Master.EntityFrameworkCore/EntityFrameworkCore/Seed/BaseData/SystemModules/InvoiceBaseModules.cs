@@ -16,8 +16,10 @@ namespace Master.EntityFrameworkCore.Seed.BaseData.SystemModules
                 ButtonName = "审核",
                 ButtonActionType = ButtonActionType.Ajax,
                 ButtonType = ButtonType.ForSelectedRows,
+                ConfirmMsg="确认审核这些发票？",
                 //ButtonActionParam = "{\"area\": [\"80%\", \"90%\"],\"btn\":null}",
-                ButtonActionUrl = "abp.services.app.invoice.verify"
+                ButtonActionUrl = "abp.services.app.invoice.verify",
+                Sort=1
             });
             btns.Add(new ModuleButton()
             {
@@ -25,8 +27,11 @@ namespace Master.EntityFrameworkCore.Seed.BaseData.SystemModules
                 ButtonName = "关闭",
                 ButtonActionType = ButtonActionType.Ajax,
                 ButtonType = ButtonType.ForSelectedRows,
+                ConfirmMsg = "确认关闭这些发票？",
                 //ButtonActionParam = "{\"area\": [\"80%\", \"90%\"],\"btn\":null}",
-                ButtonActionUrl = "abp.services.app.invoice.close"
+                ButtonActionUrl = "abp.services.app.invoice.close",
+                Sort=2,
+                ButtonClass="layui-dange"
             });
             return btns;
         }

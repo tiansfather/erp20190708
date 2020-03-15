@@ -8,37 +8,45 @@
 
 }
 
-<div class="LAY-app-message-btns" style="margin-bottom: 10px;">
-	<div class="layui-btn-group">
-		@if (Model.EnableAdd)
+	<div class="LAY-app-message-btns" style="margin-bottom: 10px;">
+		@if (Model.EnableAdd || Model.EnableEdit || Model.EnableDelete)
 		{
-			<button class="layui-btn layui-btn-sm" onclick="baseTree.doAdd()">
-				<i class="layui-icon">&#xe654;</i>
-			</button>
+			<div class="layui-btn-group">
+				@if (Model.EnableAdd)
+				{
+					<button class="layui-btn layui-btn-sm" onclick="baseTree.doAdd()">
+						<i class="layui-icon">&#xe654;</i>
+					</button>
+				}
+				@if (Model.EnableEdit)
+				{
+					<button class="layui-btn layui-btn-sm" onclick="baseTree.doEdit()">
+						<i class="layui-icon">&#xe642;</i>
+					</button>
+				}
+				@if (Model.EnableDelete)
+				{
+					<button class="layui-btn layui-btn-sm layui-btn-danger" onclick="baseTree.doDel()">
+						<i class="layui-icon">&#xe640;</i>
+					</button>
+				}
+
+			</div>
 		}
-		@if (Model.EnableEdit)
+		@if (Model.EnableSearch)
 		{
-			<button class="layui-btn layui-btn-sm" onclick="baseTree.doEdit()">
-				<i class="layui-icon">&#xe642;</i>
-			</button>
-		}
-		@if (Model.EnableDelete)
-		{
-			<button class="layui-btn layui-btn-sm layui-btn-danger" onclick="baseTree.doDel()">
-				<i class="layui-icon">&#xe640;</i>
-			</button>
+			<input type="text" name="treeKeyword" placeholder="请输入关键字" autocomplete="off" class="layui-input" onkeyup="baseTree.doSearch()">
 		}
 
 	</div>
-</div>
 <ul id="baseTree" class="ztree"
 	style="padding: 2px; border: 1px solid #ddd; overflow: auto;"></ul>
-
+<script src="/lib/zTree/js/jquery.ztree.exhide.js"></script>
 <script>
-    
+    var zTreeObj;
     var baseTree = function () {
 
-		var zTreeObj;
+		//var zTreeObj;
 		var setting = {
 			view: { selectedMulti: false },
 			data: {
@@ -137,7 +145,16 @@
 						}));
 					})
 				}
-			}
+            },
+            doSearch: function () {
+				var nodes=zTreeObj.getNodes();
+                var keyword = $("input[name='treeKeyword']").val();
+                if (!keyword) {
+                    zTreeObj.showNodes(zTreeObj.getNodesByParam("isHidden", true));
+                } else {
+					zTreeObj.hideNodes(nodes.filter(function (o) { return o.displayName.indexOf(keyword) < 0 }));
+                }
+            }
 		}
 	}();
 </script>

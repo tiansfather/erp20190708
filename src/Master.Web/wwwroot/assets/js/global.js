@@ -527,7 +527,7 @@ var func = {
 				scrollbar: false,
                 shadeClose: false,
                 shade: 0.8,
-                area: ['80%', '80%'],
+                area: ['100%', '100%'],
                 content: url,
 				btn: ['提交', '关闭'],
 				btnAlign: 'l',

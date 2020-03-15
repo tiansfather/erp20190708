@@ -1,7 +1,7 @@
 ﻿<script>
     Vue.component('unit-select', {
         inheritAttrs: false,
-        data:function() {
+        data: function () {
             return {
                 options: [],
                 myUnit: this.unit
@@ -35,14 +35,14 @@
                 this.$emit('change', obj)
             }
         },
-        created:function() {
+        created: function () {
             console.log(this.valueIsid ? 'id' : 'unitName')
             var that = this;
             abp.services.app.unit.getAllByUnitNature(this.nature).done(function (res) {
                 that.options = res;
             })
         },
-        template: '<el-select v-bind="$attrs" v-model="myUnit" clearable @@change="changeHandle" filterable :placeholder="\'请选择\'+placeHolder"><el-option v-for="item in options" :key="item.id"  :label="item.unitName"  :value="item[valueIsid?\'id\':\'unitName\']"></el-option> </el-select>'
+        template: '<el-select v-bind="$attrs" v-model="myUnit" clearable @@change="changeHandle" filterable :placeholder="\'请选择\'+placeHolder" style="cursor:text"><el-option v-for="item in options" :key="item.id"  :label="item.unitName"  :value="item[valueIsid?\'id\':\'unitName\']"></el-option> </el-select>'
     })
 </script>
 
@@ -675,19 +675,19 @@
                 <table class="layui-table " lay-size="sm">
                     <thead>
                         <tr>
-                            <td style="width:50px" v-if="!readonly">@L("操作")</td>
+                            <td style="width:50px" v-if="candel&&!readonly">@L("操作")</td>
                             <td style="width:50px">@L("序号")</td>
                             <template v-for="item in items">
-                                <td :class="item.key.toLowerCase()" :style="{width:getTdWidth(item.width)}">
-                                    <span v-html="item.title"></span><span class="filter-span" v-if="item.verify">*</span>
+                                <td :class="[item.key.toLowerCase(),item.verify ? 'is-required' : '']" :style="{width:getTdWidth(item.width)}">
+                                    <span v-html="item.title" class="r-multi-td_title"></span>
                                 </td>
                             </template>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="(part,index) in parts" v-if="!readonly">
-                            <td>
-                                <button class="layui-btn layui-btn-xs layui-btn-primary  layui-btn-danger" type="button" @@click="deletePart(index)">
+                            <td v-if="candel">
+                                <button v-if="candel" class="layui-btn layui-btn-xs layui-btn-primary  layui-btn-danger" type="button" @@click="deletePart(index)">
                                     <i class="layui-icon layui-icon-close" style="color:#fff" title="删除"></i>
                                 </button>
                             </td>
@@ -695,15 +695,15 @@
                             <template v-for="(item,itemIndex) in items">
                                 <td v-if="item.type=='readonly'" style="color:#888;" :class="item.key.toLowerCase()"><span v-html="part[item.key]"></span></td>
                                 <td v-if="item.type=='text'" :class="item.key.toLowerCase()">
-                                    <input type="text" class="layui-input layui-table-edit" :value="part[item.key]" @@input="getSetValue($event.target.value,index,item)">
+                                    <input type="text" class="layui-input layui-table-edit" :value="part[item.key]" @@input="getSetValue($event.target.value,index,item)" @@blur="getSetBulrValue($event.target.value,index,item)">
                                 </td>
                                 <td v-if="item.type=='number'" :class="item.key.toLowerCase()">
-                                    <input type="number" class="layui-input layui-table-edit" :value="part[item.key]" @@input="getSetNumberValue($event.target.value,index,item)">
+                                    <input type="number" class="layui-input layui-table-edit" :value="part[item.key]" @@input="getSetNumberValue($event.target.value,index,item)" @@blur="getSetBlurNumberValue($event.target.value,index,item)">
                                 </td>
-                                <td v-if="item.type=='date'" is="edit-date-td" :dataindex="[itemIndex+2,index]" :value="part[item.key]" @@input="getSetValue($event,index,item)" :class="item.key.toLowerCase()"></td>
+                                <td v-if="item.type=='date'||item.type=='datetime'" is="edit-date-td" :type="item.type" :dataindex="[itemIndex+2,index]" :value="part[item.key]" @@input="getSetValue($event,index,item)" :class="item.key.toLowerCase()"></td>
                                 <td v-if="item.type=='area'" is="edit-area-td" :editWidth="100" :value="part[item.key]" @@input="getSetValue($event,index,item)" :class="item.key.toLowerCase()"></td>
                                 <td class="table-td" style="padding:0;" v-if="item.type=='tableSelect'" :class="item.key.toLowerCase()">
-                                    <div is="lay-tableselect-base" :column-info="tableSelectGetInfo(item.info,index,itemIndex)" :data="part[item.key]?part[item.key].displayValue:''" :value="part[item.key]?part[item.key].value:''" @@choose="getSetValue($event,index,item)" @@input="$emit('input',[index,item.key,$event] )"></div>
+                                    <div is="lay-tableselect-base" :column-info="item.info" :columnkey="index+'-'+itemIndex" :data="part[item.key]?part[item.key].displayValue:''" :value="part[item.key]?part[item.key].value:''" @@choose="getSetValue($event,index,item)" @@input="$emit('input',[index,item.key,$event] )"></div>
                                 </td>
                                 <td v-if="item.type=='upload'" :class="item.key.toLowerCase()">
                                     <button @@click="renderUpload(item,index)" class="layui-btn layui-btn-sm layui-btn-normal" type="button">上传</button>
@@ -769,7 +769,9 @@
     Vue.component('multi-data-add', {
         data: function () {
             return {
-                nAddNum: 1
+                nAddNum: 1,
+                //r_tableSelectInfo: [],
+                //r_tableSelectPartInfo:[]
             }
         },
         props: {
@@ -804,11 +806,29 @@
             },
             theSelectItemIndexArr: function () {
                 var arr = [];
-                this.items.forEach(function(el, index) { if (el.type == 'select') { arr.push(index) } })
+                this.items.forEach((el, index) => { if (el.type == 'select') { arr.push(index) } })
                 return arr
             }
         },
         methods: {
+            validate() {
+                function showError(err) {
+                    //在外层调用函数时，手动捕获错误抛出
+                    //abp.message.error(err)
+                    throw err
+
+                }
+                this.parts.forEach((part, partIndex) => {
+                    this.items.forEach((item, index) => {
+                        if (item.verify) {
+                            var data = part[item.key];
+                            if (!data) {
+                                throw `【${item.title}】为必填项，请检查第${partIndex + 1}行!`;
+                            }
+                        }
+                    })
+                })
+            },
             setPartSelectOptions: function (part, key, value) {
                 //由父元素调用，设置不同part的select选项，
                 //例如：app.$refs.multiDataAdd.setPartSelectOptions(currentPart, 'measureMentUnitId', measureMentOptions)
@@ -817,10 +837,7 @@
                     Vue.set(part._selectOptions, key, value);
                 } else {
                     //第一次需要放整个obj
-                    var obj = {};
-                    obj[key] = value;
-                    //Vue.set(part, "_selectOptions", { [key]: value });
-                    Vue.set(part, "_selectOptions", obj);
+                    Vue.set(part, "_selectOptions", { [key]: value });
                 }
             },
             selectOptions: function (item, part) {
@@ -846,26 +863,38 @@
                 }
 
             },
+            getSetBulrValue(ev, index, item) {
+                Vue.set(this.parts[index], item.key, ev);
+                item.onBlur && item.onBlur(ev, index);
+            },
+            getSetBlurNumberValue: function (ev, index, item) {
+                this.getSetBulrValue(ev, index, item)
+                var part = this.parts[index];
+                //console.log(this.parts)
+                item.formulaArr && item.formulaArr.forEach(fn => {
+                    fn(part)
+                })
+            },
             getSetValue: function (ev, index, item) {//新数据,part的index,当前配置项
                 Vue.set(this.parts[index], item.key, ev);
                 item.onChange && item.onChange(ev, index);
+                this.$emit('change', { item, part: this.parts[index], value: ev })
             },
             getSetNumberValue: function (ev, index, item) {
                 this.getSetValue(ev, index, item)
                 var part = this.parts[index];
                 //console.log(this.parts)
-                item.formulaArr && item.formulaArr.forEach(function(fn) {
+                item.formulaArr && item.formulaArr.forEach(fn => {
                     fn(part)
                 })
             },
-            tableSelectGetInfo: function (info, index, itemIndex) {
-                var fInfo = JSON.parse(JSON.stringify(info));
-                fInfo && (fInfo.ColumnKey += (index + '-' + itemIndex))
-                //info
-                return fInfo;
-            },
+            //tableSelectGetInfo: function (info, index, itemIndex) {
+            //    var fInfo = JSON.parse(JSON.stringify(info));
+            //    fInfo && (fInfo.ColumnKey += (index + '-' + itemIndex))
+            //    return fInfo;
+            //},
             deletePart: function (index) {
-                this.parts.splice(index, 1);
+                this.$emit('delete', index, this.parts.splice(index, 1)[0]);
                 Vue.nextTick(layui.form.render)
             },
             addPart: function () {
@@ -873,24 +902,30 @@
                     layer.msg("请输入数字", { icon: 5, anim: 6 })
                     return;
                 }
-                var addData = {};
-                $.extend(addData, this.setDefaultData)
                 for (var i = 0; i < this.nAddNum; i++) {
+                    let addData = {};
+                    $.extend(addData, this.setDefaultData)
                     if (!this.maximum || this.parts.length < this.maximum) {
                         this.parts.splice(this.parts.length, 0, addData)
                     } else {
                         top.layer.msg('数据长度不允许超过' + this.maximum + '个')
                     }
                 }
-
-                Vue.nextTick(this.renderSelect1)
+                //this.setTableSelectPartInfoByPart();
+                //Vue.nextTick(this.renderSelect1)
             },
             renderUpload: function (item, index) {//上传配置
                 var that = this;
                 function callBack(res) {
                     //上传可以增加一个用以改变同级part的另一个数据，用来放路径
-                    item.uploadFileName && Vue.set(that.parts[index], item.uploadFileName, res.fileName);
-                    item.uploadFilePath && Vue.set(that.parts[index], item.uploadFilePath, res.filePath);
+                    var fileName = res.fileName, filePath = res.filePath;
+                    if (item.multiple) {
+                        //如果是多选会拿到数组filepath，否则是对象
+                        fileName = res.map(el => el.fileName);
+                        filePath = res.map(el => el.filePath);
+                    }
+                    item.uploadFileName && Vue.set(that.parts[index], item.uploadFileName, fileName);
+                    item.uploadFilePath && Vue.set(that.parts[index], item.uploadFilePath, filePath);
 
                     that.getSetValue(res, index, item)
                     //Vue.set(this.parts[index], item.key, res.filePath);
@@ -905,7 +940,7 @@
                     shadeClose: false,
                     shade: 0.8,
                     area: ['500px', '400px'],
-                    content: '/File/CommonUpload?multiple=false&size=512000'
+                    content: `/File/CommonUpload?multiple=${item.multiple || false}&size=512000`
                 });
             },
             //renderSelect: function () {
@@ -934,41 +969,56 @@
                     console.log(that.items[itemIndex])
                     that.getSetValue(data.value, index, that.items[itemIndex])
                 }
-                this.parts.forEach(function(el, index)  {
-                    that.theSelectItemIndexArr.forEach(function(item, itemIndex)  {
-                        //var selector = `_mulsel${itemIndex}-${index}`;
-                        var selector = '_mulsel'+itemIndex+'-'+index;
+                this.parts.forEach((el, index) => {
+                    this.theSelectItemIndexArr.forEach((item, itemIndex) => {
+                        var selector = `_mulsel${item}-${index}`;
                         //console.log($(`[lay-filter=${selector}]`));
-                        form.on('select('+selector+')', callBack)
+                        form.on(`select(${selector})`, callBack)
                     })
                 })
-            }
+            },
+            //setTableSelectPartInfoByPart() {
+            //    //当父级改变info时，目前是不会向下传递,预想是在往外暴露一个方法，或者想办法监听整个items数组，找到info是否改变
+            //    this.r_tableSelectPartInfo =this.parts.map((elm, partIndex) => {
+            //        var obj = JSON.parse(JSON.stringify(this.r_tableSelectInfo));
+            //        obj.forEach((item, itemIndex) => {
+            //            item&&(item.ColumnKey += ('-' + partIndex));
+            //        })
+            //        return obj
+            //    })
+            //}
         },
-        mounted: function () {
-            var that = this;
+        created: function () {
             //当传进来的parts===[{}];进行赋默认值
             if (this.parts.length === 1 && $.isEmptyObject(this.parts[0]) && !$.isEmptyObject(this.setDefaultData)) {
                 Vue.set(this.parts, 0, this.setDefaultData)
                 //this.parts[0] =this.setDefaultData;
             }
-            //预处理公式
-            this.items.forEach(function(elm, index)  {
+            this.items.forEach((elm, itemIndex) => {
+                //if (elm.type == 'tableSelect') {
+                //    elm.info.ColumnKey += ('-'+itemIndex);
+                //    this.r_tableSelectInfo[itemIndex]=elm.info
+                //}
+
+                //预处理公式
                 if (func.typeof(elm.formula) == 'function') {
                     let fn = function (part) {
                         part[elm.key] = elm.formula(part);
                     }
-                    elm.trigger.forEach(function(trigger, triggerIndex)  {
-                        let item = that.items.filter(function (item) { return item.key === trigger })[0]
+                    elm.trigger.forEach((trigger, triggerIndex) => {
+                        let item = this.items.filter(item => item.key === trigger)[0]
                         console.log(item)
                         item.formulaArr ? item.formulaArr.push(fn) : item.formulaArr = [fn]
                     })
                 }
             })
+            //根据part去列出这个二维数组
+            //this.setTableSelectPartInfoByPart();
 
             Vue.nextTick(this.renderSelect1)
         },
         updated: function () {
-            //this.renderSelect();
+            this.renderSelect1();
         },
         template: '#multiDataAdd'
     })
@@ -982,9 +1032,9 @@
                 newValue: this.value,
                 items: [
                     {
-                        type: 'upload', title: '图片', key: 'file',uploadFilePath:'filepath', onChange: this.refresh
+                        type: 'upload', title: '图片', key: 'file', uploadFilePath: 'filepath', onChange: this.refresh
                     }, {
-                        type:'readonly',title:'路径',key:'filepath'
+                        type: 'readonly', title: '路径', key: 'filepath'
                     }
                 ], parts: []
             }

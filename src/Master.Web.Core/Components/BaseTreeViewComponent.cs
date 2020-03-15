@@ -32,5 +32,6 @@ namespace Master.Web.Components
         public bool EnableAdd { get; set; } = true;
         public bool EnableEdit { get; set; } = true;
         public bool EnableDelete { get; set; } = true;
+        public bool EnableSearch { get; set; } = false;
     }
 }

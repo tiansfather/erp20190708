@@ -31,9 +31,9 @@ namespace Master.Storage
         public override async Task DeleteEntity(IEnumerable<int> ids)
         {
             //todo:需要验证删除可行性
-            if((await Manager.GetAll().CountAsync(o=>ids.Contains(o.Id) && (o.Name=="现金账户" || o.Name == "支票账户")) )> 0)
+            if((await Manager.GetAll().CountAsync(o=>ids.Contains(o.Id) && (o.Name=="现金账户" || o.Name == "支票账户" || o.Name=="过账账户")) )> 0)
             {
-                throw new UserFriendlyException("现金账户及支票账户无法删除");
+                throw new UserFriendlyException("现金账户、支票账户、过账账户无法删除");
             }
             await base.DeleteEntity(ids);
         }
@@ -45,7 +45,7 @@ namespace Master.Storage
         public virtual async Task<object> GetNormalAccounts()
         {
             var allAccounts = await Manager.GetAllList();
-            return allAccounts.Where(o => o.Name != "现金账户" && o.Name != "支票账户")
+            return allAccounts.Where(o => o.Name != "现金账户" && o.Name != "支票账户" && o.Name!="过账账户")
                 .Select(o => new
                 {
                     o.Id,

@@ -114,6 +114,19 @@ namespace Master.Units
             unit.UnitInvoice = unitInvoice;
             await Manager.UpdateAsync(unit);
         }
+        public virtual async Task<object> GetInvoiceDetail(int id)
+        {
+            var unit = await Manager.GetByIdFromCacheAsync(id);
+            return new
+            {
+                BuyUnitAddress=unit.Address,
+                BuyUnitPhone=unit.Phone,
+                BuyUnitName=unit.UnitInvoice.CompanyName,
+                BuyUnitTaxNumber=unit.UnitInvoice.TaxNumber,
+                BuyUnitBank=unit.UnitInvoice.Bank,
+                BuyUnitBankAccount=unit.UnitInvoice.BankAccount
+            };
+        }
         #endregion
 
         #region 账户

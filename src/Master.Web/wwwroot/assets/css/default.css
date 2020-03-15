@@ -260,3 +260,6 @@
     color: #f56c6c;
     margin-left: 4px;
 }
+.el-select .el-input__inner{
+    cursor:text;
+}

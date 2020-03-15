@@ -75,7 +75,7 @@ namespace Master.Storage
                 entity.Material?.Price,
                 entity.Material?.MeasureMentUnit,
                 entity.SellNumber,
-                entity.OutNumber
+                OutNumber=entity.OutNumber-entity.BackNumber
             };
         }
         #endregion

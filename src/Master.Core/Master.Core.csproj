@@ -33,6 +33,7 @@
     <None Remove="Forms\票劵订货单-SDD.html" />
     <None Remove="Forms\票劵退库单-SRJ.html" />
     <None Remove="Forms\账户调拨单-CRR.html" />
+    <None Remove="Forms\过账登记单-PST.html" />
     <None Remove="Forms\采购付款单-PPY.html" />
     <None Remove="Forms\采购入库单-PRH.html" />
     <None Remove="Forms\采购退货单-PRR.html" />
@@ -44,6 +45,7 @@
     <EmbeddedResource Include="Forms\票劵订货单-SDD.html" />
     <EmbeddedResource Include="Forms\票劵出库单-SCK.html" />
     <EmbeddedResource Include="Forms\票劵退库单-SRJ.html" />
+    <EmbeddedResource Include="Forms\过账登记单-PST.html" />
     <EmbeddedResource Include="Forms\采购退货单-PRR.html" />
     <EmbeddedResource Include="Forms\采购入库单-PRH.html" />
     <EmbeddedResource Include="Forms\仓库调拨单-IAL.html" />
