@@ -1,7 +1,8 @@
 ﻿<div id="app" v-cloak>
-    <el-form :inline="true" size="mini" :disabled="_formOption.readonly">        
-        <el-form-item label="存放仓库">
-            <el-input v-model="currentItem.storeName" readonly="true"></el-input>
+    <el-form :inline="true" size="mini" :disabled="_formOption.readonly" label-width="120px">        
+        <el-form-item label="存放仓库:">
+            {{currentItem.storeName}}
+            <!--<el-input v-model="currentItem.storeName" readonly="true"></el-input>-->
         </el-form-item>
 
 
@@ -24,13 +25,16 @@
                 <td>{{item.specification}}</td>
                 <td>{{item.remarks}}</td>
                 <td>{{item.storeNumber}}</td>
-                <td><el-input-number v-model="item.number"  label="报损/报溢数量" :disabled="_formOption.readonly"></el-input-number></td>
+                <td><el-input-number v-model="item.number"  label="报损/报溢数量" :disabled="_formOption.readonly" v-if="!_formOption.readonly"></el-input-number>
+                    <template v-else>
+                        {{item.number}}
+                    </template></td>
                 <td>{{item.measureMentUnit}}</td>
                 <td v-if="!_formOption.readonly"><a title="删除" style="cursor: pointer;" @click="currentItem.items.splice(index,1);"><i class="layui-icon layui-icon-delete"></i></a></td>
             </tr>
         </tbody>
     </table>
-    <el-form size="mini" :disabled="_formOption.readonly">
+    <el-form size="mini" :disabled="_formOption.readonly" label-width="120px">
         <el-form-item label="备注">
             <el-input type="textarea" v-model="currentItem.remarks"></el-input>
         </el-form-item>

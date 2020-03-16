@@ -149,11 +149,10 @@
             doSearch: function () {
 				var nodes=zTreeObj.getNodes();
                 var keyword = $("input[name='treeKeyword']").val();
-                if (!keyword) {
-                    zTreeObj.showNodes(zTreeObj.getNodesByParam("isHidden", true));
-                } else {
-					zTreeObj.hideNodes(nodes.filter(function (o) { return o.displayName.indexOf(keyword) < 0 }));
-                }
+				zTreeObj.showNodes(zTreeObj.getNodesByParam("isHidden", true));
+                if (keyword) {
+                    zTreeObj.hideNodes(nodes.filter(function (o) { return o.displayName.indexOf(keyword) < 0 }));
+                } 
             }
 		}
 	}();

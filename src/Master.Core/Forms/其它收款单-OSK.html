@@ -1,5 +1,5 @@
 ﻿<div id="app" v-cloak>
-    <el-form :inline="true" size="mini" :disabled="_formOption.readonly">
+    <el-form :inline="true" size="mini" :disabled="_formOption.readonly" label-width="120px">
         <el-form-item label="代理商">
             <unit-select :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @change="loadUnit"></unit-select>
         </el-form-item>
@@ -7,7 +7,7 @@
             <el-input v-model="currentItem.unitInfo.nowFee" readonly="true" tips="负数代表对方欠我方，正数代表我方欠对方。"></el-input>
         </el-form-item>
     </el-form>
-    <el-form :inline="true" size="mini" :disabled="_formOption.readonly">
+    <el-form :inline="true" size="mini" :disabled="_formOption.readonly" label-width="120px">
         <el-form-item label="收款方式">
             <el-radio-group v-model="currentItem.payType">
                 <el-radio label="0">现金付款</el-radio>

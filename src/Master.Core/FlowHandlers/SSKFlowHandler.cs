@@ -49,10 +49,11 @@ namespace Master.FlowHandlers
             var accountId= sheetHeader["accountId"].ToObjectWithDefault<int?>();//账号id;
             var payType= sheetHeader["payType"].ToObject<int>();
             var totalFee= sheetHeader["totalFee"].ToObject<decimal>();//
+            var relCompanyName = sheetHeader["relCompanyName"]?.ToObject<string>();
             flowSheet.UnitId = unitId;
             flowSheet.SetPropertyValue("Fee", totalFee);
             flowSheet.SetPropertyValue("PayType", GetPayTypeName(payType));
-            flowSheet.SetPropertyValue("RelCompanyName", sheetHeader["relCompanyName"]?.ToObject<string>());
+            flowSheet.SetPropertyValue("RelCompanyName", relCompanyName);
             //读取对应的账号id
             if (payType == 0)
             {
@@ -70,7 +71,7 @@ namespace Master.FlowHandlers
             }
             flowSheet.SetPropertyValue("AccountId", accountId);
             //往来单位金额变动
-            await UnitManager.ChangeFee(unitId, accountId.Value, totalFee, flowSheet);
+            await UnitManager.ChangeFee(unitId, accountId.Value, totalFee, flowSheet, relCompanyName);
 
             
 
@@ -80,8 +81,9 @@ namespace Master.FlowHandlers
         {
             var accountId = flowSheet.GetPropertyValue<int>("AccountId");
             var totalFee = flowSheet.GetPropertyValue<decimal>("Fee");
+            var relCompanyName = flowSheet.GetPropertyValue<string>("RelCompanyName");
             //往来单位金额变动
-            await UnitManager.ChangeFee(flowSheet.UnitId.Value, accountId, -totalFee, flowSheet);
+            await UnitManager.ChangeFee(flowSheet.UnitId.Value, accountId, -totalFee, flowSheet, relCompanyName);
             //将对应的支票设置为收入退回
             if(flowSheet.GetPropertyValue<string>("PayType")== GetPayTypeName(2))
             {

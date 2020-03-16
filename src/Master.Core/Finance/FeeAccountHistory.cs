@@ -28,19 +28,22 @@ namespace Master.Finance
         public decimal Fee { get; set; }
         [InterColumn(ColumnName ="流向",ColumnType =Module.ColumnTypes.Select,DictionaryName ="Master.Finance.FeeDirection",Templet ="{{d.feeDirection_display}}", Sort = 4)]
         public FeeDirection FeeDirection { get; set; }
-        [InterColumn(ColumnName = "账户余额", ColumnType = Module.ColumnTypes.Number, DisplayFormat = "0.00", Sort = 5)]
+        [NotMapped]
+        [InterColumn(ColumnName = "对方单位名称", ValuePath ="Property", Sort = 5)]
+        public string RelCompanyName { get; set; }
+        [InterColumn(ColumnName = "账户余额", ColumnType = Module.ColumnTypes.Number, DisplayFormat = "0.00", Sort = 6)]
         public decimal RemainFee { get; set; }
-        [InterColumn(ColumnName ="发生时间",ColumnType =Module.ColumnTypes.DateTime,DisplayFormat ="yyyy-MM-dd HH:mm", Sort = 6)]
+        [InterColumn(ColumnName ="发生时间",ColumnType =Module.ColumnTypes.DateTime,DisplayFormat ="yyyy-MM-dd HH:mm", Sort = 7)]
         public override DateTime CreationTime { get => base.CreationTime; set => base.CreationTime = value; }
-        [InterColumn(ColumnName ="发生环节", ValuePath = "FlowSheet.FlowInstance.FlowForm.FormName", DisplayPath = "FlowSheet.FlowInstance.FlowForm.FormName",Templet ="{{d.formName_display}}", Sort = 7)]
+        [InterColumn(ColumnName ="发生环节", ValuePath = "FlowSheet.FlowInstance.FlowForm.FormName", DisplayPath = "FlowSheet.FlowInstance.FlowForm.FormName",Templet ="{{d.formName_display}}", Sort = 8)]
         [NotMapped]
         public string FormName => FlowSheet.FlowInstance.FlowForm.FormName;
-        [InterColumn(ColumnName = "摘要", Sort = 8)]
+        [InterColumn(ColumnName = "摘要", Sort = 9)]
         public string ChangeType { get; set; }
         /// <summary>
         /// 关联单据
         /// </summary>
-        [InterColumn(ColumnName = "发生环节单据编号", Templet = "<a dataid=\"{{d.flowSheetId}}\" class=\"layui-btn layui-btn-xs layui-btn-normal\" buttonname=\"单据\" params=\"{&quot;btn&quot;:[]}\"   buttonactiontype=\"Form\" buttonactionurl=\"/FlowSheet/SheetView\" onclick=\"func.callModuleButtonEvent()\">{{d.flowSheetId_display}}</a>", DisplayPath = "FlowSheet.SheetSN", Sort = 9)]
+        [InterColumn(ColumnName = "发生环节单据编号", Templet = "<a dataid=\"{{d.flowSheetId}}\" class=\"layui-btn layui-btn-xs layui-btn-normal\" buttonname=\"单据\" params=\"{&quot;btn&quot;:[]}\"   buttonactiontype=\"Form\" buttonactionurl=\"/FlowSheet/SheetView\" onclick=\"func.callModuleButtonEvent()\">{{d.flowSheetId_display}}</a>", DisplayPath = "FlowSheet.SheetSN", Sort = 10)]
         public int? FlowSheetId { get; set; }
         public virtual FlowSheet FlowSheet { get; set; }
     }

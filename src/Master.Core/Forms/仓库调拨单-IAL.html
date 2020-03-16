@@ -1,13 +1,16 @@
 ﻿<div id="app" v-cloak>
-    <el-form :inline="true" size="mini" :disabled="_formOption.readonly">
+    <el-form :inline="true" size="mini" :disabled="_formOption.readonly" label-width="120px">
         <el-form-item label="发生日期">
-            <el-input v-model="currentItem.sheetDate" readonly="true"></el-input>
+            {{currentItem.sheetDate}}
+            <!--<el-input v-model="currentItem.sheetDate" readonly="true"></el-input>-->
         </el-form-item>
         <el-form-item label="调出仓库">
-            <el-input v-model="currentItem.outStoreName" readonly="true"></el-input>
+            {{currentItem.outStoreName}}
+            <!--<el-input v-model="currentItem.outStoreName" readonly="true"></el-input>-->
         </el-form-item>
         <el-form-item label="调入仓库">
-            <el-input v-model="currentItem.inStoreName" readonly="true"></el-input>
+            {{currentItem.inStoreName}}
+            <!--<el-input v-model="currentItem.inStoreName" readonly="true"></el-input>-->
         </el-form-item>
 
     </el-form>
@@ -30,7 +33,10 @@
                     <td>{{item.specification}}</td>
                     <td>{{item.remarks}}</td>
                     <td>{{item.storeNumber}}</td>
-                    <td><el-input-number v-model="item.number" :min="1" :max="item.storeNumber" label="调拨数量"></el-input-number></td>
+                    <td><el-input-number v-model="item.number" :min="1" :max="item.storeNumber" label="调拨数量" v-if="!_formOption.readonly"></el-input-number>
+                        <template v-else>
+                            {{item.number}}
+                        </template></td>
                     <td>{{item.measureMentUnit}}</td>
                     <td v-if="!_formOption.readonly"><a title="删除" style="cursor: pointer;" @click="currentItem.items.splice(index,1);"><i class="layui-icon layui-icon-delete"></i></a></td>
                 </tr>
@@ -38,9 +44,12 @@
         </table>
     </el-form>
     
-    <el-form  size="mini" :disabled="_formOption.readonly">
+    <el-form  size="mini" :disabled="_formOption.readonly" label-width="120px">
         <el-form-item label="备注">
-            <el-input type="textarea" v-model="currentItem.remarks"></el-input>
+            <el-input type="textarea" v-model="currentItem.remarks" v-if="!_formOption.readonly"></el-input>
+            <template v-else>
+                {{currentItem.remarks}}
+            </template>
         </el-form-item>
     </el-form>
         

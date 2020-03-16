@@ -1,19 +1,29 @@
 ﻿<div id="app" v-cloak>
-    <el-form :inline="true" size="mini" :disabled="_formOption.readonly">
+    <el-form :inline="true" size="mini" :disabled="_formOption.readonly" label-width="120px">
         <el-form-item label="代理商">
-            <unit-select nature="0" :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @change="refreshData"></unit-select>
+            <unit-select nature="0" :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @change="refreshData" v-if="!_formOption.readonly"></unit-select>
+            <template v-else>
+                {{currentItem.unitInfo?currentItem.unitInfo.unitName:''}}
+            </template>
         </el-form-item>
         <el-form-item label="订购时间">
-            <el-date-picker type="date" placeholder="选择日期" v-model="currentItem.startDate" @change="refreshData"></el-date-picker>~至今
+            <el-date-picker type="date" placeholder="选择日期" v-model="currentItem.startDate" @change="refreshData" v-if="!_formOption.readonly"></el-date-picker>
+            <template v-else>
+                {{currentItem.startDate}}
+            </template>
+            ~至今
         </el-form-item>
         <el-form-item label="退入仓库">
-            <el-select v-model="currentItem.storeId" placeholder="退入仓库" size="mini" style="width:120px">
+            <el-select v-model="currentItem.storeId" placeholder="退入仓库" size="mini" style="width:120px" v-if="!_formOption.readonly">
                 <el-option v-for="item in currentItem.stores"
                            :key="item.id"
                            :label="item.name"
                            :value="item.id">
                 </el-option>
             </el-select>
+            <template v-else>
+                {{storeName}}
+            </template>
         </el-form-item>
     </el-form>
     <el-divider></el-divider>
@@ -39,9 +49,14 @@
                     <td>{{item.price}}</td>
                     <td>{{item.sellNumber}}</td>
                     <td>{{item.backNumber}}</td>
-                    <td><el-input-number v-model="item.number" :min="0" :max="item.canBackNumber" label="退货数量" style="width:140px"></el-input-number></td>
+                    <td><el-input-number v-model="item.number" :min="0" :max="item.canBackNumber" label="退货数量" style="width:140px" v-if="!_formOption.readonly"></el-input-number><template v-else>
+    {{item.number}}
+</template></td>
                     <td>
-                        <el-input-number v-model="item.discount" :precision="2" :step="0.1" :max="1" :min="0" style="width:140px"></el-input-number>
+                        <el-input-number v-model="item.discount" :precision="2" :step="0.1" :max="1" :min="0" style="width:140px" v-if="!_formOption.readonly"></el-input-number>
+                        <template v-else>
+                            {{item.discount}}
+                        </template>
                     </td>
                     <td>{{(item.price*item.discount).toFixed(2)}}</td>
                     <td>
@@ -52,21 +67,33 @@
         </table>
     </el-form>
     
-    <el-form :inline="true" size="mini" :disabled="_formOption.readonly">
+    <el-form :inline="true" size="mini" :disabled="_formOption.readonly" label-width="120px">
         <el-form-item label="货款总额">
-            <el-input v-model="materialFee" readonly="true"></el-input>
+            <el-input v-model="materialFee" readonly="true" v-if="!_formOption.readonly"></el-input>
+            <template v-else>
+                {{materialFee}}
+            </template>
         </el-form-item>
         <el-form-item label="其它费用">
-            <el-input v-model="currentItem.otherFee" typeof="number"></el-input>
+            <el-input v-model="currentItem.otherFee" typeof="number" v-if="!_formOption.readonly"></el-input>
+            <template v-else>
+                {{currentItem.otherFee}}
+            </template>
         </el-form-item>
         <el-form-item label="本单应退金额">
-            <el-input v-model="totalFee" readonly="true"></el-input>
+            <el-input v-model="totalFee" readonly="true" v-if="!_formOption.readonly"></el-input>
+            <template v-else>
+                {{totalFee}}
+            </template>
         </el-form-item>
 
     </el-form>
-    <el-form size="mini" :disabled="_formOption.readonly">
+    <el-form size="mini" :disabled="_formOption.readonly" label-width="120px">
         <el-form-item label="备注">
-            <el-input type="textarea" v-model="currentItem.remarks"></el-input>
+            <el-input type="textarea" v-model="currentItem.remarks" v-if="!_formOption.readonly"></el-input>
+            <template v-else>
+                {{currentItem.remarks}}
+            </template>
         </el-form-item>
     </el-form>
 
@@ -82,8 +109,7 @@
                     startDate: new Date().addDay(-3, 'm', "yyyy-MM-dd"),
                     stores:[],
                     sheetDate: new Date().pattern("yyyy-MM-dd"),
-                    storeName: '',
-                    unitName:'',
+                    unitInfo: {},
                     storeId: null,
                     unitId:null,
                     items: [],
@@ -92,6 +118,14 @@
                 }
             },
             computed: {
+                storeName: function () {
+                    var that = this;
+                    if (!this.currentItem.storeId) {
+                        return '';
+                    } else {
+                        return this.currentItem.stores.filter(function (o) { return o.id == that.currentItem.storeId })[0].name;
+                    }
+                },
                 materialFee: function () {
                     var fee = 0;
                     this.currentItem.items.forEach(function (o) { fee += o.price * o.number * o.discount || 0 });
@@ -118,6 +152,10 @@
                     func.runAsync(abp.services.app.materialSell.getUnitSellMaterialForBack(this.currentItem.unitId, this.currentItem.startDate).done(function(res) {
                         
                         that.currentItem.items = res;
+                    }))
+                    //获取往来单位信息
+                    func.runAsync(abp.services.app.unit.getById(this.currentItem.unitId).done(function (data) {
+                        that.currentItem.unitInfo = data;
                     }))
                 }
             },

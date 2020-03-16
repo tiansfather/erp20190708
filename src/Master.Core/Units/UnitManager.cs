@@ -56,7 +56,7 @@ namespace Master.Units
         /// <param name="totalFee"></param>
         /// <param name="flowSheet"></param>
         /// <returns></returns>
-        public virtual async Task ChangeFee(int unitId,int? accountId,decimal totalFee,FlowSheet flowSheet)
+        public virtual async Task ChangeFee(int unitId,int? accountId,decimal totalFee,FlowSheet flowSheet,string targetCompany="")
         {
             //往来单位
             var unit = await GetByIdAsync(unitId);     
@@ -66,7 +66,7 @@ namespace Master.Units
             {
                 var feeAccountManager = Resolve<FeeAccountManager>();
                 var account = await feeAccountManager.GetByIdAsync(accountId.Value);
-                await feeAccountManager.BuildFeeHistory(account,unitId, totalFee, flowSheet);
+                await feeAccountManager.BuildFeeHistory(account,unitId, totalFee, flowSheet,targetCompany);
             }
             
         }

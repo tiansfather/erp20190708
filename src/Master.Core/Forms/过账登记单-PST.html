@@ -1,53 +1,87 @@
 ﻿<style>
-    .el-select .el-input__inner{
-        padding-right:15px;
+    .el-select .el-input__inner {
+        padding-right: 15px;
+    }
+    .el-row .el-form-item{
+        width:300px
     }
 </style>
 <div id="app" v-cloak>
     <el-form :inline="true" label-width="120px" size="mini" :disabled="_formOption.readonly">
         <el-row>
             <el-form-item label="付款代理商">
-                <unit-select nature="0" :unit.sync="currentItem.payUnit.id" :value-isid="true" size="mini" @change="loadPayUnit"></unit-select>
+                <unit-select nature="0" :unit.sync="currentItem.payUnit.id" :value-isid="true" size="mini" @change="loadPayUnit" v-if="!_formOption.readonly"></unit-select>
+                <template v-else>{{currentItem.payUnit.unitName}}</template>
             </el-form-item>
             <el-form-item label="收款供应商">
-                <unit-select nature="1" :unit.sync="currentItem.receiveUnit.id" :value-isid="true" size="mini" @change="loadReceiveUnit"></unit-select>
+                <unit-select nature="1" :unit.sync="currentItem.receiveUnit.id" :value-isid="true" size="mini" @change="loadReceiveUnit" v-if="!_formOption.readonly"></unit-select>
+                <template v-else>
+                    {{currentItem.receiveUnit.unitName}}
+                </template>
             </el-form-item>
         </el-row>
         <el-row>
             <el-form-item label="付款单位名称">
-                <el-input v-model="currentItem.payUnit.companyName" type="text"></el-input>
+                <el-input v-model="currentItem.payUnit.companyName" type="text" v-if="!_formOption.readonly"></el-input>
+                <template v-else>
+                    {{currentItem.payUnit.companyName}}
+                </template>
             </el-form-item>
             <el-form-item label="收款单位名称">
-                <el-input v-model="currentItem.receiveUnit.companyName" type="text"></el-input>
+                <el-input v-model="currentItem.receiveUnit.companyName" type="text" v-if="!_formOption.readonly"></el-input>
+                <template v-else>
+                    {{currentItem.receiveUnit.companyName}}
+                </template>
             </el-form-item>
         </el-row>
         <el-row>
             <el-form-item label="收款前结余(元)">
-                <el-input v-model="currentItem.payUnit.nowFee" readonly="true" tips="负数代表对方欠我方，正数代表我方欠对方。"></el-input>
+                <el-input v-model="currentItem.payUnit.nowFee" readonly="true" tips="负数代表对方欠我方，正数代表我方欠对方。" v-if="!_formOption.readonly"></el-input>
+                <template v-else>
+                    {{currentItem.payUnit.nowFee}}
+                </template>
             </el-form-item>
             <el-form-item label="付款前结余(元)">
-                <el-input v-model="currentItem.receiveUnit.nowFee" readonly="true" tips="负数代表对方欠我方，正数代表我方欠对方。"></el-input>
+                <el-input v-model="currentItem.receiveUnit.nowFee" readonly="true" tips="负数代表对方欠我方，正数代表我方欠对方。" v-if="!_formOption.readonly"></el-input>
+                <template v-else>
+                    {{currentItem.receiveUnit.nowFee}}
+                </template>
             </el-form-item>
         </el-row>
         <el-row>
-            <el-form-item label="发生金额">
-                <el-input v-model="currentItem.fee" type="number"></el-input>
+            <el-form-item label="发生金额" :class="{'is-error':receiveRemainFee<0}">
+                <el-input v-model="currentItem.fee" type="number" :tips="receiveRemainFee<0?'供应商结余为负数':''" v-if="!_formOption.readonly"></el-input>
+                <template v-else>
+                    {{currentItem.fee}}
+                </template>
             </el-form-item>
             <el-form-item label="发生日期">
-                <el-date-picker type="date" placeholder="选择日期" v-model="currentItem.sheetDate" style="width:180px"></el-date-picker>
+                <el-date-picker type="date" placeholder="选择日期" v-model="currentItem.sheetDate" style="width:180px" v-if="!_formOption.readonly"></el-date-picker>
+                <template v-else>
+                    {{currentItem.sheetDate}}
+                </template>
             </el-form-item>
         </el-row>
         <el-row>
             <el-form-item label="收款后结余">
-                <el-input v-model="payRemainFee" readonly="true" tips="负数代表对方欠我方，正数代表我方欠对方。"></el-input>
+                <el-input v-model="payRemainFee" readonly="true" tips="负数代表对方欠我方，正数代表我方欠对方。" v-if="!_formOption.readonly"></el-input>
+                <template v-else>
+                    {{payRemainFee}}
+                </template>
             </el-form-item>
             <el-form-item label="付款后结余">
-                <el-input v-model="receiveRemainFee" readonly="true" tips="负数代表对方欠我方，正数代表我方欠对方。"></el-input>
+                <el-input v-model="receiveRemainFee" readonly="true" tips="负数代表对方欠我方，正数代表我方欠对方。" v-if="!_formOption.readonly"></el-input>
+                <template v-else>
+                    {{receiveRemainFee}}
+                </template>
             </el-form-item>
         </el-row>        
         <el-row>
-            <el-form-item label="备注" >
-                <el-input type="textarea" v-model="currentItem.remarks"></el-input>
+            <el-form-item label="备注">
+                <el-input type="textarea" v-model="currentItem.remarks" v-if="!_formOption.readonly"></el-input>
+                <template v-else>
+                    {{currentItem.remarks}}
+                </template>
             </el-form-item>
         </el-row>
     </el-form>
@@ -65,17 +99,26 @@
                     payUnit: { id: null, companyName: '', nowFee: 0, remainFee: 0 },
                     receiveUnit: { id: null, companyName: '', nowFee: 0, remainFee: 0 },
                 },
-
             },
             computed: {
                 payRemainFee: function () {
-                    return (parseFloat(this.currentItem.payUnit.nowFee) + parseFloat(this.currentItem.fee)).toFixed(2);
+                    if (this.currentItem.fee) {
+                        return (parseFloat(this.currentItem.payUnit.nowFee) + parseFloat(this.currentItem.fee)).toFixed(2);
+                    } else {
+                        return 0;
+                    }
+                    
                 },
                 receiveRemainFee: function () {
-                    return (parseFloat(this.currentItem.receiveUnit.nowFee) - parseFloat(this.currentItem.fee)).toFixed(2);
+                    if (this.currentItem.fee) {
+                        return (parseFloat(this.currentItem.receiveUnit.nowFee) - parseFloat(this.currentItem.fee)).toFixed(2);
+                    } else {
+                        return 0;
+                    }
+                    
                 }
             },
-            methods: {                
+            methods: {      
                 loadPayUnit:function() {
                     var that = this;
                     if (this.currentItem.payUnit.id) {
@@ -115,7 +158,9 @@
         if (app.currentItem.fee == 0) {
             throw "发生金额不能为0";
         }
-        
+        if (app.receiveRemainFee < 0) {
+            throw "供应商结余为负数";
+        }
         var sheetData = {
             header: {
                 sheetDate: app.currentItem.sheetDate,

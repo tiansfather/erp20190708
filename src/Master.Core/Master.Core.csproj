@@ -37,6 +37,7 @@
     <None Remove="Forms\采购付款单-PPY.html" />
     <None Remove="Forms\采购入库单-PRH.html" />
     <None Remove="Forms\采购退货单-PRR.html" />
+    <None Remove="Forms\采购退货单-PRR.html~RF11622a10.TMP" />
     <None Remove="Forms\销售收款单-SSK.html" />
   </ItemGroup>
   <ItemGroup>

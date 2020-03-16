@@ -50,11 +50,12 @@ namespace Master.FlowHandlers
             var payType= sheetHeader["payType"].ToObject<int>();
             var totalFee= sheetHeader["totalFee"].ToObject<decimal>();//
             var affectRemain = sheetHeader["affectRemain"].ToObject<bool>();
+            var relCompanyName = sheetHeader["relCompanyName"]?.ToObject<string>();
             flowSheet.UnitId = unitId;
             flowSheet.SetPropertyValue("Fee", totalFee);
             flowSheet.SetPropertyValue("PayType", GetPayTypeName(payType));
             flowSheet.SetPropertyValue("AffectRemain", affectRemain);
-            flowSheet.SetPropertyValue("RelCompanyName", sheetHeader["relCompanyName"]?.ToObject<string>());
+            flowSheet.SetPropertyValue("RelCompanyName", relCompanyName);
             //读取对应的账号id
             if (payType == 0)
             {
@@ -79,12 +80,12 @@ namespace Master.FlowHandlers
             if (affectRemain)
             {
                 //往来单位金额变动
-                await UnitManager.ChangeFee(unitId, accountId.Value, -totalFee, flowSheet);
+                await UnitManager.ChangeFee(unitId, accountId.Value, -totalFee, flowSheet, relCompanyName);
             }
             else
             {
                 //账户金额变动
-                await FeeAccountManager.BuildFeeHistory(feeAccount,unitId, -totalFee, flowSheet);
+                await FeeAccountManager.BuildFeeHistory(feeAccount,unitId, -totalFee, flowSheet, relCompanyName);
             }
 
             
@@ -97,15 +98,16 @@ namespace Master.FlowHandlers
             var feeAccount = await FeeAccountManager.GetByIdAsync(accountId);
             var totalFee = flowSheet.GetPropertyValue<decimal>("Fee");
             var affectRemain = flowSheet.GetPropertyValue<bool>("AffectRemain");
+            var relCompanyName = flowSheet.GetPropertyValue<string>("RelCompanyName");
             if (affectRemain)
             {
                 //往来单位金额变动
-                await UnitManager.ChangeFee(flowSheet.UnitId.Value, accountId, totalFee, flowSheet);
+                await UnitManager.ChangeFee(flowSheet.UnitId.Value, accountId, totalFee, flowSheet, relCompanyName);
             }
             else
             {
                 //账号金额变动
-                await FeeAccountManager.BuildFeeHistory(feeAccount,flowSheet.UnitId, totalFee, flowSheet);
+                await FeeAccountManager.BuildFeeHistory(feeAccount,flowSheet.UnitId, totalFee, flowSheet, relCompanyName);
             }
             //将对应的支票设置为收入退回
             if (flowSheet.GetPropertyValue<string>("PayType")== GetPayTypeName(2))

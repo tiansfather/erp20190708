@@ -1,4 +1,5 @@
 ﻿using Abp.UI;
+using Master.Entity;
 using Master.Module;
 using Master.WorkFlow;
 using Microsoft.EntityFrameworkCore;
@@ -63,7 +64,7 @@ namespace Master.Finance
             await CurrentUnitOfWork.SaveChangesAsync();
         }
 
-        public virtual async Task BuildFeeHistory(FeeAccount account, int? unitId,decimal totalFee, FlowSheet flowSheet)
+        public virtual async Task BuildFeeHistory(FeeAccount account, int? unitId,decimal totalFee, FlowSheet flowSheet,string targetCompany="")
         {
             account.Fee += totalFee;
             var feeAccountHistory = new FeeAccountHistory()
@@ -76,7 +77,7 @@ namespace Master.Finance
                 ChangeType = flowSheet.ChangeType,
                 FlowSheetId = flowSheet.Id
             };
-
+            feeAccountHistory.SetPropertyValue("RelCompanyName", targetCompany);
             await Resolve<FeeAccountHistoryManager>().InsertAsync(feeAccountHistory);
         }
 
