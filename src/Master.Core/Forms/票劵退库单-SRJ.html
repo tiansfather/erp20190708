@@ -1,19 +1,19 @@
 ﻿<div id="app" v-cloak>
     <el-form :inline="true" size="mini" :disabled="_formOption.readonly" label-width="120px">
-        <el-form-item label="代理商">
+        <el-form-item label="代理商:">
             <unit-select nature="0" :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @change="refreshData" v-if="!_formOption.readonly"></unit-select>
             <template v-else>
                 {{currentItem.unitInfo?currentItem.unitInfo.unitName:''}}
             </template>
         </el-form-item>
-        <el-form-item label="订购时间">
+        <el-form-item label="订购时间:">
             <el-date-picker type="date" placeholder="选择日期" v-model="currentItem.startDate" @change="refreshData" v-if="!_formOption.readonly"></el-date-picker>
             <template v-else>
                 {{currentItem.startDate}}
             </template>
             ~至今
         </el-form-item>
-        <el-form-item label="退入仓库">
+        <el-form-item label="退入仓库:">
             <el-select v-model="currentItem.storeId" placeholder="退入仓库" size="mini" style="width:120px" v-if="!_formOption.readonly">
                 <el-option v-for="item in currentItem.stores"
                            :key="item.id"
@@ -49,7 +49,8 @@
                     <td>{{item.price}}</td>
                     <td>{{item.sellNumber}}</td>
                     <td>{{item.backNumber}}</td>
-                    <td><el-input-number v-model="item.number" :min="0" :max="item.canBackNumber" label="退货数量" style="width:140px" v-if="!_formOption.readonly"></el-input-number><template v-else>
+                    <td><el-input-number v-model="item.number" :min="0" :max="item.canBackNumber" label="退货数量" style="width:140px" v-if="!_formOption.readonly"></el-input-number>
+                    <template v-else>
     {{item.number}}
 </template></td>
                     <td>
@@ -68,19 +69,19 @@
     </el-form>
     
     <el-form :inline="true" size="mini" :disabled="_formOption.readonly" label-width="120px">
-        <el-form-item label="货款总额">
+        <el-form-item label="货款总额:">
             <el-input v-model="materialFee" readonly="true" v-if="!_formOption.readonly"></el-input>
             <template v-else>
                 {{materialFee}}
             </template>
         </el-form-item>
-        <el-form-item label="其它费用">
+        <el-form-item label="其它费用:">
             <el-input v-model="currentItem.otherFee" typeof="number" v-if="!_formOption.readonly"></el-input>
             <template v-else>
                 {{currentItem.otherFee}}
             </template>
         </el-form-item>
-        <el-form-item label="本单应退金额">
+        <el-form-item label="本单应退金额:">
             <el-input v-model="totalFee" readonly="true" v-if="!_formOption.readonly"></el-input>
             <template v-else>
                 {{totalFee}}
@@ -89,7 +90,7 @@
 
     </el-form>
     <el-form size="mini" :disabled="_formOption.readonly" label-width="120px">
-        <el-form-item label="备注">
+        <el-form-item label="备注:">
             <el-input type="textarea" v-model="currentItem.remarks" v-if="!_formOption.readonly"></el-input>
             <template v-else>
                 {{currentItem.remarks}}

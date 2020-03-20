@@ -15,6 +15,35 @@ namespace Master.Storage
 {
     public class StoreMaterialManager : ModuleServiceBase<StoreMaterial, int>
     {
+        #region 库存是否足够
+        /// <summary>
+        /// 出库数量是否足够
+        /// </summary>
+        /// <param name="materialId"></param>
+        /// <param name="storeId"></param>
+        /// <param name="unitId"></param>
+        /// <param name="outNumber"></param>
+        /// <returns></returns>
+        public virtual async Task<bool> IsSatisfied(int materialId,int storeId,int unitId,decimal outNumber)
+        {
+            var materialManager = Resolve<MaterialManager>();
+            var material = await materialManager.GetByIdAsync(materialId);
+            var unitSellMode = await materialManager.GetMaterialUnitSellMode(material, unitId);
+            if (unitSellMode == UnitSellMode.停止销售)
+            {
+                return false;
+            }else if (unitSellMode == UnitSellMode.始终销售)
+            {
+                return true;
+            }
+            else
+            {
+                var storeMaterialCount = await GetStoreMaterialNumber(storeId, materialId);
+                return storeMaterialCount > outNumber;
+            }
+        }
+        #endregion
+
         #region 商品库存
         /// <summary>
         /// 获取商品在某个仓库的库存

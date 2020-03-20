@@ -35,8 +35,11 @@
         </tbody>
     </table>
     <el-form size="mini" :disabled="_formOption.readonly" label-width="120px">
-        <el-form-item label="备注">
-            <el-input type="textarea" v-model="currentItem.remarks"></el-input>
+        <el-form-item label="备注:">
+            <el-input type="textarea" v-model="currentItem.remarks" v-if="!_formOption.readonly"></el-input>
+            <template v-else>
+                {{currentItem.remarks}}
+            </template>
         </el-form-item>
     </el-form>
 

@@ -1,18 +1,21 @@
 ﻿<div id="app" v-cloak>
     <el-form :inline="true" size="mini" :disabled="_formOption.readonly">
-        <el-form-item label="入库日期">
-            <el-input v-model="currentItem.sheetDate" readonly="true"></el-input>
+        <el-form-item label="入库日期:">
+            {{currentItem.sheetDate}}
+            <!--<el-input v-model="currentItem.sheetDate" readonly="true"></el-input>-->
         </el-form-item>
-        <el-form-item label="供货商">
-            <el-input v-model="currentItem.unitName" readonly="true"></el-input>
+        <el-form-item label="供货商:">
+            {{currentItem.unitName}}
+            <!--<el-input v-model="currentItem.unitName" readonly="true"></el-input>-->
         </el-form-item>
-        <el-form-item label="收货仓库">
-            <el-input v-model="currentItem.storeName" readonly="true"></el-input>
+        <el-form-item label="收货仓库:">
+            {{currentItem.storeName}}
+            <!--<el-input v-model="currentItem.storeName" readonly="true"></el-input>-->
         </el-form-item>
 
     </el-form>
     <el-form :disabled="_formOption.readonly">
-        <table class="layui-table" style="min-width:1600px">
+        <table class="layui-table" style="min-width:1200px">
             <thead>
                 <tr>
                     <th>品名</th>
@@ -34,26 +37,34 @@
                     <td>{{item.name}}</td>
                     <td>{{item.specification}}</td>
                     <td>{{item.price}}</td>
-                    <td><el-input-number v-model="item.discount" :min="0" :max="1" :step="0.1" label="折扣" style="width:140px"></el-input-number></td>
+                    <td><el-input-number v-model="item.discount" :min="0" :max="1" :step="0.1" label="折扣" size="mini" style="width:140px" v-if="!_formOption.readonly"></el-input-number>
+                        <template v-else>
+                            {{item.discount}}
+                        </template>
+                    </td>
                     <td>
                         {{(item.price*item.discount).toFixed(2)}}
                     </td>
                     <td>{{item.remarks}}</td>
-                    <td><el-input-number v-model="item.number" :min="1" label="进货数量" style="width:140px"></el-input-number></td>
+                    <td><el-input-number v-model="item.number" :min="1" label="进货数量" size="mini" style="width:140px" v-if="!_formOption.readonly"></el-input-number>
+                        <template v-else>
+                            {{item.number}}
+                        </template>
+                    </td>
                     <td>{{item.measureMentUnit}}</td>
                     <td>{{item.location}}</td>
                     <td>
-                        <el-input v-model="item.featureCode" style="width:100px" v-if="!_formOption.readonly"></el-input>
+                        <el-input v-model="item.featureCode" style="width:100px" size="mini" v-if="!_formOption.readonly"></el-input>
                         <div v-else>{{item.featureCode}}</div>
                     </td>
                     <td>
                         <template v-if="!_formOption.readonly">
                             <el-col :span="10">
-                                <el-input v-model="item.codeStartNumber" style="width:120px;"></el-input>                                
+                                <el-input v-model="item.codeStartNumber" size="mini" style="width:120px;"></el-input>                                
                             </el-col>
                             <el-col class="line" :span="2" style="padding:8px">至</el-col>
                             <el-col :span="10">
-                                <el-input v-model="item.codeEndNumber" style="width:120px;" v-if="!_formOption.readonly"></el-input>
+                                <el-input v-model="item.codeEndNumber" size="mini" style="width:120px;" v-if="!_formOption.readonly"></el-input>
                             </el-col>
                         </template>
                         <template v-else>
@@ -68,20 +79,32 @@
     </el-form>
     
     <el-form :inline="true" size="mini" :disabled="_formOption.readonly">
-        <el-form-item label="货款总额">
-            <el-input v-model="materialFee" readonly="true"></el-input>
+        <el-form-item label="货款总额:">
+            <el-input v-model="materialFee" readonly="true" v-if="!_formOption.readonly"></el-input>
+            <template v-else>
+                {{materialFee}}
+            </template>
         </el-form-item>
-        <el-form-item label="其它费用">
-            <el-input v-model="currentItem.otherFee" type="number"></el-input>
+        <el-form-item label="其它费用:">
+            <el-input v-model="currentItem.otherFee" typeof="number" v-if="!_formOption.readonly"></el-input>
+            <template v-else>
+                {{currentItem.otherFee}}
+            </template>
         </el-form-item>
-        <el-form-item label="本单应付金额">
-            <el-input v-model="totalFee" readonly="true"></el-input>
+        <el-form-item label="本单应付金额:">
+            <el-input v-model="totalFee" readonly="true" v-if="!_formOption.readonly"></el-input>
+            <template v-else>
+                {{totalFee}}
+            </template>
         </el-form-item>
 
     </el-form>
     <el-form size="mini" :disabled="_formOption.readonly">
         <el-form-item label="备注">
-            <el-input type="textarea" v-model="currentItem.remarks"></el-input>
+            <el-input type="textarea" v-model="currentItem.remarks" v-if="!_formOption.readonly"></el-input>
+            <template v-else>
+                {{currentItem.remarks}}
+            </template>
         </el-form-item>
     </el-form>
 

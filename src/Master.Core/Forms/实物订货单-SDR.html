@@ -5,11 +5,11 @@
 </style>
 <div id="app" v-cloak>
     <el-form :inline="true" size="mini"label-width="120px"  >
-        <el-form-item label="代理商">
+        <el-form-item label="代理商:">
             {{currentItem.unitName}}
             <!--<el-input v-model="currentItem.unitName" readonly="true"></el-input>-->
         </el-form-item>
-        <el-form-item label="配送日期">
+        <el-form-item label="配送日期:">
             <el-date-picker v-model="currentItem.deliverDate"
                             type="date"
                             placeholder="选择日期" v-if="!_formOption.readonly">
@@ -18,13 +18,13 @@
                 {{currentItem.deliverDate?new Date(currentItem.deliverDate).pattern('yyyy-MM-dd'):''}}
             </template>
         </el-form-item>
-        <el-form-item label="收货人">
+        <el-form-item label="收货人:">
             <el-input v-model="currentItem.receiver" v-if="!_formOption.readonly"></el-input>
             <template v-else>
                 {{currentItem.receiver}}
             </template>
         </el-form-item>
-        <el-form-item label="收货人电话">
+        <el-form-item label="收货人电话:">
             <el-input v-model="currentItem.receiverMobile" v-if="!_formOption.readonly"></el-input>
             <template v-else>
                 {{currentItem.receiverMobile}}
@@ -32,13 +32,13 @@
         </el-form-item>
     </el-form>
     <el-form ref="form" label-width="120px" >
-        <el-form-item label="送货地址">
+        <el-form-item label="送货地址:">
             <el-input v-model="currentItem.receiverAddress" v-if="!_formOption.readonly"></el-input>
             <template v-else>
                 {{currentItem.receiverAddress}}
             </template>
         </el-form-item>
-        <el-form-item label="备注">
+        <el-form-item label="备注:">
             <el-input v-model="currentItem.remarks" v-if="!_formOption.readonly"></el-input>
             <template v-else>
                 {{currentItem.remarks}}
@@ -110,19 +110,19 @@
     </el-form>
     
     <el-form :inline="true" size="mini" v-if="isSend && _formOption.mode!='readonly'" >
-        <el-form-item label="货款总额">
+        <el-form-item label="货款总额:">
             <el-input v-model="materialFee" readonly="true"></el-input>
         </el-form-item>
-        <el-form-item label="其它费用">
+        <el-form-item label="其它费用:">
             <el-input v-model="currentItem.otherFee" typeof="number"></el-input>
         </el-form-item>
-        <el-form-item label="本单应收金额">
+        <el-form-item label="本单应收金额:">
             <el-input v-model="totalFee" readonly="true"></el-input>
         </el-form-item>
 
     </el-form>
     <el-form ref="form" label-width="80px" v-if="isBack && _formOption.mode!='readonly'" >
-        <el-form-item label="退货原因">
+        <el-form-item label="退货原因:">
             <el-input v-model="currentItem.backReason"></el-input>
         </el-form-item>
     </el-form>

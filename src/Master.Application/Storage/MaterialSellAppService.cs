@@ -195,8 +195,10 @@ namespace Master.Storage
                     sellMaterial.SellNumber,
                     sellMaterial.OutNumber,
                     discount= await materialManager.GetMaterialUnitDiscount(sellMaterial.Material,unitId),
+                    sellMode=await materialManager.GetMaterialUnitSellMode(sellMaterial.Material,unitId),
                     CreationTime=sellMaterial.CreationTime.ToString("yyyy-MM-dd"),
-                    Number=sellMaterial.SellNumber-sellMaterial.OutNumber//默认发货数量等于订货数量-已发数量
+                    Number=sellMaterial.SellNumber-sellMaterial.OutNumber,//默认发货数量等于订货数量-已发数量
+                    storeNumber=0
                 });
             }
 

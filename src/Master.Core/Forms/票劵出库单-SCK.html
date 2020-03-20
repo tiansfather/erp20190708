@@ -1,17 +1,28 @@
-﻿<div id="app" v-cloak>
+﻿<style>
+    .is-error,.is-error input{
+        color:red !important;
+    }
+</style>
+<div id="app" v-cloak>
     <template v-if="_formOption.mode!='print'">
-        <el-form :inline="true" size="mini" :disabled="_formOption.readonly">
-            <el-form-item label="代理商">
-                <unit-select nature="0" :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @change="refreshData"></unit-select>
+        <el-form :inline="true" size="mini" :disabled="_formOption.readonly" label-width="120px">
+            <el-form-item label="代理商:">
+                <unit-select nature="0" :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @change="refreshData" v-if="!_formOption.readonly"></unit-select>
+                <template v-else>
+                    {{currentItem.unitInfo?currentItem.unitInfo.unitName:''}}
+                </template>
             </el-form-item>
-            <el-form-item label="发货仓库">
-                <el-select v-model="currentItem.storeId" placeholder="发货仓库" size="mini" style="width:120px">
+            <el-form-item label="发货仓库:">
+                <el-select v-model="currentItem.storeId" placeholder="发货仓库" size="mini" style="width:120px" v-if="!_formOption.readonly" @change="getStoreNumber">
                     <el-option v-for="item in currentItem.stores"
                                :key="item.id"
                                :label="item.name"
                                :value="item.id">
                     </el-option>
                 </el-select>
+                <template v-else>
+                    {{storeName}}
+                </template>
             </el-form-item>
         </el-form>
         <el-divider></el-divider>
@@ -27,6 +38,7 @@
                         <th>发货单价</th>
                         <th>订货数量</th>
                         <th>已发数量</th>
+                        <th>当前库存</th>
                         <th>本次发货</th>
                         <th>小计</th>
                     </tr>
@@ -37,13 +49,20 @@
                         <td>{{item.creationTime}}</td>
                         <td>{{item.name}}</td>
                         <td>{{item.price}}</td>
-                        <td><el-input-number v-model="item.discount" :min="0" :step="0.1" :max="1" label="折扣" style="width:140px"></el-input-number></td>
+                        <td><el-input-number v-model="item.discount" size="mini" :min="0" :step="0.1" :max="1" label="折扣" style="width:140px" v-if="!_formOption.readonly"></el-input-number>
+                            <template v-else>
+                                {{item.discount}}
+                            </template></td>
                         <td>
                             {{(item.price*item.discount).toFixed(2)}}
                         </td>
                         <td>{{item.sellNumber}}</td>
                         <td>{{item.outNumber}}</td>
-                        <td><el-input-number v-model="item.number" :min="0" :max="item.sellNumber-item.outNumber" label="" style="width:140px"></el-input-number></td>
+                        <td :title="getSellMode(item)" :class="{'is-error':isError(item)}">{{item.storeNumber}}</td>
+                        <td><el-input-number v-model="item.number" size="mini" :min="0" :max="item.sellNumber-item.outNumber" label="" style="width:140px" v-if="!_formOption.readonly" :class="{'is-error':isError(item)}"></el-input-number>
+                            <template v-else>
+                                {{item.number}}
+                            </template></td>
                         <td>
                             {{getSum(item)}}
                         </td>
@@ -53,20 +72,32 @@
         </el-form>
         
         <el-form :inline="true" size="mini" :disabled="_formOption.readonly">
-            <el-form-item label="货款总额">
-                <el-input v-model="materialFee" readonly="true"></el-input>
+            <el-form-item label="货款总额:">
+                <el-input v-model="materialFee" readonly="true" v-if="!_formOption.readonly"></el-input>
+                <template v-else>
+                    {{materialFee}}
+                </template>
             </el-form-item>
-            <el-form-item label="其它费用">
-                <el-input v-model="currentItem.otherFee" typeof="number"></el-input>
+            <el-form-item label="其它费用:">
+                <el-input v-model="currentItem.otherFee" typeof="number" v-if="!_formOption.readonly"></el-input>
+                <template v-else>
+                    {{currentItem.otherFee}}
+                </template>
             </el-form-item>
-            <el-form-item label="本单应收金额">
-                <el-input v-model="totalFee" readonly="true"></el-input>
+            <el-form-item label="本单应收金额:">
+                <el-input v-model="totalFee" readonly="true" v-if="!_formOption.readonly"></el-input>
+                <template v-else>
+                    {{totalFee}}
+                </template>
             </el-form-item>
 
         </el-form>
         <el-form size="mini" :disabled="_formOption.readonly">
             <el-form-item label="备注">
-                <el-input type="textarea" v-model="currentItem.remarks"></el-input>
+                <el-input type="textarea" v-model="currentItem.remarks" v-if="!_formOption.readonly"></el-input>
+                <template v-else>
+                    {{currentItem.remarks}}
+                </template>
             </el-form-item>
         </el-form>
     </template>
@@ -155,6 +186,14 @@
                 }
             },
             computed: {
+                storeName: function () {
+                    var that = this;
+                    if (!this.currentItem.storeId) {
+                        return '';
+                    } else {
+                        return this.currentItem.stores.filter(function (o) { return o.id == that.currentItem.storeId })[0].name;
+                    }
+                },
                 materialFee: function () {
                     var fee = 0;
                     this.currentItem.items.forEach(function (o) { fee += o.price * o.number * o.discount || 0 });
@@ -165,6 +204,24 @@
                 }
             },
             methods: {
+                isError: function (item) {
+                    if (isNaN(item.storeNumber)) { return true;}
+                    if (item.sellMode == 1 && item.storeNumber < item.number) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                },
+                getSellMode: function (item) {
+                    switch (item.sellMode) {
+                        case 0:
+                            return "始终销售";
+                        case 1:
+                            return "售完为止";
+                        case 2:
+                            return "停止销售";
+                    }
+                },
                 getSum:function(item) {
                     if (!item.number) {
                         return '';
@@ -172,18 +229,61 @@
                         return (item.number * item.price * item.discount).toFixed(2);
                     }
                 },
+                getStoreNumber: function () {
+                    var that = this;
+                    if (!this.currentItem.items.length) {
+                        return;
+                    }
+                    //获取库存数量
+                    if (!this.currentItem.storeId) {
+                        for (var i = 0; i < this.currentItem.items.length; i++) {
+                            this.currentItem.items[i].storeNumber = 0;
+                        }
+                    } else {
+                        abp.services.app.material.getStoreMaterialInfos(this.currentItem.storeId, this.currentItem.items.map(function (o) { return o.materialId })).done(function (res) {
+                            for (var i = 0; i < res.length; i++) {
+                                var matchedItems = that.currentItem.items.filter(function (o) { return o.materialId == res[i].id });
+                                matchedItems.forEach(function (o) { o.storeNumber = res[i].storeNumber;})
+                                //that.currentItem.items.filter(function (o) { return o.materialId == res[i].id })[0].storeNumber = res[i].storeNumber;
+                            }
+                            
+                        })
+                    }
+                },
                 refreshData:function() {
                     var that = this;
+                    this.currentItem.storeId = null;
                     if (!this.currentItem.unitId ) {
                         return;
                     }
                     func.runAsync(abp.services.app.materialSell.getUnitSellMaterialForOut(this.currentItem.unitId).done(function(res) {                        
                         that.currentItem.items = res;
+                        that.getStoreNumber();
                     }))
                     //获取往来单位信息
                     func.runAsync(abp.services.app.unit.getById(this.currentItem.unitId).done(function (data) {
                         that.currentItem.unitInfo = data;
                     }))
+                },
+                isStoreNumberAvailable: function () {
+                    var available = true;
+                    for (var i =0; i < this.currentItem.items.length; i++) {
+                        if (this.isError(this.currentItem.items[i])) {
+                            available = false;
+                            break;
+                        }
+                    }
+                    return available;
+                },
+                isNumberSet: function () {
+                    var available = true;
+                    for (var i =0; i < this.currentItem.items.length; i++) {
+                        if (this.currentItem.items[i].number==0) {
+                            available = false;
+                            break;
+                        }
+                    }
+                    return available;
                 }
             },
             created:function() {
@@ -216,6 +316,12 @@
         }
         if (!data.length) {
             throw "请至少录入一条数据";
+        }
+        if (!app.isNumberSet()) {
+            throw "出库数量不能为0";
+        }
+        if (!app.isStoreNumberAvailable()) {
+            throw "库存不足,无法提交";
         }
         //app.currentItem.items = app.currentItem.items.filter(o => o.number > 0);
         var sheetData = {

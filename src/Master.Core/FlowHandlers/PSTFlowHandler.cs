@@ -35,9 +35,9 @@ namespace Master.FlowHandlers
             var fee = sheetHeader["fee"].ToObject<decimal>();//
             flowSheet.SetPropertyValue("Fee", fee);
             flowSheet.SetPropertyValue("OutUnitName", payUnit.UnitName);
-            flowSheet.SetPropertyValue("OutCompanyName", sheetHeader["payUnit"]["companyName"].ToString());
+            flowSheet.SetPropertyValue("OutCompanyName", sheetHeader["payUnit"]["companyName"].ToObjectWithDefault<string>());
             flowSheet.SetPropertyValue("InUnitName", receiveUnit.UnitName);
-            flowSheet.SetPropertyValue("InCompanyName", sheetHeader["receiveUnit"]["companyName"].ToString());
+            flowSheet.SetPropertyValue("InCompanyName", sheetHeader["receiveUnit"]["companyName"].ToObjectWithDefault<string>());
             //读取对应的账号id
             var accountId = (await FeeAccountManager.GetByName(FeeAccount.StaticAccountName3)).Id;            
             flowSheet.SetPropertyValue("AccountId", accountId);

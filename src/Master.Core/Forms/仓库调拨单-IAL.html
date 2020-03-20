@@ -1,14 +1,14 @@
 ﻿<div id="app" v-cloak>
     <el-form :inline="true" size="mini" :disabled="_formOption.readonly" label-width="120px">
-        <el-form-item label="发生日期">
+        <el-form-item label="发生日期:">
             {{currentItem.sheetDate}}
             <!--<el-input v-model="currentItem.sheetDate" readonly="true"></el-input>-->
         </el-form-item>
-        <el-form-item label="调出仓库">
+        <el-form-item label="调出仓库:">
             {{currentItem.outStoreName}}
             <!--<el-input v-model="currentItem.outStoreName" readonly="true"></el-input>-->
         </el-form-item>
-        <el-form-item label="调入仓库">
+        <el-form-item label="调入仓库:">
             {{currentItem.inStoreName}}
             <!--<el-input v-model="currentItem.inStoreName" readonly="true"></el-input>-->
         </el-form-item>
@@ -45,7 +45,7 @@
     </el-form>
     
     <el-form  size="mini" :disabled="_formOption.readonly" label-width="120px">
-        <el-form-item label="备注">
+        <el-form-item label="备注:">
             <el-input type="textarea" v-model="currentItem.remarks" v-if="!_formOption.readonly"></el-input>
             <template v-else>
                 {{currentItem.remarks}}

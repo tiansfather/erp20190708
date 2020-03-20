@@ -22,6 +22,12 @@
     .red{
         color:red !important;
     }
+    .el-form-item{
+        min-width:280px;
+    }
+    .el-form-item__label{
+        text-align:left !important;
+    }
     html #print{
         font-size: 14px;
         font-family: '微软雅黑 Bold', '微软雅黑';
@@ -32,7 +38,6 @@
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        
     }
 
     #print button {
@@ -148,46 +153,49 @@
         orderStatus:"@Html.Raw(ViewBag.OrderStatus)",
     };
 </script>
-<div id="header" v-cloak v-if="sheetId && _formOption.mode!='print'">
-    <el-form :inline="true" size="mini" :disabled="true" label-width="120px">
-        <el-form-item label="单号:">
-            {{sheetInfo.sheetSN}}
-            @*<el-input v-model="sheetInfo.sheetSN" readonly="true"></el-input>*@
-        </el-form-item>
-        <el-form-item label="录单日期:">
-            {{sheetInfo.creationTime}}
-            @*<el-input v-model="sheetInfo.creationTime" readonly="true"></el-input>*@
-        </el-form-item>
-        <el-form-item label="经办人:">
-            {{sheetInfo.creatorUserName}}
-            @*<el-input v-model="sheetInfo.creatorUserName" readonly="true"></el-input>*@
-        </el-form-item>
-        @*<el-form-item label="单据性质">
-                <el-input v-model="sheetInfo.sheetNatureName" readonly="true"></el-input>
-            </el-form-item>*@
-    <el-form-item label="单据状态:">
-        {{orderStatusName}}
-        @*<el-input v-model="orderStatusName" readonly="true"></el-input>*@
-    </el-form-item>
-    <el-form-item label="对应单号:" v-if="sheetInfo.sheetNature==1 || sheetInfo.sheetNature==2">
-        {{sheetInfo.relSheetSN}}
-        @*<el-input v-model="sheetInfo.relSheetSN" readonly="true"></el-input>*@
-    </el-form-item>
-    <el-form-item label="冲红原因:" v-if="sheetInfo.sheetNature==1 || sheetInfo.sheetNature==2">
-        {{sheetInfo.revertReason}}
-        @*<el-input v-model="sheetInfo.revertReason" readonly="true"></el-input>*@
-    </el-form-item>
-    </el-form>
-    <div style="text-align:right">
-        <button type="button" v-for="(btn,index) in filterBtn(sheetInfo.btns)" class="layui-btn layui-btn-sm" :class="btn.buttonClass" @@click="action(btn)">{{btn.buttonName}}</button>
-    </div>
+<div style="padding:20px">
+    <div id="header" v-cloak v-if="sheetId && _formOption.mode!='print'">
+        <el-form :inline="true" size="mini" :disabled="true" label-width="120px" label-position="left">
+            <el-form-item label="单号:">
+                {{sheetInfo.sheetSN}}
+                @*<el-input v-model="sheetInfo.sheetSN" readonly="true"></el-input>*@
+            </el-form-item>
+            <el-form-item label="录单日期:">
+                {{sheetInfo.creationTime}}
+                @*<el-input v-model="sheetInfo.creationTime" readonly="true"></el-input>*@
+            </el-form-item>
+            <el-form-item label="经办人:">
+                {{sheetInfo.creatorUserName}}
+                @*<el-input v-model="sheetInfo.creatorUserName" readonly="true"></el-input>*@
+            </el-form-item>
+            @*<el-form-item label="单据性质">
+                    <el-input v-model="sheetInfo.sheetNatureName" readonly="true"></el-input>
+                </el-form-item>*@
+            <el-form-item label="单据状态:">
+                {{orderStatusName}}
+                @*<el-input v-model="orderStatusName" readonly="true"></el-input>*@
+            </el-form-item>
+            <el-form-item label="对应单号:" v-if="sheetInfo.sheetNature==1 || sheetInfo.sheetNature==2">
+                {{sheetInfo.relSheetSN}}
+                @*<el-input v-model="sheetInfo.relSheetSN" readonly="true"></el-input>*@
+            </el-form-item>
+            <el-form-item label="冲红原因:" v-if="sheetInfo.sheetNature==1 || sheetInfo.sheetNature==2">
+                {{sheetInfo.revertReason}}
+                @*<el-input v-model="sheetInfo.revertReason" readonly="true"></el-input>*@
+            </el-form-item>
+        </el-form>
+        <div style="text-align:right">
+            <button type="button" v-for="(btn,index) in filterBtn(sheetInfo.btns)" class="layui-btn layui-btn-sm" :class="btn.buttonClass" @@click="action(btn)">{{btn.buttonName}}</button>
+        </div>
 
-    @*<button type="button" class="layui-btn layui-btn-danger" v-if="sheetInfo.sheetNature==0" style="float:right" @@click="revertSheet">冲红</button>*@
-    <hr>
+        @*<button type="button" class="layui-btn layui-btn-danger" v-if="sheetInfo.sheetNature==0" style="float:right" @@click="revertSheet">冲红</button>*@
+        <hr>
+    </div>
+    <div id="content">
+        @Html.Raw(ViewBag.FormContent)
+    </div>
 </div>
-<div id="content">
-    @Html.Raw(ViewBag.FormContent)
-</div>
+
 
 <script>
     config.readyFuncs.push(function () {

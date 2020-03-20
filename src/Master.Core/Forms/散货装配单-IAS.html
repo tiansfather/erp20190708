@@ -1,6 +1,6 @@
 ﻿<div id="app" v-cloak>
     <el-form :inline="true" size="mini" :disabled="_formOption.readonly" label-width="120px">
-        <el-form-item label="交货日期">
+        <el-form-item label="交货日期:">
             <el-date-picker v-model="currentItem.sheetDate" type="date" placeholder="选择交货日期" format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-if="!_formOption.readonly">
             </el-date-picker>
             <template v-else>
@@ -43,7 +43,7 @@
     </el-form>
     
     <el-form size="mini" :disabled="_formOption.readonly" label-width="120px">
-        <el-form-item label="备注">
+        <el-form-item label="备注:">
             <el-input type="textarea" v-model="currentItem.remarks" v-if="!_formOption.readonly"></el-input>
             <template v-else>
                 {{currentItem.remarks}}

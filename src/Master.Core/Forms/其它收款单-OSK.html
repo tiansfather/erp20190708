@@ -1,74 +1,115 @@
 ﻿<div id="app" v-cloak>
     <el-form :inline="true" size="mini" :disabled="_formOption.readonly" label-width="120px">
         <el-form-item label="代理商">
-            <unit-select :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @change="loadUnit"></unit-select>
+            <unit-select :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @change="loadUnit" v-if="!_formOption.readonly"></unit-select>
+            <template v-else>
+                {{currentItem.unitInfo.unitName}}
+            </template>
         </el-form-item>
         <el-form-item label="当前结余">
-            <el-input v-model="currentItem.unitInfo.nowFee" readonly="true" tips="负数代表对方欠我方，正数代表我方欠对方。"></el-input>
+            <el-input v-model="currentItem.unitInfo.nowFee" readonly="true" tips="负数代表对方欠我方，正数代表我方欠对方。" v-if="!_formOption.readonly"></el-input>
+            <template v-else>
+                {{currentItem.unitInfo.nowFee}}
+            </template>
         </el-form-item>
     </el-form>
     <el-form :inline="true" size="mini" :disabled="_formOption.readonly" label-width="120px">
         <el-form-item label="收款方式">
-            <el-radio-group v-model="currentItem.payType">
+            <el-radio-group v-model="currentItem.payType" v-if="!_formOption.readonly">
                 <el-radio label="0">现金付款</el-radio>
                 <el-radio label="1">转账付款</el-radio>
                 <el-radio label="2">支票付款</el-radio>
             </el-radio-group>
+            <template v-else>
+                {{payTypeName}}
+            </template>
         </el-form-item>
-        <el-form-item label="" style="margin-left:50px">
+        <el-form-item label="" style="margin-left:50px" v-if="!_formOption.readonly">
             <el-switch v-model="currentItem.affectRemain"
                        active-text="影响结余"
                        inactive-text="不影响结余">
             </el-switch>
         </el-form-item>
+        <template v-else>
+            {{currentItem.affectRemain?'影响结余':'不影响结余'}}
+        </template>
     </el-form>
     <el-divider></el-divider>
-    <el-form ref="form" label-width="120px" :disabled="_formOption.readonly">
-        <el-form-item label="对方单位名称">
-            <el-input v-model="currentItem.companyName" type="text"></el-input>
+    <el-form ref="form" label-width="120px" :disabled="_formOption.readonly" :inline="_formOption.readonly">
+        <el-form-item label="对方单位名称:">
+            <el-input v-model="currentItem.companyName" type="text" v-if="!_formOption.readonly"></el-input>
+            <template v-else>
+                {{currentItem.companyName}}
+            </template>
         </el-form-item>
-        <el-form-item :label="currentItem.payType=='0'?'现金':'转账'" v-if="currentItem.payType!='2'">
-            <el-col :span="10">
-                <el-input placeholder="" v-model="currentItem.inputedFee" type="number">
-                    <template slot="append">
-                        元
-                    </template>
-                </el-input>
-            </el-col>
-            <el-col :span="10">
-                <el-select v-model="currentItem.accountId" placeholder="请选择账号" size="medium" v-if="currentItem.payType=='1'">
+        <el-form-item :label="currentItem.payType=='0'?'现金:':'转账:'" v-if="currentItem.payType!='2'">
+            <el-input placeholder="" v-model="currentItem.inputedFee" type="number" v-if="!_formOption.readonly" style="width:200px;float:left">
+                <template slot="append">
+                    元
+                </template>
+            </el-input>
+            <template v-else>
+                {{currentItem.inputedFee}}元
+            </template>
+            <template v-if="!_formOption.readonly">
+                <el-select v-model="currentItem.accountId" placeholder="请选择账号" size="medium" v-if="currentItem.payType=='1'" style="float:left">
                     <el-option v-for="item in currentItem.accounts"
                                :key="item.id"
                                :label="item.name"
                                :value="item.id">
                     </el-option>
                 </el-select>
-            </el-col>
+            </template>
+            <template v-else>
+                {{accountName}}
+            </template>
+
 
         </el-form-item>
         <template v-if="currentItem.payType==2">
-            <el-form-item label="支票号码">
-                <el-input v-model="currentItem.feeCheck.checkNumber" type="text"></el-input>
+            <el-form-item label="支票号码:">
+                <el-input v-model="currentItem.feeCheck.checkNumber" type="text" v-if="!_formOption.readonly"></el-input>
+                <template v-else>
+                    {{currentItem.feeCheck.checkNumber}}
+                </template>
             </el-form-item>
-            <el-form-item label="支票金额">
-                <el-input v-model="currentItem.feeCheck.checkFee" type="number"></el-input>
+            <el-form-item label="支票金额:">
+                <el-input v-model="currentItem.feeCheck.checkFee" type="number" v-if="!_formOption.readonly"></el-input>
+                <template v-else>
+                    {{currentItem.feeCheck.checkFee}}
+                </template>
             </el-form-item>
-            <el-form-item label="开票日期">
-                <el-date-picker type="date" placeholder="选择日期" v-model="currentItem.feeCheck.checkDate"></el-date-picker>
+            <el-form-item label="开票日期:">
+                <el-date-picker type="date" placeholder="选择日期" v-model="currentItem.feeCheck.checkDate" v-if="!_formOption.readonly"></el-date-picker>
+                <template v-else>
+                    {{currentItem.feeCheck.checkDate}}
+                </template>
             </el-form-item>
-            <el-form-item label="兑现期限(天)">
-                <el-input v-model="currentItem.feeCheck.checkDaySpan" type="text"></el-input>
+            <el-form-item label="兑现期限(天):">
+                <el-input v-model="currentItem.feeCheck.checkDaySpan" type="text" v-if="!_formOption.readonly"></el-input>
+                <template v-else>
+                    {{currentItem.feeCheck.checkDaySpan}}
+                </template>
             </el-form-item>
-            <el-form-item label="签发公司">
-                <el-input v-model="currentItem.feeCheck.checkCompany" type="text"></el-input>
+            <el-form-item label="签发公司:">
+                <el-input v-model="currentItem.feeCheck.checkCompany" type="text" v-if="!_formOption.readonly"></el-input>
+                <template v-else>
+                    {{currentItem.feeCheck.checkCompany}}
+                </template>
             </el-form-item>
-            <el-form-item label="银行">
-                <el-input v-model="currentItem.feeCheck.checkBank" type="text"></el-input>
+            <el-form-item label="银行:">
+                <el-input v-model="currentItem.feeCheck.checkBank" type="text" v-if="!_formOption.readonly"></el-input>
+                <template v-else>
+                    {{currentItem.feeCheck.checkBank}}
+                </template>
             </el-form-item>
 
         </template>
-        <el-form-item label="备注">
-            <el-input type="textarea" v-model="currentItem.remarks"></el-input>
+        <el-form-item label="备注:">
+            <el-input type="textarea" v-model="currentItem.remarks" v-if="!_formOption.readonly"></el-input>
+            <template v-else>
+                {{currentItem.remarks}}
+            </template>
         </el-form-item>
     </el-form>
     <el-divider></el-divider>
@@ -110,6 +151,23 @@
                 },
                 remainFee: function () {
                     return (parseFloat(this.totalFee) + parseFloat(this.currentItem.unitInfo.nowFee)).toFixed(2);
+                },
+                payTypeName: function () {
+                    if (this.currentItem.payType == '0') {
+                        return "现金收款";
+                    }
+                    if (this.currentItem.payType == '1') {
+                        return "转账收款";
+                    }
+                    if (this.currentItem.payType == '2') {
+                        return "支票收款";
+                    }
+                },
+                accountName: function () {
+                    var that = this;
+                    if (this.currentItem.accountId) {
+                        return this.currentItem.accounts.filter(function (o) { return o.id == that.currentItem.accountId })[0].name;
+                    }
                 }
             },
             methods: {

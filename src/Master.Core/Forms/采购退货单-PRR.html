@@ -1,17 +1,17 @@
 ﻿<div id="app" v-cloak>
     <el-form :inline="true" size="mini" v-if="!_formOption.readonly" label-width="120px">
-        <el-form-item label="供货商">
+        <el-form-item label="供货商:">
             <unit-select nature="1" :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @change="refreshData" v-if="!_formOption.readonly"></unit-select>
             <template v-else>{{currentItem.unitInfo.unitName}}</template>
         </el-form-item>
-        <el-form-item label="采购入库时间" >
+        <el-form-item label="采购入库时间:" >
             <el-date-picker type="date" placeholder="选择日期" v-model="currentItem.startDate" @change="refreshData" v-if="!_formOption.readonly"></el-date-picker>
             <template v-else>
                 {{currentItem.startDate}}
             </template>
             ~至今
         </el-form-item>
-        <el-form-item label="退货仓库">
+        <el-form-item label="退货仓库:">
             <el-select v-model="currentItem.storeId" placeholder="退货仓库" size="mini" style="width:120px" @change="refreshData">
                 <el-option v-for="item in currentItem.stores"
                            :key="item.id"
@@ -65,19 +65,19 @@
     </el-form>
     
     <el-form :inline="true" size="mini" :disabled="_formOption.readonly" label-width="120px">
-        <el-form-item label="货款总额">
+        <el-form-item label="货款总额:">
             <el-input v-model="materialFee" readonly="true" v-if="!_formOption.readonly"></el-input>
             <template v-else>
                 {{materialFee}}
             </template>
         </el-form-item>
-        <el-form-item label="其它费用">
+        <el-form-item label="其它费用:">
             <el-input v-model="currentItem.otherFee" typeof="number" v-if="!_formOption.readonly"></el-input>
             <template v-else>
                 {{currentItem.otherFee}}
             </template>
         </el-form-item>
-        <el-form-item label="本单应收金额">
+        <el-form-item label="本单应收金额:">
             <el-input v-model="totalFee" readonly="true" v-if="!_formOption.readonly"></el-input>
             <template v-else>
                 {{totalFee}}
@@ -86,7 +86,7 @@
 
     </el-form>
     <el-form size="mini" :disabled="_formOption.readonly">
-        <el-form-item label="备注">
+        <el-form-item label="备注:">
             <el-input type="textarea" v-model="currentItem.remarks" v-if="!_formOption.readonly"></el-input>
             <template v-else>
                 {{currentItem.remarks}}
