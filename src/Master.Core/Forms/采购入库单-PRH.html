@@ -1,113 +1,178 @@
-﻿<div id="app" v-cloak>
-    <el-form :inline="true" size="mini" :disabled="_formOption.readonly">
-        <el-form-item label="入库日期:">
-            {{currentItem.sheetDate}}
-            <!--<el-input v-model="currentItem.sheetDate" readonly="true"></el-input>-->
-        </el-form-item>
-        <el-form-item label="供货商:">
-            {{currentItem.unitName}}
-            <!--<el-input v-model="currentItem.unitName" readonly="true"></el-input>-->
-        </el-form-item>
-        <el-form-item label="收货仓库:">
-            {{currentItem.storeName}}
-            <!--<el-input v-model="currentItem.storeName" readonly="true"></el-input>-->
-        </el-form-item>
+﻿<style>
+    th{
+        min-width:60px;
+    }
+</style>
+<div id="app" v-cloak>
+    <template v-if="_formOption.mode!='print'">
+        <el-form :inline="true" size="mini" :disabled="_formOption.readonly">
+            <el-form-item label="入库日期:">
+                {{currentItem.sheetDate}}
+                <!--<el-input v-model="currentItem.sheetDate" readonly="true"></el-input>-->
+            </el-form-item>
+            <el-form-item label="供货商:">
+                {{currentItem.unitName}}
+                <!--<el-input v-model="currentItem.unitName" readonly="true"></el-input>-->
+            </el-form-item>
+            <el-form-item label="收货仓库:">
+                {{currentItem.storeName}}
+                <!--<el-input v-model="currentItem.storeName" readonly="true"></el-input>-->
+            </el-form-item>
 
-    </el-form>
-    <el-form :disabled="_formOption.readonly">
-        <table class="layui-table" style="min-width:1200px">
-            <thead>
-                <tr>
-                    <th>品名</th>
-                    <th>规格</th>
-                    <th>零售价</th>
-                    <th>进货折扣</th>
-                    <th>进货单价</th>
-                    <th>备注</th>
-                    <th>进货数量</th>
-                    <th>计量单位</th>
-                    <th>适用区域</th>
-                    <th>特征符</th>
-                    <th >卡号</th>
-                    <th v-if="!_formOption.readonly">操作</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(item,index) in currentItem.items">
-                    <td>{{item.name}}</td>
-                    <td>{{item.specification}}</td>
-                    <td>{{item.price}}</td>
-                    <td><el-input-number v-model="item.discount" :min="0" :max="1" :step="0.1" label="折扣" size="mini" style="width:140px" v-if="!_formOption.readonly"></el-input-number>
-                        <template v-else>
-                            {{item.discount}}
-                        </template>
-                    </td>
-                    <td>
-                        {{(item.price*item.discount).toFixed(2)}}
-                    </td>
-                    <td>{{item.remarks}}</td>
-                    <td><el-input-number v-model="item.number" :min="1" label="进货数量" size="mini" style="width:140px" v-if="!_formOption.readonly"></el-input-number>
-                        <template v-else>
-                            {{item.number}}
-                        </template>
-                    </td>
-                    <td>{{item.measureMentUnit}}</td>
-                    <td>{{item.location}}</td>
-                    <td>
-                        <el-input v-model="item.featureCode" style="width:100px" size="mini" v-if="!_formOption.readonly"></el-input>
-                        <div v-else>{{item.featureCode}}</div>
-                    </td>
-                    <td>
-                        <template v-if="!_formOption.readonly">
-                            <el-col :span="10">
-                                <el-input v-model="item.codeStartNumber" size="mini" style="width:120px;"></el-input>                                
-                            </el-col>
-                            <el-col class="line" :span="2" style="padding:8px">至</el-col>
-                            <el-col :span="10">
-                                <el-input v-model="item.codeEndNumber" size="mini" style="width:120px;" v-if="!_formOption.readonly"></el-input>
-                            </el-col>
-                        </template>
-                        <template v-else>
-                            <div style="word-break:break-all">{{item.codeStartNumber}}&nbsp;至&nbsp;{{item.codeEndNumber}}</div>
-                        </template>
-                        
-                    </td>
-                    <td v-if="!_formOption.readonly"><a title="删除" style="cursor: pointer;" @click="currentItem.items.splice(index,1);"><i class="layui-icon layui-icon-delete"></i></a></td>
-                </tr>
-            </tbody>
-        </table>
-    </el-form>
-    
-    <el-form :inline="true" size="mini" :disabled="_formOption.readonly">
-        <el-form-item label="货款总额:">
-            <el-input v-model="materialFee" readonly="true" v-if="!_formOption.readonly"></el-input>
-            <template v-else>
-                {{materialFee}}
-            </template>
-        </el-form-item>
-        <el-form-item label="其它费用:">
-            <el-input v-model="currentItem.otherFee" typeof="number" v-if="!_formOption.readonly"></el-input>
-            <template v-else>
-                {{currentItem.otherFee}}
-            </template>
-        </el-form-item>
-        <el-form-item label="本单应付金额:">
-            <el-input v-model="totalFee" readonly="true" v-if="!_formOption.readonly"></el-input>
-            <template v-else>
-                {{totalFee}}
-            </template>
-        </el-form-item>
+        </el-form>
+        <el-form :disabled="_formOption.readonly">
+            <table class="layui-table" style="min-width:1400px">
+                <thead>
+                    <tr>
+                        <th>品名</th>
+                        <th>规格</th>
+                        <th>零售价</th>
+                        <th>进货折扣</th>
+                        <th>进货单价</th>
+                        <th>备注</th>
+                        <th>进货数量</th>
+                        <th>计量单位</th>
+                        <th>适用区域</th>
+                        <th>特征符</th>
+                        <th style="min-width:180px">卡号</th>
+                        <th v-if="!_formOption.readonly">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item,index) in currentItem.items">
+                        <td>{{item.name}}</td>
+                        <td>{{item.specification}}</td>
+                        <td>{{item.price}}</td>
+                        <td>
+                            <el-input-number v-model="item.discount" :min="0" :max="1" :step="0.1" label="折扣" size="mini" style="width:100px" v-if="!_formOption.readonly"></el-input-number>
+                            <template v-else>
+                                {{item.discount}}
+                            </template>
+                        </td>
+                        <td>
+                            {{(item.price*item.discount).toFixed(2)}}
+                        </td>
+                        <td>{{item.remarks}}</td>
+                        <td>
+                            <el-input-number v-model="item.number" :min="1" label="进货数量" size="mini" style="width:100px" v-if="!_formOption.readonly"></el-input-number>
+                            <template v-else>
+                                {{item.number}}
+                            </template>
+                        </td>
+                        <td>{{item.measureMentUnit}}</td>
+                        <td>{{item.location}}</td>
+                        <td>
+                            <el-input v-model="item.featureCode" style="width:100px" size="mini" v-if="!_formOption.readonly"></el-input>
+                            <div v-else>{{item.featureCode}}</div>
+                        </td>
+                        <td>
+                            <template v-if="!_formOption.readonly">
+                                <el-input v-model="item.codeNumber" size="mini" style="width:120px;"></el-input>
+                                <el-button type="primary" size="mini" @click="showCode(item)">更多</el-button>
+                            </template>
+                            <template v-else>
+                                <div style="word-break:break-all">{{item.codeNumber}}</div>
+                            </template>
 
-    </el-form>
-    <el-form size="mini" :disabled="_formOption.readonly">
-        <el-form-item label="备注">
-            <el-input type="textarea" v-model="currentItem.remarks" v-if="!_formOption.readonly"></el-input>
-            <template v-else>
-                {{currentItem.remarks}}
-            </template>
-        </el-form-item>
-    </el-form>
+                        </td>
+                        <td v-if="!_formOption.readonly"><a title="删除" style="cursor: pointer;" @click="currentItem.items.splice(index,1);"><i class="layui-icon layui-icon-delete"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </el-form>
 
+        <el-form :inline="true" size="mini" :disabled="_formOption.readonly">
+            <el-form-item label="货款总额:">
+                <el-input v-model="materialFee" readonly="true" v-if="!_formOption.readonly"></el-input>
+                <template v-else>
+                    {{materialFee}}
+                </template>
+            </el-form-item>
+            <el-form-item label="其它费用:">
+                <el-input v-model="currentItem.otherFee" typeof="number" v-if="!_formOption.readonly"></el-input>
+                <template v-else>
+                    {{currentItem.otherFee}}
+                </template>
+            </el-form-item>
+            <el-form-item label="本单应付金额:">
+                <el-input v-model="totalFee" readonly="true" v-if="!_formOption.readonly"></el-input>
+                <template v-else>
+                    {{totalFee}}
+                </template>
+            </el-form-item>
+
+        </el-form>
+        <el-form size="mini" :disabled="_formOption.readonly">
+            <el-form-item label="备注">
+                <el-input type="textarea" v-model="currentItem.remarks" v-if="!_formOption.readonly"></el-input>
+                <template v-else>
+                    {{currentItem.remarks}}
+                </template>
+            </el-form-item>
+        </el-form>
+    </template>
+
+    <template v-if="_formOption.mode=='print'">
+        <div id="print">
+            <p class="content-right">存根联—白色&nbsp; &nbsp; &nbsp; &nbsp; 客户联—红色&nbsp; &nbsp; &nbsp; &nbsp; 记账联—黄色</p>
+            <div class="content-left">
+                <h1>上海坤昌商务咨询有限公司（入库单）</h1>
+                <table id="table1" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td class="weight-font">入库单号：</td>
+                        <td>{{sheetInfo.sheetSN}}</td>
+                        <td class="weight-font">制单日期：</td>
+                        <td>{{new Date(sheetInfo.creationTime).pattern('yyyy-MM-dd')}}</td>
+                        <td class="weight-font">经办人：</td>
+                        <td>{{sheetInfo.creatorUserName}}</td>
+                    </tr>
+                    <tr>
+                        <td class="weight-font">供应商名称：</td>
+                        <td>{{currentItem.unitName}}</td>
+                        <td class="weight-font">收货仓库：</td>
+                        <td>{{currentItem.storeName}}</td>
+                        <td class="weight-font"></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="weight-font">本单应付：</td>
+                        <td>{{totalFee}}</td>
+                        <td class="weight-font">备注：</td>
+                        <td>{{currentItem.remarks}}</td>
+                    </tr>
+                </table>
+                <table id="table2" cellspacing="0">
+                    <tr style="text-align: center;" class="weight-font">
+                        <td>品名</td>
+                        <td>规格</td>
+                        <td>零售价</td>
+                        <td>进货单价</td>
+                        <td>进货数量</td>
+                        <td>计量单位</td>
+                        <td>小计</td>
+                    </tr>
+                    <tr v-for="(item,index) in currentItem.items">
+                        <td class="tx-c">{{item.name}}</td>
+                        <td class="tx-c">{{item.specification}}</td>
+                        <td class="tx-r">{{item.price}}</td>
+                        <td class="tx-r">{{(item.price*item.discount).toFixed(2)}}</td>
+                        <td class="tx-r">{{item.number}}</td>
+                        <td class="tx-c">{{item.measureMentUnit}}</td>
+                        <td class="tx-r">{{getSum(item)}}</td>
+                    </tr>
+                </table>
+                <p class="total-wrap">
+                    <span style="margin-right:30px;">货款总额：{{materialFee}}元</span>
+                    <span>其他费用：{{currentItem.otherFee}}元</span>
+                </p>
+                <p class="total-wrap weight-font sign">
+                    <span style="margin-right:30px;">收货人签名：</span>
+                    <span>供应商签名：</span>
+                </p>
+            </div>
+
+        </div>
+    </template>
 </div>
 <script>
     config.ready = function () {
@@ -137,9 +202,41 @@
                 },
                 totalFee: function () {
                     return (parseFloat(this.materialFee) + parseFloat(this.currentItem.otherFee||0)).toFixed(2);
-                }
+                },
+                
             },
             methods: {
+                getSum:function(item) {
+                    if (!item.number) {
+                        return '';
+                    } else {
+                        return (item.number * item.price * item.discount).toFixed(2);
+                    }
+                },
+                showCode: function (item) {
+                    var that = this;
+                    layer.prompt({ title: '请输入号码段', formType: 2, value: item.codeNumber }, function (text, index) {
+                        if (that.isValidCode(text)) {
+                            layer.close(index);
+                            item.codeNumber = text;
+                        } else {
+                            abp.message.error('输入格式不正确，有效格式如下：000001~000009;2424234;4564566');
+                        }
+                        
+                      });
+                },
+                isValidCode: function (code) {
+                    if (!code) { return true;}
+                    var codeArr = code.split(';');
+                    var valid = true;
+                    for (var i = 0; i < codeArr.length; i++) {
+                        if (!isNaN(codeArr[i])) continue;
+                        if (/\d+~\d+/.test(codeArr[i])) continue;
+                        valid = false;
+                        break;
+                    }
+                    return valid;
+                }
             },
             created:function() {
                 var that = this;
@@ -175,6 +272,7 @@
         if (!data.length) {
             throw "请至少录入一条数据";
         }
+        data.forEach(function (o) { if (!app.isValidCode(o.codeNumber)){ throw "号码段输入格式不正确";}})
         var sheetData = {
             header: {
                 sheetDate: app.currentItem.sheetDate,

@@ -59,9 +59,36 @@ namespace Master.FlowHandlers
                     Price=sheetItem["price"].ToObjectWithDefault<decimal>(),
                     Discount=sheetItem["discount"].ToObjectWithDefault<decimal>(),
                     FeatureCode =sheetItem["featureCode"].ToObjectWithDefault<string>(),
-                    CodeStartNumber= sheetItem["codeStartNumber"].ToObjectWithDefault<string>(),
-                    CodeEndNumber = sheetItem["codeEndNumber"].ToObjectWithDefault<string>(),
+                    MaterialBuyCodes=new List<MaterialBuyCode>()
+                    //CodeStartNumber= sheetItem["codeStartNumber"].ToObjectWithDefault<string>(),
+                    //CodeEndNumber = sheetItem["codeEndNumber"].ToObjectWithDefault<string>(),
                 };
+                //code记录
+                var codeNumber = sheetItem["codeNumber"].ToString();
+                if (!string.IsNullOrEmpty(codeNumber))
+                {
+                    var codeArr = codeNumber.Split(';');
+                    codeArr.ToList().ForEach(o =>
+                    {
+                        var startNumber = 0M;
+                        var endNumber = 0M;
+                        if (o.IndexOf('~') < 0)
+                        {
+                            startNumber = decimal.Parse(o);
+                            endNumber = decimal.Parse(o);
+                        }
+                        else
+                        {
+                            startNumber = decimal.Parse(o.Split('~')[0]);
+                            endNumber = decimal.Parse(o.Split('~')[1]);
+                        }
+                        materialBuy.MaterialBuyCodes.Add(new MaterialBuyCode()
+                        {
+                            CodeStartNumber=startNumber,
+                            CodeEndNumber=endNumber
+                        });
+                    });
+                }
                 await MaterialBuyManager.InsertAsync(materialBuy);
                 //库存变化
                 await StoreMaterialManager.CountMaterial(storeId, materialId, number,flowSheet);

@@ -1,56 +1,114 @@
 ﻿<div id="app" v-cloak>
-    <el-form :inline="true" size="mini" :disabled="_formOption.readonly" label-width="120px">
-        <el-form-item label="交货日期:">
-            <el-date-picker v-model="currentItem.sheetDate" type="date" placeholder="选择交货日期" format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-if="!_formOption.readonly">
-            </el-date-picker>
-            <template v-else>
-                {{currentItem.sheetDate}}
-            </template>
-        </el-form-item>
-        <el-form-item label="存放仓库:">
-            {{currentItem.storeName}}
-            <!--<el-input v-model="currentItem.storeName" readonly="true"></el-input>-->
-        </el-form-item>
+    <template v-if="_formOption.mode!='print'">
+        <el-form :inline="true" size="mini" :disabled="_formOption.readonly" label-width="120px">
+            <el-form-item label="交货日期:">
+                <el-date-picker v-model="currentItem.sheetDate" type="date" placeholder="选择交货日期" format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-if="!_formOption.readonly">
+                </el-date-picker>
+                <template v-else>
+                    {{currentItem.sheetDate}}
+                </template>
+            </el-form-item>
+            <el-form-item label="存放仓库:">
+                {{currentItem.storeName}}
+                <!--<el-input v-model="currentItem.storeName" readonly="true"></el-input>-->
+            </el-form-item>
 
 
-    </el-form>
-    <el-form :disabled="_formOption.readonly">
-        <table class="layui-table">
-            <thead>
-                <tr>
-                    <th>品名</th>
-                    <th>规格</th>
-                    <th>备注</th>
-                    <th>当前库存</th>
-                    <th>装配数量</th>
-                    <th>计量单位</th>
-                    <th v-if="!_formOption.readonly">操作</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(item,index) in currentItem.items">
-                    <td>{{item.name}}</td>
-                    <td>{{item.specification}}</td>
-                    <td>{{item.remarks}}</td>
-                    <td>{{item.storeNumber}}</td>
-                    <td><el-input-number v-model="item.number" :min="1" label="装配数量" v-if="!_formOption.readonly"></el-input-number>
-                    <template v-else>{{item.number}}</template></td>
-                    <td>{{item.measureMentUnit}}</td>
-                    <td v-if="!_formOption.readonly"><a title="删除" style="cursor: pointer;" @click="currentItem.items.splice(index,1);"><i class="layui-icon layui-icon-delete"></i></a></td>
-                </tr>
-            </tbody>
-        </table>
-    </el-form>
-    
-    <el-form size="mini" :disabled="_formOption.readonly" label-width="120px">
-        <el-form-item label="备注:">
-            <el-input type="textarea" v-model="currentItem.remarks" v-if="!_formOption.readonly"></el-input>
-            <template v-else>
-                {{currentItem.remarks}}
-            </template>
-        </el-form-item>
-    </el-form>
+        </el-form>
+        <el-form :disabled="_formOption.readonly">
+            <table class="layui-table">
+                <thead>
+                    <tr>
+                        <th>品名</th>
+                        <th>规格</th>
+                        <th>备注</th>
+                        <th>当前库存</th>
+                        <th>装配数量</th>
+                        <th>计量单位</th>
+                        <th v-if="!_formOption.readonly">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item,index) in currentItem.items">
+                        <td>{{item.name}}</td>
+                        <td>{{item.specification}}</td>
+                        <td>{{item.remarks}}</td>
+                        <td>{{item.storeNumber}}</td>
+                        <td>
+                            <el-input-number v-model="item.number" :min="1" label="装配数量" v-if="!_formOption.readonly"></el-input-number>
+                            <template v-else>
+                                {{item.number}}
+                            </template>
+                        </td>
+                        <td>{{item.measureMentUnit}}</td>
+                        <td v-if="!_formOption.readonly"><a title="删除" style="cursor: pointer;" @click="currentItem.items.splice(index,1);"><i class="layui-icon layui-icon-delete"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </el-form>
 
+        <el-form size="mini" :disabled="_formOption.readonly" label-width="120px">
+            <el-form-item label="备注:">
+                <el-input type="textarea" v-model="currentItem.remarks" v-if="!_formOption.readonly"></el-input>
+                <template v-else>
+                    {{currentItem.remarks}}
+                </template>
+            </el-form-item>
+        </el-form>
+    </template>
+
+    <template v-if="_formOption.mode=='print'">
+        <div id="print">
+            <p class="content-right">存根联—白色&nbsp; &nbsp; &nbsp; &nbsp; 客户联—红色&nbsp; &nbsp; &nbsp; &nbsp; 记账联—黄色</p>
+            <div class="content-left">
+                <h1>上海坤昌商务咨询有限公司（装配单）</h1>
+                <table id="table1" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td class="weight-font">装配单号：</td>
+                        <td>{{sheetInfo.sheetSN}}</td>
+                        <td class="weight-font">制单日期：</td>
+                        <td>{{new Date(sheetInfo.creationTime).pattern('yyyy-MM-dd')}}</td>
+                        <td class="weight-font">经办人：</td>
+                        <td>{{sheetInfo.creatorUserName}}</td>
+                    </tr>
+                    <tr>
+                        <td class="weight-font">存放仓库：</td>
+                        <td>{{currentItem.storeName}}</td>
+                        <td class="weight-font">交货日期：</td>
+                        <td>{{currentItem.sheetDate}}</td>
+                        <td class="weight-font"></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="weight-font">备注：</td>
+                        <td>{{currentItem.remarks}}</td>
+                        <td class="weight-font"></td>
+                        <td></td>
+                    </tr>
+                </table>
+                <table id="table2" cellspacing="0">
+                    <tr style="text-align: center;" class="weight-font">
+                        <td>品名</td>
+                        <td>规格</td>
+                        <td>备注</td>
+                        <td>装配数量</td>
+                        <td>计量单位</td>
+                    </tr>
+                    <tr v-for="(item,index) in currentItem.items">
+                        <td class="tx-c">{{item.name}}</td>
+                        <td class="tx-c">{{item.specification}}</td>
+                        <td class="tx-r">{{item.remarks}}</td>
+                        <td class="tx-r">{{item.number}}</td>
+                        <td class="tx-c">{{item.measureMentUnit}}</td>
+                    </tr>
+                </table>
+                <p class="total-wrap weight-font sign">
+                    <span style="margin-right:30px;">签名：</span>
+                </p>
+            </div>
+
+        </div>
+    </template>
 </div>
 <script>
     config.ready = function () {

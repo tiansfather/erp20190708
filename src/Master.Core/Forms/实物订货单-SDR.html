@@ -12,20 +12,20 @@
         <el-form-item label="配送日期:">
             <el-date-picker v-model="currentItem.deliverDate"
                             type="date"
-                            placeholder="选择日期" v-if="!_formOption.readonly">
+                            placeholder="选择日期" v-if="isSend && _formOption.mode!='readonly'">
             </el-date-picker>
             <template v-else>
                 {{currentItem.deliverDate?new Date(currentItem.deliverDate).pattern('yyyy-MM-dd'):''}}
             </template>
         </el-form-item>
         <el-form-item label="收货人:">
-            <el-input v-model="currentItem.receiver" v-if="!_formOption.readonly"></el-input>
+            <el-input v-model="currentItem.receiver" v-if="isSend && _formOption.mode!='readonly'"></el-input>
             <template v-else>
                 {{currentItem.receiver}}
             </template>
         </el-form-item>
         <el-form-item label="收货人电话:">
-            <el-input v-model="currentItem.receiverMobile" v-if="!_formOption.readonly"></el-input>
+            <el-input v-model="currentItem.receiverMobile" v-if="isSend && _formOption.mode!='readonly'"></el-input>
             <template v-else>
                 {{currentItem.receiverMobile}}
             </template>
@@ -33,13 +33,13 @@
     </el-form>
     <el-form ref="form" label-width="120px" >
         <el-form-item label="送货地址:">
-            <el-input v-model="currentItem.receiverAddress" v-if="!_formOption.readonly"></el-input>
+            <el-input v-model="currentItem.receiverAddress" v-if="isSend && _formOption.mode!='readonly'"></el-input>
             <template v-else>
                 {{currentItem.receiverAddress}}
             </template>
         </el-form-item>
         <el-form-item label="备注:">
-            <el-input v-model="currentItem.remarks" v-if="!_formOption.readonly"></el-input>
+            <el-input v-model="currentItem.remarks" v-if="isSend && _formOption.mode!='readonly'"></el-input>
             <template v-else>
                 {{currentItem.remarks}}
             </template>
@@ -75,7 +75,7 @@
                     <th>计量单位</th>
                     <th>适用区域</th>
                     <template v-if="isSend">
-                        <th>折扣</th>
+                        <th width="120">折扣</th>
                         <th>发货单价</th>
                         <th>小计</th>
                     </template>
@@ -93,7 +93,7 @@
                     <td>{{item.location}}</td>
                     <template v-if="isSend">
                         <td>
-                        <el-input-number v-model="item.discount" :min="0" :max="1" :step="0.1" label="折扣" v-if="!_formOption.readonly"></el-input-number>
+                        <el-input-number v-model="item.discount" style="width:100px" :min="0" :max="1" size="mini" :step="0.1" label="折扣" v-if="isSend &&_formOption.mode!='readonly'"></el-input-number>
                             <template v-else>{{item.discount}}</template>
                         </td>
                         <td>

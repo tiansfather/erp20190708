@@ -25,6 +25,7 @@ namespace Master.Storage
         public string FeatureCode { get; set; }
         public string CodeStartNumber { get; set; }
         public string CodeEndNumber { get; set; }
+        public virtual ICollection<MaterialBuyCode> MaterialBuyCodes { get; set; }
         [NotMapped]
         public int CanBackNumber
         {

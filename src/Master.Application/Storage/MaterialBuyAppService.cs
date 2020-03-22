@@ -117,7 +117,8 @@ namespace Master.Storage
             {
                 throw new UserFriendlyException("卡号必须为数字类型");
             }
-            var count = await Resolve<IDynamicQuery>().FirstOrDefaultAsync<int>($"select count(0) from materialbuy where FeatureCode='{featureCode}' and CAST(CodeStartNumber AS Decimal(24))<={codeNumber} and CAST(CodeEndNumber AS Decimal(24))>={codeNumber}");
+            var count =await Manager.GetAll().Where(o => o.FeatureCode == featureCode && o.MaterialBuyCodes.Count(b => b.CodeStartNumber <= codeNumber && b.CodeEndNumber >= codeNumber) > 0).CountAsync();
+            //var count = await Resolve<IDynamicQuery>().FirstOrDefaultAsync<int>($"select count(0) from materialbuy where FeatureCode='{featureCode}' and CAST(CodeStartNumber AS Decimal(24))<={codeNumber} and CAST(CodeEndNumber AS Decimal(24))>={codeNumber}");
             //var count=await Manager.GetAll().FromSql($"select * from materialbuy where FeatureCode='{featureCode}' and CAST(CodeStartNumber AS Decimal(24))<{codeNumber} and CAST(CodeEndNumber AS Decimal(24))>{codeNumber}").CountAsync();
             return count>0;
         }

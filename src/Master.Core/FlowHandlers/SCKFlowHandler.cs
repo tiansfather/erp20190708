@@ -85,9 +85,9 @@ namespace Master.FlowHandlers
             foreach(var item in toOutMaterials)
             {
                 //检测库存是否足够
-                if(!await StoreMaterialManager.IsSatisfied(item.Key, storeId, unitId, item.Value))
+                if(!StoreMaterialManager.IsSatisfied(item.Key, storeId, unitId, item.Value,out var message))
                 {
-                    throw new UserFriendlyException("库存不足，无法出库");
+                    throw new UserFriendlyException(message);
                 }
                 await StoreMaterialManager.CountMaterial(storeId, item.Key, -item.Value, flowSheet);
             }

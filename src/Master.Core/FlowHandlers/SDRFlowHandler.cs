@@ -201,6 +201,11 @@ namespace Master.FlowHandlers
                         Discount = sheetItem["discount"].ToObjectWithDefault<decimal>()
                     };
                     await MaterialSellOutManager.InsertAsync(materialSellOut);
+                    //检测库存是否足够
+                    if (!StoreMaterialManager.IsSatisfied(materialId, outStoreId.Value, unitId, number, out var message))
+                    {
+                        throw new UserFriendlyException(message);
+                    }
                     //库存变化
                     await StoreMaterialManager.CountMaterial(outStoreId.Value, materialId, -number, flowSheet);
 

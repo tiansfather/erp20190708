@@ -1,6 +1,10 @@
 ﻿<style>
-    .is-error,.is-error input{
-        color:red !important;
+    .is-error, .is-error input {
+        color: red !important;
+    }
+
+    th {
+        min-width: 60px;
     }
 </style>
 <div id="app" v-cloak>
@@ -31,7 +35,7 @@
                 <thead>
                     <tr>
                         <th>订单编号</th>
-                        <th>下单时间</th>
+                        <th style="min-width:80px;">下单时间</th>
                         <th>品名</th>
                         <th>市场单价</th>
                         <th>折扣</th>
@@ -49,7 +53,7 @@
                         <td>{{item.creationTime}}</td>
                         <td>{{item.name}}</td>
                         <td>{{item.price}}</td>
-                        <td><el-input-number v-model="item.discount" size="mini" :min="0" :step="0.1" :max="1" label="折扣" style="width:140px" v-if="!_formOption.readonly"></el-input-number>
+                        <td><el-input-number v-model="item.discount" size="mini" :min="0" :step="0.1" :max="1" label="折扣" style="width:100px" v-if="!_formOption.readonly"></el-input-number>
                             <template v-else>
                                 {{item.discount}}
                             </template></td>
@@ -59,7 +63,7 @@
                         <td>{{item.sellNumber}}</td>
                         <td>{{item.outNumber}}</td>
                         <td :title="getSellMode(item)" :class="{'is-error':isError(item)}">{{item.storeNumber}}</td>
-                        <td><el-input-number v-model="item.number" size="mini" :min="0" :max="item.sellNumber-item.outNumber" label="" style="width:140px" v-if="!_formOption.readonly" :class="{'is-error':isError(item)}"></el-input-number>
+                        <td><el-input-number v-model="item.number" size="mini" :min="0" :max="item.sellNumber-item.outNumber" label="" style="width:100px" v-if="!_formOption.readonly" :class="{'is-error':isError(item)}"></el-input-number>
                             <template v-else>
                                 {{item.number}}
                             </template></td>

@@ -1,103 +1,172 @@
 ﻿<div id="app" v-cloak>
-    <el-form :inline="true" size="mini" :disabled="_formOption.readonly" label-width="120px">
-        <el-form-item label="代理商:">
-            <unit-select nature="0" :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @change="refreshData" v-if="!_formOption.readonly"></unit-select>
-            <template v-else>
-                {{currentItem.unitInfo?currentItem.unitInfo.unitName:''}}
-            </template>
-        </el-form-item>
-        <el-form-item label="订购时间:">
-            <el-date-picker type="date" placeholder="选择日期" v-model="currentItem.startDate" @change="refreshData" v-if="!_formOption.readonly"></el-date-picker>
-            <template v-else>
-                {{currentItem.startDate}}
-            </template>
-            ~至今
-        </el-form-item>
-        <el-form-item label="退入仓库:">
-            <el-select v-model="currentItem.storeId" placeholder="退入仓库" size="mini" style="width:120px" v-if="!_formOption.readonly">
-                <el-option v-for="item in currentItem.stores"
-                           :key="item.id"
-                           :label="item.name"
-                           :value="item.id">
-                </el-option>
-            </el-select>
-            <template v-else>
-                {{storeName}}
-            </template>
-        </el-form-item>
-    </el-form>
-    <el-divider></el-divider>
-    <el-form :disabled="_formOption.readonly">
-        <table class="layui-table">
-            <thead>
-                <tr>
-                    <th>品名</th>
-                    <th>规格</th>
-                    <th>市场单价</th>
-                    <th>订购总数量</th>
-                    <th>已退数量</th>
-                    <th>本次退货数量</th>
-                    <th>退货折扣</th>
-                    <th>退货单价</th>
-                    <th>金额小计</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(item,index) in currentItem.items">
-                    <td>{{item.name}}</td>
-                    <td>{{item.specification}}</td>
-                    <td>{{item.price}}</td>
-                    <td>{{item.sellNumber}}</td>
-                    <td>{{item.backNumber}}</td>
-                    <td><el-input-number v-model="item.number" :min="0" :max="item.canBackNumber" label="退货数量" style="width:140px" v-if="!_formOption.readonly"></el-input-number>
-                    <template v-else>
-    {{item.number}}
-</template></td>
-                    <td>
-                        <el-input-number v-model="item.discount" :precision="2" :step="0.1" :max="1" :min="0" style="width:140px" v-if="!_formOption.readonly"></el-input-number>
-                        <template v-else>
-                            {{item.discount}}
-                        </template>
-                    </td>
-                    <td>{{(item.price*item.discount).toFixed(2)}}</td>
-                    <td>
-                        {{getRowTotal(item)}}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </el-form>
-    
-    <el-form :inline="true" size="mini" :disabled="_formOption.readonly" label-width="120px">
-        <el-form-item label="货款总额:">
-            <el-input v-model="materialFee" readonly="true" v-if="!_formOption.readonly"></el-input>
-            <template v-else>
-                {{materialFee}}
-            </template>
-        </el-form-item>
-        <el-form-item label="其它费用:">
-            <el-input v-model="currentItem.otherFee" typeof="number" v-if="!_formOption.readonly"></el-input>
-            <template v-else>
-                {{currentItem.otherFee}}
-            </template>
-        </el-form-item>
-        <el-form-item label="本单应退金额:">
-            <el-input v-model="totalFee" readonly="true" v-if="!_formOption.readonly"></el-input>
-            <template v-else>
-                {{totalFee}}
-            </template>
-        </el-form-item>
+    <template v-if="_formOption.mode!='print'">
+        <el-form :inline="true" size="mini" :disabled="_formOption.readonly" label-width="120px">
+            <el-form-item label="代理商:">
+                <unit-select nature="0" :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @change="refreshData" v-if="!_formOption.readonly"></unit-select>
+                <template v-else>
+                    {{currentItem.unitInfo?currentItem.unitInfo.unitName:''}}
+                </template>
+            </el-form-item>
+            <el-form-item label="订购时间:">
+                <el-date-picker type="date" placeholder="选择日期" v-model="currentItem.startDate" @change="refreshData" v-if="!_formOption.readonly"></el-date-picker>
+                <template v-else>
+                    {{currentItem.startDate}}
+                </template>
+                ~至今
+            </el-form-item>
+            <el-form-item label="退入仓库:">
+                <el-select v-model="currentItem.storeId" placeholder="退入仓库" size="mini" style="width:120px" v-if="!_formOption.readonly">
+                    <el-option v-for="item in currentItem.stores"
+                               :key="item.id"
+                               :label="item.name"
+                               :value="item.id">
+                    </el-option>
+                </el-select>
+                <template v-else>
+                    {{storeName}}
+                </template>
+            </el-form-item>
+        </el-form>
+        <el-divider></el-divider>
+        <el-form :disabled="_formOption.readonly">
+            <table class="layui-table">
+                <thead>
+                    <tr>
+                        <th>品名</th>
+                        <th>规格</th>
+                        <th>市场单价</th>
+                        <th>订购总数量</th>
+                        <th>已退数量</th>
+                        <th>本次退货数量</th>
+                        <th>退货折扣</th>
+                        <th>退货单价</th>
+                        <th>金额小计</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item,index) in currentItem.items">
+                        <td>{{item.name}}</td>
+                        <td>{{item.specification}}</td>
+                        <td>{{item.price}}</td>
+                        <td>{{item.sellNumber}}</td>
+                        <td>{{item.backNumber}}</td>
+                        <td>
+                            <el-input-number v-model="item.number" :min="0" :max="item.canBackNumber" label="退货数量" style="width:140px" v-if="!_formOption.readonly"></el-input-number>
+                            <template v-else>
+                                {{item.number}}
+                            </template>
+                        </td>
+                        <td>
+                            <el-input-number v-model="item.discount" :precision="2" :step="0.1" :max="1" :min="0" style="width:140px" v-if="!_formOption.readonly"></el-input-number>
+                            <template v-else>
+                                {{item.discount}}
+                            </template>
+                        </td>
+                        <td>{{(item.price*item.discount).toFixed(2)}}</td>
+                        <td>
+                            {{getRowTotal(item)}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </el-form>
 
-    </el-form>
-    <el-form size="mini" :disabled="_formOption.readonly" label-width="120px">
-        <el-form-item label="备注:">
-            <el-input type="textarea" v-model="currentItem.remarks" v-if="!_formOption.readonly"></el-input>
-            <template v-else>
-                {{currentItem.remarks}}
-            </template>
-        </el-form-item>
-    </el-form>
+        <el-form :inline="true" size="mini" :disabled="_formOption.readonly" label-width="120px">
+            <el-form-item label="货款总额:">
+                <el-input v-model="materialFee" readonly="true" v-if="!_formOption.readonly"></el-input>
+                <template v-else>
+                    {{materialFee}}
+                </template>
+            </el-form-item>
+            <el-form-item label="其它费用:">
+                <el-input v-model="currentItem.otherFee" typeof="number" v-if="!_formOption.readonly"></el-input>
+                <template v-else>
+                    {{currentItem.otherFee}}
+                </template>
+            </el-form-item>
+            <el-form-item label="本单应退金额:">
+                <el-input v-model="totalFee" readonly="true" v-if="!_formOption.readonly"></el-input>
+                <template v-else>
+                    {{totalFee}}
+                </template>
+            </el-form-item>
 
+        </el-form>
+        <el-form size="mini" :disabled="_formOption.readonly" label-width="120px">
+            <el-form-item label="备注:">
+                <el-input type="textarea" v-model="currentItem.remarks" v-if="!_formOption.readonly"></el-input>
+                <template v-else>
+                    {{currentItem.remarks}}
+                </template>
+            </el-form-item>
+        </el-form>
+
+    </template>
+    <template v-if="_formOption.mode=='print'">
+        <div id="print">
+            <p class="content-right">存根联—白色&nbsp; &nbsp; &nbsp; &nbsp; 客户联—红色&nbsp; &nbsp; &nbsp; &nbsp; 记账联—黄色</p>
+            <div class="content-left">
+                <h1>上海坤昌商务咨询有限公司（退库单）</h1>
+                <table id="table1" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td class="weight-font">出库单号：</td>
+                        <td>{{sheetInfo.sheetSN}}</td>
+                        <td class="weight-font">制单日期：</td>
+                        <td>{{new Date(sheetInfo.creationTime).pattern('yyyy-MM-dd')}}</td>
+                        <td class="weight-font">经办人：</td>
+                        <td>{{sheetInfo.creatorUserName}}</td>
+                    </tr>
+                    <tr>
+                        <td class="weight-font">客户名称：</td>
+                        <td>{{currentItem.unitInfo?currentItem.unitInfo.unitName:''}}</td>
+                        <td class="weight-font">退入仓库：</td>
+                        <td>{{storeName}}</td>
+                        <td class="weight-font"></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="weight-font">本单应退：</td>
+                        <td>{{totalFee}}</td>
+                        <td class="weight-font">备注：</td>
+                        <td>{{currentItem.remarks}}</td>
+                    </tr>
+                </table>
+                <table id="table2" cellspacing="0">
+                    <tr style="text-align: center;" class="weight-font">
+                        <td>品名</td>
+                        <td>规格</td>
+                        <td>市场单价</td>
+                        <td>订购总数量</td>
+                        <td>已退数量</td>
+                        <td>本次退货数量</td>
+                        <td>计量单位</td>
+                        <td>退货单价</td>
+                        <td>金额小计</td>
+                    </tr>
+                    <tr v-for="(item,index) in currentItem.items">
+                        <td class="tx-c">{{item.name}}</td>
+                        <td class="tx-c">{{item.specification}}</td>
+                        <td class="tx-r">{{item.price}}</td>
+                        <td class="tx-r">{{item.sellNumber}}</td>
+                        <td class="tx-r">{{item.backNumber}}</td>
+                        <td class="tx-r">{{item.number}}</td>
+                        <td class="tx-r">{{item.measureMentUnit}}</td>
+                        <td class="tx-r">{{(item.price*item.discount).toFixed(2)}}</td>
+                        <td class="tx-r">{{getRowTotal(item)}}</td>
+                    </tr>
+                </table>
+                <p class="total-wrap">
+                    <span style="margin-right:30px;">货款总额：{{materialFee}}元</span>
+                    <span>其他费用：{{currentItem.otherFee}}元</span>
+                </p>
+                <p class="total-wrap weight-font sign">
+                    <span style="margin-right:30px;">接收人签名：</span>
+                    <span>客户签名：</span>
+                </p>
+            </div>
+
+        </div>
+    </template>
 </div>
 <script>
     config.ready = function () {
@@ -173,6 +242,9 @@
                     //移除没有退库的
                     this.currentItem.items = this.currentItem.items.filter(function (o) {
                         return o.number && o.number > 0;
+                    })
+                    abp.services.app.unit.getById(this.currentItem.unitId).done(function (data) {
+                        that.currentItem.unitInfo = data;
                     })
                 }
             },

@@ -24,13 +24,15 @@ namespace Master.Storage
         /// <param name="unitId"></param>
         /// <param name="outNumber"></param>
         /// <returns></returns>
-        public virtual async Task<bool> IsSatisfied(int materialId,int storeId,int unitId,decimal outNumber)
+        public virtual bool IsSatisfied(int materialId,int storeId,int unitId,decimal outNumber,out string message)
         {
+            message = "";
             var materialManager = Resolve<MaterialManager>();
-            var material = await materialManager.GetByIdAsync(materialId);
-            var unitSellMode = await materialManager.GetMaterialUnitSellMode(material, unitId);
+            var material = materialManager.GetByIdAsync(materialId).Result;
+            var unitSellMode = materialManager.GetMaterialUnitSellMode(material, unitId).Result;
             if (unitSellMode == UnitSellMode.停止销售)
             {
+                message = "出库失败,此商品已停止销售";
                 return false;
             }else if (unitSellMode == UnitSellMode.始终销售)
             {
@@ -38,7 +40,8 @@ namespace Master.Storage
             }
             else
             {
-                var storeMaterialCount = await GetStoreMaterialNumber(storeId, materialId);
+                var storeMaterialCount = GetStoreMaterialNumber(storeId, materialId).Result;
+                message = $"出库失败,产品{material.Name}库存数量仅剩{storeMaterialCount}，请调整出库数量后再次出库";
                 return storeMaterialCount > outNumber;
             }
         }
