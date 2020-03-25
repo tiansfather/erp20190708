@@ -5,45 +5,48 @@
 </style>
 <div id="app" v-cloak>    
     <template v-if="_formOption.mode!=='print'">
-        <el-form ref="form" label-width="120px" size="mini" :inline="_formOption.readonly">
-            <el-form-item label="调出账号:">
-                <el-select v-model="currentItem.outAccountId" size="mini" v-if="!_formOption.readonly">
-                    <el-option v-for="(item,index) in currentItem.accounts" :label="item.name" :value="item.id"></el-option>
-                </el-select>
-                <template v-else>
-                    {{outAccountName}}
-                </template>
-            </el-form-item>
-            <el-form-item label="调入账号:">
-                <el-select v-model="currentItem.inAccountId" size="mini" v-if="!_formOption.readonly">
-                    <el-option v-for="(item,index) in currentItem.accounts" :label="item.name" :value="item.id"></el-option>
-                </el-select>
-                <template v-else>
-                    {{inAccountName}}
-                </template>
-            </el-form-item>
-            <el-form-item label="发生日期:">
-                <el-date-picker type="date" placeholder="选择日期" v-model="currentItem.sheetDate" v-if="!_formOption.readonly"></el-date-picker>
-                <template v-else>
-                    {{currentItem.sheetDate}}
-                </template>
-            </el-form-item>
-            <el-form-item label="调拨金额:">
-                <el-input v-model="currentItem.fee" type="number" v-if="!_formOption.readonly"></el-input>
-                <template v-else>
-                    {{currentItem.fee}}
-                </template>
-            </el-form-item>
+        <div id="normal">
+            <el-form ref="form" label-width="120px" size="mini" :inline="_formOption.readonly">
+                <el-form-item label="调出账号:">
+                    <el-select v-model="currentItem.outAccountId" size="mini" v-if="!_formOption.readonly">
+                        <el-option v-for="(item,index) in currentItem.accounts" :label="item.name" :value="item.id"></el-option>
+                    </el-select>
+                    <template v-else>
+                        {{outAccountName}}
+                    </template>
+                </el-form-item>
+                <el-form-item label="调入账号:">
+                    <el-select v-model="currentItem.inAccountId" size="mini" v-if="!_formOption.readonly">
+                        <el-option v-for="(item,index) in currentItem.accounts" :label="item.name" :value="item.id"></el-option>
+                    </el-select>
+                    <template v-else>
+                        {{inAccountName}}
+                    </template>
+                </el-form-item>
+                <el-form-item label="发生日期:">
+                    <el-date-picker type="date" placeholder="选择日期" v-model="currentItem.sheetDate" v-if="!_formOption.readonly"></el-date-picker>
+                    <template v-else>
+                        {{currentItem.sheetDate}}
+                    </template>
+                </el-form-item>
+                <el-form-item label="调拨金额:">
+                    <el-input v-model="currentItem.fee" type="number" v-if="!_formOption.readonly"></el-input>
+                    <template v-else>
+                        {{currentItem.fee}}
+                    </template>
+                </el-form-item>
 
-            <el-form-item label="备注:">
-                <el-input type="textarea" v-model="currentItem.remarks" v-if="!_formOption.readonly"></el-input>
-                <template v-else>
-                    {{currentItem.remarks}}
-                </template>
-            </el-form-item>
-        </el-form>
+                <el-form-item label="备注:">
+                    <el-input type="textarea" v-model="currentItem.remarks" v-if="!_formOption.readonly"></el-input>
+                    <template v-else>
+                        {{currentItem.remarks}}
+                    </template>
+                </el-form-item>
+            </el-form>
+        </div>
+        
     </template>
-    <template v-if="_formOption.mode=='print'">
+    <template >
         <div id="print">
             <p class="content-right">存根联—白色&nbsp; &nbsp; &nbsp; &nbsp; 客户联—红色&nbsp; &nbsp; &nbsp; &nbsp; 记账联—黄色</p>
             <div class="content-left">

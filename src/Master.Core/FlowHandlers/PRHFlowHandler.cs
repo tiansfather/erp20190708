@@ -64,7 +64,7 @@ namespace Master.FlowHandlers
                     //CodeEndNumber = sheetItem["codeEndNumber"].ToObjectWithDefault<string>(),
                 };
                 //code记录
-                var codeNumber = sheetItem["codeNumber"].ToString();
+                var codeNumber = sheetItem["codeNumber"].ToObjectWithDefault<string>();
                 if (!string.IsNullOrEmpty(codeNumber))
                 {
                     var codeArr = codeNumber.Split(';');

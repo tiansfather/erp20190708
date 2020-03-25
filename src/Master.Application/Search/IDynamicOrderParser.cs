@@ -19,6 +19,6 @@ namespace Master.Search
         /// <param name="moduleInfo"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        IQueryable Parse<TEntity>(string orderField, SortType sortType, ModuleInfo moduleInfo, IQueryable query) where TEntity : IHaveProperty;
+        IQueryable Parse<TEntity>(string orderField, SortType sortType, ModuleInfo moduleInfo, IQueryable query);
     }
 }

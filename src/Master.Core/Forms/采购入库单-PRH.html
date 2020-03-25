@@ -5,114 +5,117 @@
 </style>
 <div id="app" v-cloak>
     <template v-if="_formOption.mode!='print'">
-        <el-form :inline="true" size="mini" :disabled="_formOption.readonly">
-            <el-form-item label="入库日期:">
-                {{currentItem.sheetDate}}
-                <!--<el-input v-model="currentItem.sheetDate" readonly="true"></el-input>-->
-            </el-form-item>
-            <el-form-item label="供货商:">
-                {{currentItem.unitName}}
-                <!--<el-input v-model="currentItem.unitName" readonly="true"></el-input>-->
-            </el-form-item>
-            <el-form-item label="收货仓库:">
-                {{currentItem.storeName}}
-                <!--<el-input v-model="currentItem.storeName" readonly="true"></el-input>-->
-            </el-form-item>
+        <div id="normal">
+            <el-form :inline="true" size="mini" :disabled="_formOption.readonly">
+                <el-form-item label="入库日期:">
+                    {{currentItem.sheetDate}}
+                    <!--<el-input v-model="currentItem.sheetDate" readonly="true"></el-input>-->
+                </el-form-item>
+                <el-form-item label="供货商:">
+                    {{currentItem.unitName}}
+                    <!--<el-input v-model="currentItem.unitName" readonly="true"></el-input>-->
+                </el-form-item>
+                <el-form-item label="收货仓库:">
+                    {{currentItem.storeName}}
+                    <!--<el-input v-model="currentItem.storeName" readonly="true"></el-input>-->
+                </el-form-item>
 
-        </el-form>
-        <el-form :disabled="_formOption.readonly">
-            <table class="layui-table" style="min-width:1400px">
-                <thead>
-                    <tr>
-                        <th>品名</th>
-                        <th>规格</th>
-                        <th>零售价</th>
-                        <th>进货折扣</th>
-                        <th>进货单价</th>
-                        <th>备注</th>
-                        <th>进货数量</th>
-                        <th>计量单位</th>
-                        <th>适用区域</th>
-                        <th>特征符</th>
-                        <th style="min-width:180px">卡号</th>
-                        <th v-if="!_formOption.readonly">操作</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(item,index) in currentItem.items">
-                        <td>{{item.name}}</td>
-                        <td>{{item.specification}}</td>
-                        <td>{{item.price}}</td>
-                        <td>
-                            <el-input-number v-model="item.discount" :min="0" :max="1" :step="0.1" label="折扣" size="mini" style="width:100px" v-if="!_formOption.readonly"></el-input-number>
-                            <template v-else>
-                                {{item.discount}}
-                            </template>
-                        </td>
-                        <td>
-                            {{(item.price*item.discount).toFixed(2)}}
-                        </td>
-                        <td>{{item.remarks}}</td>
-                        <td>
-                            <el-input-number v-model="item.number" :min="1" label="进货数量" size="mini" style="width:100px" v-if="!_formOption.readonly"></el-input-number>
-                            <template v-else>
-                                {{item.number}}
-                            </template>
-                        </td>
-                        <td>{{item.measureMentUnit}}</td>
-                        <td>{{item.location}}</td>
-                        <td>
-                            <el-input v-model="item.featureCode" style="width:100px" size="mini" v-if="!_formOption.readonly"></el-input>
-                            <div v-else>{{item.featureCode}}</div>
-                        </td>
-                        <td>
-                            <template v-if="!_formOption.readonly">
-                                <el-input v-model="item.codeNumber" size="mini" style="width:120px;"></el-input>
-                                <el-button type="primary" size="mini" @click="showCode(item)">更多</el-button>
-                            </template>
-                            <template v-else>
-                                <div style="word-break:break-all">{{item.codeNumber}}</div>
-                            </template>
+            </el-form>
+            <el-form :disabled="_formOption.readonly">
+                <table class="layui-table" style="min-width:1400px">
+                    <thead>
+                        <tr>
+                            <th>品名</th>
+                            <th>规格</th>
+                            <th>零售价</th>
+                            <th>进货折扣</th>
+                            <th>进货单价</th>
+                            <th>备注</th>
+                            <th>进货数量</th>
+                            <th>计量单位</th>
+                            <th>适用区域</th>
+                            <th>特征符</th>
+                            <th style="min-width:180px">卡号</th>
+                            <th v-if="!_formOption.readonly">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(item,index) in currentItem.items">
+                            <td>{{item.name}}</td>
+                            <td>{{item.specification}}</td>
+                            <td>{{item.price}}</td>
+                            <td>
+                                <el-input-number v-model="item.discount" :min="0" :max="1" :step="0.1" label="折扣" size="mini" style="width:100px" v-if="!_formOption.readonly"></el-input-number>
+                                <template v-else>
+                                    {{item.discount}}
+                                </template>
+                            </td>
+                            <td>
+                                {{(item.price*item.discount).toFixed(2)}}
+                            </td>
+                            <td>{{item.remarks}}</td>
+                            <td>
+                                <el-input-number v-model="item.number" :min="1" label="进货数量" size="mini" style="width:100px" v-if="!_formOption.readonly"></el-input-number>
+                                <template v-else>
+                                    {{item.number}}
+                                </template>
+                            </td>
+                            <td>{{item.measureMentUnit}}</td>
+                            <td>{{item.location}}</td>
+                            <td>
+                                <el-input v-model="item.featureCode" style="width:100px" size="mini" v-if="!_formOption.readonly"></el-input>
+                                <div v-else>{{item.featureCode}}</div>
+                            </td>
+                            <td>
+                                <template v-if="!_formOption.readonly">
+                                    <el-input v-model="item.codeNumber" size="mini" style="width:120px;"></el-input>
+                                    <el-button type="primary" size="mini" @click="showCode(item)">更多</el-button>
+                                </template>
+                                <template v-else>
+                                    <div style="word-break:break-all">{{item.codeNumber}}</div>
+                                </template>
 
-                        </td>
-                        <td v-if="!_formOption.readonly"><a title="删除" style="cursor: pointer;" @click="currentItem.items.splice(index,1);"><i class="layui-icon layui-icon-delete"></i></a></td>
-                    </tr>
-                </tbody>
-            </table>
-        </el-form>
+                            </td>
+                            <td v-if="!_formOption.readonly"><a title="删除" style="cursor: pointer;" @click="currentItem.items.splice(index,1);"><i class="layui-icon layui-icon-delete"></i></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </el-form>
 
-        <el-form :inline="true" size="mini" :disabled="_formOption.readonly">
-            <el-form-item label="货款总额:">
-                <el-input v-model="materialFee" readonly="true" v-if="!_formOption.readonly"></el-input>
-                <template v-else>
-                    {{materialFee}}
-                </template>
-            </el-form-item>
-            <el-form-item label="其它费用:">
-                <el-input v-model="currentItem.otherFee" typeof="number" v-if="!_formOption.readonly"></el-input>
-                <template v-else>
-                    {{currentItem.otherFee}}
-                </template>
-            </el-form-item>
-            <el-form-item label="本单应付金额:">
-                <el-input v-model="totalFee" readonly="true" v-if="!_formOption.readonly"></el-input>
-                <template v-else>
-                    {{totalFee}}
-                </template>
-            </el-form-item>
+            <el-form :inline="true" size="mini" :disabled="_formOption.readonly">
+                <el-form-item label="货款总额:">
+                    <el-input v-model="materialFee" readonly="true" v-if="!_formOption.readonly"></el-input>
+                    <template v-else>
+                        {{materialFee}}
+                    </template>
+                </el-form-item>
+                <el-form-item label="其它费用:">
+                    <el-input v-model="currentItem.otherFee" typeof="number" v-if="!_formOption.readonly"></el-input>
+                    <template v-else>
+                        {{currentItem.otherFee}}
+                    </template>
+                </el-form-item>
+                <el-form-item label="本单应付金额:">
+                    <el-input v-model="totalFee" readonly="true" v-if="!_formOption.readonly"></el-input>
+                    <template v-else>
+                        {{totalFee}}
+                    </template>
+                </el-form-item>
 
-        </el-form>
-        <el-form size="mini" :disabled="_formOption.readonly">
-            <el-form-item label="备注">
-                <el-input type="textarea" v-model="currentItem.remarks" v-if="!_formOption.readonly"></el-input>
-                <template v-else>
-                    {{currentItem.remarks}}
-                </template>
-            </el-form-item>
-        </el-form>
+            </el-form>
+            <el-form size="mini" :disabled="_formOption.readonly">
+                <el-form-item label="备注">
+                    <el-input type="textarea" v-model="currentItem.remarks" v-if="!_formOption.readonly"></el-input>
+                    <template v-else>
+                        {{currentItem.remarks}}
+                    </template>
+                </el-form-item>
+            </el-form>
+        </div>
+        
     </template>
 
-    <template v-if="_formOption.mode=='print'">
+    <template >
         <div id="print">
             <p class="content-right">存根联—白色&nbsp; &nbsp; &nbsp; &nbsp; 客户联—红色&nbsp; &nbsp; &nbsp; &nbsp; 记账联—黄色</p>
             <div class="content-left">

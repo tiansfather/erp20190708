@@ -6,6 +6,11 @@
     Layout = "~/Views/Shared/_LayoutDialog.cshtml";
     ViewData["Title"] = "Html";
 }
+<style>
+    #print{
+        display:none;
+    }
+</style>
 <script>
     var _formOption = {
         readonly: false,
@@ -17,7 +22,7 @@
 @section scripts{
     <script>
         
-
+        var index = parent.layer.getFrameIndex(window.name);
 
         function submit() {
             
@@ -40,11 +45,26 @@
 
             abp.message.confirm(L("确认提交?"), function () {
                 var dto = { flowSchemeId: flowSchemeId, flowFormId: formId, formData: JSON.stringify(formData) };
-                func.runAsync(abp.services.app.flowInstance.createInstance(dto).done(function () {
-                    top.layer.msg(L("提交成功"));
-                    parent.layer.closeAll('iframe');
+                func.runAsync(abp.services.app.flowInstance.createInstance(dto).done(function (instanceId) {
+                    //打开查看窗口
+                    parent.layer.open({
+                        type: 2,
+				        title: '单据查看',
+				        scrollbar: false,
+                        shadeClose: false,
+                        shade: 0.8,
+                        area: ['100%', '100%'],
+                        content: '/FlowForm/InstanceView?data=' + instanceId,
+				        btn: [],
+                        btnAlign: 'l',
+                        success: function () {
+                            parent.layer.close(index);
+                        }
+                    })
+                    top.layer.msg(L("提交成功"));                    
                     parent.config.reloadTable();
-                    parent.config.refresh();
+                    //parent.config.refresh();
+                    
                 }))
             })
 

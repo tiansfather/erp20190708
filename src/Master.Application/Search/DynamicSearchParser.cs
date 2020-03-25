@@ -34,42 +34,23 @@ namespace Master.Search
         public IQueryable ParseWhere<TEntity>(string where, IQueryable query)
         {
             var newWhere = where;
-            var matches = new Regex("Property\\[((Number|String|Date|Bool)\\s)?(.*?)\\]",RegexOptions.IgnoreCase).Matches(where);
+            var matches = new Regex("(\\w+\\.)?Property\\[((Number|String|Date|Bool)\\s)?(.*?)\\]",RegexOptions.IgnoreCase).Matches(where);
             var lamdaIndex = 0;
             var lamdas = new List<object>();
             foreach (Match match in matches)
             {
-                var replaceSource = match.Value;//Property[Number TenantId]
-                var columnType = match.Result("$2");//Number
-                var columnKey = match.Result("$3");//TenantId
+                var replaceSource = match.Value;//Property[Number TenantId] Property[Date TenantId]
+                var propertyPath = match.Result("$1")+"Property";//Material.Property
+                var columnType = match.Result("$3");//Number
+                var columnKey = match.Result("$4");//TenantId
                 newWhere = newWhere.Replace(replaceSource, $"@{lamdaIndex}(it)");
-                var lamda = GeneratePropertyLamda<TEntity>(GetColumnTypeFromString(columnType), columnKey);
+                var lamda = DynamicPropertyHelper.GeneratePropertyLamda<TEntity>(DynamicPropertyHelper.GetColumnTypeFromString(columnType), columnKey, propertyPath);
                 lamdas.Add(lamda);
                 lamdaIndex++;
             }
             return query.Where(newWhere, lamdas.ToArray());
         } 
 
-        private ColumnTypes GetColumnTypeFromString(string typeName)
-        {
-            ColumnTypes result;
-            switch (typeName.ToLower())
-            {
-                case "number":
-                    result= ColumnTypes.Number;
-                    break;
-                case "date":
-                    result= ColumnTypes.DateTime;
-                    break;
-                case "bool":
-                    result= ColumnTypes.Switch;
-                    break;
-                default:
-                    result= ColumnTypes.Text;
-                    break;
-            }
-            return result;
-        }
         #endregion
 
         #region 原有模块过滤
@@ -155,22 +136,7 @@ namespace Master.Search
             }
             return funcList.ToArray();
         }
-        /// <summary>
-        /// 对属性列生成lamda表达式
-        /// </summary>
-        /// <typeparam name="TEntity"></typeparam>
-        /// <param name="columnType"></param>
-        /// <param name="columnKey"></param>
-        /// <returns></returns>
-        public LambdaExpression GeneratePropertyLamda<TEntity>(ColumnTypes columnType, string columnKey)
-        {
-            var dbFuncName = GetDbFunctionName(columnType);
-            var p = Expression.Parameter(typeof(TEntity), "x");
-            var _pExp = Expression.Constant($"$.{columnKey}", typeof(string));
-            MemberExpression member = Expression.PropertyOrField(p, "Property");
-            var expRes = Expression.Call(typeof(TEntity).GetEntityDbContextType().GetMethod(dbFuncName), member, _pExp);
-            return Expression.Lambda(expRes, p);
-        }
+        
         private string GenerateLamdaCode<TEntity>(SearchConditionDto condition, ColumnInfo column, out LambdaExpression dbLamda)
         {
             dbLamda = null;
@@ -188,7 +154,7 @@ namespace Master.Search
                 //var expRes = Expression.Call(typeof(TEntity).GetEntityDbContextType().GetMethod(dbFuncName), member, _pExp);
                 //dbLamda = Expression.Lambda(expRes, p);
 
-                dbLamda = GeneratePropertyLamda<TEntity>(column.ColumnType, column.ColumnKey);
+                dbLamda = DynamicPropertyHelper.GeneratePropertyLamda<TEntity>(column.ColumnType, column.ColumnKey);
 
                 //valuePath = $"MasterDbContext.{dbFuncName}(Property,\"$.{column.ColumnKey}\")";
                 //基于数据库json字段的查询需要动态构建lamda
@@ -222,6 +188,7 @@ namespace Master.Search
 
         #region SoulTable方式过滤
         private int _soulLamdaIndex = 0;//存储动态lamda索引
+        private List<object> _lamdaList = new List<object>();//存储动态lamda
         public IQueryable ParseSoulTable<TEntity>(string filterSos, ModuleInfo moduleInfo, IQueryable query)
         {
             try
@@ -229,11 +196,10 @@ namespace Master.Search
                 var searchConditions = Newtonsoft.Json.JsonConvert.DeserializeObject<List<SoulTableConditionDto>>(filterSos);
                 if (searchConditions.Count > 0)
                 {
-                    var predicate = GeneratePredicate(searchConditions);
-                    var funcList = GenerateLamda<TEntity>(searchConditions, moduleInfo);
+                    var predicate = GeneratePredicate<TEntity>(searchConditions,moduleInfo);
+                    //var funcList = GenerateLamda<TEntity>(searchConditions, moduleInfo);
 
-
-                    return query.Where(predicate, funcList);
+                    return query.Where(predicate, _lamdaList.ToArray());
                 }
             }
             catch (Exception ex)
@@ -244,11 +210,11 @@ namespace Master.Search
             return query;
         }
         /// <summary>
-        /// (@0(it) and @1(it) or @2(it))
+        /// (@0(it)=1 and @1(it).StartWith("2") or @2(it)<0)
         /// </summary>
         /// <param name="conditions"></param>
         /// <returns></returns>
-        private string GeneratePredicate(List<SoulTableConditionDto> conditions)
+        private string GeneratePredicate<TEntity>(List<SoulTableConditionDto> conditions,ModuleInfo moduleInfo)
         {
             var sb = new StringBuilder();
             foreach(var condition in conditions)
@@ -257,92 +223,68 @@ namespace Master.Search
                 var prefix = currentIndex > 0 ? condition.Prefix : "";
                 if (condition.Children!=null && condition.Children.Count > 0)
                 {
-                    sb.Append($" {prefix}({GeneratePredicate(condition.Children)})");
+                    sb.Append($" {prefix}({GeneratePredicate<TEntity>(condition.Children,moduleInfo)})");
                 }
                 else
                 {
-                    sb.Append($" {prefix} @{_soulLamdaIndex}(it)");
-                    _soulLamdaIndex++;
+                    sb.Append($" {prefix} {GenerateLamdaCode<TEntity>(condition, moduleInfo)}");
                 }
             }            
+
             return sb.ToString();
         }
         /// <summary>
-        /// 生成每个查询条件的lamda表达式
+        /// ProjectSN.Contains("a") 或者 @1(it)="2"
         /// </summary>
         /// <typeparam name="TEntity"></typeparam>
-        /// <param name="conditions"></param>
+        /// <param name="condition"></param>
         /// <param name="moduleInfo"></param>
         /// <returns></returns>
-        private object[] GenerateLamda<TEntity>(List<SoulTableConditionDto> conditions, ModuleInfo moduleInfo)
+        private string GenerateLamdaCode<TEntity>(SoulTableConditionDto condition,ModuleInfo moduleInfo)
         {
-            //var op = ScriptOptions.Default;
-            //op = op.WithImports(new string[] { "System", "System.Math", "Master.EntityFrameworkCore" });
-            //op = op.WithReferences(typeof(ModuleInfo).Assembly, typeof(MasterDbContext).Assembly,typeof(TEntity).Assembly);
-
-            List<object> funcList = new List<object>();
-            foreach (var condition in conditions)
+            ColumnInfo column;
+            //需要判断是模块的筛选还是普通表格
+            if (moduleInfo != null)
             {
-                ColumnInfo column;
-                //需要判断是模块的筛选还是普通表格
-                if (moduleInfo != null)
-                {
-                    column = moduleInfo.ColumnInfos.Where(o => o.ColumnKey.ToLower() == condition.Field?.ToLower()).Single();
-                }
-                else
-                {
-                    column = new ColumnInfo()
-                    {
-                        ColumnKey = condition.Field,
-                        ColumnType =condition.Mode=="date"?ColumnTypes.DateTime:ColumnTypes.Text,
-                        ValuePath = condition.Field,
-                    };
-                }
-                
-                if (condition.Children!=null && condition.Children.Count > 0)
-                {
-                    funcList.AddRange(GenerateLamda<TEntity>(condition.Children, moduleInfo));
-                }
-                else
-                {
-                    string code2 = GenerateLamdaCode<TEntity>(condition, column, out var dbLamda);//动态lamda构建
-                    funcList.Add(DynamicExpressionParser.ParseLambda(typeof(TEntity), typeof(bool), code2, dbLamda));
-                }
-                
+                column = moduleInfo.ColumnInfos.Where(o => o.ColumnKey.ToLower() == condition.Field?.ToLower()).Single();
             }
-            return funcList.ToArray();
-        }
-        private string GenerateLamdaCode<TEntity>(SoulTableConditionDto condition, ColumnInfo column, out LambdaExpression dbLamda)
-        {
-            dbLamda = null;
-
+            else
+            {
+                column = new ColumnInfo()
+                {
+                    ColumnKey = condition.Field,
+                    ColumnType = condition.Mode == "date" ? ColumnTypes.DateTime : ColumnTypes.Text,
+                    ValuePath = condition.Field,
+                };
+            }
             var value = condition.Value;
             var values = condition.Values;
-            var valuePath = $"{column.ValuePath}";
-            if (!string.IsNullOrEmpty(column.DisplayPath))
+            var valuePath = $"{column.ValuePath}";//代表要查询的数据字段，可能是直接字段，如ProjectSN 或者是property中的数据,如MasterDbContext.GetJsonValueString(o.Property,"$.a")
+            if (!string.IsNullOrEmpty(column.DisplayPath))//设置了displaypath的以displaypath为优先查询目标
             {
                 valuePath = column.DisplayPath;
             }
             if (column.IsPropertyColumn)
             {
                 //自定义属性列的查询
-                //var dbFuncName = GetDbFunctionName(column.ColumnType);
+                //var dbFuncName = DynamicPropertyHelper.GetDbFunctionName(column.ColumnType);
                 //var p = Expression.Parameter(typeof(TEntity), "x");
                 //var _pExp = Expression.Constant($"$.{column.ColumnKey}", typeof(string));
                 //MemberExpression member = Expression.PropertyOrField(p, "Property");
                 //var expRes = Expression.Call(typeof(TEntity).GetEntityDbContextType().GetMethod(dbFuncName), member, _pExp);
                 //dbLamda = Expression.Lambda(expRes, p);
 
-                dbLamda = GeneratePropertyLamda<TEntity>(column.ColumnType, column.ColumnKey);
+                var lambdaExpression = DynamicPropertyHelper.GeneratePropertyLamda<TEntity>(column.ColumnType, column.ColumnKey);
 
                 //valuePath = $"MasterDbContext.{dbFuncName}(Property,\"$.{column.ColumnKey}\")";
                 //基于数据库json字段的查询需要动态构建lamda
-                valuePath = "@0(it)";//@0之后会由dbLamda代入
+                valuePath = $"@{_soulLamdaIndex++}(it)";//@0之后会由dbLamda代入
+                _lamdaList.Add(lambdaExpression);
             }
 
             Func<string, string> valueWrapp = inValue =>
             {
-                string outValue=inValue;
+                string outValue = inValue;
                 if (column.ColumnType != ColumnTypes.Number)
                 {
                     outValue = $"\"{inValue}\"";
@@ -356,12 +298,12 @@ namespace Master.Search
             };
 
             value = valueWrapp(value);
-            
+
             string code = "";
             if (condition.Mode == "in")
             {
                 //如果未传入筛选数据数组，直接返回
-                code =values.Count==0?"1=1": string.Join(" Or ", values.Select(o => $"{valuePath}={valueWrapp(o)}"));
+                code = values.Count == 0 ? "1=1" : string.Join(" Or ", values.Select(o => $"{valuePath}={valueWrapp(o)}"));
             }
             else if (condition.Mode == "date")
             {
@@ -422,9 +364,9 @@ namespace Master.Search
                         break;
                 }
             }
-            
+
             return code;
-        }
+        }        
         /// <summary>
         /// yesterday,thisWeek,thisMonth==>2019-01-01---2019-01-08
         /// </summary>
@@ -466,68 +408,202 @@ namespace Master.Search
         /// <param name="condition"></param>
         /// <param name="column"></param>
         /// <returns></returns>
-        private string GenerateCode(SearchConditionDto condition, ColumnInfo column)
-        {
-            var value = condition.Value;
-            var valuePath = $"o.{column.ValuePath}";
+        //private string GenerateCode(SearchConditionDto condition, ColumnInfo column)
+        //{
+        //    var value = condition.Value;
+        //    var valuePath = $"o.{column.ValuePath}";
 
-            if (column.IsPropertyColumn)
-            {
-                //自定义属性列的查询
-                var dbFuncName = GetDbFunctionName(column.ColumnType);
-                valuePath = $"MasterDbContext.{dbFuncName}(o.Property,\"$.{column.ColumnKey}\")";
-            }
+        //    if (column.IsPropertyColumn)
+        //    {
+        //        //自定义属性列的查询
+        //        var dbFuncName = GetDbFunctionName(column.ColumnType);
+        //        valuePath = $"MasterDbContext.{dbFuncName}(o.Property,\"$.{column.ColumnKey}\")";
+        //    }
 
 
-            if (column.ColumnType != ColumnTypes.Number)
-            {
-                value = $"\"{value}\"";
-            }
-            if (column.ColumnType == ColumnTypes.DateTime)
-            {
-                //日期类型需要转换
-                value = $"DateTime.Parse({value})";
-            }
-            //以.开头的为字符串操作
-            if (condition.Operator.StartsWith("."))
-            {
-                //加括号:a.StartsWith("b")
-                value = $"({value})";
-            }
-            else if (string.IsNullOrEmpty(condition.Value))
-            {
-                //非字符串操作，如果未传值，作null处理
-                value = "null";
-            }
-            return $"(o)=>{valuePath}{condition.Operator}{value}";
-        }
+        //    if (column.ColumnType != ColumnTypes.Number)
+        //    {
+        //        value = $"\"{value}\"";
+        //    }
+        //    if (column.ColumnType == ColumnTypes.DateTime)
+        //    {
+        //        //日期类型需要转换
+        //        value = $"DateTime.Parse({value})";
+        //    }
+        //    //以.开头的为字符串操作
+        //    if (condition.Operator.StartsWith("."))
+        //    {
+        //        //加括号:a.StartsWith("b")
+        //        value = $"({value})";
+        //    }
+        //    else if (string.IsNullOrEmpty(condition.Value))
+        //    {
+        //        //非字符串操作，如果未传值，作null处理
+        //        value = "null";
+        //    }
+        //    return $"(o)=>{valuePath}{condition.Operator}{value}";
+        //}
+        /// <summary>
+        /// 生成每个查询条件的lamda表达式
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="conditions"></param>
+        /// <param name="moduleInfo"></param>
+        /// <returns></returns>
+        //private object[] GenerateLamda<TEntity>(List<SoulTableConditionDto> conditions, ModuleInfo moduleInfo)
+        //{
+        //    //var op = ScriptOptions.Default;
+        //    //op = op.WithImports(new string[] { "System", "System.Math", "Master.EntityFrameworkCore" });
+        //    //op = op.WithReferences(typeof(ModuleInfo).Assembly, typeof(MasterDbContext).Assembly,typeof(TEntity).Assembly);
+
+        //    List<object> funcList = new List<object>();
+        //    foreach (var condition in conditions)
+        //    {
+        //        ColumnInfo column;
+        //        //需要判断是模块的筛选还是普通表格
+        //        if (moduleInfo != null)
+        //        {
+        //            column = moduleInfo.ColumnInfos.Where(o => o.ColumnKey.ToLower() == condition.Field?.ToLower()).Single();
+        //        }
+        //        else
+        //        {
+        //            column = new ColumnInfo()
+        //            {
+        //                ColumnKey = condition.Field,
+        //                ColumnType = condition.Mode == "date" ? ColumnTypes.DateTime : ColumnTypes.Text,
+        //                ValuePath = condition.Field,
+        //            };
+        //        }
+
+        //        if (condition.Children != null && condition.Children.Count > 0)
+        //        {
+        //            funcList.AddRange(GenerateLamda<TEntity>(condition.Children, moduleInfo));
+        //        }
+        //        else
+        //        {
+        //            string code2 = GenerateLamdaCode<TEntity>(condition, column, out var dbLamda);//动态lamda构建
+        //            funcList.Add(DynamicExpressionParser.ParseLambda(typeof(TEntity), typeof(bool), code2, dbLamda));
+        //        }
+
+        //    }
+        //    return funcList.ToArray();
+        //}
+        //private string GenerateLamdaCode<TEntity>(SoulTableConditionDto condition, ColumnInfo column, out LambdaExpression dbLamda)
+        //{
+        //    dbLamda = null;
+
+        //    var value = condition.Value;
+        //    var values = condition.Values;
+        //    var valuePath = $"{column.ValuePath}";
+        //    if (!string.IsNullOrEmpty(column.DisplayPath))
+        //    {
+        //        valuePath = column.DisplayPath;
+        //    }
+        //    if (column.IsPropertyColumn)
+        //    {
+        //        //自定义属性列的查询
+        //        var dbFuncName = DynamicPropertyHelper.GetDbFunctionName(column.ColumnType);
+        //        var p = Expression.Parameter(typeof(TEntity), "x");
+        //        var _pExp = Expression.Constant($"$.{column.ColumnKey}", typeof(string));
+        //        MemberExpression member = Expression.PropertyOrField(p, "Property");
+        //        var expRes = Expression.Call(typeof(TEntity).GetEntityDbContextType().GetMethod(dbFuncName), member, _pExp);
+        //        dbLamda = Expression.Lambda(expRes, p);
+
+        //        //dbLamda = DynamicPropertyHelper.GeneratePropertyLamda<TEntity>(column.ColumnType, column.ColumnKey);
+
+        //        //valuePath = $"MasterDbContext.{dbFuncName}(Property,\"$.{column.ColumnKey}\")";
+        //        //基于数据库json字段的查询需要动态构建lamda
+        //        valuePath = "@0(it)";//@0之后会由dbLamda代入
+        //    }
+
+        //    Func<string, string> valueWrapp = inValue =>
+        //    {
+        //        string outValue = inValue;
+        //        if (column.ColumnType != ColumnTypes.Number)
+        //        {
+        //            outValue = $"\"{inValue}\"";
+        //        }
+        //        if (column.ColumnType == ColumnTypes.DateTime)
+        //        {
+        //            //日期类型需要转换
+        //            outValue = $"DateTime.Parse({outValue})";
+        //        }
+        //        return outValue;
+        //    };
+
+        //    value = valueWrapp(value);
+
+        //    string code = "";
+        //    if (condition.Mode == "in")
+        //    {
+        //        //如果未传入筛选数据数组，直接返回
+        //        code = values.Count == 0 ? "1=1" : string.Join(" Or ", values.Select(o => $"{valuePath}={valueWrapp(o)}"));
+        //    }
+        //    else if (condition.Mode == "date")
+        //    {
+        //        //日期的筛选
+        //        if (condition.Type == "all")
+        //        {
+        //            code = "1=1";
+        //        }
+        //        else if (condition.Type == "specific")
+        //        {
+        //            code = $"{valuePath}={value}";
+        //        }
+        //        else
+        //        {
+        //            var dateTimeValues = GetDateTimeValuesByIdentifier(condition.Type);
+        //            code = $"{valuePath}>={valueWrapp(dateTimeValues.startDate.ToString())} && {valuePath}<={valueWrapp(dateTimeValues.endDate.ToString())}";
+        //        }
+        //    }
+        //    else
+        //    {
+        //        switch (condition.Type)
+        //        {
+        //            case "eq":
+        //                code = $"{valuePath}={value}";
+        //                break;
+        //            case "ne":
+        //                code = $"{valuePath}!={value}";
+        //                break;
+        //            case "gt":
+        //                code = $"{valuePath}>{value}";
+        //                break;
+        //            case "ge":
+        //                code = $"{valuePath}>={value}";
+        //                break;
+        //            case "lt":
+        //                code = $"{valuePath}<{value}";
+        //                break;
+        //            case "le":
+        //                code = $"{valuePath}<={value}";
+        //                break;
+        //            case "contain":
+        //                code = $"{valuePath}.Contains({value})";
+        //                break;
+        //            case "notContain":
+        //                code = $"!{valuePath}.Contains({value})";
+        //                break;
+        //            case "start":
+        //                code = $"{valuePath}.StartWith({value})";
+        //                break;
+        //            case "end":
+        //                code = $"{valuePath}.EndWith({value})";
+        //                break;
+        //            case "null":
+        //                code = $"{valuePath}=null";
+        //                break;
+        //            case "notNull":
+        //                code = $"{valuePath}!=null";
+        //                break;
+        //        }
+        //    }
+
+        //    return code;
+        //}
         #endregion
 
 
-        /// <summary>
-        /// 获取列类型对应的自定义属性数据库函数名称
-        /// </summary>
-        /// <param name="columnType"></param>
-        /// <returns></returns>
-        private string GetDbFunctionName(ColumnTypes columnType)
-        {
-            string result;
-            switch (columnType)
-            {
-                case ColumnTypes.DateTime:
-                    result = nameof(MasterDbContext.GetJsonValueDate);
-                    break;
-                case ColumnTypes.Number:
-                    result = nameof(MasterDbContext.GetJsonValueNumber);
-                    break;
-                case ColumnTypes.Switch:
-                    result = nameof(MasterDbContext.GetJsonValueBool);
-                    break;
-                default:
-                    result = nameof(MasterDbContext.GetJsonValueString);
-                    break;
-            }
-            return result;
-        }
+
     }
 }

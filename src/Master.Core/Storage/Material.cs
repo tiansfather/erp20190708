@@ -114,18 +114,35 @@ namespace Master.Storage
     public class MaterialSellUnitSpecification : Specification<Material>
     {
         private int _unitId;
-        public MaterialSellUnitSpecification(int unitId)
+        private bool _isCenter = true;
+        public MaterialSellUnitSpecification(int unitId,bool isCenter)
         {
             _unitId = unitId;
+            _isCenter = isCenter;
         }
         public override Expression<Func<Material, bool>> ToExpression()
         {
             using(var scope = IocManager.Instance.CreateScope())
             {
                 var repository = scope.Resolve<IRepository<UnitMaterialDiscount, int>>();
-
-                return o =>
+                var storeMaterialRepository = scope.Resolve<IRepository<StoreMaterial, int>>();
+                if (_isCenter)
+                {
+                    return o =>
                 repository.GetAll().Count(d => d.UnitId == _unitId && d.MaterialId == o.Id && (d.UnitSellMode == UnitSellMode.停止销售 || d.UnitSellMode == UnitSellMode.售完为止 && o.TotalNumber <= 0)) == 0;
+                }
+                else
+                {
+                    //代理商下单，只能查看默认仓库里
+                    //有库存商品
+                    var materialIds = storeMaterialRepository.GetAll().Where(o => o.Store.IsDefault && o.Number > 0).Select(o => o.MaterialId).ToList();
+                    //停止销售商品
+                    var stopSellMaterialIds = repository.GetAll().Where(o => o.UnitId == _unitId && o.UnitSellMode == UnitSellMode.停止销售).Select(o => o.MaterialId).ToList();
+                    //售完为止的无库存商品
+                    var limiNumberMaterialIds= repository.GetAll().Where(o => o.UnitId == _unitId && o.UnitSellMode == UnitSellMode.售完为止 && !materialIds.Contains(o.MaterialId)).Select(o => o.MaterialId).ToList();
+                    return o =>!stopSellMaterialIds.Contains(o.Id) && !limiNumberMaterialIds.Contains(o.Id);
+                }
+                
 
                 //return o => repository.Count(d => d.UnitId == _unitId && d.MaterialId == o.Id) == 0 //并未设置代理商销售方式的默认始终销售
                 //||repository.Count(d=> d.UnitId == _unitId && d.MaterialId == o.Id && d.UnitSellMode==UnitSellMode.始终销售)>0 //始终销售的展示

@@ -36,13 +36,6 @@ namespace Master.Search
         /// <param name="query"></param>
         /// <returns></returns>
         IQueryable ParseSoulTable<TEntity>(string filterSos, ModuleInfo moduleInfo, IQueryable query);
-        /// <summary>
-        /// 构建属性列的lamda表达式
-        /// </summary>
-        /// <typeparam name="TEntity"></typeparam>
-        /// <param name="columnType"></param>
-        /// <param name="columnKey"></param>
-        /// <returns></returns>
-        LambdaExpression GeneratePropertyLamda<TEntity>(ColumnTypes columnType, string columnKey);
+        
     }
 }

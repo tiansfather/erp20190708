@@ -122,6 +122,7 @@ namespace Master.Controllers
                     ViewBag.FormContent = string.IsNullOrEmpty(instance.FlowForm.FormContent) ? defaultForm?.FormContent : instance.FlowForm.FormContent;
                     ViewBag.FormData = instance.FormData;
                     ViewBag.Mode = mode;
+                    ViewBag.SheetId = flowSheet.Id;
                     ViewBag.OrderStatus = flowSheet?.OrderStatus;
                     return View("HtmlView");
                 case FormType.Designer:

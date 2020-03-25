@@ -143,6 +143,11 @@
                             { field: 'specification', title: '规格' },
                             { field: 'price', title: '零售价' },
                             { field: 'remarks', title: '备注' },
+                            {
+                                field: 'storeNumber', title: '库存数量', templet: function (d) {
+                                    return (abp.session.user.unitId ? d.defaultCount : d.totalCount)||0;
+                                }
+                            },
                             { field: '', title: '订购数量', templet: '#editTpl' },
                             { field: 'measureMentUnit', title: '计量单位' },
                             { field: 'location', title: '适用区域' },

@@ -63,7 +63,7 @@ namespace Master.WorkFlow
         /// 创建一个实例
         /// </summary>
         /// <returns></returns>
-        public virtual async Task CreateInstance(FlowInstanceCreateDto flowInstanceCreateDto)
+        public virtual async Task<int> CreateInstance(FlowInstanceCreateDto flowInstanceCreateDto)
         {
             var manager = Manager as FlowInstanceManager;
             var user =await GetCurrentUserAsync();
@@ -92,7 +92,7 @@ namespace Master.WorkFlow
                 await manager.CreateInstance(flowInstance);
                 await CurrentUnitOfWork.SaveChangesAsync();
                 await manager.FinishInstance(flowInstance);//调用流程结束事件
-                return;
+                return flowInstance.Id;
             }
 
             //2.从流程定义中复制表单id及流程内容
@@ -142,6 +142,8 @@ namespace Master.WorkFlow
             #endregion 流程操作记录
 
             await AddTransHistory(wfruntime);
+
+            return flowInstance.Id;
         }
 
         /// <summary>

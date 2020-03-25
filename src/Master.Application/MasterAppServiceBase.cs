@@ -199,12 +199,29 @@ namespace Master
                 query = await BuildSoulTableSearchQueryAsync(request, query);
             }
 
+            //排序
+            query = await BuildOrderQueryAsync(request, query);
+
+            return query;
+        }
+        /// <summary>
+        /// 构建排序
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        protected virtual async Task<IQueryable<TEntity>> BuildOrderQueryAsync(RequestPageDto request, IQueryable<TEntity> query)
+        {
             if (!request.OrderField.IsNullOrWhiteSpace())
             {
-                //提交过来的排序
-                query = query.OrderBy($"{request.OrderField} {request.OrderType}");
+                //将排序交给排序类处理
+                query = Resolve<IDynamicOrderParser>().Parse<TEntity>(request.OrderField, request.OrderType.ToLower() == "desc" ? SortType.Desc : SortType.Asc, null, query) as IQueryable<TEntity>;
+                //query = query.OrderBy($"{request.OrderField} {request.OrderType}");
             }
-
+            else
+            {
+                query = query.OrderBy("Id desc");
+            }
             return query;
         }
         /// <summary>

@@ -57,7 +57,8 @@ namespace Master.Storage
             {
                 //如果按照代理来查询，则需要按代理的销售方式进行查询
                 var _unitId = int.Parse(searchKeys["SellUnitId"]);
-                query = query.Where(new MaterialSellUnitSpecification(_unitId));
+                var user = await GetCurrentUserAsync();
+                query = query.Where(new MaterialSellUnitSpecification(_unitId,user.IsCenterUser));
                 /*query=query.Where(o => 
                 UnitMaterialRepository.GetAll().Count(d => d.UnitId == _unitId && d.MaterialId == o.Id &&( d.UnitSellMode==UnitSellMode.停止销售 || d.UnitSellMode == UnitSellMode.售完为止 && o.TotalNumber==0) ) == 0 //并未设置代理商销售方式的默认始终销售
                     );*/

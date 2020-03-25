@@ -20,14 +20,16 @@ namespace Master.Storage
             //    data["IsDiyed"] = material.DIYInfo.Count > 0;
             //}
             //加入库存
-            var storeCountInfo = await Resolve<StoreMaterialManager>().GetAll().Where(o => o.MaterialId == material.Id)
+            var storeCountInfo = await Resolve<StoreMaterialManager>().GetAll().Include(o=>o.Store).Where(o => o.MaterialId == material.Id)
                 .Select(o => new
                 {
                     o.StoreId,
+                    o.Store.IsDefault,
                     o.Number
                 })
                 .ToListAsync();
             data["StoreCount"] = storeCountInfo;
+            data["DefaultCount"] = storeCountInfo.FirstOrDefault(o => o.IsDefault)?.Number;
             data["TotalCount"] = storeCountInfo.Sum(o => o.Number);
         }
         public override async Task ValidateEntity(Material entity)

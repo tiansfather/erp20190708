@@ -37,10 +37,7 @@ using System.Text.RegularExpressions;
 
 namespace Master.Web.Controllers
 {    
-    public interface ITestJob
-    {
-        int DoJob();
-    }
+    
 
     public class HomeController : MasterControllerBase
     {

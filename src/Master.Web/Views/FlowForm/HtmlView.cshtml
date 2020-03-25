@@ -17,6 +17,17 @@
             word-break: keep-all;
         }
     }
+
+    @@media screen{
+        #print{
+            display:none;
+        }
+    }
+    @@media print{
+        #header,#normal{
+            display:none;
+        }
+    }
 </style>
 <style>
     .red{
@@ -145,7 +156,7 @@
 </style>
 
 <script>
-    var sheetId = $.getUrlParam("sheetId");
+    var sheetId = $.getUrlParam("sheetId")||'@ViewBag.SheetId';
     var _formOption = {
         readonly: true,
         formData:@Html.Raw(ViewBag.FormData),
@@ -240,7 +251,8 @@
                 },
                 action: function (btn) {
                     if (btn.buttonKey == "print") {
-                        window.open('/FlowSheet/SheetView?data=' + sheetId + "&mode=print");
+                        window.print();
+                        //window.open('/FlowSheet/SheetView?data=' + sheetId + "&mode=print");
                         return;
                     }
                     var confirmMsg = btn.confirmMsg || '确认提交?';
