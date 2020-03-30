@@ -6843,6 +6843,15 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'checkSellMaterialInfos'
+    abp.services.app.materialSell.checkSellMaterialInfos = function(checkSellMaterialInfoDtos, unitId, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/MaterialSell/CheckSellMaterialInfos' + abp.utils.buildQueryString([{ name: 'unitId', value: unitId }]) + '',
+        type: 'POST',
+        data: JSON.stringify(checkSellMaterialInfoDtos)
+      }, ajaxParams));;
+    };
+
     // action 'getPageResult'
     abp.services.app.materialSell.getPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {

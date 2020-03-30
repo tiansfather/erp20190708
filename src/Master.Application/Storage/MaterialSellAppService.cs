@@ -254,5 +254,57 @@ namespace Master.Storage
 
             //return result;
         }
+
+        public virtual async Task<string> CheckSellMaterialInfos(IEnumerable<CheckSellMaterialInfoDto> checkSellMaterialInfoDtos,int unitId)
+        {
+            var limitedMaterialIds = new List<int>();
+            foreach(var checkSellMaterialInfoDto in checkSellMaterialInfoDtos)
+            {
+                if (await LimitSellMaterialInfo(checkSellMaterialInfoDto, unitId))
+                {
+                    limitedMaterialIds.Add(checkSellMaterialInfoDto.Id);
+                }
+            }
+            if (limitedMaterialIds.Count > 0)
+            {
+                return string.Join(',', (await Resolve<MaterialManager>().GetListByIdsAsync(limitedMaterialIds)).Select(o=>o.Name));
+            }
+            else
+            {
+                return "";
+            }
+        }
+        /// <summary>
+        /// 是否待出库数量+当前订单数量已超过库存
+        /// </summary>
+        /// <param name="checkSellMaterialInfoDto"></param>
+        /// <returns></returns>
+        private async Task<bool> LimitSellMaterialInfo(CheckSellMaterialInfoDto checkSellMaterialInfoDto,int unitId)
+        {
+            var user = await GetCurrentUserAsync();
+            var storeMaterialManager = Resolve<StoreMaterialManager>();
+            var materialManager = Resolve<MaterialManager>();
+            var material = await materialManager.GetByIdAsync(checkSellMaterialInfoDto.Id);
+            var sellMode = await materialManager.GetMaterialUnitSellMode(material, unitId);
+            if (sellMode == UnitSellMode.停止销售)
+            {
+                return true;
+            }else if(sellMode == UnitSellMode.始终销售)
+            {
+                return false;
+            }
+            else
+            {
+                //库存数量，代理商登录就是默认仓库的库存数量
+                var storeNumber = await storeMaterialManager.GetMaterialNumber(checkSellMaterialInfoDto.Id);
+                //获取已下单但未出库的数量
+                var toOutNumber = await Manager.GetAll()
+                    .Where(o => o.MaterialId == checkSellMaterialInfoDto.Id)
+                    .WhereIf(!user.IsCenterUser, o => MasterDbContext.GetJsonValueString(o.FlowSheet.Property, "$.OrderType") == "代理商自助下单")
+                    .SumAsync(o => o.SellNumber - o.OutNumber);
+                return checkSellMaterialInfoDto.Number + toOutNumber > storeNumber;
+            }
+            
+        }
     }
 }

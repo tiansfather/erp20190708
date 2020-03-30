@@ -144,7 +144,7 @@ namespace Master.Units
             {
                 var unitRole = await RoleManager.GetAll().Where(o => o.Name == StaticRoleNames.Tenants.Unit).FirstOrDefaultAsync();
                 //新增用户
-                var newNames = new string[] { userName, userName + "1", userName + "2", userName + "3" };
+                var newNames = new string[] { userName/*, userName + "1", userName + "2", userName + "3"*/ };
                 foreach (var newName in newNames)
                 {
                     var user = new User()
@@ -166,7 +166,7 @@ namespace Master.Units
                 //修改
                 if (users[0].UserName != userName)
                 {
-                    throw new UserFriendlyException("暂不支持修改往来单位账号");
+                    throw new UserFriendlyException("暂不支持修改往来单位账号,此单位账号固定为"+ users[0].UserName);
                 }
                 else
                 {

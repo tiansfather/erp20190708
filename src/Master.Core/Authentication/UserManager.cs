@@ -50,15 +50,15 @@ namespace Master.Authentication
         #region 删除
         public override async Task DeleteAsync(User entity)
         {
-            if (entity.TenantId != null)
-            {
-                //如果是账套的管理人员，则不允许删除
-                var tenant = await Resolve<TenantManager>().GetByIdAsync(entity.TenantId.Value);
-                if (tenant.GetPropertyValue<string>("Mobile") == entity.PhoneNumber)
-                {
-                    throw new UserFriendlyException(L("账套创建人不能被删除"));
-                }
-            }
+            //if (entity.TenantId != null)
+            //{
+            //    //如果是账套的管理人员，则不允许删除
+            //    var tenant = await Resolve<TenantManager>().GetByIdAsync(entity.TenantId.Value);
+            //    if (tenant.GetPropertyValue<string>("Mobile") == entity.PhoneNumber)
+            //    {
+            //        throw new UserFriendlyException(L("账套创建人不能被删除"));
+            //    }
+            //}
             
             await base.DeleteAsync(entity);
         }

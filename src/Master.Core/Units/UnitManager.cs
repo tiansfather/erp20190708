@@ -13,6 +13,7 @@ using Abp.Runtime.Caching;
 using Master.WorkFlow;
 using Master.Finance;
 using Master.Entity;
+using Master.Authentication;
 
 namespace Master.Units
 {
@@ -98,6 +99,13 @@ namespace Master.Units
             if(await Resolve<UnitFeeHistoryManager>().GetAll().CountAsync(o => ids.Contains(o.UnitId)) > 0)
             {
                 throw new UserFriendlyException("已产生往来金额的往来单位不能删除");
+            }
+            var userManager = Resolve<UserManager>();
+            //先删除用户信息
+            var users =await userManager.GetAll().Where(o => ids.ToList().Contains(o.UnitId.Value)).ToListAsync();
+            foreach(var user in users)
+            {
+                await userManager.DeleteAsync(user);
             }
             await base.DeleteAsync(ids);
         }

@@ -25,25 +25,8 @@
         var index = parent.layer.getFrameIndex(window.name);
 
         function submit() {
-            
-            var formId = $.getUrlParam("data");
-            var flowSchemeId = $.getUrlParam("flowSchemeId");
-            var formData = {};
-
-            if (typeof (getFormData) != "undefined") {
-                try {
-                    formData = getFormData();
-                } catch (err) {
-                    abp.message.error(err.message||err);
-                    return false;
-                }
-                
-            } else {
-                abp.message.error(L("模板错误，必须实现getFormData方法"));
-                return false;
-            }
-
-            abp.message.confirm(L("确认提交?"), function () {
+            var submitFn = function (formData) {
+                abp.message.confirm(L("确认提交?"), function () {
                 var dto = { flowSchemeId: flowSchemeId, flowFormId: formId, formData: JSON.stringify(formData) };
                 func.runAsync(abp.services.app.flowInstance.createInstance(dto).done(function (instanceId) {
                     //打开查看窗口
@@ -67,7 +50,34 @@
                     
                 }))
             })
+            }
 
+            var formId = $.getUrlParam("data");
+            var flowSchemeId = $.getUrlParam("flowSchemeId");
+            var formData = {};
+
+            if (typeof (getAsyncFormData) != "undefined") {
+                getAsyncFormData(submitFn);
+                return;
+            }
+
+            if (typeof (getFormData) != "undefined") {
+                try {
+                    formData = getFormData();
+                    submitFn(formData);
+                } catch (err) {
+                    abp.message.error(err.message||err);
+                    return false;
+                }
+                
+            } else {
+                abp.message.error(L("模板错误，必须实现getFormData方法"));
+                return false;
+            }
+
+            
+
+            
             
         }
 

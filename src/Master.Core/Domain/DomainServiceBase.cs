@@ -53,8 +53,9 @@ namespace Master.Domain
             {
                 return await Repository.GetAsync(id);
             }
-            catch
+            catch(Exception ex)
             {
+                Logger.Error(ex.Message, ex);
                 return null;
             }
 

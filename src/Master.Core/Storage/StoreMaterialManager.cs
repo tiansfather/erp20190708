@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Abp.UI;
 using Master.WorkFlow;
+using Abp.Linq.Extensions;
 
 namespace Master.Storage
 {
@@ -41,8 +42,8 @@ namespace Master.Storage
             else
             {
                 var storeMaterialCount = GetStoreMaterialNumber(storeId, materialId).Result;
-                message = $"出库失败,产品{material.Name}库存数量仅剩{storeMaterialCount}，请调整出库数量后再次出库";
-                return storeMaterialCount > outNumber;
+                message = $"出库失败,产品{material.Name}库存数量仅剩{storeMaterialCount.ToString("0.00")}，请调整出库数量后再次出库";
+                return storeMaterialCount >= outNumber;
             }
         }
         #endregion
@@ -65,7 +66,11 @@ namespace Master.Storage
         /// <returns></returns>
         public virtual async Task<decimal> GetMaterialNumber(int materialId)
         {
-            return await GetAll().Where(o => o.MaterialId == materialId).SumAsync(o => o.Number);
+            //如果是代理商，则只能获取默认仓库的库存
+            var user = await GetCurrentUserAsync();
+            return await GetAll()
+                .WhereIf(!user.IsCenterUser,o=>o.Store.IsDefault)
+                .Where(o => o.MaterialId == materialId).SumAsync(o => o.Number);
         } 
         #endregion
 
