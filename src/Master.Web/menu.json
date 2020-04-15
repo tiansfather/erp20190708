@@ -120,6 +120,49 @@
             "order": 14
           }
         ]
+      },
+      {
+        "name": "Summary.Tenancy.SummaryWrapper1",
+        "displayName": "报表",
+        "icon": "iconfont icon-celve",
+        "order": 1,
+        "items": [
+          {
+            "name": "Summary.Tenancy.SellSummary",
+            "displayName": "订货商品汇总",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../Summary/SellSummary",
+            "order": 1
+          },
+          {
+            "name": "Summary.Tenancy.SellDetail",
+            "displayName": "订货商品明细",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../Summary/SellDetail",
+            "order": 2
+          },
+          {
+            "name": "Summary.Tenancy.SellOutSummary",
+            "displayName": "销售出库商品汇总",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../Summary/SellOutSummary",
+            "order": 3
+          },
+          {
+            "name": "Summary.Tenancy.SellOutDetail",
+            "displayName": "销售出库商品明细",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../Summary/SellOutDetail",
+            "order": 4
+          },
+          {
+            "name": "Summary.Tenancy.SellBackDetail",
+            "displayName": "销售退货明细",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../Summary/SellBackDetail",
+            "order": 5
+          }
+        ]
       }
 
     ]
@@ -157,6 +200,35 @@
         "icon": "iconfont icon-celve",
         "url": "/Home/Show?name=../FlowSheet/PRR/Index",
         "order": 4
+      },
+      {
+        "name": "Summary.Tenancy.SummaryWrapper2",
+        "displayName": "报表",
+        "icon": "iconfont icon-celve",
+        "order": 5,
+        "items": [
+          {
+            "name": "Summary.Tenancy.BuySummary",
+            "displayName": "采购入库商品汇总",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../Summary/BuySummary",
+            "order": 6
+          },
+          {
+            "name": "Summary.Tenancy.BuyDetail",
+            "displayName": "采购入库商品明细",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../Summary/BuyDetail",
+            "order": 7
+          },
+          {
+            "name": "Summary.Tenancy.BuyBackDetail",
+            "displayName": "采购退货明细",
+            "icon": "iconfont icon-celve",
+            "url": "/Home/Show?name=../Summary/BuyBackDetail",
+            "order": 8
+          }
+        ]
       }
     ]
   },
@@ -272,6 +344,7 @@
       {
         "name": "Finance.Tenancy.FinanceWrapper1",
         "displayName": "收款",
+        "icon": "iconfont icon-celve",
         "order": 1,
         "items": [
           {
@@ -303,6 +376,7 @@
       {
         "name": "Finance.Tenancy.FinanceWrapper2",
         "displayName": "付款",
+        "icon": "iconfont icon-celve",
         "order": 2,
         "items": [
           {
@@ -334,6 +408,7 @@
       {
         "name": "Finance.Tenancy.FinanceWrapper3",
         "displayName": "其他",
+        "icon": "iconfont icon-celve",
         "order": 3,
         "items": [
           {
@@ -366,6 +441,7 @@
       {
         "name": "Finance.Tenancy.FinanceWrapper4",
         "displayName": "票据",
+        "icon": "iconfont icon-celve",
         "order": 4,
         "items": [
           {
@@ -405,93 +481,12 @@
             "url": "/FeeCheck/Index"
           }
         ]
-      }
-
-    ]
-  },
-  {
-    "name": "Summary",
-    "displayName": "报表",
-    "icon": "iconfont icon-zonglan",
-    "order": 21,
-    "items": [
-      {
-        "name": "Summary.Tenancy.SummaryWrapper1",
-        "displayName": "销货",
-        "icon": "iconfont icon-celve",
-        "order": 1,
-        "items": [
-          {
-            "name": "Summary.Tenancy.SellSummary",
-            "displayName": "订货商品汇总",
-            "icon": "iconfont icon-celve",
-            "url": "/Home/Show?name=../Summary/SellSummary",
-            "order": 1
-          },
-          {
-            "name": "Summary.Tenancy.SellDetail",
-            "displayName": "订货商品明细",
-            "icon": "iconfont icon-celve",
-            "url": "/Home/Show?name=../Summary/SellDetail",
-            "order": 2
-          },
-          {
-            "name": "Summary.Tenancy.SellOutSummary",
-            "displayName": "销售出库商品汇总",
-            "icon": "iconfont icon-celve",
-            "url": "/Home/Show?name=../Summary/SellOutSummary",
-            "order": 3
-          },
-          {
-            "name": "Summary.Tenancy.SellOutDetail",
-            "displayName": "销售出库商品明细",
-            "icon": "iconfont icon-celve",
-            "url": "/Home/Show?name=../Summary/SellOutDetail",
-            "order": 4
-          },
-          {
-            "name": "Summary.Tenancy.SellBackDetail",
-            "displayName": "销售退货明细",
-            "icon": "iconfont icon-celve",
-            "url": "/Home/Show?name=../Summary/SellBackDetail",
-            "order": 5
-          }
-        ]
-      },
-      {
-        "name": "Summary.Tenancy.SummaryWrapper2",
-        "displayName": "进货",
-        "icon": "iconfont icon-celve",
-        "order": 2,
-        "items": [
-          {
-            "name": "Summary.Tenancy.BuySummary",
-            "displayName": "采购入库商品汇总",
-            "icon": "iconfont icon-celve",
-            "url": "/Home/Show?name=../Summary/BuySummary",
-            "order": 6
-          },
-          {
-            "name": "Summary.Tenancy.BuyDetail",
-            "displayName": "采购入库商品明细",
-            "icon": "iconfont icon-celve",
-            "url": "/Home/Show?name=../Summary/BuyDetail",
-            "order": 7
-          },
-          {
-            "name": "Summary.Tenancy.BuyBackDetail",
-            "displayName": "采购退货明细",
-            "icon": "iconfont icon-celve",
-            "url": "/Home/Show?name=../Summary/BuyBackDetail",
-            "order": 8
-          }
-        ]
       },
       {
         "name": "Summary.Tenancy.SummaryWrapper3",
-        "displayName": "财务",
+        "displayName": "报表",
         "icon": "iconfont icon-celve",
-        "order": 3,
+        "order": 5,
         "items": [
           {
             "name": "Summary.Tenancy.FeeAccountHistory",
@@ -523,7 +518,7 @@
           }
         ]
       }
-      
+
     ]
   },
   {

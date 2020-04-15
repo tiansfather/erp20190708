@@ -179,15 +179,23 @@ namespace Master.FlowHandlers
                 {
                     throw new UserFriendlyException("请选择发货仓库");
                 }
-                
+
+                var logs = new List<string>();
+
                 foreach (var sheetItem in sheetData["body"])
                 {
                     var materialId = sheetItem["materialId"].ToObjectWithDefault<int>();//商品Id
                     var number = sheetItem["number"].ToObjectWithDefault<int>();//出货数量
-                    var materialSell = await MaterialSellManager.GetAll()
+                    var materialSell = await MaterialSellManager.GetAll().Include(o=>o.Material)
                         .Where(o => o.FlowSheetId == flowSheet.Id && o.MaterialId == materialId).FirstOrDefaultAsync();
                     if (materialSell != null)
                     {
+                        if (materialSell.SellNumber != number)
+                        {
+                            //发生订购数量更改需要进行记录
+                            logs.Add($"商品\"{materialSell.Material.Name}\"订购数量从{materialSell.SellNumber}调整为{number}");
+                        }
+                        materialSell.SellNumber = number;
                         materialSell.OutNumber = materialSell.SellNumber;//设置销售记录的出货数量等于订货数量
                     }
                     //建立销售出库记录
@@ -208,7 +216,10 @@ namespace Master.FlowHandlers
                     }
                     //库存变化
                     await StoreMaterialManager.CountMaterial(outStoreId.Value, materialId, -number, flowSheet);
-
+                }
+                if (logs.Count > 0)
+                {
+                    flowSheet.SetPropertyValue("Log", $"{AbpSession.Name()}于{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}将{string.Join(';', logs)}");
                 }
                 
             }

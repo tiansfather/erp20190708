@@ -37,6 +37,7 @@ namespace Master.Workflow
                 flowSheet.OrderStatus,
                 RelSheetSN=flowSheet.RelSheet?.SheetSN,
                 flowSheet.Unit?.UnitName,
+                Log=flowSheet.GetPropertyValue("Log"),
                 Btns= btns.Select(o => new
                 {
                     o.ButtonKey,

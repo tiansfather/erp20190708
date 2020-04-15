@@ -46,7 +46,7 @@
     }
 
     #print * {
-        margin: 0;
+        margin: 0 auto;
         padding: 0;
         box-sizing: border-box;
     }
@@ -122,6 +122,7 @@
         font-size: 14px;
         word-wrap: break-word;
         float: right;
+        margin-right:30px;
     }
 
     #print .total-wrap {
@@ -226,6 +227,7 @@
             },
             methods: {
                 filterBtn: function (btns) {
+                    btns = btns || [];
                     //只读模式下只允许打印或冲红
                     if (_formOption.mode == "readonly") {
                         btns = btns.filter(function (o) { return o.buttonKey == 'print' || o.buttonKey == 'revert' });

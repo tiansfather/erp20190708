@@ -88,7 +88,12 @@
                     <td>{{item.specification}}</td>
                     <td>{{item.price}}</td>
                     <td>{{item.remarks}}</td>                    
-                    <td >{{item.number}} <span v-if="!item.canSell">库存不足</span></td>
+                    <td>
+                        <el-input-number v-model="item.number" size="mini" style="width:100px" v-if="isSend"></el-input-number>
+                        <template v-else>
+                            {{item.number}}
+                        </template><!--<span v-if="!item.canSell">库存不足</span>-->
+                    </td>
                     <td>{{item.measureMentUnit}}</td>
                     <td>{{item.location}}</td>
                     <template v-if="isSend">
@@ -104,6 +109,18 @@
                         </td>
                     </template>
 
+                </tr>
+            </tbody>
+        </table>
+        <table class="layui-table" v-if="sheetInfo.log">
+            <thead>
+                <tr>
+                    <th>修改日志</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr >
+                    <td>{{sheetInfo.log}}</td>
                 </tr>
             </tbody>
         </table>
@@ -173,6 +190,9 @@
                     }
                 },
             },
+            mounted: function () {
+                this.currentItem.items.forEach(function (o) { o.oriNumber = o.number; });
+            },
             created:function() {
                 var that = this;
                 if (!_formOption.formData) {
@@ -190,6 +210,7 @@
                     func.runAsync(abp.services.app.materialSell.getCartInfo(this.currentItem.unitId, 1).done(function (data) {
                         console.log(data);
                         that.currentItem.items = data;
+                        that.currentItem.items.forEach(function (o) { o.oriNumber = o.number; });
                     }))
                 }
             },
