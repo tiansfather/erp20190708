@@ -19,6 +19,7 @@ namespace Master.Finance
         [InterColumn(ColumnName = "经办人", DisplayPath = "CreatorUser.Name", Templet = "{{d.creatorUserId_display}}", Sort = 3)]
         public override long? CreatorUserId { get; set; }
         [InterColumn(ColumnName = "发生金额",  ColumnType = Module.ColumnTypes.Number, Sort = 4, Templet = "<a dataid=\"{{d.id}}\" class=\"layui-btn layui-btn-xs layui-btn-normal\" buttonname=\"凭证查看\" params=\"{&quot;btn&quot;:[]}\"   buttonactiontype=\"Form\" buttonactionurl=\"/Home/Show?name=../Voucher/View\" onclick=\"func.callModuleButtonEvent()\">{{d.fee}}</a>")]
+        [Column(TypeName = "decimal(20,2)")]
         public virtual decimal Fee { get; set; }
         [InterColumn(ColumnName = "状态", ColumnType = Module.ColumnTypes.Select ,DictionaryName ="Master.Finance.VoucherStatus",Templet = "{{d.voucherStatus_display}}",Sort =5)]
         public virtual VoucherStatus VoucherStatus { get; set; }

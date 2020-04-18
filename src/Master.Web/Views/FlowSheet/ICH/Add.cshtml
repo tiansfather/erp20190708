@@ -88,9 +88,9 @@
                 },
                 methods: {
                     updateInfo: function (info) {
-                        if (isNaN(info.number)) { info.number = 0; }
+                        if (!info.number || isNaN(info.number)) { info.number = 0; }
                         info.number = parseFloat(info.number);
-                        info.storeNumber = layui.table.cache.Material.filter(function (o) { return o.id == info.id })[0].storeCount.filter(function (o) { return o.storeId == app.currentItem.storeId })[0].number;
+                        info.storeNumber = (layui.table.cache.Material.filter(function (o) { return o.id == info.id })[0].storeCount.filter(function (o) { return o.storeId == app.currentItem.storeId })[0] || {number:0}).number;
                         console.log(info);
                         var existInfo = this.currentItem.items.filter(function (o) { return o.id == info.id })[0];
                         //等于0直接移除

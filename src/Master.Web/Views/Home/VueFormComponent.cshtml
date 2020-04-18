@@ -142,6 +142,12 @@
     Vue.component('lay-datetime', {
         template: '#layDateTime',
         props: ['columnInfo', 'value'],
+        data: function () {
+            var that = this;
+            return {
+                value1:that.value
+            }
+        },
         created: function () {
             var that = this;
             this.$nextTick(function () {
@@ -153,6 +159,11 @@
                     });
                 })
             })
+        },
+        methods: {
+            change: function (val) {
+                console.log(val);
+            }
         }
     });
 </script>
@@ -160,9 +171,21 @@
     <div class="layui-form-item">
         <label class="layui-form-label">{{columnInfo.ColumnName}}<span class="my-required-span" v-if="columnInfo.VerifyRules.indexOf('required')!=-1">*</span></label>
         <div class="layui-input-block">
-            <input type="text" class="laydate layui-input" :name="columnInfo.ColumnKey" :id="columnInfo.ColumnKey" :lay-verify="columnInfo.VerifyRules" autocomplete="off" :value="value" :tips="columnInfo.Tips">
+            <el-date-picker v-model="value1"
+                            value-format="yyyy-MM-dd"
+                            type="date"
+                            placeholder="选择日期"
+                            @@change="change">
+            </el-date-picker>
+            <input type="hidden" :name="columnInfo.ColumnKey" :id="columnInfo.ColumnKey" :lay-verify="columnInfo.VerifyRules" autocomplete="off" :value="value1" :tips="columnInfo.Tips">
         </div>
     </div>
+    @*<div class="layui-form-item">
+            <label class="layui-form-label">{{columnInfo.ColumnName}}<span class="my-required-span" v-if="columnInfo.VerifyRules.indexOf('required')!=-1">*</span></label>
+            <div class="layui-input-block">
+                <input type="text" class="laydate layui-input" :name="columnInfo.ColumnKey" :id="columnInfo.ColumnKey" :lay-verify="columnInfo.VerifyRules" autocomplete="off" :value="value" :tips="columnInfo.Tips">
+            </div>
+        </div>*@
 </script>
 <script>
     Vue.component('lay-datetime-view', {

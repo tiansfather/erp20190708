@@ -19,7 +19,9 @@ namespace Master.Storage
         public int FlowSheetId { get; set; }
         public virtual FlowSheet FlowSheet { get; set; }
         public int BuyNumber { get; set; }
+        [Column(TypeName = "decimal(20,2)")]
         public decimal Price { get; set; }
+        [Column(TypeName = "decimal(20,2)")]
         public decimal Discount { get; set; }
         public int BackNumber { get; set; }
         public string FeatureCode { get; set; }

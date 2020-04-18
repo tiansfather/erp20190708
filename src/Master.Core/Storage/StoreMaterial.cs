@@ -36,6 +36,7 @@ namespace Master.Storage
         /// 库存数量
         /// </summary>
         [InterColumn(ColumnName = "库存数量",ColumnType =Module.ColumnTypes.Number, Sort = 10,DisplayFormat ="0.00")]
+        [Column(TypeName = "decimal(20,2)")]
         public decimal Number { get; set; }
         
         public string Status { get; set; }

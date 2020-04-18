@@ -51,8 +51,10 @@ namespace Master.Storage
         [InterColumn(ColumnName = "计量单位", VerifyRules = "required", Sort = 6)]
         public string MeasureMentUnit { get; set; }
         [InterColumn(ColumnName = "市场单价(元)", ColumnType = ColumnTypes.Number, VerifyRules = "number", DefaultValue = "0", DisplayFormat = "0.00", Sort = 7)]
+        [Column(TypeName = "decimal(20,2)")]
         public decimal Price { get; set; }
         [InterColumn(ColumnName = "库存下限", ColumnType = ColumnTypes.Number, VerifyRules = "numberOrempty",IsShownInList =false, DefaultValue = "0", DisplayFormat = "0", Sort = 8)]
+        [Column(TypeName = "decimal(20,2)")]
         public decimal? LimitDown { get; set; }
         public string Status { get; set; }
         /// <summary>
@@ -61,19 +63,25 @@ namespace Master.Storage
         [InterColumn(ColumnName = "状态", ColumnType = Module.ColumnTypes.Switch,DefaultValue ="true", Templet = "{{#if(d.isActive){}}<span class=\"layui-badge layui-bg-green\">上架</span>{{#}else{}}<span class=\"layui-badge layui-bg-gray\">下架</span>{{#}}}", Sort = 9)]
         public bool IsActive { get; set; } = true;
         [InterColumn(ColumnName ="默认进货折扣",ColumnType =ColumnTypes.Number,Sort =10, DisplayFormat = "0.00", IsShownInList = false,DefaultValue ="1",VerifyRules ="required|number")]
+        [Column(TypeName = "decimal(20,2)")]
         public decimal? DefaultBuyDiscount { get; set; }
         [InterColumn(ColumnName = "默认出货折扣", ColumnType = ColumnTypes.Number, Sort = 11, DisplayFormat = "0.00", IsShownInList = false, DefaultValue = "1", VerifyRules = "required|number")]
+        [Column(TypeName = "decimal(20,2)")]
         public decimal? DefaultSellDiscount { get; set; }
         [InterColumn(ColumnName = "出货折扣1", ColumnType = ColumnTypes.Number, Sort =12, DisplayFormat = "0.00", IsShownInList = false, DefaultValue = "1", VerifyRules = "required|number")]
+        [Column(TypeName = "decimal(20,2)")]
         public decimal? SellDiscount1 { get; set; }
         [InterColumn(ColumnName = "出货折扣2", ColumnType = ColumnTypes.Number, Sort = 13, DisplayFormat = "0.00", IsShownInList = false, DefaultValue = "1", VerifyRules = "required|number")]
+        [Column(TypeName = "decimal(20,2)")]
         public decimal? SellDiscount2 { get; set; }
         [InterColumn(ColumnName = "出货折扣3", ColumnType = ColumnTypes.Number, Sort = 14, DisplayFormat = "0.00", IsShownInList = false, DefaultValue = "1", VerifyRules = "required|number")]
+        [Column(TypeName = "decimal(20,2)")]
         public decimal? SellDiscount3 { get; set; }
         [InterColumn(ColumnName ="适用区域",IsShownInList =false,Sort =15)]
         public string Location { get; set; }
         [InterColumn(ColumnName ="备注",Sort =16,IsShownInList =false)]
         public override string Remarks { get; set; }
+        [Column(TypeName = "decimal(20,2)")]
         public decimal TotalNumber { get; set; }
 
         public virtual bool IsDiyed { get; set; }

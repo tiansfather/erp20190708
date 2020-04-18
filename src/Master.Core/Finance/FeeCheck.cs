@@ -3,6 +3,7 @@ using Master.Module.Attributes;
 using Master.WorkFlow;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Master.Finance
@@ -13,6 +14,7 @@ namespace Master.Finance
         [InterColumn(ColumnName ="支票编号", Templet = "<a dataid=\"{{d.id}}\" class=\"layui-btn layui-btn-xs layui-btn-normal\" buttonname=\"支票详情\" params=\"{&quot;btn&quot;:[]}\"   buttonactiontype=\"Form\" buttonactionurl=\"/FeeCheck/View?moduleKey=FeeCheck\" onclick=\"func.callModuleButtonEvent()\">{{d.checkNumber}}</a>",Sort =1)]
         public string CheckNumber { get; set; }
         [InterColumn(ColumnName = "金额",ColumnType =Module.ColumnTypes.Number, Sort = 2)]
+        [Column(TypeName = "decimal(20,2)")]
         public decimal CheckFee { get; set; }
         [InterColumn(ColumnName = "开票日期", ColumnType = Module.ColumnTypes.DateTime, Sort = 3)]
         public DateTime CheckDate { get; set; }

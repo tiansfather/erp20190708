@@ -3,6 +3,7 @@ using Master.Module.Attributes;
 using Master.Units;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Master.Finance
@@ -19,6 +20,7 @@ namespace Master.Finance
         [InterColumn(ColumnName = "开票内容", Sort = 3)]
         public string Content { get; set; }
         [InterColumn(ColumnName = "开票金额",ColumnType =Module.ColumnTypes.Number, Sort = 4)]
+        [Column(TypeName ="decimal(20,2)")]
         public decimal Fee { get; set; }
         [InterColumn(ColumnName = "销货单位名称", Sort = 5)]
         public string SellUnitName { get; set; }

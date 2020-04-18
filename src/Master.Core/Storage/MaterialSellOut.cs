@@ -25,7 +25,9 @@ namespace Master.Storage
         /// 出库数量
         /// </summary>
         public int OutNumber { get; set; }
+        [Column(TypeName = "decimal(20,2)")]
         public decimal Price { get; set; }
+        [Column(TypeName = "decimal(20,2)")]
         public decimal Discount { get; set; }
     }
 

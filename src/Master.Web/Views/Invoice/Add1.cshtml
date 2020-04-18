@@ -64,7 +64,7 @@
                         sumFee: function () {
                             var sum = 0;
                             this.currentItem.items.forEach(function (o) {
-                                !isNaN(o.fee) && (sum+=parseFloat(o.fee));
+                                o.fee && !isNaN(o.fee) && (sum+=parseFloat(o.fee));
                             })
                             return sum.toFixed(2);
                         }

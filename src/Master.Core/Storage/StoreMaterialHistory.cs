@@ -41,6 +41,7 @@ namespace Master.Storage
         /// 变动数量
         /// </summary>
         [InterColumn(ColumnName = "变动数量",Sort =12)]
+        [Column(TypeName = "decimal(20,2)")]
         public decimal Number { get; set; }
         [InterColumn(ColumnName = "单据",DisplayPath ="FlowSheet.SheetSN" , Templet = "{{#if (d.flowSheetId){}}<a dataid=\"{{d.flowSheetId}}\" class=\"layui-btn layui-btn-xs layui-btn-normal\" buttonname=\"单据\" params=\"{&quot;btn&quot;:[]}\"   buttonactiontype=\"Form\" buttonactionurl=\"/FlowSheet/SheetView\" onclick=\"func.callModuleButtonEvent()\">{{d.flowSheetId_display||'未录入单号'}}</a>{{#}else{}}{{#}}}", Sort =12)]
         public int? FlowSheetId { get; set; } 

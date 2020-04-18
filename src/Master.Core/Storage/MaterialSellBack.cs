@@ -3,6 +3,7 @@ using Master.Units;
 using Master.WorkFlow;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Master.Storage
@@ -16,7 +17,9 @@ namespace Master.Storage
         public int FlowSheetId { get; set; }
         public virtual FlowSheet FlowSheet { get; set; }
         public int BackNumber { get; set; }
+        [Column(TypeName = "decimal(20,2)")]
         public decimal Price { get; set; }
+        [Column(TypeName = "decimal(20,2)")]
         public decimal Discount { get; set; }
     }
 }
