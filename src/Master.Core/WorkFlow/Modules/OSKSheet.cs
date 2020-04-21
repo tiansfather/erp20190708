@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Master.WorkFlow.Modules
 {
-    [InterModule("其它收款单", BaseType = typeof(FlowSheet), GenerateDefaultButtons = false, GenerateDefaultColumns = false)]
+    [InterModule("其它收款单", BaseType = typeof(FlowSheet), GenerateDefaultButtons = false)]
     public class OSKSheet : FlowSheet
     {
         [InterColumn(ColumnName = "收款单编号", Templet = "<a dataid=\"{{d.id}}\" class=\"layui-btn layui-btn-xs layui-btn-normal\" buttonname=\"单据\" params=\"{&quot;btn&quot;:[]}\"   buttonactiontype=\"Form\" buttonactionurl=\"/FlowSheet/SheetView\" onclick=\"func.callModuleButtonEvent()\">{{d.sheetSN}}</a>", Sort = 1)]
@@ -25,5 +25,8 @@ namespace Master.WorkFlow.Modules
         [NotMapped]
         public virtual string PayType { get; set; }
         public override DateTime SheetDate { get => base.SheetDate; set => base.SheetDate = value; }
+        [InterColumn(ColumnName = "创建时间", ColumnType = Module.ColumnTypes.DateTime, ValuePath = "CreationTime", DisplayFormat = "yyyy-MM-dd HH:mm", Sort = 999)]
+        [NotMapped]
+        public DateTime CreationTime2 { get; set; }
     }
 }

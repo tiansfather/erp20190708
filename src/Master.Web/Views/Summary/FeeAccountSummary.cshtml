@@ -27,7 +27,7 @@
 			<table autoevent="1" id="Summary" lay-filter="Summary" class="layui-table " lay-data="{cellMinWidth:'80',height:'full-170', url:'/api/services/app/FeeAccount/GetSummary', page:false,limit:1000, id:'Summary',  even: true,done:config.onTableDone}" @*lay-size="sm" *@>
 				<thead>
 					<tr>
-						<th lay-data="{field:'name',sort:true}">@L("资金账户")</th>
+						<th lay-data="{field:'name',sort:true,templet:'#accountTpl'}">@L("资金账户")</th>
 						<th lay-data="{field:'totalIn'}">@L("收入合计")</th>
                         <th lay-data="{field:'totalOut'}">@L("支出合计")</th>
 					</tr>
@@ -38,6 +38,9 @@
 	</div>
 </div>
 @section scripts{
+<script id="accountTpl" type="text/html">
+    {{d.name=="合计"?"<font color='red'>合计</font>":d.name}}
+</script>
 	<script>
         var app
         config.ready = function () {

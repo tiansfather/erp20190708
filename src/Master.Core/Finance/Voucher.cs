@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Master.Finance
 {
-    [InterModule("凭证查询",  GenerateDefaultButtons = false, GenerateDefaultColumns = false)]
+    [InterModule("凭证查询",  GenerateDefaultButtons = false)]
     public class Voucher: BaseFullEntityWithTenant
     {
         [InterColumn(ColumnName = "提交代理商", DisplayPath = "Unit.UnitName", Templet = "{{d.unitId_display||'/'}}", Sort = 1)]

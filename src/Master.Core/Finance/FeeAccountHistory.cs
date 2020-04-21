@@ -12,7 +12,7 @@ namespace Master.Finance
     /// <summary>
     /// 账号金额变动明细
     /// </summary>
-    [InterModule("资金往来明细",GenerateDefaultButtons =false,GenerateDefaultColumns =false)]
+    [InterModule("资金往来明细",GenerateDefaultButtons =false)]
     public class FeeAccountHistory : BaseFullEntityWithTenant
     {
         [InterColumn(ColumnName ="资金账户",DisplayPath="FeeAccount.Name",Templet = "{{d.feeAccountId_display||'/'}}", Sort =1)]
@@ -48,6 +48,8 @@ namespace Master.Finance
         [InterColumn(ColumnName = "发生环节单据编号", Templet = "<a dataid=\"{{d.flowSheetId}}\" class=\"layui-btn layui-btn-xs layui-btn-normal\" buttonname=\"单据\" params=\"{&quot;btn&quot;:[]}\"   buttonactiontype=\"Form\" buttonactionurl=\"/FlowSheet/SheetView\" onclick=\"func.callModuleButtonEvent()\">{{d.flowSheetId_display}}</a>", DisplayPath = "FlowSheet.SheetSN", Sort = 10)]
         public int? FlowSheetId { get; set; }
         public virtual FlowSheet FlowSheet { get; set; }
+        [InterColumn(ColumnName = "备注", DisplayPath = "FlowSheet.Remarks", Sort = 11)]
+        public override string Remarks { get; set; }
     }
 
     public enum FeeDirection

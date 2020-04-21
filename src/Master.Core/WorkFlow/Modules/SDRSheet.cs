@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Master.WorkFlow.Modules
 {
-    [InterModule("实物订单", BaseType = typeof(FlowSheet), GenerateDefaultButtons = false, GenerateDefaultColumns = false)]
+    [InterModule("实物订单", BaseType = typeof(FlowSheet), GenerateDefaultButtons = false)]
     public class SDRSheet : FlowSheet
     {
         [InterColumn(ColumnName = "订单编号", Templet = "<a dataid=\"{{d.id}}\" class=\"layui-btn layui-btn-xs layui-btn-normal\" buttonname=\"单据\" params=\"{&quot;btn&quot;:[]}\"   buttonactiontype=\"Form\" buttonactionurl=\"/FlowSheet/SheetView?mode=readonly\" onclick=\"func.callModuleButtonEvent()\">{{d.sheetSN}}</a>", Sort = 1)]
@@ -25,14 +25,17 @@ namespace Master.WorkFlow.Modules
         public override string OrderStatus { get; set; }
         public override DateTime SheetDate { get => base.SheetDate; set => base.SheetDate = value; }
         public override SheetNature SheetNature { get => base.SheetNature; set => base.SheetNature = value; }
+        [InterColumn(ColumnName = "创建时间", ColumnType = Module.ColumnTypes.DateTime, ValuePath = "CreationTime", DisplayFormat = "yyyy-MM-dd HH:mm", Sort = 999)]
+        [NotMapped]
+        public DateTime CreationTime2 { get; set; }
     }
-    [InterModule("实物订单审核", BaseType = typeof(FlowSheet), GenerateDefaultButtons = false, GenerateDefaultColumns = false)]
+    [InterModule("实物订单审核", BaseType = typeof(FlowSheet), GenerateDefaultButtons = false)]
     public class SDRVerify : SDRSheet
     {
         [InterColumn(ColumnName = "订单编号", Templet = "<a dataid=\"{{d.id}}\" class=\"layui-btn layui-btn-xs layui-btn-normal\" buttonname=\"单据\" params=\"{&quot;btn&quot;:[]}\"   buttonactiontype=\"Form\" buttonactionurl=\"/FlowSheet/SheetView\" onclick=\"func.callModuleButtonEvent()\">{{d.sheetSN}}</a>", Sort = 1)]
         public override string SheetSN { get => base.SheetSN; set => base.SheetSN = value; }
     }
-    [InterModule("实物订单发货", BaseType = typeof(FlowSheet), GenerateDefaultButtons = false, GenerateDefaultColumns = false)]
+    [InterModule("实物订单发货", BaseType = typeof(FlowSheet), GenerateDefaultButtons = false)]
     public class SDRSend : FlowSheet
     {
         [InterColumn(ColumnName = "订单编号", Templet = "<a dataid=\"{{d.id}}\" class=\"layui-btn layui-btn-xs layui-btn-normal\" buttonname=\"单据\" params=\"{&quot;btn&quot;:[]}\"   buttonactiontype=\"Form\" buttonactionurl=\"/FlowSheet/SheetView\" onclick=\"func.callModuleButtonEvent()\">{{d.sheetSN}}</a>", Sort = 1)]
@@ -50,8 +53,11 @@ namespace Master.WorkFlow.Modules
         public override string OrderStatus { get; set; }
         public override DateTime SheetDate { get => base.SheetDate; set => base.SheetDate = value; }
         public override SheetNature SheetNature { get => base.SheetNature; set => base.SheetNature = value; }
+        [InterColumn(ColumnName = "创建时间", ColumnType = Module.ColumnTypes.DateTime, ValuePath = "CreationTime", DisplayFormat = "yyyy-MM-dd HH:mm", Sort = 999)]
+        [NotMapped]
+        public DateTime CreationTime2 { get; set; }
     }
-    [InterModule("实物订单退货", BaseType = typeof(FlowSheet), GenerateDefaultButtons = false, GenerateDefaultColumns = false)]
+    [InterModule("实物订单退货", BaseType = typeof(FlowSheet), GenerateDefaultButtons = false)]
     public class SDRBack : FlowSheet
     {
         [InterColumn(ColumnName = "订单编号", Templet = "<a dataid=\"{{d.id}}\" class=\"layui-btn layui-btn-xs layui-btn-normal\" buttonname=\"单据\" params=\"{&quot;btn&quot;:[]}\"   buttonactiontype=\"Form\" buttonactionurl=\"/FlowSheet/SheetView\" onclick=\"func.callModuleButtonEvent()\">{{d.sheetSN}}</a>", Sort = 1)]
@@ -69,5 +75,8 @@ namespace Master.WorkFlow.Modules
         public override string OrderStatus { get; set; }
         public override DateTime SheetDate { get => base.SheetDate; set => base.SheetDate = value; }
         public override SheetNature SheetNature { get => base.SheetNature; set => base.SheetNature = value; }
+        [InterColumn(ColumnName = "创建时间", ColumnType = Module.ColumnTypes.DateTime, ValuePath = "CreationTime", DisplayFormat = "yyyy-MM-dd HH:mm", Sort = 999)]
+        [NotMapped]
+        public DateTime CreationTime2 { get; set; }
     }
 }

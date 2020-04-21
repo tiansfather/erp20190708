@@ -28,7 +28,7 @@
             </el-form>
 
             <el-form ref="form" label-width="120px" :disabled="_formOption.readonly" :inline="_formOption.readonly">
-                <el-form-item label="对方单位名称:">
+                <el-form-item label="付款公司名称:">
                     <el-input v-model="currentItem.companyName" type="text" v-if="!_formOption.readonly"></el-input>
                     <template v-else>
                         {{currentItem.companyName}}
@@ -77,18 +77,18 @@
                             {{currentItem.feeCheck.checkDate}}
                         </template>
                     </el-form-item>
-                    <el-form-item label="兑现期限(天):">
+                    <!--<el-form-item label="兑现期限(天):">
                         <el-input v-model="currentItem.feeCheck.checkDaySpan" type="text" v-if="!_formOption.readonly"></el-input>
                         <template v-else>
                             {{currentItem.feeCheck.checkDaySpan}}
                         </template>
-                    </el-form-item>
-                    <el-form-item label="签发公司:">
+                    </el-form-item>-->
+                    <!--<el-form-item label="收款公司名称:">
                         <el-input v-model="currentItem.feeCheck.checkCompany" type="text" v-if="!_formOption.readonly"></el-input>
                         <template v-else>
                             {{currentItem.feeCheck.checkCompany}}
                         </template>
-                    </el-form-item>
+                    </el-form-item>-->
                     <el-form-item label="银行:">
                         <el-input v-model="currentItem.feeCheck.checkBank" type="text" v-if="!_formOption.readonly"></el-input>
                         <template v-else>
@@ -129,7 +129,7 @@
                         <td class="tx-l">{{sheetInfo.creatorUserName}}</td>
                     </tr>
                     <tr>
-                        <td class="tx-c weight-font">付款单位:</td>
+                        <td class="tx-c weight-font">付款公司:</td>
                         <td class="tx-l">{{currentItem.unitInfo.unitName}}</td>
                         <td class="tx-c weight-font">收款前结余:</td>
                         <td class="tx-l">{{currentItem.unitInfo.nowFee}}</td>
@@ -149,13 +149,13 @@
                         <td class="tx-l">{{currentItem.feeCheck.checkNumber}}</td>
                         <td class="tx-c weight-font">开票日期:</td>
                         <td class="tx-l">{{currentItem.feeCheck.checkDate}}</td>
-                        <td class="tx-c weight-font">兑现期限(天):</td>
-                        <td class="tx-l">{{currentItem.feeCheck.checkDaySpan}}</td>
+                        <td class="tx-c weight-font"></td>
+                        <td class="tx-l"></td>
                     </tr>
                     <tr v-if="currentItem.payType=='2'">
                         <td class="tx-c weight-font">银行:</td>
                         <td class="tx-l">{{currentItem.feeCheck.checkBank}}</td>
-                        <td class="tx-c weight-font">签发公司:</td>
+                        <td class="tx-c weight-font">付款公司:</td>
                         <td class="tx-l" colspan="3">{{currentItem.feeCheck.checkCompany}}</td>
                     </tr>
                     <tr v-if="currentItem.payType=='1'">
@@ -268,18 +268,23 @@
             if (!app.currentItem.feeCheck.checkNumber) {
                 throw "请输入支票号码";
             }
+            //支票号码必须8位
+            if (app.currentItem.feeCheck.checkNumber.length != 8) {
+                throw "支票号码长度必须为8位";
+            }
             if (!app.currentItem.feeCheck.checkFee) {
                 throw "请输入支票金额";
             }
             if (!app.currentItem.feeCheck.checkDate) {
                 throw "请输入开票日期";
             }
-            if (!app.currentItem.feeCheck.checkDaySpan) {
-                throw "请输入兑换期限";
-            }
-            if (!app.currentItem.feeCheck.checkCompany) {
-                throw "请输入签发公司";
-            }
+            //if (!app.currentItem.feeCheck.checkDaySpan) {
+            //    throw "请输入兑换期限";
+            //}
+            //if (!app.currentItem.feeCheck.checkCompany) {
+            //    throw "请输入收款公司名称";
+            //}
+            app.currentItem.feeCheck.checkCompany = app.currentItem.companyName;
             if (!app.currentItem.feeCheck.checkBank) {
                 throw "请输入银行";
             }

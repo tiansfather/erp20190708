@@ -413,13 +413,13 @@
         "items": [
           {
             "name": "Finance.Tenancy.PST",
-            "displayName": "过账登记",
+            "displayName": "转账过账登记",
             "icon": "iconfont icon-zongzhangjiqita",
             "url": "/Home/Show?name=../FlowSheet/PST/Add"
           },
           {
             "name": "Finance.Tenancy.PSTSheet",
-            "displayName": "过账登记单",
+            "displayName": "转账过账登记单",
             "icon": "iconfont icon-mingxizhang",
             "url": "/Home/Show?name=../FlowSheet/PST/Index"
           },

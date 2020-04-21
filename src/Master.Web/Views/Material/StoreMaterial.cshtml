@@ -18,13 +18,15 @@
                 <div id="app" v-cloak>
                     <div class="layui-col-xs10">
                         <div class="LAY-app-message-btns" style="margin-bottom:10px;">
-                            <el-select v-model="currentItem.storeId" placeholder="所有仓库" clearable  size="medium" @@change="config.reloadTable()">
+                            <el-select v-model="currentItem.storeId" placeholder="所有仓库" clearable size="medium" @@change="config.reloadTable()">
                                 <el-option v-for="item in stores"
                                            :key="item.id"
                                            :label="item.name"
                                            :value="item.id">
                                 </el-option>
                             </el-select>
+                            <el-input style="width:140px" placeholder="请输入品名关键字" size="medium" v-model="currentItem.keyword" @@input="config.reloadTable()"></el-input>
+
                         </div>
                         <table id="Material" lay-filter="Material"></table>
                     </div>
@@ -52,6 +54,7 @@
                     stores:[],
                     currentItem: {
                         items: [],
+                        keyword:null,
                         storeId:null
                     }
                 },
@@ -126,8 +129,8 @@
 		config.refresh = function () {
             
 		}
-		function getWhere() {
-            var where = { searchKeys: JSON.stringify(searchKeys) };            
+        function getWhere() {
+            var where = { searchKeys: JSON.stringify(searchKeys), keyword: app? app.currentItem.keyword:'' };            
 			return where;
 
 		}

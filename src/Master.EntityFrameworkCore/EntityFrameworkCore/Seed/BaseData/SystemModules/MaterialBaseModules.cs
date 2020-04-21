@@ -28,10 +28,7 @@ namespace Master.EntityFrameworkCore.Seed.BaseData.SystemModules
         }
         public override void SetColumnInfosMoreData(ICollection<ColumnInfo> ColumnInfos)
         {
-            ColumnInfos.Remove(ColumnInfos.Single(o => o.ColumnKey == "CreatorUserId"));
-            ColumnInfos.Remove(ColumnInfos.Single(o => o.ColumnKey == "CreationTime"));
-            ColumnInfos.Remove(ColumnInfos.Single(o => o.ColumnKey == "LastModifierUserId"));
-            ColumnInfos.Remove(ColumnInfos.Single(o => o.ColumnKey == "LastModificationTime"));
+           
         }
         public override void SetButtonsInfosMoreData(ICollection<ModuleButton> ButtonInfos)
         {

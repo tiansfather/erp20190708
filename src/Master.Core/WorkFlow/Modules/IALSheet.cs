@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Master.WorkFlow.Modules
 {
-    [InterModule("调拨单查询", BaseType = typeof(FlowSheet), GenerateDefaultButtons = false, GenerateDefaultColumns = false)]
+    [InterModule("调拨单查询", BaseType = typeof(FlowSheet), GenerateDefaultButtons = false)]
     public class IALSheet: FlowSheet
     {
         [InterColumn(ColumnName = "调拨单编号", Templet = "<a dataid=\"{{d.id}}\" class=\"layui-btn layui-btn-xs layui-btn-normal\" buttonname=\"单据\" params=\"{&quot;btn&quot;:[]}\"   buttonactiontype=\"Form\" buttonactionurl=\"/FlowSheet/SheetView\" onclick=\"func.callModuleButtonEvent()\">{{d.sheetSN}}</a>", Sort = 1)]

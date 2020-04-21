@@ -258,7 +258,7 @@
                         that.currentItem.items = data.map(function (o) {
                             var number = params.items.filter(function (i) { return i.id == o.id })[0].number;
                             var discount = o.defaultBuyDiscount || 1;
-                            var price = o.price * discount;
+                            var price = o.price ;
                             return $.extend(o, { number: number, price: price.toFixed(2),discount:discount.toFixed(2) });
                         })
                     }))

@@ -205,6 +205,7 @@ namespace Master.Module
                 ColumnName = "创建人",
                 ValuePath = "CreatorUser.Name",
                 IsInterColumn = true,
+                IsShownInList=false,
                 IsSystemColumn = true,
                 IsShownInAdd = false,
                 IsShownInEdit = false,
@@ -221,51 +222,54 @@ namespace Master.Module
                 IsShownInAdd = false,
                 IsShownInEdit = false,
                 IsEnableSort=true,
+                IsShownInList=true,
                 ColumnType = ColumnTypes.DateTime,
-                DisplayFormat = "yyyy-MM-dd HH:mm:ss",
+                DisplayFormat = "yyyy-MM-dd HH:mm",
                 ControlFormat = "datetime",
                 Sort = 997
             });
-            BaseColumnInfos.Add(new ColumnInfo()
-            {
-                ColumnKey = StaticSystemColumns.Modifier,
-                ColumnName = "修改人",
-                ValuePath = "LastModifierUser.Name",
-                IsInterColumn = true,
-                IsSystemColumn = true,
-                IsShownInAdd = false,
-                IsShownInEdit = false,
-                ColumnType = ColumnTypes.Text,
-                Sort = 998
-            });
-            BaseColumnInfos.Add(new ColumnInfo()
-            {
-                ColumnKey = StaticSystemColumns.ModifyTime,
-                ColumnName = "修改时间",
-                ValuePath = StaticSystemColumns.ModifyTime,
-                IsInterColumn = true,
-                IsSystemColumn = true,
-                IsShownInAdd = false,
-                IsShownInEdit = false,
-                ColumnType = ColumnTypes.DateTime,
-                DisplayFormat = "yyyy-MM-dd HH:mm:ss",
-                ControlFormat = "datetime",
-                Sort = 999
-            });
-            var operationColumnInfo = new ColumnInfo()
-            {
-                ColumnKey = StaticSystemColumns.Operation,
-                ColumnName = "操作",
-                IsInterColumn = true,
-                IsSystemColumn = true,
-                ColumnType = ColumnTypes.System,
-                IsShownInAdd = false,
-                IsShownInEdit = false,
-                IsShownInView = false,
-                Sort = 1000
-            };
-            operationColumnInfo.SetData("fixed", "right");
-            BaseColumnInfos.Add(operationColumnInfo);
+            //BaseColumnInfos.Add(new ColumnInfo()
+            //{
+            //    ColumnKey = StaticSystemColumns.Modifier,
+            //    ColumnName = "修改人",
+            //    ValuePath = "LastModifierUser.Name",
+            //    IsInterColumn = true,
+            //    IsSystemColumn = true,
+            //    IsShownInAdd = false,
+            //    IsShownInEdit = false,
+            //    IsShownInList = false,
+            //    ColumnType = ColumnTypes.Text,
+            //    Sort = 998
+            //});
+            //BaseColumnInfos.Add(new ColumnInfo()
+            //{
+            //    ColumnKey = StaticSystemColumns.ModifyTime,
+            //    ColumnName = "修改时间",
+            //    ValuePath = StaticSystemColumns.ModifyTime,
+            //    IsInterColumn = true,
+            //    IsSystemColumn = true,
+            //    IsShownInAdd = false,
+            //    IsShownInEdit = false,
+            //    IsShownInList = false,
+            //    ColumnType = ColumnTypes.DateTime,
+            //    DisplayFormat = "yyyy-MM-dd HH:mm:ss",
+            //    ControlFormat = "datetime",
+            //    Sort = 999
+            //});
+            //var operationColumnInfo = new ColumnInfo()
+            //{
+            //    ColumnKey = StaticSystemColumns.Operation,
+            //    ColumnName = "操作",
+            //    IsInterColumn = true,
+            //    IsSystemColumn = true,
+            //    ColumnType = ColumnTypes.System,
+            //    IsShownInAdd = false,
+            //    IsShownInEdit = false,
+            //    IsShownInView = false,
+            //    Sort = 1000
+            //};
+            //operationColumnInfo.SetData("fixed", "right");
+            //BaseColumnInfos.Add(operationColumnInfo);
 
             #endregion
 

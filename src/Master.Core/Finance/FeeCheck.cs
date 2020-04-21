@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Master.Finance
 {
-    [InterModule("支票查询",  GenerateDefaultButtons = false, GenerateDefaultColumns = false)]
+    [InterModule("支票查询",  GenerateDefaultButtons = false)]
     public class FeeCheck:BaseFullEntityWithTenant
     {
         [InterColumn(ColumnName ="支票编号", Templet = "<a dataid=\"{{d.id}}\" class=\"layui-btn layui-btn-xs layui-btn-normal\" buttonname=\"支票详情\" params=\"{&quot;btn&quot;:[]}\"   buttonactiontype=\"Form\" buttonactionurl=\"/FeeCheck/View?moduleKey=FeeCheck\" onclick=\"func.callModuleButtonEvent()\">{{d.checkNumber}}</a>",Sort =1)]

@@ -13,7 +13,7 @@ namespace Master.Storage
     /// <summary>
     /// 库存变动明细
     /// </summary>
-    [InterModule("库存变动明细",GenerateDefaultButtons =false,GenerateDefaultColumns =false)]
+    [InterModule("库存变动明细",GenerateDefaultButtons =false)]
     public class StoreMaterialHistory : BaseFullEntityWithTenant
     {
         public int MaterialId { get; set; }

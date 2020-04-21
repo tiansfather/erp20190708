@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Master.Finance
 {
-    [InterModule("发票管理",GenerateDefaultButtons =false,GenerateDefaultColumns =false)]
+    [InterModule("发票管理",GenerateDefaultButtons =false)]
     public class Invoice: BaseFullEntityWithTenant
     {
         [InterColumn(ColumnName = "状态", Sort = 0,ColumnType =Module.ColumnTypes.Select, DictionaryName = "Master.Finance.InvoiceStatus",Templet ="{{d.invoiceStatus_display}}")]

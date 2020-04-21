@@ -78,6 +78,8 @@ namespace Master.Storage
         {
             var result = new List<object>();
             var allAccounts = await Manager.GetAllList();
+            var totalInSum = 0M;
+            var totalOutSum = 0M;
             foreach(var account in allAccounts)
             {
                 var query = FeeAccountHistoryManager.GetAll().Where(o => o.FeeAccountId == account.Id)
@@ -85,6 +87,8 @@ namespace Master.Storage
                     .WhereIf(endDate.HasValue, o => o.CreationTime < endDate.Value.AddDays(1));
                 var totalIn = await query.Where(o => o.Fee > 0).SumAsync(o => o.Fee);
                 var totalOut= await query.Where(o => o.Fee < 0).SumAsync(o => o.Fee);
+                totalInSum += totalIn;
+                totalOutSum += totalOut;
                 result.Add(new
                 {
                     account.Name,
@@ -92,6 +96,13 @@ namespace Master.Storage
                     totalOut
                 });
             }
+            //增加合计
+            result.Add(new
+            {
+                Name="合计",
+                totalIn=totalInSum,
+                totalOut=totalOutSum
+            });
             return new ResultDto() {
                 data=result
             }

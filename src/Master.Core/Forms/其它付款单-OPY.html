@@ -61,7 +61,7 @@
             </el-form>
             <el-divider></el-divider>
             <el-form ref="form" label-width="120px" :disabled="_formOption.readonly" :inline="_formOption.readonly">
-                <el-form-item label="对方单位名称">
+                <el-form-item label="收款公司名称">
                     <el-input v-model="currentItem.companyName" type="text" v-if="!_formOption.readonly"></el-input>
                     <template v-else>
                         {{currentItem.companyName}}
@@ -123,18 +123,20 @@
                         </template>
                     </el-form-item>
                     <el-form-item label="开票日期:">
-                        <el-input v-model="currentItem.feeCheck.checkDate" type="text" readonly="true" v-if="!_formOption.readonly"></el-input>
+                        <el-date-picker v-model="currentItem.feeCheck.checkDate"
+                                        type="date" readonly="true" v-if="!_formOption.readonly">
+                        </el-date-picker>
                         <template v-else>
-                            {{currentItem.feeCheck.checkDate}}
+                            {{new Date(currentItem.feeCheck.checkDate).pattern('yyyy-MM-dd')}}
                         </template>
                     </el-form-item>
-                    <el-form-item label="兑现期限(天):">
+                    <!--<el-form-item label="兑现期限(天):">
                         <el-input v-model="currentItem.feeCheck.checkDaySpan" type="text" readonly="true" v-if="!_formOption.readonly"></el-input>
                         <template v-else>
                             {{currentItem.feeCheck.checkDaySpan}}
                         </template>
-                    </el-form-item>
-                    <el-form-item label="签发公司:">
+                    </el-form-item>-->
+                    <el-form-item label="付款公司名称:">
                         <el-input v-model="currentItem.feeCheck.checkCompany" type="text" readonly="true" v-if="!_formOption.readonly"></el-input>
                         <template v-else>
                             {{currentItem.feeCheck.checkCompany}}
@@ -178,7 +180,7 @@
                         <td class="tx-l">{{sheetInfo.creatorUserName}}</td>
                     </tr>
                     <tr>
-                        <td class="tx-c weight-font">收款单位:</td>
+                        <td class="tx-c weight-font">收款公司:</td>
                         <td class="tx-l">{{currentItem.unitInfo.unitName}}</td>
                         <td class="tx-c weight-font"></td>
                         <td class="tx-l"></td>
@@ -197,14 +199,14 @@
                         <td class="tx-c weight-font">支票号码:</td>
                         <td class="tx-l">{{currentItem.feeCheck.checkNumber}}</td>
                         <td class="tx-c weight-font">开票日期:</td>
-                        <td class="tx-l">{{currentItem.feeCheck.checkDate}}</td>
-                        <td class="tx-c weight-font">兑现期限(天):</td>
-                        <td class="tx-l">{{currentItem.feeCheck.checkDaySpan}}</td>
+                        <td class="tx-l">{{new Date(currentItem.feeCheck.checkDate).pattern('yyyy-MM-dd')}}</td>
+                        <td class="tx-c weight-font"></td>
+                        <td class="tx-l"></td>
                     </tr>
                     <tr v-if="currentItem.payType=='2'">
                         <td class="tx-c weight-font">银行:</td>
                         <td class="tx-l">{{currentItem.feeCheck.checkBank}}</td>
-                        <td class="tx-c weight-font">签发公司:</td>
+                        <td class="tx-c weight-font">付款公司:</td>
                         <td class="tx-l" colspan="3">{{currentItem.feeCheck.checkCompany}}</td>
                     </tr>
                     <tr v-if="currentItem.payType=='1'">

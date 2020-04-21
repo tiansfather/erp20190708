@@ -12,7 +12,7 @@ namespace Master.Finance
     /// <summary>
     /// 往来单位费用变动明细
     /// </summary>
-    [InterModule("往来单位明细", GenerateDefaultButtons = false, GenerateDefaultColumns = false)]
+    [InterModule("往来单位明细", GenerateDefaultButtons = false)]
     public class UnitFeeHistory : BaseFullEntityWithTenant
     {
         [InterColumn(ColumnName = "往来单位", DisplayPath = "Unit.UnitName", Templet = "{{d.unitId_display}}", Sort = 1)]
