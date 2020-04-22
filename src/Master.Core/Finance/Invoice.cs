@@ -22,7 +22,7 @@ namespace Master.Finance
         [InterColumn(ColumnName = "开票金额",ColumnType =Module.ColumnTypes.Number, Sort = 4)]
         [Column(TypeName ="decimal(20,2)")]
         public decimal Fee { get; set; }
-        [InterColumn(ColumnName = "销货单位名称", Sort = 5)]
+        [InterColumn(ColumnName = "品牌单位名称", Sort = 5)]
         public string SellUnitName { get; set; }
         [InterColumn(ColumnName = "申请者", DisplayPath = "Unit.UnitName", Templet = "{{d.unitId_display||'/'}}", Sort = 6)]
         public int UnitId { get; set; }

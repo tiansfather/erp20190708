@@ -48,7 +48,7 @@ namespace Master.Finance
         [InterColumn(ColumnName = "发生环节单据编号", Templet = "<a dataid=\"{{d.flowSheetId}}\" class=\"layui-btn layui-btn-xs layui-btn-normal\" buttonname=\"单据\" params=\"{&quot;btn&quot;:[]}\"   buttonactiontype=\"Form\" buttonactionurl=\"/FlowSheet/SheetView\" onclick=\"func.callModuleButtonEvent()\">{{d.flowSheetId_display}}</a>", DisplayPath = "FlowSheet.SheetSN", Sort = 10)]
         public int? FlowSheetId { get; set; }
         public virtual FlowSheet FlowSheet { get; set; }
-        [InterColumn(ColumnName = "备注", DisplayPath = "FlowSheet.Remarks", Sort = 11)]
+        [InterColumn(ColumnName = "备注",DisplayPath = "FlowSheet.Remarks", Sort = 11, Templet = "{{d.remarks_display||''}}")]
         public override string Remarks { get; set; }
     }
 

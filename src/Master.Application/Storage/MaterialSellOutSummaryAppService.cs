@@ -95,8 +95,8 @@ namespace Master.Storage
                 data.Add(new
                 {
                     material.Name,
-                    unit.UnitName,
-                    MaterialTypeName = material.MaterialType.DisplayName,
+                    unit?.UnitName,
+                    MaterialTypeName = material.MaterialType?.DisplayName,
                     material.Specification,
                     material.MeasureMentUnit,
                     MaterialNature=material.MaterialNature.ToString(),

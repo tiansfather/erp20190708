@@ -93,7 +93,8 @@
                             { field: 'measureMentUnit', title: '计量单位' },
                             { field: 'sellNumber', title: '订货数量' },
                             { field: 'outNumber', title: '已出库总数' },
-                            { field: '', title: '未出库总数', templet: function (d) { return d.sellNumber-d.outNumber} },
+                            { field: '', title: '未出库总数', templet: function (d) { return d.sellNumber - d.outNumber } },
+                            { field: 'creationTime', title: '发生时间',width:'140' },
                         ]],
 
                         done: function () {

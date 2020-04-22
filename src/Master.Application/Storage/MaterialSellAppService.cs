@@ -75,7 +75,8 @@ namespace Master.Storage
                 entity.Material?.Price,
                 entity.Material?.MeasureMentUnit,
                 entity.SellNumber,
-                OutNumber=entity.OutNumber-entity.BackNumber
+                OutNumber=entity.OutNumber-entity.BackNumber,
+                CreationTime=entity.CreationTime.ToString("yyyy-MM-dd HH:mm")
             };
         }
         #endregion

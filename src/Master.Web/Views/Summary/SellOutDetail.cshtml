@@ -96,6 +96,7 @@
                             { field: 'discount', title: '出库折扣' },
                             { field: '', title: '出库单价', templet: function (d) { return (d.price * d.discount).toFixed(2) } },
                             { field: '', title: '小计', templet: function (d) { return (d.price * d.discount * d.outNumber).toFixed(2) } },
+                            { field: 'creationTime', title: '发生时间',width:'140' },
                         ]],
 
                         done: function () {

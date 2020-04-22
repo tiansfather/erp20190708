@@ -97,6 +97,7 @@
                             { field: 'discount', title: '退货折扣' },
                             { field: '', title: '退货单价', templet: function (d) { return (d.price * d.discount).toFixed(2) } },
                             { field: '', title: '小计', templet: function (d) { return (d.price * d.discount * d.backNumber).toFixed(2) } },
+                            { field: 'creationTime', title: '发生时间',width:'140' },
                         ]],
 
                         done: function () {

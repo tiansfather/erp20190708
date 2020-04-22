@@ -67,7 +67,8 @@ namespace Master.Storage
                 entity.Price,
                 entity.Discount,
                 entity.Material?.MeasureMentUnit,
-                entity.BackNumber
+                entity.BackNumber,
+                CreationTime = entity.CreationTime.ToString("yyyy-MM-dd HH:mm")
             };
         }
 
