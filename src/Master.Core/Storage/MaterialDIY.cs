@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Master.Storage
 {
-    [InterModule("散装组合配置", BaseType = typeof(Material))]
+    [InterModule("散装组合配置", BaseType = typeof(Material),GenerateOperateColumn =true)]
     public class MaterialDIY : Material
     {
         [NotMapped]

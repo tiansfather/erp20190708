@@ -106,11 +106,13 @@
             computed: {
                 inAccountName: function () {
                     var that = this;
-                    return this.currentItem.accounts.filter(function (o) { return o.id == that.currentItem.inAccountId })[0].name;
+                    var account = this.currentItem.accounts.filter(function (o) { return o.id == that.currentItem.inAccountId })[0];
+                    return account!=null?account.name:'';
                 },
                 outAccountName: function () {
                     var that = this;
-                    return this.currentItem.accounts.filter(function (o) { return o.id == that.currentItem.outAccountId })[0].name;
+                    var account = this.currentItem.accounts.filter(function (o) { return o.id == that.currentItem.outAccountId })[0];
+                    return account!=null?account.name:'';
                 }
             },
             methods: {

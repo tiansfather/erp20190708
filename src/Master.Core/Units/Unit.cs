@@ -14,7 +14,7 @@ namespace Master.Units
     /// <summary>
     /// 往来单位
     /// </summary>
-    [InterModule("往来单位")]
+    [InterModule("往来单位",GenerateOperateColumn =true)]
     public class Unit : BaseFullEntityWithTenant, IPassivable
     {
         /// <summary>

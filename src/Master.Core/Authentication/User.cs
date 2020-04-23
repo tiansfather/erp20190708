@@ -16,7 +16,7 @@ using System.Text;
 
 namespace Master.Authentication
 {
-    [InterModule("员工信息")]
+    [InterModule("员工信息",GenerateOperateColumn =true)]
     public class User:FullAuditedEntity<long>, IMayHaveTenant,  IPassivable, IExtendableObject,IAutoEntity,IMayHaveOrganization,IHaveProperty,IHaveStatus
     {
         public const string Status_NotVerified = "NotVerified";

@@ -143,8 +143,11 @@ namespace Master.EntityFrameworkCore.Seed.Tenants
                 moduleInfo.MakeDefaultColumns();
             }
 
-            
-            
+
+            if (moduleAttr.GenerateOperateColumn)
+            {
+                moduleInfo.MakeOperateColumn();
+            }
 
             //构建自定义列
             moduleInfo.CreateCustomizeColumns(type.Name);

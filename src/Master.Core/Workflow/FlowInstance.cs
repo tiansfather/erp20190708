@@ -13,7 +13,7 @@ namespace Master.WorkFlow
     /// 工作流流程实例表
     /// </summary>
     [Table("FlowInstance")]
-    [InterModule("我的流程")]
+    [InterModule("我的流程",GenerateOperateColumn =true)]
     public class FlowInstance:BaseFullEntityWithTenant,IPassivable
     {
         /// <summary>

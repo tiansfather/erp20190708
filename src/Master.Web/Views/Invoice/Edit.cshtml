@@ -1,0 +1,110 @@
+﻿@using Master.Web.Components
+@inherits Master.Web.Components.MasterRazorPage<TModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Master.Web.Core
+@{
+    Layout = "~/Views/Shared/_LayoutDialog.cshtml";
+}
+
+<div class="layui-fluid" id="LAY-app-message">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <div id="app" v-cloak>
+                <el-form :inline="true" size="mini" label-width="120px">
+                    <el-form-item label="申请单编号:" style="width:300px;">
+                        {{currentItem.sheetSN}}
+                    </el-form-item>
+                    <el-form-item label="发票类型:">
+                        {{currentItem.type}}
+                    </el-form-item>
+                </el-form>
+                <hr />
+                <el-form :inline="true" size="mini" label-width="120px">
+                    <el-form-item label="开票内容:">
+                        <el-input v-model="currentItem.content"></el-input>
+                    </el-form-item>
+                    <el-form-item label="数量:">
+                        <el-input v-model="currentItem.number" type="number"></el-input>
+                    </el-form-item>
+                    <el-form-item label="单价:">
+                        <el-input v-model="currentItem.price" type="number"></el-input>
+                    </el-form-item>
+                    <el-form-item label="开票金额:">
+                        <el-input v-model="currentItem.fee" type="number"></el-input>
+                    </el-form-item>
+                    <el-form-item label="税率:">
+                        <el-input v-model="currentItem.taxRate"></el-input>
+                    </el-form-item>
+                    <el-form-item label="品牌单位名称:">
+                        <el-select v-model="currentItem.sellUnitName" placeholder="请选择" style="width:180px">
+                            <el-option v-for="item in materialTypes"
+                                       :key="item"
+                                       :label="item"
+                                       :value="item">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="购货单位名称:">
+                        <el-input v-model="currentItem.buyUnitName"></el-input>
+                    </el-form-item>
+                    <el-form-item label="税务登记号:">
+                        <el-input v-model="currentItem.buyUnitTaxNumber"></el-input>
+                    </el-form-item>
+                    <template v-if="currentItem.type=='增票'">
+                        <el-form-item label="单位地址:">
+                            <el-input v-model="currentItem.buyUnitAddress"></el-input>
+                        </el-form-item>
+                        <el-form-item label="电话:">
+                            <el-input v-model="currentItem.buyUnitPhone"></el-input>
+                        </el-form-item>
+                        <el-form-item label="开户银行:">
+                            <el-input v-model="currentItem.buyUnitBank"></el-input>
+                        </el-form-item>
+                        <el-form-item label="开户行账号:">
+                            <el-input v-model="currentItem.buyUnitBankAccount"></el-input>
+                        </el-form-item>
+                    </template>
+                    <el-form-item label="备注:">
+                        <el-input v-model="currentItem.remarks"></el-input>
+                    </el-form-item>
+                </el-form>
+            </div>
+        </div>
+    </div>
+</div>
+           
+            @section scripts{
+
+                <script>
+                    var id = $.getUrlParam("data");
+                    config.ready = function () {
+                        app = new Vue({
+                            el: '#app',
+                            data: {
+                                currentItem: {
+
+                                },
+                                materialTypes:[]
+                            },
+                            mounted: function () {
+                                var that = this;
+                                abp.services.app.baseTree.getTreeJson('MaterialType', null, 1).done(function (res) {
+                                    that.materialTypes = res.map(function (o) { return  o.displayName  });
+                                });
+                                abp.services.app.invoice.getById(id).done(function (res) {
+                                    that.currentItem = res;
+                                })
+                            }
+                        })
+                    }
+                    function submit() {
+                        abp.message.confirm('确认提交', function () {
+                            func.runAsync(abp.services.app.invoice.update(app.currentItem).done(function () {
+                                parent.layer.msg(L("提交成功"));
+                                parent.layer.closeAll('iframe');
+                                parent.config.reloadTable();
+                            }))
+                        })
+                    }
+                </script>
+            }

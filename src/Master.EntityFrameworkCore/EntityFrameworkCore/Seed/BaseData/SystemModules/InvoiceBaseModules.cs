@@ -12,6 +12,15 @@ namespace Master.EntityFrameworkCore.Seed.BaseData.SystemModules
             var btns = base.GetModuleButtons();
             btns.Add(new ModuleButton()
             {
+                ButtonKey = "Edit",
+                ButtonName = "修改",
+                ButtonActionType = ButtonActionType.Form,
+                ButtonType = ButtonType.ForSingleRow,
+                ButtonActionUrl = "/Invoice/Edit",
+                Sort = 1
+            });
+            btns.Add(new ModuleButton()
+            {
                 ButtonKey = "Verify",
                 ButtonName = "审核",
                 ButtonActionType = ButtonActionType.Ajax,

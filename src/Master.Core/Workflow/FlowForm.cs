@@ -13,7 +13,7 @@ namespace Master.WorkFlow
     /// 表单模板表
     /// </summary>
     [Table("FlowForm")]
-    [InterModule("表单定义", SortField = "Sort", SortType = Module.SortType.Asc)]
+    [InterModule("表单定义", SortField = "Sort", SortType = Module.SortType.Asc,GenerateOperateColumn =true)]
     public class FlowForm:BaseFullEntityWithTenant,IPassivable,IHaveSort
     {
         [InterColumn(ColumnName = "表单标志", VerifyRules = "required")]

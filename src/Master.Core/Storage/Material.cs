@@ -18,7 +18,7 @@ namespace Master.Storage
     /// <summary>
     /// 物料
     /// </summary>
-    [InterModule("商品档案")]
+    [InterModule("商品档案",GenerateOperateColumn =true)]
     public class Material : BaseFullEntityWithTenant, IHaveStatus, IPassivable
     {
         /// <summary>

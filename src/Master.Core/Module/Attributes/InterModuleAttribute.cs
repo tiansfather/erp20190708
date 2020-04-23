@@ -28,6 +28,7 @@ namespace Master.Module.Attributes
         /// 是否构建默认列
         /// </summary>
         public bool GenerateDefaultColumns { get; set; } = true;
+        public bool GenerateOperateColumn { get; set; } = false;
         /// <summary>
         /// 是否构建默认按钮
         /// </summary>

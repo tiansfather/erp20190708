@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Remove="menu.json" />
+    <Content Remove="wwwroot\template\增票导入模板~F18D81.tmp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

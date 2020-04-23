@@ -5463,6 +5463,15 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'update'
+    abp.services.app.invoice.update = function(invoiceDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Invoice/Update',
+        type: 'PUT',
+        data: JSON.stringify(invoiceDto)
+      }, ajaxParams));;
+    };
+
     // action 'doImport'
     abp.services.app.invoice.doImport = function(filePath, ajaxParams) {
       return abp.ajax($.extend(true, {

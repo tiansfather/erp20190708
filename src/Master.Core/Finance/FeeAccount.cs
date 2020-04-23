@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Master.Finance
 {
-    [InterModule("资金账户档案")]
+    [InterModule("资金账户档案",GenerateOperateColumn =true)]
     public class FeeAccount : BaseFullEntityWithTenant, IPassivable
     {
         public const string StaticAccountName1 = "现金账户";

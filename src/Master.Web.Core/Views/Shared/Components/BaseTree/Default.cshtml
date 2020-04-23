@@ -74,7 +74,7 @@
 			abp.services.app.baseTree.getTreeJson('@Model.TreeKey', null).done(function (json) {
 				zTreeObj = $.fn.zTree.init($("#baseTree"), setting);
 				var newNode = { displayName: "@Html.Raw(Model.TreeName)", id: null, parentId: "" };
-                json.push(newNode);
+                //json.push(newNode);
                 if (!showInner) {
                     json = json.filter(function (o) { return o.nature == 0; });//只显示对外
                 }

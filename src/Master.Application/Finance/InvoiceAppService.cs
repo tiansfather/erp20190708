@@ -27,6 +27,11 @@ namespace Master.Finance
                 Manager.InsertAsync(o).GetAwaiter().GetResult();
             });
         }
+        public virtual async Task Update(InvoiceDto invoiceDto)
+        {
+            var invoice = await Manager.GetByIdAsync(invoiceDto.Id);
+            invoiceDto.MapTo(invoice);
+        }
         public virtual async Task<object> DoImport(string filePath)
         {
             var dt=Common.ExcelHelper.ReadExcelToDataTable(Common.PathHelper.VirtualPathToAbsolutePath(filePath),out var _);
@@ -52,6 +57,15 @@ namespace Master.Finance
                     break;
                 case "开票金额":
                     result = "Fee";
+                    break;
+                case "单价":
+                    result = "Price";
+                    break;
+                case "数量":
+                    result = "Number";
+                    break;
+                case "税率":
+                    result = "TaxRate";
                     break;
                 case "销货单位名称":
                     result = "SellUnitName";

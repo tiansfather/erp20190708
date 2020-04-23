@@ -66,7 +66,7 @@ namespace Master.WorkFlow
         /// 经办人
         /// </summary>
         public virtual User Handler { get; set; } 
-        [InterColumn(ColumnName ="性质",ColumnType =Module.ColumnTypes.Select,DictionaryName ="Master.WorkFlow.SheetNature",Templet = "{{#if(d.sheetNature==0){}}<span class=\"layui-badge layui-bg-green\">{{d.sheetNature_display}}</span>{{#}else{}}<span class=\"layui-badge\">{{d.sheetNature_display}}</span>{{#}}}",Sort =30)]
+        [InterColumn(ColumnName ="性质",ColumnType =Module.ColumnTypes.Select,DictionaryName ="Master.WorkFlow.SheetNature",Templet = "{{#if(d.sheetNature=='正单'){}}<span class=\"layui-badge layui-bg-green\">{{d.sheetNature_display}}</span>{{#}else{}}<span class=\"layui-badge\">{{d.sheetNature_display}}</span>{{#}}}",Sort =30)]
         public virtual SheetNature SheetNature { get; set; }
         [InterColumn(ColumnName = "备注",Sort =40)]
         public override string Remarks { get; set; }

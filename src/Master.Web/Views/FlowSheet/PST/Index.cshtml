@@ -9,7 +9,7 @@
 <div class="layui-fluid" id="LAY-app-message">
 	<div class="layui-card">
 		<div class="layui-card-body">
-			<div class="LAY-app-message-btns" style="margin-bottom: 10px;">
+			<div class="LAY-app-message-btns" style="margin-bottom: 10px;height:30px">
 				<vc:module-button module-key="PSTSheet"></vc:module-button>
 			</div>
 			<vc:module-table param="@(new ModuleTableViewParam() {ID="PSTSheet",ModuleKey=nameof(Master.WorkFlow.Modules.PSTSheet),Height="full-100",Where="",ToolBar="true",DefaultToolBar="['print','exports']" })"></vc:module-table>

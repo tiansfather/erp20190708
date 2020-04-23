@@ -168,6 +168,25 @@ namespace Master.Module
         #endregion 
 
         #region 列构建的提供方法 1 构建默认列可以被重写
+            public void MakeOperateColumn()
+        {
+            List<ColumnInfo> BaseColumnInfos = new List<ColumnInfo>();
+            var operationColumnInfo = new ColumnInfo()
+            {
+                ColumnKey = StaticSystemColumns.Operation,
+                ColumnName = "操作",
+                IsInterColumn = true,
+                IsSystemColumn = true,
+                ColumnType = ColumnTypes.System,
+                IsShownInAdd = false,
+                IsShownInEdit = false,
+                IsShownInView = false,
+                Sort = 1000
+            };
+            operationColumnInfo.SetData("fixed", "right");
+            BaseColumnInfos.Add(operationColumnInfo);
+            AddColumnInfo(BaseColumnInfos);
+        }
         /// <summary>
         /// 构建默认列(可被重写)
         /// </summary>

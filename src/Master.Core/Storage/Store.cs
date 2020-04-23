@@ -10,7 +10,7 @@ namespace Master.Storage
     /// <summary>
     /// 仓库信息
     /// </summary>
-    [InterModule("仓库档案")]
+    [InterModule("仓库档案",GenerateOperateColumn =true)]
     public class Store : BaseFullEntityWithTenant,IPassivable
     {
         /// <summary>

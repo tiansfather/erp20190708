@@ -48,8 +48,11 @@
                         },
                         materialTypes:[],
                         columns: [
-                            { type: 'text', title: '开票内容', key: 'content' },
+                            { type: 'text', title: '开票内容', key: 'content' },          
+                            { type: 'number', title: '数量', key: 'number' },
+                            { type: 'number', title: '单价', key: 'price' },
                             { type: 'number', title: '开票金额', key: 'fee' },
+                            { type: 'text', title: '税率', key: 'taxRate',required:true },
                             { type: 'select', title: '品牌单位名称', key: 'sellUnitName', options: materialTypes,defaultData:''},
                             { type: 'text', title: '购货单位名称', key: 'buyUnitName',defaultData:'' },
                             { type: 'text', title: '税务登记号', key: 'buyUnitTaxNumber',defaultData:'' },
@@ -91,8 +94,8 @@
                                 abp.message.error("请录入数据");
                                 return;
                             }
-                            if (this.currentItem.items.filter(function (o) { return !o.content || !o.fee }).length) {
-                                abp.message.error("开票内容与开票金额不能为空");
+                            if (this.currentItem.items.filter(function (o) { return !o.content || !o.fee || !o.taxRate }).length) {
+                                abp.message.error("开票内容、开票金额、税率不能为空");
                             }
                             var that = this;
                             abp.message.confirm('确认提交', function () {
