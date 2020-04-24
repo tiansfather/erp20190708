@@ -35,6 +35,7 @@ namespace Master.EntityFrameworkCore.Seed.BaseData.SystemModules
             ButtonInfos.Remove(ButtonInfos.Single(o => o.ButtonKey == "Delete"));
             var editBtn = ButtonInfos.Single(o => o.ButtonKey == "Edit");
             editBtn.ButtonActionParam = "{\"area\": [\"100%\", \"100%\"],\"btn\":null}";
+            editBtn.TitleTemplet = "{{d.name}} 内含商品配置";
         }
     }
 }

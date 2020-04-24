@@ -12,38 +12,47 @@
 
             <div class="layui-row layui-col-space5">
                 <div class="layui-col-xs2">
-                    <vc:base-tree param="@(new BaseTreeViewParam() { TreeKey="MaterialType",TreeName="商品分类",EnableAdd=false,EnableEdit=false,EnableDelete=false})"></vc:base-tree>
+                    <vc:base-tree param="@(new BaseTreeViewParam() { TreeKey="MaterialType",TreeName="商品分类",EnableAdd=false,EnableEdit=false,EnableDelete=false,EnableSearch=true})"></vc:base-tree>
 
                 </div>
-                <div class="layui-col-xs8">
-                    <div class="LAY-app-message-btns" style="margin-bottom:10px;">
-                        <button class="layui-btn  layui-btn-sm" type="button" confirmmsg="" onclick="app.doSubmit()" id="submitBtn">保存</button>
+                <div id="app" v-cloak>
+                    <div class="layui-col-xs8">
+                        <div class="LAY-app-message-btns" style="margin-bottom:10px;">
+                            @*<button class="layui-btn  layui-btn-sm" type="button" confirmmsg="" onclick="app.doSubmit()" id="submitBtn">保存</button>*@
+                            <el-input v-model="currentItem.keyword" placeholder="品名查询" @@input="config.reloadTable" size="medium" style="width:160px"></el-input>
+                        </div>
+                        <table id="MaterialDIY" lay-filter="MaterialDIY"></table>
                     </div>
-                    <table id="MaterialDIY" lay-filter="MaterialDIY"></table>
-                </div>
-                <div class="layui-col-xs2">
-                    <div id="app" v-cloak>
-                        <blockquote class="layui-elem-quote" style="margin-bottom:0px;padding:7px;">装配商品:{{currentItem.name}}</blockquote>
-                        <table class="layui-table">
+                    <div class="layui-col-xs2">
+                        <div style="width:30px;float:left">
+                            <img src="~/assets/images/arrow.png" style="margin-top:150px" />
+                        </div>
+                        <div style="margin-left:32px;">
+                            @*<blockquote class="layui-elem-quote" style="margin-bottom:0px;padding:7px;">装配商品:{{currentItem.name}}</blockquote>*@
+                            <button class="layui-btn  layui-btn-md" type="button" confirmmsg="" style="width:100%" onclick="app.doSubmit()" id="submitBtn">保存</button>
+                            <table class="layui-table" style="margin-bottom:0px;">
 
-                            <thead>
-                                <tr>
-                                    <th>品名</th>
-                                    <th>数量</th>
-                                    <th>操作</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="(item,index) in currentItem.diyInfos">
-                                    <td>{{item.name}}</td>
-                                    <td>{{item.number}}{{item.measureMentUnit}}</td>
-                                    <td><a title="删除" style="cursor: pointer;" @@click="currentItem.diyInfos.splice(index,1);config.reloadTable()"><i class="layui-icon layui-icon-delete"></i></a></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                <thead>
+                                    <tr>
+                                        <th>品名</th>
+                                        <th>数量</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(item,index) in currentItem.diyInfos">
+                                        <td>{{item.name}}</td>
+                                        <td>{{item.number}}{{item.measureMentUnit}}</td>
+                                        <td><a title="删除" style="cursor: pointer;" @@click="currentItem.diyInfos.splice(index,1);config.reloadTable()"><i class="layui-icon layui-icon-delete"></i></a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div v-if="!currentItem.diyInfos.length" style="height:150px;border:1px solid #ccc"></div>
+                        </div>
+
                     </div>
-
                 </div>
+               
             </div>
 
 
@@ -67,7 +76,8 @@
                 el: '#app',
                 data: {
                     currentItem: {
-                        diyInfos:[]
+                        diyInfos: [],
+                        keyword:null
                     }
                 },
                 methods: {
@@ -87,6 +97,10 @@
                         }
                     },
                     doSubmit: function () {
+                        if (!this.currentItem.diyInfos.length) {
+                            abp.message.error("组合配置不能为空");
+                            return false;
+                        }
                         var that = this;
                         abp.message.confirm("确认提交？", function () {
                             func.runAsync(abp.services.app.materialDIY.setMaterialDiyInfo({ id: materialId, dIYInfos: that.currentItem.diyInfos })
@@ -126,7 +140,7 @@
                                 {field:'specification',title:'规格'},
                                 { field: 'price', title: '零售价' },
                                 { field: 'remarks', title: '备注' },
-                                { field: '', title: '分内数量',templet:'#editTpl' },
+                                { field: '', title: '份内数量',templet:'#editTpl' },
                                 { field: 'measureMentUnit', title: '计量单位' },
                                 { field: 'location', title: '适用区域' },
                             ]],
@@ -165,9 +179,9 @@
 
 		}
 		function getWhere() {
-			var where = { searchKeys: JSON.stringify(searchKeys) };
+			var where = { searchKeys: JSON.stringify(searchKeys),keyword:'' };
             //where.searchCondition = func.buildSearchCondition('MaterialDIY');
-
+            if ((app && app.currentItem && app.currentItem.keyword)) { where.keyword = app.currentItem.keyword; }
 			return where;
 
         }

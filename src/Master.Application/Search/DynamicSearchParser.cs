@@ -304,6 +304,7 @@ namespace Master.Search
             {
                 //如果未传入筛选数据数组，直接返回
                 code = values.Count == 0 ? "1=1" : string.Join(" Or ", values.Select(o => $"{valuePath}={valueWrapp(o)}"));
+                code=$"({code})";
             }
             else if (condition.Mode == "date")
             {

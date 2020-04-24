@@ -13,7 +13,7 @@ namespace Master.WorkFlow.Modules
         public override string SheetSN { get => base.SheetSN; set => base.SheetSN = value; }
         [InterColumn(ColumnName = "收货代理", DisplayPath = "Unit.UnitName", Templet = "{{d.unitId_display||'/'}}", Sort = 2)]
         public override int? UnitId { get => base.UnitId; set => base.UnitId = value; }
-        [InterColumn(ColumnName = "出库时间", Sort = 3)]
+        [InterColumn(ColumnName = "出库时间", ColumnType = Module.ColumnTypes.DateTime, Sort = 3)]
         public override DateTime CreationTime { get => base.CreationTime; set => base.CreationTime = value; }
         [InterColumn(ColumnName = "经办人", DisplayPath = "CreatorUser.Name", Templet = "{{d.creatorUserId_display}}", Sort = 4)]
         public override long? CreatorUserId { get; set; }

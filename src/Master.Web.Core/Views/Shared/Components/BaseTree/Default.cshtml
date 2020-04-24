@@ -9,6 +9,10 @@
 }
 
 	<div class="LAY-app-message-btns" style="margin-bottom: 10px;">
+		@if (Model.EnableSearch)
+		{
+			<input type="text" name="treeKeyword" placeholder="请输入关键字" autocomplete="off" class="layui-input" onkeyup="baseTree.doSearch()">
+		}
 		@if (Model.EnableAdd || Model.EnableEdit || Model.EnableDelete)
 		{
 			<div class="layui-btn-group">
@@ -33,10 +37,7 @@
 
 			</div>
 		}
-		@if (Model.EnableSearch)
-		{
-			<input type="text" name="treeKeyword" placeholder="请输入关键字" autocomplete="off" class="layui-input" onkeyup="baseTree.doSearch()">
-		}
+
 
 	</div>
 <ul id="baseTree" class="ztree"

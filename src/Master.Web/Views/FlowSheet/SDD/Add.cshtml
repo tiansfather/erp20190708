@@ -19,7 +19,7 @@
                     <div class="layui-col-xs8">
                         <div class="LAY-app-message-btns" style="margin-bottom:10px;height:35px;">
                             <unit-select v-if="!abp.session.user.unitId" nature="0" :unit.sync="currentItem.unitId" :value-isid="true"size="medium"  @@change="config.reloadTable"></unit-select>
-                            <el-input v-model="currentItem.keyword" placeholder="品名查询" @@input="config.reloadTable" size="medium"  style="width:120px"></el-input>
+                            <el-input v-model="currentItem.keyword" placeholder="品名查询" @@input="config.reloadTable" size="medium"  style="width:160px"></el-input>
                             @*<button class="layui-btn  layui-btn-sm" style="float:right;margin-right:10px" :class="{'layui-btn-disabled':!currentItem.items.length}" fornonerow="1" buttonname="去购物车下单" type="button" confirmmsg="" id="submitBtn" buttonactiontype="Form" buttonactionurl="" @@click="gotoCart">去购物车下单</button>*@
                             <button class="layui-btn  layui-btn-sm layui-btn-normal" style="float:right;margin-right:10px" :class="{'layui-btn-disabled':!currentItem.items.length}" fornonerow="1" buttonname="快速下单" type="button" confirmmsg="" buttonactiontype="Form" buttonactionurl="/FlowForm/InputByFormKey?formKey=SDD" onclick="app.doSubmit(this)">快速下单</button>
 
