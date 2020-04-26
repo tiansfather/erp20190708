@@ -32,7 +32,7 @@ namespace Master.Authentication
         /// 性别
         /// </summary>
         [MaxLength(2)]
-        [InterColumn(ColumnName = "性别", ColumnType = ColumnTypes.Select, DictionaryName = StaticDictionaryNames.Sex, ControlFormat = "radio", DefaultValue = "\"男\"",Sort=1)]
+        [InterColumn(ColumnName = "性别", ColumnType = ColumnTypes.Select, DictionaryName = StaticDictionaryNames.Sex, ControlFormat = "radio", DefaultValue = "\"男\"",Sort=1, EnableDataFilter = true)]
         public virtual string Sex { get; set; }
         public virtual string Password { get; set; }
         [InterColumn(ColumnName = "手机号码", Sort = 2)]
@@ -51,12 +51,12 @@ namespace Master.Authentication
         /// <summary>
         /// 学历
         /// </summary>
-        [InterColumn(ColumnName = "学历", ColumnType = ColumnTypes.Select, DictionaryName = StaticDictionaryNames.Degree, ControlFormat = "select", Sort = 5)]
+        [InterColumn(ColumnName = "学历", ColumnType = ColumnTypes.Select, DictionaryName = StaticDictionaryNames.Degree, ControlFormat = "select", Sort = 5, EnableDataFilter = true)]
         public virtual string Degree { get; set; }
         /// <summary>
         /// 民族
         /// </summary>
-        [InterColumn(ColumnName = "民族", Sort = 6)]
+        [InterColumn(ColumnName = "民族", Sort = 6, EnableDataFilter = true)]
         public virtual string Nation { get; set; }
         /// <summary>
         /// 入职日期
@@ -73,7 +73,7 @@ namespace Master.Authentication
         /// <summary>
         /// 婚姻状况
         /// </summary>
-        [InterColumn(ColumnName = "婚姻状况", ColumnType = ColumnTypes.Select, DictionaryName = StaticDictionaryNames.Marriage, ControlFormat = "radio", Sort = 9)]
+        [InterColumn(ColumnName = "婚姻状况", ColumnType = ColumnTypes.Select, DictionaryName = StaticDictionaryNames.Marriage, ControlFormat = "radio", Sort = 9, EnableDataFilter = true)]
         public virtual string Marriage { get; set; }
         public virtual bool IsActive { get; set; } = true;
         [ForeignKey("UserId")]
@@ -89,7 +89,7 @@ namespace Master.Authentication
         public virtual User CreatorUser { get; set; }
         public virtual User LastModifierUser { get; set; }
         public virtual User DeleterUser { get; set; }
-        [InterColumn(ColumnName ="部门",ColumnType =ColumnTypes.Text,Renderer ="lay-departchoose",DisplayPath ="Organization.DisplayName",Templet = "{{d.organizationId_display?d.organizationId_display:''}}", Sort = 10)]
+        [InterColumn(ColumnName ="部门",ColumnType =ColumnTypes.Text,Renderer ="lay-departchoose",DisplayPath ="Organization.DisplayName",Templet = "{{d.organizationId_display?d.organizationId_display:''}}", Sort = 10, EnableDataFilter = true)]
         public int? OrganizationId { get; set; }
         public virtual Organization Organization { get; set; }
         [Column(TypeName ="json")]

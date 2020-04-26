@@ -30,7 +30,7 @@ namespace Master.Storage
         public string Address { get; set; }
         [InterColumn(ColumnName = "默认", DefaultValue = "false",IsShownInMultiEdit =false, ColumnType = Module.ColumnTypes.Switch, Templet = "{{#if(d.isDefault){}}<span class=\"layui-badge layui-bg-green\">默认</span>{{#}else{}}{{#}}}", Sort = 4)]
         public bool IsDefault { get; set; }
-        [InterColumn(ColumnName ="状态",DefaultValue ="true",ColumnType =Module.ColumnTypes.Switch,Templet = "{{#if(d.isActive){}}<span class=\"layui-badge layui-bg-green\">有效</span>{{#}else{}}<span class=\"layui-badge layui-bg-gray\">无效</span>{{#}}}",Sort =5)]
+        [InterColumn(ColumnName ="状态",DefaultValue ="true",ColumnType =Module.ColumnTypes.Switch,Templet = "{{#if(d.isActive){}}<span class=\"layui-badge layui-bg-green\">有效</span>{{#}else{}}<span class=\"layui-badge layui-bg-gray\">无效</span>{{#}}}",Sort =5, EnableDataFilter = true)]
         public bool IsActive { get; set; }
     }
 }

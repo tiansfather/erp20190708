@@ -30,7 +30,7 @@ namespace Master.Units
         /// <summary>
         /// 性质
         /// </summary>
-        [InterColumn(ColumnName = "单位类型", ColumnType = ColumnTypes.Select,DefaultValue = "代理商", DictionaryName = "Master.Units.UnitNature", Sort = 2, Templet = "{{d.unitNature_display}}")]
+        [InterColumn(ColumnName = "单位类型", ColumnType = ColumnTypes.Select,DefaultValue = "代理商", DictionaryName = "Master.Units.UnitNature", Sort = 2, Templet = "{{d.unitNature_display}}", EnableDataFilter = true)]
         public virtual UnitNature UnitNature { get; set; } = UnitNature.代理商;
         [InterColumn(ColumnName = "期初结余", ColumnType = Module.ColumnTypes.Number, DisplayFormat = "0.00", DefaultValue = "0", VerifyRules = "number|required", Sort = 3)]
         public decimal StartFee { get; set; }
@@ -53,7 +53,7 @@ namespace Master.Units
         /// <summary>
         /// 是否启用
         /// </summary>
-        [InterColumn(ColumnName = "状态", ColumnType = Module.ColumnTypes.Switch, DefaultValue = "true", Templet = "{{#if(d.isActive){}}<span class=\"layui-badge layui-bg-green\">有效</span>{{#}else{}}<span class=\"layui-badge layui-bg-gray\">无效</span>{{#}}}", Sort = 10)]
+        [InterColumn(ColumnName = "状态", ColumnType = Module.ColumnTypes.Switch, DefaultValue = "true", Templet = "{{#if(d.isActive){}}<span class=\"layui-badge layui-bg-green\">有效</span>{{#}else{}}<span class=\"layui-badge layui-bg-gray\">无效</span>{{#}}}", Sort = 10, EnableDataFilter = true)]
         public bool IsActive { get; set; } = true;
         [InterColumn(ColumnName = "备注", Sort = 11, IsShownInList = false)]
         public override string Remarks { get; set; }

@@ -447,16 +447,11 @@ namespace Master.Module
             {
                 if (!propertyStrList.Contains(column.ColumnKey))
                 {
-                   
 
+                    propertyStrList.Add($"{_valuePathParser.Parse(column.ValuePath)} as {column.ColumnKey}");
                     if (!string.IsNullOrEmpty(column.DisplayPath))
                     {
                         propertyStrList.Add($"{_valuePathParser.Parse(column.DisplayPath)} as {column.ColumnKey}_display");
-                        propertyStrList.Add($"{_valuePathParser.Parse(column.DisplayPath)} as {column.ColumnKey}");
-                    }
-                    else
-                    {
-                        propertyStrList.Add($"{_valuePathParser.Parse(column.ValuePath)} as {column.ColumnKey}");
                     }
                 }
                 

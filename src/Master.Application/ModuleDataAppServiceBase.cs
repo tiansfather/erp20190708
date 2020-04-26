@@ -206,8 +206,8 @@ namespace Master
             var manager = Manager as ModuleServiceBase<TEntity, TPrimaryKey>;
             foreach(var columnKey in filterColumns)
             {
-                var column = moduleInfo.ColumnInfos.SingleOrDefault(o => o.ColumnKey.ToLower() == columnKey.ToLower());
-                if (column != null && column.IsShownInAdvanceSearch)
+                var column = moduleInfo.ColumnInfos.SingleOrDefault(o => o.ColumnKey.ToLower() == columnKey.ToLower() || o.ColumnKey.ToLower()+"_display"==columnKey.ToLower());
+                if (column != null && column.IsShownInAdvanceSearch && column.EnableDataFilter)
                 {
                     object data;
                     //直接数据列

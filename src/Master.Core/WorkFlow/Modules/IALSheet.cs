@@ -14,10 +14,10 @@ namespace Master.WorkFlow.Modules
         [InterColumn(ColumnName = "发生日期", Sort = 2)]
         public override DateTime SheetDate { get => base.SheetDate; set => base.SheetDate = value; }
         [NotMapped]
-        [InterColumn(ColumnName ="调出仓库",ValuePath ="Property",Sort =21)]
+        [InterColumn(ColumnName ="调出仓库",ValuePath ="Property",Sort =21, EnableDataFilter = true)]
         public string OutStoreName { get; set; }
         [NotMapped]
-        [InterColumn(ColumnName = "调入仓库", ValuePath = "Property", Sort = 22)]
+        [InterColumn(ColumnName = "调入仓库", ValuePath = "Property", Sort = 22, EnableDataFilter = true)]
         public string InStoreName { get; set; }
     }
 }

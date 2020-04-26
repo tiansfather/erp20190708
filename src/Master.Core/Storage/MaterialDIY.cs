@@ -10,7 +10,7 @@ namespace Master.Storage
     public class MaterialDIY : Material
     {
         [NotMapped]
-        [InterColumn(ColumnName ="配置状态",Templet ="{{d.isDiyed?'已配置':'<font color=\"red\">未配置</font>'}}",Sort =8)]
+        [InterColumn(ColumnName ="配置状态",Templet ="{{d.isDiyed?'已配置':'<font color=\"red\">未配置</font>'}}",Sort =8, EnableDataFilter = true)]
         public override bool IsDiyed{get;set;}
     }
 

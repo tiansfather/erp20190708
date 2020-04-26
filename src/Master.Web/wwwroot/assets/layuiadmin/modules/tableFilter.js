@@ -401,6 +401,13 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel'], function (exports) {
                         split: $('#main-list' + tableId).data('split')
                     }).html($('#soulDropList' + tableId).find('.' + field + 'DropList li').clone());
 
+                    //20200426
+                    //if ($('#soul-dropList' + tableId + '>ul li').length == 0) {
+                    //    $("li.soul-dropList").hide();
+                    //} else {
+                    //    $("li.soul-dropList").show();
+                    //}
+
                     $('#soul-dropList' + tableId).css({'top': $(this).offset().top, 'left': left})
                         .show().removeClass().addClass(animate + ' animated');
                     setTimeout(function () {

@@ -15,10 +15,10 @@ namespace Master.Finance
     [InterModule("资金往来明细",GenerateDefaultButtons =false)]
     public class FeeAccountHistory : BaseFullEntityWithTenant
     {
-        [InterColumn(ColumnName ="资金账户",DisplayPath="FeeAccount.Name",Templet = "{{d.feeAccountId_display||'/'}}", Sort =1)]
+        [InterColumn(ColumnName ="资金账户",DisplayPath="FeeAccount.Name",Templet = "{{d.feeAccountId_display||'/'}}", Sort =1, EnableDataFilter = true)]
         public int FeeAccountId { get; set; }
         public virtual FeeAccount FeeAccount { get; set; }
-        [InterColumn(ColumnName = "往来单位", DisplayPath = "Unit.UnitName", Templet = "{{d.unitId_display||'/'}}", Sort = 2)]
+        [InterColumn(ColumnName = "往来单位", DisplayPath = "Unit.UnitName", Templet = "{{d.unitId_display||'/'}}", Sort = 2, EnableDataFilter = true)]
         public int? UnitId { get; set; }
         public virtual Unit Unit { get; set; }
         /// <summary>
@@ -27,17 +27,17 @@ namespace Master.Finance
         [InterColumn(ColumnName ="发生金额",ColumnType =Module.ColumnTypes.Number,DisplayFormat ="0.00", Sort = 3)]
         [Column(TypeName = "decimal(20,2)")]
         public decimal Fee { get; set; }
-        [InterColumn(ColumnName ="流向",ColumnType =Module.ColumnTypes.Select,DictionaryName ="Master.Finance.FeeDirection",Templet ="{{d.feeDirection_display}}", Sort = 4)]
+        [InterColumn(ColumnName ="流向",ColumnType =Module.ColumnTypes.Select,DictionaryName ="Master.Finance.FeeDirection",Templet ="{{d.feeDirection_display}}", Sort = 4, EnableDataFilter = true)]
         public FeeDirection FeeDirection { get; set; }
         [NotMapped]
-        [InterColumn(ColumnName = "对方单位名称", ValuePath ="Property", Sort = 5)]
+        [InterColumn(ColumnName = "对方单位名称", ValuePath ="Property", Sort = 5, EnableDataFilter = true)]
         public string RelCompanyName { get; set; }
         [InterColumn(ColumnName = "账户余额", ColumnType = Module.ColumnTypes.Number, DisplayFormat = "0.00", Sort = 6)]
         [Column(TypeName = "decimal(20,2)")]
         public decimal RemainFee { get; set; }
         [InterColumn(ColumnName ="发生时间",ColumnType =Module.ColumnTypes.DateTime,DisplayFormat ="yyyy-MM-dd HH:mm", Sort = 7)]
         public override DateTime CreationTime { get => base.CreationTime; set => base.CreationTime = value; }
-        [InterColumn(ColumnName ="发生环节", ValuePath = "FlowSheet.FlowInstance.FlowForm.FormName", DisplayPath = "FlowSheet.FlowInstance.FlowForm.FormName",Templet ="{{d.formName_display}}", Sort = 8)]
+        [InterColumn(ColumnName ="发生环节", ValuePath = "FlowSheet.FlowInstance.FlowForm.FormName", DisplayPath = "FlowSheet.FlowInstance.FlowForm.FormName",Templet ="{{d.formName_display}}", Sort = 8, EnableDataFilter = true)]
         [NotMapped]
         public string FormName => FlowSheet.FlowInstance.FlowForm.FormName;
         [InterColumn(ColumnName = "摘要", Sort = 9)]

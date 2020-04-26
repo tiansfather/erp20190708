@@ -15,7 +15,7 @@ namespace Master.Finance
     [InterModule("往来单位明细", GenerateDefaultButtons = false)]
     public class UnitFeeHistory : BaseFullEntityWithTenant
     {
-        [InterColumn(ColumnName = "往来单位", DisplayPath = "Unit.UnitName", Templet = "{{d.unitId_display}}", Sort = 1)]
+        [InterColumn(ColumnName = "往来单位", DisplayPath = "Unit.UnitName", Templet = "{{d.unitId_display}}", Sort = 1, EnableDataFilter = true)]
         public int UnitId { get; set; }
         public virtual Unit Unit { get; set; }
         [InterColumn(ColumnName = "发生时间", ColumnType = Module.ColumnTypes.DateTime, DisplayFormat = "yyyy-MM-dd HH:mm", Sort = 2)]
@@ -29,7 +29,7 @@ namespace Master.Finance
         [InterColumn(ColumnName = "发生后结余", ColumnType = Module.ColumnTypes.Number, DisplayFormat = "0.00", Sort = 4)]
         [Column(TypeName = "decimal(20,2)")]
         public decimal RemainFee { get; set; }
-        [InterColumn(ColumnName = "发生环节", ValuePath = "FlowSheet.FlowInstance.FlowForm.FormName", DisplayPath = "FlowSheet.FlowInstance.FlowForm.FormName", Templet = "{{d.formName_display}}", Sort = 5)]
+        [InterColumn(ColumnName = "发生环节", ValuePath = "FlowSheet.FlowInstance.FlowForm.FormName", DisplayPath = "FlowSheet.FlowInstance.FlowForm.FormName", Templet = "{{d.formName_display}}", Sort = 5, EnableDataFilter = true)]
         [NotMapped]
         public string FormName => FlowSheet.FlowInstance.FlowForm.FormName;
         [InterColumn(ColumnName = "摘要", Sort = 6)]
@@ -40,7 +40,7 @@ namespace Master.Finance
         [InterColumn(ColumnName = "发生环节单据编号", Templet = "<a dataid=\"{{d.flowSheetId}}\" class=\"layui-btn layui-btn-xs layui-btn-normal\" buttonname=\"单据\" params=\"{&quot;btn&quot;:[]}\"   buttonactiontype=\"Form\" buttonactionurl=\"/FlowSheet/SheetView\" onclick=\"func.callModuleButtonEvent()\">{{d.flowSheetId_display}}</a>", DisplayPath = "FlowSheet.SheetSN", Sort = 7)]
         public int? FlowSheetId { get; set; }
         public virtual FlowSheet FlowSheet { get; set; }
-        [InterColumn(ColumnName = "对方单位名称", Sort = 8)]
+        [InterColumn(ColumnName = "对方单位名称", Sort = 8, EnableDataFilter = true)]
         public string RelCompanyName { get; set; }
     }
 }

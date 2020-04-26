@@ -14,9 +14,9 @@ namespace Master.WorkFlow.Modules
         [InterColumn(ColumnName = "发生日期", Sort = 2)]
         public override DateTime SheetDate { get => base.SheetDate; set => base.SheetDate = value; }
         [NotMapped]
-        [InterColumn(ColumnName = "仓库", ValuePath = "Property", Sort = 21)]
+        [InterColumn(ColumnName = "仓库", ValuePath = "Property", Sort = 21, EnableDataFilter = true)]
         public string StoreName { get; set; }
-        [InterColumn(ColumnName = "当前状态", Sort = 22)]
+        [InterColumn(ColumnName = "当前状态", Sort = 22, EnableDataFilter = true)]
         public override string OrderStatus { get; set; }
         public override SheetNature SheetNature { get => base.SheetNature; set => base.SheetNature = value; }
     }

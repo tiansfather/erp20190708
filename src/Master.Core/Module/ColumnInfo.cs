@@ -233,6 +233,18 @@ namespace Master.Module
                 this.SetData("enableTotalRow", value);
             }
         }
+        [NotMapped]
+        public virtual bool EnableDataFilter
+        {
+            get
+            {
+                return this.GetData<bool>("enableDataFilter");
+            }
+            set
+            {
+                this.SetData("enableDataFilter", value);
+            }
+        }
         /// <summary>
         /// 用于前台表格的列排序，加入了固定列修正
         /// </summary>

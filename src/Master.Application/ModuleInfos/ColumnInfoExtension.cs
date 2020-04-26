@@ -67,6 +67,10 @@ namespace Master.Module
             {
                 //非操作列需要绑定数据
                 dic.Add("field", columnInfo.ColumnKey.ToCamelCase());
+                if (!string.IsNullOrEmpty(columnInfo.DisplayPath) || !string.IsNullOrEmpty(columnInfo.DictionaryName))
+                {
+                    dic["field"] = $"{columnInfo.ColumnKey.ToCamelCase()}_display";
+                }
             }
             var align = columnInfo.GetData<string>("align");
             if (!align.IsNullOrWhiteSpace())

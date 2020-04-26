@@ -15,17 +15,17 @@ namespace Master.WorkFlow.Modules
         [InterColumn(ColumnName = "发生金额", ValuePath = "Property", ColumnType = Module.ColumnTypes.Number, Sort = 2)]
         [NotMapped]
         public virtual decimal Fee { get; set; }
-        [InterColumn(ColumnName = "调出账号", ValuePath = "Property",Sort =3)]
+        [InterColumn(ColumnName = "调出账号", ValuePath = "Property",Sort =3,EnableDataFilter =true)]
         [NotMapped]
         public virtual string OutAccount { get; set; }
-        [InterColumn(ColumnName = "调入账号", ValuePath = "Property", Sort = 4)]
+        [InterColumn(ColumnName = "调入账号", ValuePath = "Property", Sort = 4, EnableDataFilter = true)]
         [NotMapped]
         public virtual string InAccount { get; set; }
         [InterColumn(ColumnName = "发生日期", Sort = 5,ColumnType =Module.ColumnTypes.DateTime,DisplayFormat ="yyyy-MM-dd")]
         public override DateTime SheetDate { get => base.SheetDate; set => base.SheetDate = value; }
         [InterColumn(ColumnName = "制单时间",Sort =6)]
         public override DateTime CreationTime { get => base.CreationTime; set => base.CreationTime = value; }
-        [InterColumn(ColumnName = "经办人", DisplayPath = "CreatorUser.Name", Templet = "{{d.creatorUserId_display}}", Sort = 7)]
+        [InterColumn(ColumnName = "经办人", DisplayPath = "CreatorUser.Name", Templet = "{{d.creatorUserId_display}}", Sort = 7, EnableDataFilter = true)]
         public override long? CreatorUserId { get; set; }
         [InterColumn(ColumnName = "创建时间", ColumnType = Module.ColumnTypes.DateTime, ValuePath = "CreationTime", DisplayFormat = "yyyy-MM-dd HH:mm", Sort = 999)]
         [NotMapped]

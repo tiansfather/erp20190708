@@ -18,13 +18,12 @@ namespace Master.Finance
         public decimal CheckFee { get; set; }
         [InterColumn(ColumnName = "开票日期", ColumnType = Module.ColumnTypes.DateTime, Sort = 3)]
         public DateTime CheckDate { get; set; }
-        [InterColumn(ColumnName ="兑换期限", Sort = 4)]
         public int CheckDaySpan { get; set; }
-        [InterColumn(ColumnName = "签发公司", Sort = 5)]
+        [InterColumn(ColumnName = "付款公司名称", Sort = 5, EnableDataFilter = true)]
         public string CheckCompany { get; set; }
-        [InterColumn(ColumnName = "银行", Sort = 6)]
+        [InterColumn(ColumnName = "银行", Sort = 6, EnableDataFilter = true)]
         public string CheckBank { get; set; }
-        [InterColumn(ColumnName = "状态",ColumnType =Module.ColumnTypes.Select,DictionaryName ="Master.Finance.CheckStatus",Templet = "{{d.checkStatus_display}}", Sort = 7)]
+        [InterColumn(ColumnName = "状态",ColumnType =Module.ColumnTypes.Select,DictionaryName ="Master.Finance.CheckStatus",Templet = "{{d.checkStatus_display}}", Sort = 7, EnableDataFilter = true)]
         public CheckStatus CheckStatus { get; set; }
         [InterColumn(ColumnName ="备注", Sort = 8)]
         public override string Remarks { get => base.Remarks; set => base.Remarks = value; }

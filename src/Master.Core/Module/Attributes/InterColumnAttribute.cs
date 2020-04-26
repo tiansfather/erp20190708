@@ -31,7 +31,7 @@ namespace Master.Module.Attributes
         public bool IsShownInView { get; set; } = true;
         public bool IsShownInMultiEdit { get; set; } = true;
         public bool IsEnableSort { get; set; } = true;
-        
+        public bool EnableDataFilter { get; set; } = false;
         /// <summary>
         /// 是否显示在高级查询页
         /// </summary>

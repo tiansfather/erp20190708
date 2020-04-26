@@ -85,7 +85,7 @@ namespace Master.Module
                     }
                     string displayValue = dic.ContainsKey(value.ToString()) ? dic[value.ToString()] : value.ToString();
                     entity[columnInfo.ColumnKey + "_display"] = displayValue;
-                    entity[columnInfo.ColumnKey] = displayValue;
+                    //entity[columnInfo.ColumnKey] = displayValue;
                 }
                 //进行值格式化
                 if (!columnInfo.DisplayFormat.IsNullOrWhiteSpace())

@@ -27,12 +27,12 @@ namespace Master.Storage
         public string Specification { get; set; }
         public string Brand { get; set; }        
         public string UnitName { get; set; }
-        [InterColumn(ColumnName = "仓库",Sort =7)]
+        [InterColumn(ColumnName = "仓库",Sort =7, EnableDataFilter = true)]
         public string StoreName { get; set; }        
 
-        [InterColumn(ColumnName = "单位",Sort =9)]
+        [InterColumn(ColumnName = "单位",Sort =9, EnableDataFilter = true)]
         public string MeasureMentUnitName { get; set; }
-        [InterColumn(ColumnName = "发生环节", ValuePath = "FlowSheet.FlowInstance.FlowForm.FormName", DisplayPath = "FlowSheet.FlowInstance.FlowForm.FormName", Templet = "{{d.formName_display}}", Sort = 10)]
+        [InterColumn(ColumnName = "发生环节", ValuePath = "FlowSheet.FlowInstance.FlowForm.FormName", DisplayPath = "FlowSheet.FlowInstance.FlowForm.FormName", Templet = "{{d.formName_display}}", Sort = 10, EnableDataFilter = true)]
         [NotMapped]
         public string FormName => FlowSheet.FlowInstance.FlowForm.FormName;
         [InterColumn(ColumnName = "摘要",Sort =11)]

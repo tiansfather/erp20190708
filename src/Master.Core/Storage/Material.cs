@@ -32,13 +32,13 @@ namespace Master.Storage
         [InterColumn(ColumnName = "规格", Sort = 2)]
         public string Specification { get; set; }
         
-        [InterColumn(ColumnName = "分类", Renderer = "lay-materialtypechoose", DisplayPath = "MaterialType.DisplayName", Templet = "{{d.materialTypeId_display||''}}", Sort = 3)]
+        [InterColumn(ColumnName = "分类", Renderer = "lay-materialtypechoose", DisplayPath = "MaterialType.DisplayName", Templet = "{{d.materialTypeId_display||''}}", Sort = 3, EnableDataFilter = true)]
         public int? MaterialTypeId { get; set; }
         public virtual BaseTree MaterialType { get; set; }
         /// <summary>
         /// 性质
         /// </summary>
-        [InterColumn(ColumnName = "性质", ColumnType = ColumnTypes.Select,DefaultValue = "票券", DictionaryName = "Master.Storage.MaterialNature", Sort = 4, Templet = "{{d.materialNature_display}}")]
+        [InterColumn(ColumnName = "性质", ColumnType = ColumnTypes.Select,DefaultValue = "票券", DictionaryName = "Master.Storage.MaterialNature", Sort = 4, Templet = "{{d.materialNature_display}}", EnableDataFilter = true)]
         public virtual MaterialNature MaterialNature { get; set; } = MaterialNature.票券;
         /// <summary>
         /// 散装配置
@@ -48,7 +48,7 @@ namespace Master.Storage
         /// <summary>
         /// 计量单位
         /// </summary>
-        [InterColumn(ColumnName = "计量单位", VerifyRules = "required", Sort = 6)]
+        [InterColumn(ColumnName = "计量单位", VerifyRules = "required", Sort = 6, EnableDataFilter = true)]
         public string MeasureMentUnit { get; set; }
         [InterColumn(ColumnName = "市场单价(元)", ColumnType = ColumnTypes.Number, VerifyRules = "number", DefaultValue = "0", DisplayFormat = "0.00", Sort = 7)]
         [Column(TypeName = "decimal(20,2)")]
@@ -60,7 +60,7 @@ namespace Master.Storage
         /// <summary>
         /// 是否启用
         /// </summary>
-        [InterColumn(ColumnName = "状态", ColumnType = Module.ColumnTypes.Switch,DefaultValue ="true", Templet = "{{#if(d.isActive){}}<span class=\"layui-badge layui-bg-green\">上架</span>{{#}else{}}<span class=\"layui-badge layui-bg-gray\">下架</span>{{#}}}", Sort = 9)]
+        [InterColumn(ColumnName = "状态", ColumnType = Module.ColumnTypes.Switch,DefaultValue ="true", Templet = "{{#if(d.isActive){}}<span class=\"layui-badge layui-bg-green\">上架</span>{{#}else{}}<span class=\"layui-badge layui-bg-gray\">下架</span>{{#}}}", Sort = 9, EnableDataFilter = true)]
         public bool IsActive { get; set; } = true;
         [InterColumn(ColumnName ="默认进货折扣",ColumnType =ColumnTypes.Number,Sort =10, DisplayFormat = "0.00", IsShownInList = false,DefaultValue ="1",VerifyRules ="required|number")]
         [Column(TypeName = "decimal(20,2)")]
@@ -77,7 +77,7 @@ namespace Master.Storage
         [InterColumn(ColumnName = "出货折扣3", ColumnType = ColumnTypes.Number, Sort = 14, DisplayFormat = "0.00", IsShownInList = false, DefaultValue = "1", VerifyRules = "required|number")]
         [Column(TypeName = "decimal(20,2)")]
         public decimal? SellDiscount3 { get; set; }
-        [InterColumn(ColumnName ="适用区域",IsShownInList =false,Sort =15)]
+        [InterColumn(ColumnName ="适用区域",IsShownInList =false,Sort =15, EnableDataFilter = true)]
         public string Location { get; set; }
         [InterColumn(ColumnName ="备注",Sort =16,IsShownInList =false)]
         public override string Remarks { get; set; }

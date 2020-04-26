@@ -246,7 +246,7 @@ namespace Master.Search
             //需要判断是模块的筛选还是普通表格
             if (moduleInfo != null)
             {
-                column = moduleInfo.ColumnInfos.Where(o => o.ColumnKey.ToLower() == condition.Field?.ToLower()).Single();
+                column = moduleInfo.ColumnInfos.Where(o => o.ColumnKey.ToLower() == condition.Field?.ToLower() || o.ColumnKey.ToLower()+"_display"== condition.Field?.ToLower()).Single();
             }
             else
             {
@@ -315,7 +315,16 @@ namespace Master.Search
                 }
                 else if (condition.Type == "specific")
                 {
-                    code = $"{valuePath}={value}";
+                    if (condition.Value.Length == 10)
+                    {
+                        //形如2020-01-01形式的日期比较
+                        code = $"({valuePath}>={valueWrapp(condition.Value)} and {valuePath}<={valueWrapp(condition.Value + " 23:59:59")})";
+                    }
+                    else
+                    {
+                        code = $"{valuePath}={value}";
+                    }
+                    
                 }
                 else
                 {
