@@ -1,6 +1,8 @@
-﻿using Master.Module;
+﻿using Abp.Domain.Entities;
+using Master.Module;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Master.EntityFrameworkCore.Seed.BaseData.SystemModules

@@ -104,19 +104,20 @@
 {
 
     <script type="text/html" id="Operation">
-        @foreach (var button in Model.ModuleInfo.Buttons.Where(o => o.IsEnabled && o.ButtonType.HasFlag(ButtonType.ForSingleRow)).OrderBy(o => o.Sort))
-        {
-            //权限判定
-            if (!button.RequirePermission || await PermissionChecker.IsGrantedAsync(button.ButtonPermissionName))
+        <div style="text-align:center">
+            @foreach (var button in Model.ModuleInfo.Buttons.Where(o => o.IsEnabled && o.ButtonType.HasFlag(ButtonType.ForSingleRow)).OrderBy(o => o.Sort))
             {
-                var clientCondition = !string.IsNullOrEmpty(button.ClientShowCondition) ? button.ClientShowCondition : "true";
-                @(Html.Raw("{{# if(" + clientCondition + "){ }}"))
-                <a dataid="{{d.id}}" class="layui-btn layui-btn-xs @Html.Raw(button.ButtonClass)" module-button="@button" title="@(!string.IsNullOrEmpty(button.TitleTemplet)?button.TitleTemplet:button.ButtonName)"></a>
-                @("{{# } }}")
+                //权限判定
+                if (!button.RequirePermission || await PermissionChecker.IsGrantedAsync(button.ButtonPermissionName))
+                {
+                    var clientCondition = !string.IsNullOrEmpty(button.ClientShowCondition) ? button.ClientShowCondition : "true";
+                    @(Html.Raw("{{# if(" + clientCondition + "){ }}"))
+                    <a dataid="{{d.id}}" class="layui-btn layui-btn-xs @Html.Raw(button.ButtonClass)" module-button="@button" title="@(!string.IsNullOrEmpty(button.TitleTemplet)?button.TitleTemplet:button.ButtonName)"></a>
+                    @("{{# } }}")
+                }
+
             }
-
-        }
-
+        </div>
     </script>
 
 }

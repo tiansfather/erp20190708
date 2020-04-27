@@ -277,3 +277,9 @@ a.layui-layer-ico.layui-layer-close.layui-layer-close1 {
     a.layui-layer-ico.layui-layer-close.layui-layer-close1:before {
         content: "\1006";
     }
+.layui-table-col-special .layui-table-cell{
+    text-align:center !important;
+}
+.layui-table td, .layui-table th{
+    padding:5px 5px ;
+}

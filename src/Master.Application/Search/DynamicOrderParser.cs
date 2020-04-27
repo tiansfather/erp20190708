@@ -30,7 +30,7 @@ namespace Master.Search
             else
             {
                 //是模块排序，则去列定义中寻找具体的排序字段
-                var column = moduleInfo.ColumnInfos.SingleOrDefault(o => o.ColumnKey.ToLower() == orderField.ToLower());
+                var column = moduleInfo.ColumnInfos.SingleOrDefault(o => o.ColumnKey.ToLower() == orderField.ToLower() || o.ColumnKey.ToLower()+"_display"==orderField.ToLower());
                 if (column == null)
                 {
                     query = query.OrderBy($"{orderField} {sortType}");

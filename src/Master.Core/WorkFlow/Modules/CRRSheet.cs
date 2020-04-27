@@ -25,7 +25,7 @@ namespace Master.WorkFlow.Modules
         public override DateTime SheetDate { get => base.SheetDate; set => base.SheetDate = value; }
         [InterColumn(ColumnName = "制单时间",Sort =6)]
         public override DateTime CreationTime { get => base.CreationTime; set => base.CreationTime = value; }
-        [InterColumn(ColumnName = "经办人", DisplayPath = "CreatorUser.Name", Templet = "{{d.creatorUserId_display}}", Sort = 7, EnableDataFilter = true)]
+        [InterColumn(ColumnName = "经办人", DisplayPath = "CreatorUser.Name", Templet = "{{d.creatorUserId_display||'/'}}", Sort = 7, EnableDataFilter = true)]
         public override long? CreatorUserId { get; set; }
         [InterColumn(ColumnName = "创建时间", ColumnType = Module.ColumnTypes.DateTime, ValuePath = "CreationTime", DisplayFormat = "yyyy-MM-dd HH:mm", Sort = 999)]
         [NotMapped]

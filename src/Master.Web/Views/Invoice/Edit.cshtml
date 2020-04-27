@@ -24,13 +24,13 @@
                         <el-input v-model="currentItem.content"></el-input>
                     </el-form-item>
                     <el-form-item label="数量:">
-                        <el-input v-model="currentItem.number" type="number"></el-input>
+                        <el-input v-model="currentItem.number" type="number" @@input="calcFee"></el-input>
                     </el-form-item>
                     <el-form-item label="单价:">
-                        <el-input v-model="currentItem.price" type="number"></el-input>
+                        <el-input v-model="currentItem.price" type="number" @@input="calcFee"></el-input>
                     </el-form-item>
                     <el-form-item label="开票金额:">
-                        <el-input v-model="currentItem.fee" type="number"></el-input>
+                        <el-input v-model="currentItem.fee" type="number" @@input="calcPrice"></el-input>
                     </el-form-item>
                     <el-form-item label="税率:">
                         <el-input v-model="currentItem.taxRate"></el-input>
@@ -85,6 +85,16 @@
 
                                 },
                                 materialTypes:[]
+                            },
+                            methods: {
+                                calcFee: function () {
+                                    this.currentItem.number && this.currentItem.price && (this.currentItem.fee = (parseFloat(this.currentItem.number) * parseFloat(this.currentItem.price)).toFixed(2));
+                                },
+                                calcPrice: function () {
+                                    if (this.currentItem.fee) {
+                                        this.currentItem.number && (this.currentItem.price=(parseFloat(this.currentItem.fee) / parseFloat(this.currentItem.number)).toFixed(2))
+                                    }
+                                }
                             },
                             mounted: function () {
                                 var that = this;

@@ -207,7 +207,7 @@ namespace Master
             foreach(var columnKey in filterColumns)
             {
                 var column = moduleInfo.ColumnInfos.SingleOrDefault(o => o.ColumnKey.ToLower() == columnKey.ToLower() || o.ColumnKey.ToLower()+"_display"==columnKey.ToLower());
-                if (column != null && column.IsShownInAdvanceSearch && column.EnableDataFilter)
+                if (column != null && column.IsShownInAdvanceSearch && column.ColumnType!=ColumnTypes.DateTime)//日期不进行数据筛选
                 {
                     object data;
                     //直接数据列
