@@ -12,20 +12,20 @@
         <el-form-item label="配送日期:">
             <el-date-picker v-model="currentItem.deliverDate"
                             type="date"
-                            placeholder="选择日期" v-if="isSend && _formOption.mode!='readonly'">
+                            placeholder="选择日期" v-if="_formOption.mode!='readonly'">
             </el-date-picker>
             <template v-else>
                 {{currentItem.deliverDate?new Date(currentItem.deliverDate).pattern('yyyy-MM-dd'):''}}
             </template>
         </el-form-item>
         <el-form-item label="收货人:">
-            <el-input v-model="currentItem.receiver" v-if="isSend && _formOption.mode!='readonly'"></el-input>
+            <el-input v-model="currentItem.receiver" v-if=" _formOption.mode!='readonly'"></el-input>
             <template v-else>
                 {{currentItem.receiver}}
             </template>
         </el-form-item>
         <el-form-item label="收货人电话:">
-            <el-input v-model="currentItem.receiverMobile" v-if="isSend && _formOption.mode!='readonly'"></el-input>
+            <el-input v-model="currentItem.receiverMobile" v-if=" _formOption.mode!='readonly'"></el-input>
             <template v-else>
                 {{currentItem.receiverMobile}}
             </template>
@@ -33,18 +33,18 @@
     </el-form>
     <el-form ref="form" label-width="120px" >
         <el-form-item label="送货地址:">
-            <el-input v-model="currentItem.receiverAddress" v-if="isSend && _formOption.mode!='readonly'"></el-input>
+            <el-input v-model="currentItem.receiverAddress" v-if=" _formOption.mode!='readonly'"></el-input>
             <template v-else>
                 {{currentItem.receiverAddress}}
             </template>
         </el-form-item>
         <el-form-item label="备注:">
-            <el-input v-model="currentItem.remarks" v-if="isSend && _formOption.mode!='readonly'"></el-input>
+            <el-input v-model="currentItem.remarks" v-if=" _formOption.mode!='readonly'"></el-input>
             <template v-else>
                 {{currentItem.remarks}}
             </template>
         </el-form-item>
-        <el-form-item label="发货仓库" v-if="isSend && _formOption.mode!='readonly'">
+        <el-form-item label="发货仓库" v-if=" _formOption.mode!='readonly'">
             <el-select v-model="currentItem.storeId" placeholder="发货仓库" size="medium" style="width:120px">
                 <el-option v-for="item in currentItem.stores"
                            :key="item.id"
@@ -263,6 +263,28 @@
         } catch (err) {
             abp.message.error(err.message || err);
             return false;
+        }
+    }
+    function actionCallback(actionName, sheetId) {
+        if (actionName == "verify") {
+            //审核后打开发货页
+            //打开查看窗口
+            parent.layer.open({
+                type: 2,
+                title: '单据查看',
+                scrollbar: false,
+                shadeClose: false,
+                shade: 0.8,
+                area: ['100%', '100%'],
+                content: '/FlowSheet/SheetView?data=' + sheetId,
+                btn: [],
+                btnAlign: 'l',
+                success: function () {
+                    parent.layer.close(index);
+                }
+            })
+        } else {
+            parent.layer.close(index);
         }
     }
 </script>

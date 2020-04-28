@@ -41,7 +41,23 @@
 		//当编辑或删除或添加表单提交后会调用此方法
         config.refresh = function () {
             
-		}
+        }
+        config.afterSheetUpdate = function (sheetId) {
+            layer.open({
+                type: 2,
+                title: '单据查看',
+                scrollbar: false,
+                shadeClose: false,
+                shade: 0.8,
+                area: ['100%', '100%'],
+                content: '/FlowForm/SheetView?data=' + sheetId,
+                btn: [],
+                btnAlign: 'l',
+                success: function () {
+                    //parent.layer.close(index);
+                }
+            })
+        }
 		function getWhere() {
 			var where = {};
 
