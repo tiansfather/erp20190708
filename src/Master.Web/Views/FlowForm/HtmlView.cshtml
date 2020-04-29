@@ -210,6 +210,7 @@
 
 
 <script>
+    var index = parent.layer.getFrameIndex(window.name);
     config.readyFuncs.push(function () {
         window.header = new Vue({
             el: '#header',
@@ -277,8 +278,14 @@
                         else {
                             func.runAsync(abp.services.app.flowSheet.action({ sheetId: sheetId, actionName: btn.buttonKey, formData: JSON.stringify(getFormData()) }).done(function () {
                                 parent.layer.msg("提交成功");
-                                parent.config.reloadTable();
-                                parent.layer.closeAll('iframe');
+                                 parent.config.reloadTable();
+                                if (actionCallback) {
+                                    actionCallback(btn.buttonKey, sheetId);
+                                } else {                                   
+                                    parent.layer.closeAll('iframe');
+                                }
+                                
+
                             }))
                         }
 

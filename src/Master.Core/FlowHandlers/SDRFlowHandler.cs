@@ -82,9 +82,18 @@ namespace Master.FlowHandlers
                 btns.Add(new ModuleButton()
                 {
                     ButtonKey = "backToCart",
-                    ButtonName = "放回购物车修改",
+                    ButtonName = "放回购物车",
                     ConfirmMsg="确认将订单放回购物车?此订单将失效"
                 });
+                if (CurrentUser.Id == flowSheet.CreatorUserId)
+                {
+                    btns.Add(new ModuleButton()
+                    {
+                        ButtonKey = "modify",
+                        ButtonName = "修改",
+                        ConfirmMsg = "确认修改此单据?"
+                    });
+                }
                 if (CurrentUser.IsCenterUser)
                 {
                     btns.Add(new ModuleButton()
@@ -158,8 +167,16 @@ namespace Master.FlowHandlers
                 //删除订单
                 await FlowSheetManager.DeleteAsync(flowSheet);
             }
+            else if (action == "modify")
+            {
+                if (flowSheet.OrderStatus != "待审核")
+                {
+                    throw new UserFriendlyException("本单据已被审核，当前操作无效，请重新查看");
+                }
+            }
             else if (action == "verify")
             {
+                //todo:并发验证
                 flowSheet.OrderStatus = "待发货";
             }
             else if (action == "cancel")
