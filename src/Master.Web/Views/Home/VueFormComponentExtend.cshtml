@@ -3,10 +3,20 @@
     Vue.component('lay-materialtypechoose', {
         template: '#layMaterialTypeChoose',
         props: ['columnInfo', 'value'],
+        data: function () {
+            return {
+                options: [],
+                value1:this.value
+            }
+        },
         mounted: function () {
-            this.$nextTick(function () {
-                $('div[cytype="dropDownTool"]').dropDownTool();
+            var that = this;
+            abp.services.app.baseTree.getTreeJson('MaterialType', null, 1).done(function (res) {
+                that.options = res.map(function (o) { return new { label: o.briefName, value: o.id } });
             })
+            //this.$nextTick(function () {
+            //    $('div[cytype="dropDownTool"]').dropDownTool();
+            //})
 
         }
     });
@@ -15,9 +25,17 @@
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">{{columnInfo.ColumnName}}</label>
         <div class="layui-input-block">
-            <div cyType="dropDownTool" cyProps="url:'/api/services/app/baseTree/GetTreeJson?discriminator=MaterialType',search:'false',checkbox:'false',key_name:'briefName'"
-                 :name="columnInfo.ColumnKey" :value="value" class="layui-input-inline" style="position:relative">
-            </div>
+            <el-select v-model="value1" filterable placeholder="Select">
+                <el-option v-for="item in options"
+                           :key="item.value"
+                           :label="item.label"
+                           :value="item.value">
+                </el-option>
+            </el-select>
+            <input type="hidden" :name="columnInfo.ColumnKey" :id="columnInfo.ColumnKey" :lay-verify="columnInfo.VerifyRules" autocomplete="off" :value="value1" :tips="columnInfo.Tips">
+            @*<div cyType="dropDownTool" cyProps="url:'/api/services/app/baseTree/GetTreeJson?discriminator=MaterialType',search:'false',checkbox:'false',key_name:'briefName'"
+             :name="columnInfo.ColumnKey" :value="value" class="layui-input-inline" style="position:relative">
+        </div>*@
 
         </div>
     </div>

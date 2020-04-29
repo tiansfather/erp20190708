@@ -16,6 +16,13 @@ namespace Master.Finance
         {
             return nameof(Invoice);
         }
+        public override async Task<Dictionary<string,object>> GetPageSummary(IQueryable<Invoice> queryable)
+        {
+            var result = new Dictionary<string, object>();
+            result.Add("增票",await queryable.Where(o => o.Type == "增票").SumAsync(o => o.Fee));
+            result.Add("普票",await queryable.Where(o => o.Type == "普票").SumAsync(o => o.Fee));
+            return result;
+        }
         public virtual async Task Submit(InvoiceSubmitDto invoiceSubmitDto)
         {
             var user = await GetCurrentUserAsync();
@@ -98,9 +105,9 @@ namespace Master.Finance
         {
             var query = Manager.GetAll();
             var allCount = await query.CountAsync();
-            var unVerifyCount = await query.Where(o => o.InvoiceStatus==InvoiceStatus.待审核).CountAsync();
-            var verifiedCount = await query.Where(o => o.InvoiceStatus==InvoiceStatus.已审核).CountAsync();
-            var closedCount = await query.Where(o => o.InvoiceStatus==InvoiceStatus.已关闭).CountAsync();
+            var unVerifyCount = await query.Where(o => o.InvoiceStatus== InvoiceStatus.待审核).CountAsync();
+            var verifiedCount = await query.Where(o => o.InvoiceStatus== InvoiceStatus.已审核).CountAsync();
+            var closedCount = await query.Where(o => o.InvoiceStatus== InvoiceStatus.已关闭).CountAsync();
 
             return new { allCount, unVerifyCount, verifiedCount, closedCount };
         }

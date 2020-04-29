@@ -111,6 +111,10 @@ namespace Master
         #endregion
 
         #region 分页与数据过滤接口
+        public virtual async Task<Dictionary<string,object>> GetPageSummary(IQueryable<TEntity> queryable)
+        {
+            return new Dictionary<string, object>();
+        }
         /// <summary>
         /// 分页
         /// </summary>
@@ -121,12 +125,13 @@ namespace Master
         {
 
             var pageResult = await GetPageResultQueryable(request);
-
+            var summarys = await GetPageSummary(pageResult.Queryable);
             var result = new ResultPageDto()
             {
                 code = 0,
                 count = pageResult.RowCount,
-                data = (await pageResult.Queryable.ToListAsync()).ConvertAll(PageResultConverter)
+                data = (await pageResult.Queryable.ToListAsync()).ConvertAll(PageResultConverter),
+                summarys=summarys
             };
 
             return result;

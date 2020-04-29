@@ -19,7 +19,6 @@ namespace Master.Dto
         /// 查询条件 Name="a" or CreatorUser.Name.Contains("b")
         /// </summary>
         public string Where { get; set; }
-
         #region 考虑停用
         /// <summary>
         /// 前台的过滤字段集合数据[{columnName:'ProcessSN',conditions:[{andOr:'',leftBracket:'',rightBracket:'',comparer:'=',value:'201810120011'}]}]

@@ -8,5 +8,6 @@ namespace Master.Dto
     public class ResultPageDto: ResultDto
     {        
         public int count { get; set; }
+        public Dictionary<string,object> summarys { get; set; }
     }
 }

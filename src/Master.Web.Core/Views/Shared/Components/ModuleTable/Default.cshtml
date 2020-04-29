@@ -172,7 +172,11 @@
                 filter: {
                     items:@Html.Raw(Model.FilterItems)
                 },
-                excel: {on:false},
+                excel: { on: false },
+                parseData: function (res) {
+                    window.summarys = res.summarys;
+                    return res;
+                },
                 done: function () {
                     //console.log('tableDone');
                     layui.soulTable.render(this);
