@@ -30,6 +30,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getPageSummary'
+    abp.services.app.file.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/File/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getPageResult'
     abp.services.app.file.getPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -286,6 +294,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getPageSummary'
+    abp.services.app.test.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Test/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getPageResult'
     abp.services.app.test.getPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -421,6 +437,14 @@ abp.services = abp.services || {};
     abp.services.app.flowSheet.getFlowBtns = function(sheetId, ajaxParams) {
       return abp.ajax($.extend(true, {
         url: abp.appPath + 'api/services/app/FlowSheet/GetFlowBtns' + abp.utils.buildQueryString([{ name: 'sheetId', value: sheetId }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getPageSummary'
+    abp.services.app.flowSheet.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FlowSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -623,6 +647,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getPageSummary'
+    abp.services.app.flowForm.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FlowForm/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getFilterColumnPageResult'
     abp.services.app.flowForm.getFilterColumnPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -774,6 +806,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getPageSummary'
+    abp.services.app.flowInstance.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FlowInstance/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getFilterColumnPageResult'
     abp.services.app.flowInstance.getFilterColumnPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -902,6 +942,14 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/FlowScheme/FormSubmit',
         type: 'POST',
         data: JSON.stringify(request)
+      }, ajaxParams));;
+    };
+
+    // action 'getPageSummary'
+    abp.services.app.flowScheme.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FlowScheme/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -1117,6 +1165,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getPageSummary'
+    abp.services.app.user.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/User/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getFilterColumnPageResult'
     abp.services.app.user.getFilterColumnPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -1280,6 +1336,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getPageSummary'
+    abp.services.app.unit.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Unit/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getFilterColumnPageResult'
     abp.services.app.unit.getFilterColumnPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -1408,6 +1472,14 @@ abp.services = abp.services || {};
       return abp.ajax($.extend(true, {
         url: abp.appPath + 'api/services/app/Tenant/UpdateField' + abp.utils.buildQueryString([{ name: 'tenantId', value: tenantId }, { name: 'field', value: field }, { name: 'value', value: value }]) + '',
         type: 'PUT'
+      }, ajaxParams));;
+    };
+
+    // action 'getPageSummary'
+    abp.services.app.tenant.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Tenant/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -1548,6 +1620,14 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/Template/UpdateTemplate' + abp.utils.buildQueryString([{ name: 'tenantId', value: tenantId }]) + '',
         type: 'PUT',
         data: JSON.stringify(templateDto)
+      }, ajaxParams));;
+    };
+
+    // action 'getPageSummary'
+    abp.services.app.template.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Template/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -1736,6 +1816,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getPageSummary'
+    abp.services.app.role.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Role/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getFilterColumnPageResult'
     abp.services.app.role.getFilterColumnPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -1865,6 +1953,14 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/Resource/SetBindedFlags' + abp.utils.buildQueryString([{ name: 'id', value: id }, { name: 'type', value: type }]) + '',
         type: 'POST',
         data: JSON.stringify(flagNames)
+      }, ajaxParams));;
+    };
+
+    // action 'getPageSummary'
+    abp.services.app.resource.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Resource/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -2007,6 +2103,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getPageSummary'
+    abp.services.app.project.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Project/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getFilterColumnPageResult'
     abp.services.app.project.getFilterColumnPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -2128,6 +2232,14 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/Organization/MoveUserOutOrganization',
         type: 'POST',
         data: JSON.stringify(userIds)
+      }, ajaxParams));;
+    };
+
+    // action 'getPageSummary'
+    abp.services.app.organization.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Organization/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -2269,6 +2381,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getPageSummary'
+    abp.services.app.notice.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Notice/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getPageResult'
     abp.services.app.notice.getPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -2397,6 +2517,14 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/ModuleData/FormSubmit',
         type: 'POST',
         data: JSON.stringify(request)
+      }, ajaxParams));;
+    };
+
+    // action 'getPageSummary'
+    abp.services.app.moduleData.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/ModuleData/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -2597,6 +2725,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getPageSummary'
+    abp.services.app.moduleInfo.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/ModuleInfo/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getFilterColumnPageResult'
     abp.services.app.moduleInfo.getFilterColumnPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -2759,6 +2895,14 @@ abp.services = abp.services || {};
 
     abp.services.app.auditLog = abp.services.app.auditLog || {};
 
+    // action 'getPageSummary'
+    abp.services.app.auditLog.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/AuditLog/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getPageResult'
     abp.services.app.auditLog.getPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -2896,6 +3040,14 @@ abp.services = abp.services || {};
 
     abp.services.app.userLoginAttempts = abp.services.app.userLoginAttempts || {};
 
+    // action 'getPageSummary'
+    abp.services.app.userLoginAttempts.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/UserLoginAttempts/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getPageResult'
     abp.services.app.userLoginAttempts.getPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -3022,6 +3174,14 @@ abp.services = abp.services || {};
     abp.services.app.language.get = function(ajaxParams) {
       return abp.ajax($.extend(true, {
         url: abp.appPath + 'api/services/app/Language/Get',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getPageSummary'
+    abp.services.app.language.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Language/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -3181,6 +3341,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getPageSummary'
+    abp.services.app.cRRSheet.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/CRRSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getFilterColumnPageResult'
     abp.services.app.cRRSheet.getFilterColumnPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -3284,6 +3452,14 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/FlowSheetModuleAppServiceBase/FormSubmit',
         type: 'POST',
         data: JSON.stringify(request)
+      }, ajaxParams));;
+    };
+
+    // action 'getPageSummary'
+    abp.services.app.flowSheetModuleAppServiceBase.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FlowSheetModuleAppServiceBase/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -3393,6 +3569,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getPageSummary'
+    abp.services.app.iALSheet.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/IALSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getFilterColumnPageResult'
     abp.services.app.iALSheet.getFilterColumnPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -3496,6 +3680,14 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/IASSheet/FormSubmit',
         type: 'POST',
         data: JSON.stringify(request)
+      }, ajaxParams));;
+    };
+
+    // action 'getPageSummary'
+    abp.services.app.iASSheet.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/IASSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -3605,6 +3797,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getPageSummary'
+    abp.services.app.iBKSheet.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/IBKSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getFilterColumnPageResult'
     abp.services.app.iBKSheet.getFilterColumnPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -3708,6 +3908,14 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/ICHSheet/FormSubmit',
         type: 'POST',
         data: JSON.stringify(request)
+      }, ajaxParams));;
+    };
+
+    // action 'getPageSummary'
+    abp.services.app.iCHSheet.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/ICHSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -3817,6 +4025,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getPageSummary'
+    abp.services.app.oPYSheet.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/OPYSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getFilterColumnPageResult'
     abp.services.app.oPYSheet.getFilterColumnPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -3920,6 +4136,14 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/OSKSheet/FormSubmit',
         type: 'POST',
         data: JSON.stringify(request)
+      }, ajaxParams));;
+    };
+
+    // action 'getPageSummary'
+    abp.services.app.oSKSheet.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/OSKSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -4029,6 +4253,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getPageSummary'
+    abp.services.app.pPYSheet.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/PPYSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getFilterColumnPageResult'
     abp.services.app.pPYSheet.getFilterColumnPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -4132,6 +4364,14 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/PRHSheet/FormSubmit',
         type: 'POST',
         data: JSON.stringify(request)
+      }, ajaxParams));;
+    };
+
+    // action 'getPageSummary'
+    abp.services.app.pRHSheet.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/PRHSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -4241,6 +4481,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getPageSummary'
+    abp.services.app.pRRSheet.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/PRRSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getFilterColumnPageResult'
     abp.services.app.pRRSheet.getFilterColumnPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -4344,6 +4592,14 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/PSTSheet/FormSubmit',
         type: 'POST',
         data: JSON.stringify(request)
+      }, ajaxParams));;
+    };
+
+    // action 'getPageSummary'
+    abp.services.app.pSTSheet.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/PSTSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -4453,6 +4709,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getPageSummary'
+    abp.services.app.sCKSheet.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/SCKSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getFilterColumnPageResult'
     abp.services.app.sCKSheet.getFilterColumnPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -4556,6 +4820,14 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/SDDSheet/FormSubmit',
         type: 'POST',
         data: JSON.stringify(request)
+      }, ajaxParams));;
+    };
+
+    // action 'getPageSummary'
+    abp.services.app.sDDSheet.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/SDDSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -4683,6 +4955,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getPageSummary'
+    abp.services.app.sDRSheet.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/SDRSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getFilterColumnPageResult'
     abp.services.app.sDRSheet.getFilterColumnPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -4804,6 +5084,14 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/SDRSend/FormSubmit',
         type: 'POST',
         data: JSON.stringify(request)
+      }, ajaxParams));;
+    };
+
+    // action 'getPageSummary'
+    abp.services.app.sDRSend.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/SDRSend/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -4931,6 +5219,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getPageSummary'
+    abp.services.app.sDRBack.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/SDRBack/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getFilterColumnPageResult'
     abp.services.app.sDRBack.getFilterColumnPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -5055,6 +5351,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getPageSummary'
+    abp.services.app.sDRVerify.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/SDRVerify/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getFilterColumnPageResult'
     abp.services.app.sDRVerify.getFilterColumnPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -5158,6 +5462,14 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/SRJSheet/FormSubmit',
         type: 'POST',
         data: JSON.stringify(request)
+      }, ajaxParams));;
+    };
+
+    // action 'getPageSummary'
+    abp.services.app.sRJSheet.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/SRJSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -5267,6 +5579,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getPageSummary'
+    abp.services.app.sSKSheet.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/SSKSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getFilterColumnPageResult'
     abp.services.app.sSKSheet.getFilterColumnPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -5373,6 +5693,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getPageSummary'
+    abp.services.app.feeAccountHistory.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FeeAccountHistory/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getFilterColumnPageResult'
     abp.services.app.feeAccountHistory.getFilterColumnPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -5453,6 +5781,14 @@ abp.services = abp.services || {};
   (function(){
 
     abp.services.app.invoice = abp.services.app.invoice || {};
+
+    // action 'getPageSummary'
+    abp.services.app.invoice.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Invoice/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
 
     // action 'submit'
     abp.services.app.invoice.submit = function(invoiceSubmitDto, ajaxParams) {
@@ -5628,6 +5964,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getPageSummary'
+    abp.services.app.unitFee.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/UnitFee/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getFilterColumnPageResult'
     abp.services.app.unitFee.getFilterColumnPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -5748,6 +6092,14 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/UnitFeeHistory/FormSubmit',
         type: 'POST',
         data: JSON.stringify(request)
+      }, ajaxParams));;
+    };
+
+    // action 'getPageSummary'
+    abp.services.app.unitFeeHistory.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/UnitFeeHistory/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -5891,6 +6243,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getPageSummary'
+    abp.services.app.voucher.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Voucher/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getFilterColumnPageResult'
     abp.services.app.voucher.getFilterColumnPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -6021,6 +6381,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getPageSummary'
+    abp.services.app.feeAccount.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FeeAccount/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getFilterColumnPageResult'
     abp.services.app.feeAccount.getFilterColumnPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -6132,6 +6500,14 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/FeeCheck/FormSubmit',
         type: 'POST',
         data: JSON.stringify(request)
+      }, ajaxParams));;
+    };
+
+    // action 'getPageSummary'
+    abp.services.app.feeCheck.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FeeCheck/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -6257,6 +6633,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getPageSummary'
+    abp.services.app.material.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Material/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getFilterColumnPageResult'
     abp.services.app.material.getFilterColumnPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -6351,6 +6735,14 @@ abp.services = abp.services || {};
       return abp.ajax($.extend(true, {
         url: abp.appPath + 'api/services/app/MaterialBuy/CheckCode' + abp.utils.buildQueryString([{ name: 'featureCode', value: featureCode }, { name: 'codeNumberStr', value: codeNumberStr }]) + '',
         type: 'POST'
+      }, ajaxParams));;
+    };
+
+    // action 'getPageSummary'
+    abp.services.app.materialBuy.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/MaterialBuy/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -6459,6 +6851,14 @@ abp.services = abp.services || {};
   (function(){
 
     abp.services.app.materialBuyBack = abp.services.app.materialBuyBack || {};
+
+    // action 'getPageSummary'
+    abp.services.app.materialBuyBack.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/MaterialBuyBack/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
 
     // action 'getPageResult'
     abp.services.app.materialBuyBack.getPageResult = function(request, ajaxParams) {
@@ -6570,6 +6970,14 @@ abp.services = abp.services || {};
     abp.services.app.materialBuySummary.getPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
         url: abp.appPath + 'api/services/app/MaterialBuySummary/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'searchKeyDic', value: request.searchKeyDic }, { name: 'moduleKey', value: request.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getPageSummary'
+    abp.services.app.materialBuySummary.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/MaterialBuySummary/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -6738,6 +7146,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getPageSummary'
+    abp.services.app.materialDIY.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/MaterialDIY/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getFilterColumnPageResult'
     abp.services.app.materialDIY.getFilterColumnPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -6861,6 +7277,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getPageSummary'
+    abp.services.app.materialSell.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/MaterialSell/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getPageResult'
     abp.services.app.materialSell.getPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -6967,6 +7391,14 @@ abp.services = abp.services || {};
 
     abp.services.app.materialSellBack = abp.services.app.materialSellBack || {};
 
+    // action 'getPageSummary'
+    abp.services.app.materialSellBack.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/MaterialSellBack/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getPageResult'
     abp.services.app.materialSellBack.getPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -7072,6 +7504,14 @@ abp.services = abp.services || {};
   (function(){
 
     abp.services.app.materialSellOut = abp.services.app.materialSellOut || {};
+
+    // action 'getPageSummary'
+    abp.services.app.materialSellOut.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/MaterialSellOut/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
 
     // action 'getPageResult'
     abp.services.app.materialSellOut.getPageResult = function(request, ajaxParams) {
@@ -7187,6 +7627,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getPageSummary'
+    abp.services.app.materialSellOutSummary.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/MaterialSellOutSummary/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getFilterColumnPageResult'
     abp.services.app.materialSellOutSummary.getFilterColumnPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -7289,6 +7737,14 @@ abp.services = abp.services || {};
     abp.services.app.materialSellSummary.getPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
         url: abp.appPath + 'api/services/app/MaterialSellSummary/GetPageResult' + abp.utils.buildQueryString([{ name: 'page', value: request.page }, { name: 'limit', value: request.limit }, { name: 'where', value: request.where }, { name: 'tableFilter', value: request.tableFilter }, { name: 'filterField', value: request.filterField }, { name: 'filterKey', value: request.filterKey }, { name: 'filterColumns', value: request.filterColumns }, { name: 'searchCondition', value: request.searchCondition }, { name: 'filterSos', value: request.filterSos }, { name: 'searchKeys', value: request.searchKeys }, { name: 'keyword', value: request.keyword }, { name: 'orderField', value: request.orderField }, { name: 'orderType', value: request.orderType }, { name: 'searchKeyDic', value: request.searchKeyDic }, { name: 'moduleKey', value: request.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getPageSummary'
+    abp.services.app.materialSellSummary.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/MaterialSellSummary/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -7457,6 +7913,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getPageSummary'
+    abp.services.app.materialUnitDiscount.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/MaterialUnitDiscount/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getFilterColumnPageResult'
     abp.services.app.materialUnitDiscount.getFilterColumnPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -7571,6 +8035,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getPageSummary'
+    abp.services.app.store.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Store/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getFilterColumnPageResult'
     abp.services.app.store.getFilterColumnPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -7674,6 +8146,14 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/StoreMaterialHistory/FormSubmit',
         type: 'POST',
         data: JSON.stringify(request)
+      }, ajaxParams));;
+    };
+
+    // action 'getPageSummary'
+    abp.services.app.storeMaterialHistory.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/StoreMaterialHistory/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -7814,6 +8294,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getPageSummary'
+    abp.services.app.dictionary.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Dictionary/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getFilterColumnPageResult'
     abp.services.app.dictionary.getFilterColumnPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -7934,6 +8422,14 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/BaseType/Submit',
         type: 'POST',
         data: JSON.stringify(baseTypeDto)
+      }, ajaxParams));;
+    };
+
+    // action 'getPageSummary'
+    abp.services.app.baseType.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/BaseType/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -8068,6 +8564,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getPageSummary'
+    abp.services.app.baseTree.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/BaseTree/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getPageResult'
     abp.services.app.baseTree.getPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -8195,6 +8699,14 @@ abp.services = abp.services || {};
       return abp.ajax($.extend(true, {
         url: abp.appPath + 'api/services/app/Edition/UpdateField' + abp.utils.buildQueryString([{ name: 'editionId', value: editionId }, { name: 'field', value: field }, { name: 'value', value: value }]) + '',
         type: 'PUT'
+      }, ajaxParams));;
+    };
+
+    // action 'getPageSummary'
+    abp.services.app.edition.getPageSummary = function(queryable, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Edition/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        type: 'GET'
       }, ajaxParams));;
     };
 

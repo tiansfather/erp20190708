@@ -77,7 +77,7 @@ namespace Master.Workflow
         /// <returns></returns>
         public virtual async Task Action(FlowSheetActionDto flowSheetActionDto)
         {
-            await (Manager as FlowSheetManager).Action(flowSheetActionDto.SheetId, flowSheetActionDto.ActionName,flowSheetActionDto.FormData);
+            await (Manager as FlowSheetManager).Action(flowSheetActionDto.SheetId, flowSheetActionDto.ActionName,flowSheetActionDto.FormData,flowSheetActionDto.LastModifyTime);
         }
 
         public virtual async Task<object> GetFlowBtns(int sheetId)

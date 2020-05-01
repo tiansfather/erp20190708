@@ -123,6 +123,7 @@ namespace Master.Controllers
                     ViewBag.FormData = instance.FormData;
                     ViewBag.Mode = mode;
                     ViewBag.SheetId = flowSheet.Id;
+                    ViewBag.UpdateTime = instance.LastModificationTime?.ToString("yyyy-MM-dd HH:mm:ss");
                     ViewBag.OrderStatus = flowSheet?.OrderStatus;
                     return View("HtmlView");
                 case FormType.Designer:

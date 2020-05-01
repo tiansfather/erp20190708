@@ -9,5 +9,6 @@ namespace Master.Workflow
         public int SheetId { get; set; }
         public string ActionName { get; set; }
         public string FormData { get; set; }
+        public DateTime? LastModifyTime { get; set; }
     }
 }

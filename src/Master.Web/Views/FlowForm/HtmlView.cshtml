@@ -160,6 +160,7 @@
     var sheetId = $.getUrlParam("sheetId")||'@ViewBag.SheetId';
     var _formOption = {
         readonly: true,
+        lastModifyTime:'@ViewBag.UpdateTime'||null,
         formData:@Html.Raw(ViewBag.FormData),
         mode: "@ViewBag.Mode",
         orderStatus:"@Html.Raw(ViewBag.OrderStatus)",
@@ -276,7 +277,7 @@
                             });
                         }
                         else {
-                            func.runAsync(abp.services.app.flowSheet.action({ sheetId: sheetId, actionName: btn.buttonKey, formData: JSON.stringify(getFormData()) }).done(function () {
+                            func.runAsync(abp.services.app.flowSheet.action({ sheetId: sheetId, actionName: btn.buttonKey, formData: JSON.stringify(getFormData()), lastModifyTime: _formOption.lastModifyTime }).done(function () {
                                 parent.layer.msg("提交成功");
                                  parent.config.reloadTable();
                                 if (actionCallback) {

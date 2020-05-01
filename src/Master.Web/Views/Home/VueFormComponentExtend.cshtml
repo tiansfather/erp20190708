@@ -12,7 +12,8 @@
         mounted: function () {
             var that = this;
             abp.services.app.baseTree.getTreeJson('MaterialType', null, 1).done(function (res) {
-                that.options = res.map(function (o) { return new { label: o.briefName, value: o.id } });
+                that.options = res.map(function (o) { return { label: o.displayName, value: o.id.toString() } });
+                console.log(that.options);
             })
             //this.$nextTick(function () {
             //    $('div[cytype="dropDownTool"]').dropDownTool();
@@ -25,7 +26,7 @@
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">{{columnInfo.ColumnName}}</label>
         <div class="layui-input-block">
-            <el-select v-model="value1" filterable placeholder="Select">
+            <el-select v-model="value1" filterable placeholder="请选择分类">
                 <el-option v-for="item in options"
                            :key="item.value"
                            :label="item.label"

@@ -27,7 +27,7 @@
                         </el-date-picker>
                     </el-form>
                     <vc:module-button module-key="Invoice"></vc:module-button>
-
+                    <div id="summarys" style="display:inline-block"></div>
                     @*<input type="text" id="name-input" class="layui-input" style="width: 150px; display: inline-block;height: 30px;vertical-align: middle;" placeholder="输入名字检索" />
         <button class="layui-btn  layui-btn-sm" onclick="config.reloadTable()">搜索</button>*@
                 </div>
@@ -74,6 +74,12 @@
         }
         var firstFlag = true;
         config.onTableDone = function () {
+            var tpl = '';
+            for (var key in summarys) {
+                tpl += key + ':<font color="red">' + summarys[key]+"</font>&nbsp;&nbsp;&nbsp;";
+            }
+            console.log(tpl);
+            $("#summarys").html(tpl);
             if (firstFlag) {
                 firstFlag = false;
                 var element = layui.element;

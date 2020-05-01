@@ -79,12 +79,12 @@ namespace Master.FlowHandlers
             var btns = new List<ModuleButton>();
             if (flowSheet.OrderStatus == "待审核")
             {
-                btns.Add(new ModuleButton()
-                {
-                    ButtonKey = "backToCart",
-                    ButtonName = "放回购物车",
-                    ConfirmMsg="确认将订单放回购物车?此订单将失效"
-                });
+                //btns.Add(new ModuleButton()
+                //{
+                //    ButtonKey = "backToCart",
+                //    ButtonName = "放回购物车",
+                //    ConfirmMsg="确认将订单放回购物车?此订单将失效"
+                //});
                 if (CurrentUser.Id == flowSheet.CreatorUserId)
                 {
                     btns.Add(new ModuleButton()
@@ -102,6 +102,10 @@ namespace Master.FlowHandlers
                         ButtonName = "审核",
                         ConfirmMsg = "确认审核通过此订单？"
                     });
+                    
+                }
+                if(CurrentUser.Id==flowSheet.CreatorUserId || CurrentUser.IsCenterUser)
+                {
                     btns.Add(new ModuleButton()
                     {
                         ButtonKey = "cancel",
@@ -110,7 +114,6 @@ namespace Master.FlowHandlers
                         ConfirmMsg = "确认取消此单据？"
                     });
                 }
-                
             }
             else if (flowSheet.OrderStatus == "待发货" && CurrentUser.IsCenterUser)
             {
@@ -133,7 +136,7 @@ namespace Master.FlowHandlers
             return btns;
         }
 
-        public override async Task Action(FlowSheet flowSheet, string action)
+        public override async Task Action(FlowSheet flowSheet, string action,DateTime? lastModifyTime)
         {
             //数据处理
             var formObj = Newtonsoft.Json.JsonConvert.DeserializeObject<JObject>(flowSheet.FlowInstance.FormData);
@@ -176,7 +179,10 @@ namespace Master.FlowHandlers
             }
             else if (action == "verify")
             {
-                //todo:并发验证
+                if(flowSheet.FlowInstance.LastModificationTime!=null && (!lastModifyTime.HasValue ||( flowSheet.FlowInstance.LastModificationTime.Value - lastModifyTime.Value).TotalSeconds>1))
+                {
+                    throw new UserFriendlyException($"本单据已在{flowSheet.FlowInstance.LastModificationTime?.ToString("yyyy-MM-dd HH:mm:ss")}被{flowSheet.FlowInstance.LastModifierUser?.Name}修改，当前操作无效，请重新查看后再提交");
+                }
                 flowSheet.OrderStatus = "待发货";
             }
             else if (action == "cancel")

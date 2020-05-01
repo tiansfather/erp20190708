@@ -100,7 +100,7 @@ namespace Master.WorkFlow
             }
         }
 
-        public virtual async Task Action(FlowSheet flowSheet, string action)
+        public virtual async Task Action(FlowSheet flowSheet, string action,DateTime? lastModifyTime)
         {
             
         }

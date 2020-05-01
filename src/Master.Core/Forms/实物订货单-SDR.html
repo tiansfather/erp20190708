@@ -89,7 +89,7 @@
                     <td>{{item.price}}</td>
                     <td>{{item.remarks}}</td>                    
                     <td>
-                        <el-input-number v-model="item.number" size="mini" style="width:100px" v-if="isSend"></el-input-number>
+                        <el-input-number v-model="item.number" size="mini" style="width:100px" v-if="isSend || _formOption.orderStatus=='待审核' "></el-input-number>
                         <template v-else>
                             {{item.number}}
                         </template><!--<span v-if="!item.canSell">库存不足</span>-->

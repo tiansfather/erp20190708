@@ -61,17 +61,20 @@ namespace Master.WorkFlow
             var flowHandler = Resolve<IFlowHandlerFinder>().FindFlowHandler(flowSheet.FormKey);
             return await flowHandler.GetFlowBtns(flowSheet);
         }
-        public virtual async Task Action(int sheetId, string action,string formData="")
+        public virtual async Task Action(int sheetId, string action,string formData="",DateTime? lastModifyTime=null)
         {
             var flowInstanceManager = Resolve<FlowInstanceManager>();
-            var flowSheet = await GetAll().Include(o => o.FlowInstance).ThenInclude(o => o.FlowForm).Where(o => o.Id == sheetId).SingleOrDefaultAsync();
+            var flowSheet = await GetAll()
+                .Include(o => o.FlowInstance).ThenInclude(o => o.FlowForm)
+                .Include(o=>o.FlowInstance).ThenInclude(o=>o.LastModifierUser)
+                .Where(o => o.Id == sheetId).SingleOrDefaultAsync();
             if (!string.IsNullOrEmpty(formData))
             {
                 flowSheet.FlowInstance.FormData = formData;
             }
             
             var flowHandler = Resolve<IFlowHandlerFinder>().FindFlowHandler(flowSheet.FormKey);
-            await flowHandler.Action(flowSheet, action);
+            await flowHandler.Action(flowSheet, action, lastModifyTime);
         }
         public virtual async Task Revert(int sheetId,string revertReason)
         {

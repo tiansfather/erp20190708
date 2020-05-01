@@ -88,7 +88,7 @@ namespace Master.FlowHandlers
             return btns;
         }
 
-        public override async Task Action(FlowSheet flowSheet, string action)
+        public override async Task Action(FlowSheet flowSheet, string action, DateTime? lastModifyTime)
         {
             //数据处理
             var formObj = Newtonsoft.Json.JsonConvert.DeserializeObject<JObject>(flowSheet.FlowInstance.FormData);

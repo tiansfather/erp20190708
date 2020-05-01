@@ -20,7 +20,7 @@
                         <a href="~/template/普票导入模板.xls" style="color:blue">【批量导入模板下载】</a>
                         <span style="float:right">开票金额合计：{{sumFee}}</span>
                     </el-row>
-                    <multi-data-add :items="columns" :parts="currentItem.items"></multi-data-add>
+                    <multi-data-add :items="columns" :parts="currentItem.items" @@change="change"></multi-data-add>
                 </div>
                 
             </div>
@@ -68,7 +68,20 @@
                             return sum.toFixed(2);
                         }
                     },
-                    methods: {                    
+                    methods: {               
+                        change: function (ev) {
+                            switch (ev.item.key) {
+                                case "price":
+                                    ev.part.fee = (ev.part.number * ev.value).toFixed(2);
+                                    break;
+                                case "number":
+                                    ev.part.fee = (ev.part.price * ev.value).toFixed(2);
+                                    break;
+                                case "fee":
+                                    ev.part.price = (ev.value/ev.part.number).toFixed(2);
+                                    break;
+                            }
+                        },
                         loadUnitInfo: function () {
                             var that = this;
                             abp.services.app.unit.getInvoiceDetail(this.currentItem.unitId).done(function (res) {

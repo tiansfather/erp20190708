@@ -16,7 +16,7 @@ namespace Master.WorkFlow
 
         Task CreateRevertSheet(FlowSheet flowSheet, string revertReason);
         Task HandleRevert(FlowSheet flowSheet);
-        Task Action(FlowSheet flowSheet, string action);
+        Task Action(FlowSheet flowSheet, string action,DateTime? lastModifyTime);
         Task<IEnumerable<ModuleButton>> GetFlowBtns(FlowSheet flowSheet);
     }
 }

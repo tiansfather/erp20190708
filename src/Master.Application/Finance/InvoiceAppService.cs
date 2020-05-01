@@ -19,8 +19,8 @@ namespace Master.Finance
         public override async Task<Dictionary<string,object>> GetPageSummary(IQueryable<Invoice> queryable)
         {
             var result = new Dictionary<string, object>();
-            result.Add("增票",await queryable.Where(o => o.Type == "增票").SumAsync(o => o.Fee));
-            result.Add("普票",await queryable.Where(o => o.Type == "普票").SumAsync(o => o.Fee));
+            result.Add("增票",(await queryable.Where(o => o.Type == "增票").SumAsync(o => o.Fee)).ToString("0.00"));
+            result.Add("普票",(await queryable.Where(o => o.Type == "普票").SumAsync(o => o.Fee)).ToString("0.00"));
             return result;
         }
         public virtual async Task Submit(InvoiceSubmitDto invoiceSubmitDto)
