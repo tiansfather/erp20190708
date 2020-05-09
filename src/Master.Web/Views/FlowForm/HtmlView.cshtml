@@ -279,8 +279,8 @@
                         else {
                             func.runAsync(abp.services.app.flowSheet.action({ sheetId: sheetId, actionName: btn.buttonKey, formData: JSON.stringify(getFormData()), lastModifyTime: _formOption.lastModifyTime }).done(function () {
                                 parent.layer.msg("提交成功");
-                                 parent.config.reloadTable();
-                                if (actionCallback) {
+                                parent.config.reloadTable();
+                                if (typeof (actionCallback) != "undefined") {
                                     actionCallback(btn.buttonKey, sheetId);
                                 } else {                                   
                                     parent.layer.closeAll('iframe');

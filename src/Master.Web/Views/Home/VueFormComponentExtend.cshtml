@@ -41,3 +41,30 @@
         </div>
     </div>
 </script>
+<script>
+    function getStatusHtml(status) {
+    var sClass ='layui-bg-blue';
+    switch (status) {
+        case "待审核":
+            sClass = 'layui-bg-orange';
+            break;
+        case "待发货":
+        case "待出库":
+            sClass = 'layui-bg-green';
+            break;
+        case "已发货":
+        case "出库完成":
+            sClass = 'layui-bg-blue';
+            break;
+        case "已退货":
+        case "已取消":
+            sClass = 'layui-bg-gray';
+            break;
+        case "冲红":
+        case "被冲红":
+            sClass = '';
+            break;
+    }
+    return '<span class="layui-badge ' + sClass+'">'+status+'</span>';
+}
+</script>

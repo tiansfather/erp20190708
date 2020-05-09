@@ -21,7 +21,7 @@ namespace Master.WorkFlow.Modules
         [InterColumn(ColumnName ="下单操作",ValuePath ="Property",Sort =5)]
         [NotMapped]
         public virtual decimal OrderType{get;set;}
-        [InterColumn(ColumnName = "当前状态", Sort =6)]
+        [InterColumn(ColumnName = "当前状态", Sort =6,Templet ="{{getStatusHtml(d.orderStatus)}}")]
         public override string OrderStatus { get; set; }
         public override DateTime SheetDate { get => base.SheetDate; set => base.SheetDate = value; }
         public override SheetNature SheetNature { get => base.SheetNature; set => base.SheetNature = value; }
@@ -49,7 +49,7 @@ namespace Master.WorkFlow.Modules
         [InterColumn(ColumnName = "下单操作", ValuePath = "Property", Sort = 5)]
         [NotMapped]
         public virtual decimal OrderType { get; set; }
-        [InterColumn(ColumnName = "当前状态", Sort = 6)]
+        [InterColumn(ColumnName = "当前状态", Sort = 6, Templet = "{{getStatusHtml(d.orderStatus)}}")]
         public override string OrderStatus { get; set; }
         public override DateTime SheetDate { get => base.SheetDate; set => base.SheetDate = value; }
         public override SheetNature SheetNature { get => base.SheetNature; set => base.SheetNature = value; }
@@ -71,7 +71,7 @@ namespace Master.WorkFlow.Modules
         [InterColumn(ColumnName = "下单操作", ValuePath = "Property", Sort = 5, EnableDataFilter = true)]
         [NotMapped]
         public virtual decimal OrderType { get; set; }
-        [InterColumn(ColumnName = "当前状态", Sort = 6, EnableDataFilter = true)]
+        [InterColumn(ColumnName = "当前状态", Sort = 6, EnableDataFilter = true, Templet = "{{getStatusHtml(d.orderStatus)}}")]
         public override string OrderStatus { get; set; }
         public override DateTime SheetDate { get => base.SheetDate; set => base.SheetDate = value; }
         public override SheetNature SheetNature { get => base.SheetNature; set => base.SheetNature = value; }

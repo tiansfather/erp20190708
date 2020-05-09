@@ -16,7 +16,7 @@ namespace Master.WorkFlow.Modules
         [NotMapped]
         [InterColumn(ColumnName = "仓库", ValuePath = "Property", Sort = 21, EnableDataFilter = true)]
         public string StoreName { get; set; }
-        [InterColumn(ColumnName = "当前状态", Sort = 22, EnableDataFilter = true)]
+        [InterColumn(ColumnName = "当前状态", Sort = 22, EnableDataFilter = true, Templet = "{{getStatusHtml(d.orderStatus)}}")]
         public override string OrderStatus { get; set; }
         public override SheetNature SheetNature { get => base.SheetNature; set => base.SheetNature = value; }
     }

@@ -85,12 +85,12 @@ namespace Master.FlowHandlers
                 //    ButtonName = "放回购物车",
                 //    ConfirmMsg="确认将订单放回购物车?此订单将失效"
                 //});
-                if (CurrentUser.Id == flowSheet.CreatorUserId)
+                if (CurrentUser.Id == flowSheet.CreatorUserId && !CurrentUser.IsCenterUser)
                 {
                     btns.Add(new ModuleButton()
                     {
                         ButtonKey = "modify",
-                        ButtonName = "修改",
+                        ButtonName = "保存修改",
                         ConfirmMsg = "确认修改此单据?"
                     });
                 }
@@ -109,7 +109,7 @@ namespace Master.FlowHandlers
                     btns.Add(new ModuleButton()
                     {
                         ButtonKey = "cancel",
-                        ButtonName = "取消",
+                        ButtonName = "取消本单",
                         ButtonClass = "layui-btn-danger",
                         ConfirmMsg = "确认取消此单据？"
                     });
