@@ -1025,7 +1025,7 @@
 </script>
 <script>
     Vue.component('lay-homepics', {
-        template: '<div class="layui-form-item"><input type="hidden" :name="columnInfo.ColumnKey" :value="newValue" /><multi-data-add :items="items" :parts="parts" ></multi-data-add></div>',
+        template: '<div class="layui-form-item"><input type="hidden" :name="columnInfo.ColumnKey" :value="newValue" /><multi-data-add :items="items" :parts="parts" @@delete="refresh"></multi-data-add></div>',
         props: ['columnInfo', 'value'],
         data: function () {
             return {

@@ -87,6 +87,7 @@
                             }
                         },
                         loadUnitInfo: function () {
+                            if (!this.currentItem.unitId) return;
                             var that = this;
                             abp.services.app.unit.getInvoiceDetail(this.currentItem.unitId).done(function (res) {
                                 that.currentItem.unitInvoice = res;
@@ -109,6 +110,7 @@
                             }
                             if (this.currentItem.items.filter(function (o) { return !o.content || !o.fee || !o.taxRate }).length) {
                                 abp.message.error("开票内容、开票金额、税率不能为空");
+                                return;
                             }
                             var that = this;
                             abp.message.confirm('确认提交', function () {

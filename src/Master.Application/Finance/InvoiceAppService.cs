@@ -74,7 +74,7 @@ namespace Master.Finance
                 case "税率":
                     result = "TaxRate";
                     break;
-                case "销货单位名称":
+                case "品牌单位名称":
                     result = "SellUnitName";
                     break;
                 case "购货单位名称":

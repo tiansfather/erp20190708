@@ -230,11 +230,11 @@
                 },
                 isValidCode: function (code) {
                     if (!code) { return true;}
-                    var codeArr = code.split(';');
+                    var codeArr = code.split(/[;；]/);
                     var valid = true;
                     for (var i = 0; i < codeArr.length; i++) {
                         if (!isNaN(codeArr[i])) continue;
-                        if (/\d+~\d+/.test(codeArr[i])) continue;
+                        if (/^\d+~\d+$/.test(codeArr[i])) continue;
                         valid = false;
                         break;
                     }
@@ -259,7 +259,7 @@
                             var number = params.items.filter(function (i) { return i.id == o.id })[0].number;
                             var discount = o.defaultBuyDiscount || 1;
                             var price = o.price ;
-                            return $.extend(o, { number: number, price: price.toFixed(2),discount:discount.toFixed(2) });
+                            return $.extend(o, { number: number, price: price.toFixed(2),discount:discount.toFixed(2),codeNumber:'' });
                         })
                     }))
                 }

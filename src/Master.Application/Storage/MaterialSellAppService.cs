@@ -195,7 +195,8 @@ namespace Master.Storage
                     SheetDate=sellMaterial.FlowSheet.CreationTime.ToString("yyyy-MM-dd HH:mm"),
                     sellMaterial.SellNumber,
                     sellMaterial.OutNumber,
-                    discount= await materialManager.GetMaterialUnitDiscount(sellMaterial.Material,unitId),
+                    sellMaterial.Discount,
+                    //discount= await materialManager.GetMaterialUnitDiscount(sellMaterial.Material,unitId),
                     sellMode=await materialManager.GetMaterialUnitSellMode(sellMaterial.Material,unitId),
                     CreationTime=sellMaterial.CreationTime.ToString("yyyy-MM-dd"),
                     Number=sellMaterial.SellNumber-sellMaterial.OutNumber,//默认发货数量等于订货数量-已发数量

@@ -67,7 +67,7 @@ namespace Master.FlowHandlers
                 var codeNumber = sheetItem["codeNumber"].ToObjectWithDefault<string>();
                 if (!string.IsNullOrEmpty(codeNumber))
                 {
-                    var codeArr = codeNumber.Split(';');
+                    var codeArr = codeNumber.Split(new char[] { ';' , '；' });
                     codeArr.ToList().ForEach(o =>
                     {
                         var startNumber = 0M;

@@ -59,6 +59,7 @@ namespace Master.FlowHandlers
                     MaterialId = materialId,
                     FlowSheetId = flowSheet.Id,
                     SellNumber = number,
+                    Discount = sheetItem["discount"].ToObjectWithDefault<decimal>(),//折扣
                     UnitId=unitId
                 };
                 await MaterialSellManager.InsertAsync(materialSell);                

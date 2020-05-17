@@ -27,6 +27,8 @@ namespace Master.Storage
         /// </summary>
         public int OutNumber { get; set; }
         public int BackNumber { get; set; }
+        [Column(TypeName = "decimal(20,2)")]
+        public decimal Discount { get; set; }
         /// <summary>
         /// 可退货数量
         /// </summary>

@@ -261,8 +261,9 @@ namespace Common
                 case CellType.Error: //ERROR:  
                     return cell.ErrorCellValue;
                 case CellType.Formula: //FORMULA:  
+                    return cell.NumericCellValue;
                 default:
-                    return "=" + cell.CellFormula;
+                    return "";
             }
         }
     }

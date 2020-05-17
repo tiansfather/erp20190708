@@ -4,7 +4,7 @@
     }
 </style>
 <div id="app" v-cloak>
-    <el-form :inline="true" size="mini"label-width="120px"  >
+    <el-form :inline="true" size="mini" label-width="120px">
         <el-form-item label="代理商:">
             {{currentItem.unitName}}
             <!--<el-input v-model="currentItem.unitName" readonly="true"></el-input>-->
@@ -31,7 +31,7 @@
             </template>
         </el-form-item>
     </el-form>
-    <el-form ref="form" label-width="120px" >
+    <el-form ref="form" label-width="120px">
         <el-form-item label="送货地址:">
             <el-input v-model="currentItem.receiverAddress" v-if=" _formOption.mode!='readonly'"></el-input>
             <template v-else>
@@ -63,7 +63,7 @@
             </el-select>
         </el-form-item>
     </el-form>
-    <el-form >
+    <el-form>
         <table class="layui-table">
             <thead>
                 <tr>
@@ -87,7 +87,7 @@
                     <td>{{item.name}}</td>
                     <td>{{item.specification}}</td>
                     <td>{{item.price}}</td>
-                    <td>{{item.remarks}}</td>                    
+                    <td>{{item.remarks}}</td>
                     <td>
                         <el-input-number v-model="item.number" size="mini" style="width:100px" v-if="isSend || _formOption.orderStatus=='待审核' "></el-input-number>
                         <template v-else>
@@ -98,8 +98,10 @@
                     <td>{{item.location}}</td>
                     <template v-if="isSend">
                         <td>
-                        <el-input-number v-model="item.discount" style="width:100px" :min="0" :max="1" size="mini" :step="0.1" label="折扣" v-if="isSend &&_formOption.mode!='readonly'"></el-input-number>
-                            <template v-else>{{item.discount}}</template>
+                            <el-input-number v-model="item.discount" style="width:100px" :min="0" :max="1" size="mini" :step="0.1" label="折扣" v-if="isSend &&_formOption.mode!='readonly'"></el-input-number>
+                            <template v-else>
+                                {{item.discount}}
+                            </template>
                         </td>
                         <td>
                             {{(item.price*item.discount).toFixed(2)}}
@@ -119,14 +121,14 @@
                 </tr>
             </thead>
             <tbody>
-                <tr >
+                <tr>
                     <td>{{sheetInfo.log}}</td>
                 </tr>
             </tbody>
         </table>
     </el-form>
-    
-    <el-form :inline="true" size="mini" v-if="isSend && _formOption.mode!='readonly'" >
+
+    <el-form :inline="true" size="mini" v-if="isSend && _formOption.mode!='readonly'">
         <el-form-item label="货款总额:">
             <el-input v-model="materialFee" readonly="true"></el-input>
         </el-form-item>
@@ -138,9 +140,14 @@
         </el-form-item>
 
     </el-form>
-    <el-form ref="form" label-width="80px" v-if="isBack && _formOption.mode!='readonly'" >
+    <el-form ref="form" label-width="80px" v-if="isBack && _formOption.mode!='readonly'">
         <el-form-item label="退货原因:">
             <el-input v-model="currentItem.backReason"></el-input>
+        </el-form-item>
+    </el-form>
+    <el-form ref="form" label-width="80px" v-else-if="currentItem.backReason">
+        <el-form-item label="退货原因:">
+            <el-input v-model="currentItem.backReason" readonly="true"></el-input>
         </el-form-item>
     </el-form>
 </div>
