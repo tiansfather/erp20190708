@@ -65,7 +65,7 @@ namespace Master.FlowHandlers
                 };
                 //code记录
                 var codeNumber = sheetItem["codeNumber"].ToObjectWithDefault<string>();
-                if (!string.IsNullOrEmpty(codeNumber))
+                if (!string.IsNullOrWhiteSpace(codeNumber))
                 {
                     var codeArr = codeNumber.Split(new char[] { ';' , '；' });
                     codeArr.ToList().ForEach(o =>
