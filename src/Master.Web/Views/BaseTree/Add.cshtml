@@ -1,53 +1,65 @@
 ﻿
 @{
-	Layout = "~/Views/Shared/_LayoutDialog.cshtml";
+    Layout = "~/Views/Shared/_LayoutDialog.cshtml";
+    var dic = ViewBag.Dictionary as Dictionary<string, string>;
 }
 
-<form class="layui-form layui-form-pane" id="app">
-    <div class="layui-form-item">
-        <label class="layui-form-label">@L("分类名称")</label>
-        <div class="layui-input-block">
-            <input type="text" v-model="currentItem.displayName" name="DisplayName" lay-verify="required" autocomplete="off" class="layui-input">
+    <form class="layui-form layui-form-pane" id="app">
+        <div class="layui-form-item">
+            <label class="layui-form-label">@L("品类名称")</label>
+            <div class="layui-input-block">
+                <input type="text" v-model="currentItem.displayName" name="DisplayName" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
         </div>
-    </div>
-    @*<div class="layui-form-item">
-        <label class="layui-form-label">@L("上级分类")</label>
-        <div cyType="dropDownTool" cyProps="url:'/api/services/app/BaseTree/GetTreeJson?discriminator=@ViewBag.TreeKey',search:'false',checkbox:'false',key_name:'briefName'"
-             name="ParentId" value="@ViewBag.ParentId" class="layui-input-inline" style="position:relative">
+        @*<div class="layui-form-item">
+            <label class="layui-form-label">@L("上级品类")</label>
+            <div cyType="dropDownTool" cyProps="url:'/api/services/app/BaseTree/GetTreeJson?discriminator=@ViewBag.TreeKey',search:'false',checkbox:'false',key_name:'briefName'"
+                 name="ParentId" value="@ViewBag.ParentId" class="layui-input-inline" style="position:relative">
+            </div>
+            <div class="layui-form-mid layui-word-aux">@L("留空表示根级")</div>
+        </div>*@
+        <div class="layui-form-item">
+            <label class="layui-form-label">@L("品类编码")</label>
+            <div class="layui-input-block">
+                <input type="text" name="BriefCode" v-model="currentItem.briefCode" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
         </div>
-        <div class="layui-form-mid layui-word-aux">@L("留空表示根级")</div>
-    </div>*@
-    <div class="layui-form-item">
-        <label class="layui-form-label">@L("分类编码")</label>
-        <div class="layui-input-block">
-            <input type="text" name="BriefCode" v-model="currentItem.briefCode" lay-verify="required" autocomplete="off" class="layui-input">
+        <div class="layui-form-item" pane>
+            <label class="layui-form-label">性质</label>
+            <div class="layui-input-block">
+                <input type="radio" name="nature" value="0" title="对外" checked>
+                <input type="radio" name="nature" value="1" title="对内">
+            </div>
         </div>
-    </div>
-    <div class="layui-form-item" pane>
-        <label class="layui-form-label">性质</label>
-        <div class="layui-input-block">
-            <input type="radio" name="nature" value="0" title="对外" checked>
-            <input type="radio" name="nature" value="1" title="对内" >
+        <div class="layui-form-item">
+            <label class="layui-form-label">@L("排序")</label>
+            <div class="layui-input-block">
+                <input type="text" name="Sort" v-model="currentItem.sort" lay-verify="number|required" autocomplete="off" class="layui-input">
+            </div>
         </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">@L("排序")</label>
-        <div class="layui-input-block">
-            <input type="text" name="Sort" v-model="currentItem.sort" lay-verify="number|required" autocomplete="off" class="layui-input">
+        <div class="layui-form-item">
+            <label class="layui-form-label">@L("种类")</label>
+            <div class="layui-input-block">
+                <select name="Category" lay-filter="Category">
+                    @foreach (var item in dic)
+                    {
+                        <option value="@item.Key">@item.Key</option>
+                    }
+                </select>
+            </div>
         </div>
-    </div>
-    <div class="layui-form-item layui-form-text">
-        <label class="layui-form-label">@L("备注")</label>
-        <div class="layui-input-block">
-            <textarea placeholder="" class="layui-textarea" name="Remarks" v-model="currentItem.remarks"></textarea>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">@L("备注")</label>
+            <div class="layui-input-block">
+                <textarea placeholder="" class="layui-textarea" name="Remarks" v-model="currentItem.remarks"></textarea>
+            </div>
         </div>
-    </div>
-    <div class="layui-form-item" style="display:none">
-        <div class="layui-input-block">
-            <button class="layui-btn" type="button" lay-submit="" id="submitBtn">@L("提交")</button>
+        <div class="layui-form-item" style="display:none">
+            <div class="layui-input-block">
+                <button class="layui-btn" type="button" lay-submit="" id="submitBtn">@L("提交")</button>
+            </div>
         </div>
-    </div>
-</form>
+    </form>
 
 @section scripts{ 
 	<script>
@@ -63,6 +75,9 @@
             layui.form.on('radio', function (data) {
                 app.currentItem.nature = data.value;
             });  
+            layui.form.on('select(Category)', function (data) {
+                app.currentItem.category = data.value;
+                });      
 			app = new Vue({
 				el: '#app',
 				data: {

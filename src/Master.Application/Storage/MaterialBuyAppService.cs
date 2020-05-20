@@ -24,6 +24,11 @@ namespace Master.Storage
                 .Where(o=>o.FlowSheet.SheetNature==WorkFlow.SheetNature.正单)
                 ;
         }
+        protected override async Task<IQueryable<MaterialBuy>> BuildKeywordQueryAsync(string keyword, IQueryable<MaterialBuy> query)
+        {
+            return (await base.BuildKeywordQueryAsync(keyword, query))
+                .Where(o => o.Material.MaterialType.DisplayName.Contains(keyword) || o.Material.Name.Contains(keyword) || o.FlowSheet.SheetSN.Contains(keyword));
+        }
         protected override async Task<IQueryable<MaterialBuy>> BuildSearchQueryAsync(IDictionary<string, string> searchKeys, IQueryable<MaterialBuy> query)
         {
 

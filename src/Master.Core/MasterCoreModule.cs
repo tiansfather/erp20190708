@@ -150,7 +150,7 @@ namespace Master
             Configuration.Modules.Core().Dictionaries.Add(StaticDictionaryNames.Degree, new Dictionary<string, string>() { { "小学", "小学" }, { "初中", "初中" }, { "高中", "高中" }, { "大学", "大学" }, { "硕士及以上", "硕士及以上" } });
             //婚姻状况
             Configuration.Modules.Core().Dictionaries.Add(StaticDictionaryNames.Marriage, new Dictionary<string, string>() { { "未婚", "未婚" }, { "已婚", "已婚" } });
-            
+
         }
 
         private void BuildDefaultForm()

@@ -24,6 +24,11 @@ namespace Master.Storage
                 .Where(o => o.FlowSheet.OrderStatus == null || (o.FlowSheet.OrderStatus != "待审核" && o.FlowSheet.OrderStatus != "已退货" && o.FlowSheet.OrderStatus != "已取消"))
                 ;
         }
+        protected override async Task<IQueryable<MaterialSellOut>> BuildKeywordQueryAsync(string keyword, IQueryable<MaterialSellOut> query)
+        {
+            return (await base.BuildKeywordQueryAsync(keyword, query))
+                .Where(o => o.Material.MaterialType.DisplayName.Contains(keyword) || o.Material.Name.Contains(keyword) || o.FlowSheet.SheetSN.Contains(keyword));
+        }
         protected override async Task<IQueryable<MaterialSellOut>> BuildSearchQueryAsync(IDictionary<string, string> searchKeys, IQueryable<MaterialSellOut> query)
         {
 

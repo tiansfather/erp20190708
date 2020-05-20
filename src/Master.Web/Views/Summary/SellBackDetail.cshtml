@@ -12,13 +12,19 @@
 
             <div class="layui-row layui-col-space5">
                 <div class="layui-col-xs2">
-                    <vc:base-tree param="@(new BaseTreeViewParam() { TreeKey="MaterialType",TreeName="商品分类",EnableAdd=false,EnableEdit=false,EnableDelete=false,EnableSearch=true})"></vc:base-tree>
+                    <vc:base-tree param="@(new BaseTreeViewParam() { TreeKey="MaterialType",TreeName="商品品类",EnableAdd=false,EnableEdit=false,EnableDelete=false,EnableSearch=true})"></vc:base-tree>
 
                 </div>
                 <div class="layui-col-xs10">
                     <div class="LAY-app-message-btns" style="margin-bottom:10px;" id="app" v-cloak>
                         <el-form :inline="true">
+                            <el-input v-model="keyword" placeholder="订单编号/品类/品名" @@input="doSearch" size="medium" style="width:160px"></el-input>
+                            <el-select v-model="materialNature" clearable size="medium" style="width:120px" placeholder="商品性质" @@change="doSearch">
+                                <el-option label="票劵" value="0"></el-option><el-option label="实物" value="1"></el-option>
+                            </el-select>
+                            <unit-select nature="0" :unit.sync="unitId" :value-isid="true" size="medium" @@change="doSearch"></unit-select>
                             <el-date-picker v-model="searchDateRange"
+                                            size="medium"
                                             type="datetimerange"
                                             range-separator="至"
                                             start-placeholder="开始日期"
@@ -51,22 +57,37 @@
             app = new Vue({
                 el: '#app',
                 data: {
-                    searchDateRange: null
+                    searchDateRange: null,
+                    keyword: null,
+                    unitId: null,
+                    materialNature: null,
+                    searchKeys: {}
                 },
                 methods: {
-                    doSearch: function (data) {
+                    getWhere: function () {
+                        var where = "1=1";
+                        this.unitId && (where += " and UnitId=" + this.unitId);
+                        this.materialNature && (where += " and material.materialnature=" + this.materialNature);
+                        return {
+                            where:where,
+                            searchKeys: JSON.stringify(this.searchKeys),
+                            keyword: this.keyword
+                        };
+                    },
+                    doSearch: function () {
+                        var data = this.searchDateRange;
                         var startDate = null;
                         var endDate = null;
                         if (data) {
                             startDate = data[0].pattern('yyyy-MM-dd HH:mm:ss');
                             endDate = data[1].pattern('yyyy-MM-dd HH:mm:ss');
-                            searchKeys.startDate = startDate;
-                            searchKeys.endDate = endDate;
+                            this.searchKeys.startDate = startDate;
+                            this.searchKeys.endDate = endDate;
+                        } else {
+                            delete this.searchKeys.startDate;
+                            delete this.searchKeys.endDate;
                         }
-                        layui.table.reload('Material', {
-                            where: getWhere()
-
-                        })
+                        config.reloadTable();
                     }
                 },
                 mounted: function () {
@@ -78,14 +99,14 @@
                         //cellMinWidth: '60',
                         height: 'full-110',
                         url: '/api/services/app/MaterialSellBack/GetPageResult',
-                        where: getWhere(),
+                        where: that.getWhere(),
                         page: true,
-
+                        limit:20,
                         id: 'Material',
                         even: true,
                         cols: [[
                             { field: 'sheetSN', title: '订单编号' },
-                            { field: 'materialTypeName', title: '分类' },
+                            { field: 'materialTypeName', title: '品类' },
                             { field: 'name', title: '品名' },
                             { field: 'unitName', title: '供应商' },
                             { field: 'specification', title: '规格' },
@@ -109,14 +130,14 @@
 
 			//监听树选中事件
             baseTree.onSelect = function (node) {
-				searchKeys.MaterialTypeId = node.id;
+				app.searchKeys.MaterialTypeId = node.id;
 				config.reloadTable();
 			}
 		}
 		//当检索窗体提交后会调用此方法
 		config.reloadTable = function () {
             layui.table.reload('Material', {
-				where: getWhere()
+				where: app.getWhere()
 
 			})
 		}

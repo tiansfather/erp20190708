@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 namespace Master.Storage
 {
     [AbpAuthorize]
-    public class MaterialBuySummaryAppService:MasterAppServiceBase<MaterialBuy,int>
+    public class MaterialBuySummaryAppService:MasterAppServiceBase<MaterialBuy, int>
     {
         public BaseTreeManager BaseTreeManager { get; set; }
         public MaterialBuyManager MaterialBuyManager { get; set; }
@@ -29,6 +29,11 @@ namespace Master.Storage
                 .Include(o => o.Material).ThenInclude(o => o.MaterialType)
                 .Where(o => o.FlowSheet.SheetNature == WorkFlow.SheetNature.正单)
                 ;
+        }
+        protected override async Task<IQueryable<MaterialBuy>> BuildKeywordQueryAsync(string keyword, IQueryable<MaterialBuy> query)
+        {
+            return (await base.BuildKeywordQueryAsync(keyword, query))
+                .Where(o=>o.Material.MaterialType.DisplayName.Contains(keyword) || o.Material.Name.Contains(keyword));
         }
         protected override async Task<IQueryable<MaterialBuy>> BuildSearchQueryAsync(IDictionary<string, string> searchKeys, IQueryable<MaterialBuy> query)
         {

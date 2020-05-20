@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Abp.Dependency;
+using Abp.Domain.Uow;
+using Master.Configuration.Dictionaries;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,9 +11,15 @@ namespace Master.Web.Components
 {
     public class BaseTreeViewComponent : MasterViewComponent
     {
-        public async Task<IViewComponentResult> InvokeAsync(BaseTreeViewParam param)
-        {           
-
+        [UnitOfWork]
+        public virtual async Task<IViewComponentResult> InvokeAsync(BaseTreeViewParam param)
+        {
+            using(var dictionaryManagerWrapper = IocManager.Instance.ResolveAsDisposable<DictionaryManager>())
+            {
+                var dic = await dictionaryManagerWrapper.Object.GetUserDicByNameAsync("商品种类");
+                ViewBag.Dictionary = dic == null ? new Dictionary<string, string>() : Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(dic.DictionaryContent);
+            }
+            
             return View(param);
         }
     }

@@ -5,13 +5,23 @@
 @addTagHelper *, Master.Web.Core
 @model BaseTreeViewParam
 @{
-
+	var dic = ViewBag.Dictionary as Dictionary<string, string>;
 }
 
 	<div class="LAY-app-message-btns" style="margin-bottom: 10px;">
 		@if (Model.EnableSearch)
 		{
-			<input type="text" name="treeKeyword" placeholder="请输入关键字" autocomplete="off" class="layui-input" onkeyup="baseTree.doSearch()">
+		<div>
+			<select style="float:left;width:50%;height:38px;line-height:1.3;border:1px solid #e6e6e6;border-radius:2px" onchange="baseTree.doSearch()" name="treeCategory">
+				<option value="">所有种类</option>
+				@foreach(var item in dic)
+                {
+					<option value="@item.Key">@item.Value</option>
+                }
+			</select>
+			<input style="width:50%;float:left" type="text" name="treeKeyword" placeholder="关键字" autocomplete="off" class="layui-input" onkeyup="baseTree.doSearch()">
+		</div>
+			
 		}
 		@if (Model.EnableAdd || Model.EnableEdit || Model.EnableDelete)
 		{
@@ -79,7 +89,7 @@
                 if (!showInner) {
                     json = json.filter(function (o) { return o.nature == 0; });//只显示对外
                 }
-                //json.push({ displayName: '未分类', id: -1, parentId: null });
+                //json.push({ displayName: '未品类', id: -1, parentId: null });
 				zTreeObj.addNodes(null, json);
 				//mainList({ orgId: "" });
 				zTreeObj.expandAll(true);
@@ -101,7 +111,7 @@
 			doAdd: function () {
 				layer.open({
 					type: 2,
-					title: "添加分类",
+					title: "添加品类",
 					shadeClose: false,
 					shade: 0.8,
 					area: ['80%', '80%'],
@@ -116,12 +126,12 @@
 			},
 			doEdit: function () {
 				if (!baseTree.node.id) {
-					layer.msg(L("请先选择分类节点"), { icon: 5, anim: 6 });
+					layer.msg(L("请先选择品类节点"), { icon: 5, anim: 6 });
 					return false;
 				} else {
 					layer.open({
 					type: 2,
-					title: "编辑分类",
+					title: "编辑品类",
 					shadeClose: false,
 					shade: 0.8,
 					area: ['80%', '80%'],
@@ -137,10 +147,10 @@
 			},
 			doDel: function () {
 				if (!baseTree.node.id) {
-					layer.msg(L("请先选择分类节点"), { icon: 5, anim: 6 });
+					layer.msg(L("请先选择品类节点"), { icon: 5, anim: 6 });
 					return false;
 				} else {
-					abp.message.confirm(L("确认删除此分类节点?相应子节点也将被删除"), function () {
+					abp.message.confirm(L("确认删除此品类节点?相应子节点也将被删除"), function () {
 						func.runAsync(abp.services.app.baseTree.deleteEntity([baseTree.node.id]).done(function () {
 							baseTree.reload();
 						}));
@@ -150,10 +160,14 @@
             doSearch: function () {
 				var nodes=zTreeObj.getNodes();
                 var keyword = $("input[name='treeKeyword']").val();
+                var category = $("select[name='treeCategory']").val();
 				zTreeObj.showNodes(zTreeObj.getNodesByParam("isHidden", true));
                 if (keyword) {
                     zTreeObj.hideNodes(nodes.filter(function (o) { return o.displayName.indexOf(keyword) < 0 }));
-                } 
+                }
+                if (category) {
+                    zTreeObj.hideNodes(nodes.filter(function (o) { return o.category != category }));
+                }
             }
 		}
 	}();

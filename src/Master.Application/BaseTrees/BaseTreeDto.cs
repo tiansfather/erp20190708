@@ -24,5 +24,6 @@ namespace Master.BaseTrees
         public int Nature { get; set; }
         public string Remarks { get; set; }
         public string Discriminator { get; set; }
+        public string Category { get; set; }
     }
 }

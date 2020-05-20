@@ -30,6 +30,11 @@ namespace Master.Storage
                  .WhereIf(user.UnitId.HasValue, o => o.FlowSheet.UnitId == user.UnitId)//代理商登录只看到自己;
                 ;
         }
+        protected override async Task<IQueryable<MaterialSell>> BuildKeywordQueryAsync(string keyword, IQueryable<MaterialSell> query)
+        {
+            return (await base.BuildKeywordQueryAsync(keyword, query))
+                .Where(o => o.Material.MaterialType.DisplayName.Contains(keyword) || o.Material.Name.Contains(keyword) || o.FlowSheet.SheetSN.Contains(keyword));
+        }
         protected override async Task<IQueryable<MaterialSell>> BuildSearchQueryAsync(IDictionary<string, string> searchKeys, IQueryable<MaterialSell> query)
         {
             
