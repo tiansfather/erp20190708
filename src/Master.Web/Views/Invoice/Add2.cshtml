@@ -33,12 +33,15 @@
 @section scripts{
     
     <script>
-        var app,materialTypes;
+        var app,materialTypes,taxRates;
 		//layui加载完成后调用此方法，
 		config.ready = function () {
             abp.services.app.baseTree.getTreeJson('MaterialType', null, 1).done(function (res) {
-                materialTypes = res.map(function (o) { return { value: o.displayName, text: o.displayName } });
-                app = new Vue({
+                abp.services.app.dictionary.getDictionaryContent('税率').done(function (content) {
+                    var taxRateObj = JSON.parse(content);
+                    taxRates = Object.keys(taxRateObj).map(function (o) { return { value: o, text: taxRateObj[o] } });
+                    materialTypes = res.map(function (o) { return { value: o.displayName, text: o.displayName } });
+                    app = new Vue({
                     el: '#app',
                     data: {
                         currentItem: {
@@ -52,8 +55,8 @@
                             { type: 'number', title: '数量', key: 'number' },
                             { type: 'number', title: '单价', key: 'price' },
                             { type: 'number', title: '开票金额', key: 'fee' },
-                            { type: 'text', title: '税率', key: 'taxRate',required:true },
-                            { type: 'select', title: '品牌单位名称', key: 'sellUnitName', options: materialTypes,defaultData:'b'},
+                            { type: 'select', title: '税率', key: 'taxRate',required:true, options: taxRates,defaultData:''},
+                            { type: 'select', title: '品牌单位名称', key: 'sellUnitName', options: materialTypes,defaultData:'',filterable:true},
                             { type: 'text', title: '购货单位名称', key: 'buyUnitName',defaultData:'' },
                             { type: 'text', title: '税务登记号', key: 'buyUnitTaxNumber',defaultData:'' },
                             { type: 'text', title: '备注', key: 'remarks'},
@@ -158,6 +161,8 @@
                         })
                     }
                 })
+                })
+                
             })
             
 

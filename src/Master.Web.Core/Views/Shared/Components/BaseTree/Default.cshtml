@@ -12,14 +12,14 @@
 		@if (Model.EnableSearch)
 		{
 		<div>
-			<select style="float:left;width:50%;height:38px;line-height:1.3;border:1px solid #e6e6e6;border-radius:2px" onchange="baseTree.doSearch()" name="treeCategory">
+			<select style="width:100%;height:38px;line-height:1.3;border:1px solid #e6e6e6;border-radius:2px" onchange="baseTree.doSearch()" name="treeCategory">
 				<option value="">所有种类</option>
 				@foreach(var item in dic)
                 {
 					<option value="@item.Key">@item.Value</option>
                 }
 			</select>
-			<input style="width:50%;float:left" type="text" name="treeKeyword" placeholder="关键字" autocomplete="off" class="layui-input" onkeyup="baseTree.doSearch()">
+			<input  type="text" name="treeKeyword" placeholder="关键字" autocomplete="off" class="layui-input" onkeyup="baseTree.doSearch()">
 		</div>
 			
 		}

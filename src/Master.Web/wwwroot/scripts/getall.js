@@ -8294,6 +8294,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getDictionaryContent'
+    abp.services.app.dictionary.getDictionaryContent = function(name, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Dictionary/GetDictionaryContent' + abp.utils.buildQueryString([{ name: 'name', value: name }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getPageSummary'
     abp.services.app.dictionary.getPageSummary = function(queryable, ajaxParams) {
       return abp.ajax($.extend(true, {

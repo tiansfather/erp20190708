@@ -70,6 +70,12 @@ namespace Master.Dictionaries
 
             return result;
         }
+
+        public virtual async Task<object> GetDictionaryContent(string name)
+        {
+            var dic = await _dictionaryManager.GetUserDicByNameAsync(name);
+            return dic?.DictionaryContent;
+        }
     }
 
 }

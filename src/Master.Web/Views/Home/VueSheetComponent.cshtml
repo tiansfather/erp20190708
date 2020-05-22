@@ -717,12 +717,19 @@
                                         </div>
                                     </td>*@
                                 <td style="padding:0;" v-if="item.type=='select'" :class="item.key.toLowerCase()">
-                                    <div class="layui-form">
+                                    <el-select v-model="part[item.key]" placeholder="请选择" :filterable="item.filterable" clearable @@change="getSetValue($event,index,item)">
+                                        <el-option v-for="option in selectOptions(item,part)"
+                                                   :key="option.value"
+                                                   :label="option.text"
+                                                   :value="option.value">
+                                        </el-option>
+                                    </el-select>
+                                    @*<div class="layui-form">
                                         <select v-model="part[item.key]" :lay-filter="'_mulsel'+itemIndex+'-'+index" :_index="index" :_item-index="itemIndex">
                                             <option value="">请选择</option>
                                             <option v-for="option in selectOptions(item,part)" v-bind:value="option.value" v-html="option.text"></option>
                                         </select>
-                                    </div>
+                                    </div>*@
                                 </td>
                                 <td v-if="item.type=='slot'" :class="item.key.toLowerCase()">
                                     <slot :name="item.slot" :part="part" :item="item">元素失效</slot>

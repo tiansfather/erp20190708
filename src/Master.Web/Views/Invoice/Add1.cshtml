@@ -33,139 +33,143 @@
 @section scripts{
     
     <script>
-        var app,materialTypes;
+        var app,materialTypes,taxRates;
 		//layui加载完成后调用此方法，
 		config.ready = function () {
             abp.services.app.baseTree.getTreeJson('MaterialType', null, 1).done(function (res) {
-                materialTypes = res.map(function (o) { return { value: o.displayName, text: o.displayName } });
-                app = new Vue({
-                    el: '#app',
-                    data: {
-                        currentItem: {
-                            items: [],
-                            unitId: abp.session.user.unitId,
-                            unitInvoice: {}
+                abp.services.app.dictionary.getDictionaryContent('税率').done(function (content) {
+                    var taxRateObj = JSON.parse(content);
+                    taxRates = Object.keys(taxRateObj).map(function (o) { return { value: o, text: taxRateObj[o] } });
+                    materialTypes = res.map(function (o) { return { value: o.displayName, text: o.displayName } });
+                    app = new Vue({
+                        el: '#app',
+                        data: {
+                            currentItem: {
+                                items: [],
+                                unitId: abp.session.user.unitId,
+                                unitInvoice: {}
+                            },
+                            columns: [
+                                { type: 'text', title: '开票内容', key: 'content' },          
+                                { type: 'number', title: '数量', key: 'number' },
+                                { type: 'number', title: '单价', key: 'price' },
+                                { type: 'number', title: '开票金额', key: 'fee' },
+                                { type: 'select', title: '税率', key: 'taxRate',required:true, options: taxRates,defaultData:''},
+                                { type: 'select', title: '品牌单位名称', key: 'sellUnitName', options: materialTypes,defaultData:'',filterable:true},
+                                { type: 'text', title: '购货单位名称', key: 'buyUnitName',defaultData:'' },
+                                { type: 'text', title: '税务登记号', key: 'buyUnitTaxNumber',defaultData:'' },
+                                { type: 'text', title: '单位地址', key: 'buyUnitAddress',defaultData:'' },
+                                { type: 'text', title: '电话', key: 'buyUnitPhone',defaultData:'' },
+                                { type: 'text', title: '开户银行', key: 'buyUnitBank',defaultData:'' },
+                                { type: 'text', title: '开户行账号', key: 'buyUnitBankAccount',defaultData:'' },
+                                { type: 'text', title: '备注', key: 'remarks'},
+                            ],
                         },
-                        materialTypes:[],
-                        columns: [
-                            { type: 'text', title: '开票内容', key: 'content' },          
-                            { type: 'number', title: '数量', key: 'number' },
-                            { type: 'number', title: '单价', key: 'price' },
-                            { type: 'number', title: '开票金额', key: 'fee' },
-                            { type: 'text', title: '税率', key: 'taxRate',required:true },
-                            { type: 'select', title: '品牌单位名称', key: 'sellUnitName', options: materialTypes,defaultData:''},
-                            { type: 'text', title: '购货单位名称', key: 'buyUnitName',defaultData:'' },
-                            { type: 'text', title: '税务登记号', key: 'buyUnitTaxNumber',defaultData:'' },
-                            { type: 'text', title: '单位地址', key: 'buyUnitAddress',defaultData:'' },
-                            { type: 'text', title: '电话', key: 'buyUnitPhone',defaultData:'' },
-                            { type: 'text', title: '开户银行', key: 'buyUnitBank',defaultData:'' },
-                            { type: 'text', title: '开户行账号', key: 'buyUnitBankAccount',defaultData:'' },
-                            { type: 'text', title: '备注', key: 'remarks'},
-                        ],
-                    },
-                    computed: {
-                        sumFee: function () {
-                            var sum = 0;
-                            this.currentItem.items.forEach(function (o) {
-                                o.fee && !isNaN(o.fee) && (sum+=parseFloat(o.fee));
-                            })
-                            return sum.toFixed(2);
-                        }
-                    },
-                    methods: {            
-                        change: function (ev) {
-                            switch (ev.item.key) {
-                                case "price":
-                                    ev.part.fee = (ev.part.number * ev.value).toFixed(2);
-                                    break;
-                                case "number":
-                                    ev.part.fee = (ev.part.price * ev.value).toFixed(2);
-                                    break;
-                                case "fee":
-                                    ev.part.price = (ev.value/ev.part.number).toFixed(2);
-                                    break;
+                        computed: {
+                            sumFee: function () {
+                                var sum = 0;
+                                this.currentItem.items.forEach(function (o) {
+                                    o.fee && !isNaN(o.fee) && (sum+=parseFloat(o.fee));
+                                })
+                                return sum.toFixed(2);
                             }
                         },
-                        loadUnitInfo: function () {
-                            if (!this.currentItem.unitId) return;
-                            var that = this;
-                            abp.services.app.unit.getInvoiceDetail(this.currentItem.unitId).done(function (res) {
-                                that.currentItem.unitInvoice = res;
-                                that.columns[3].defaultData = res.buyUnitName;
-                                that.columns[4].defaultData = res.buyUnitTaxNumber;
-                                that.columns[5].defaultData = res.buyUnitAddress;
-                                that.columns[6].defaultData = res.buyUnitPhone;
-                                that.columns[7].defaultData = res.buyUnitBank;
-                                that.columns[8].defaultData = res.buyUnitBankAccount;
-                            })
-                        },
-                        doSubmit: function (obj) {
-                            if (!this.currentItem.unitId) {
-                                abp.message.error("请选择代理商");
-                                return false;
-                            }
-                            if (!this.currentItem.items.length) {
-                                abp.message.error("请录入数据");
-                                return;
-                            }
-                            if (this.currentItem.items.filter(function (o) { return !o.content || !o.fee || !o.taxRate }).length) {
-                                abp.message.error("开票内容、开票金额、税率不能为空");
-                                return;
-                            }
-                            var that = this;
-                            abp.message.confirm('确认提交', function () {
-                                var data = {
-                                    unitId: that.currentItem.unitId,
-                                    items: that.currentItem.items.map(function (o) {
-                                        o.type = "增票";
-                                        return o;
-                                    })
-                                };
-                                func.runAsync(abp.services.app.invoice.submit(data).done(function (res) {
-                                    abp.message.success('提交成功').done(function () { location.reload()})
-                                }))
-                            })
+                        methods: {            
+                            change: function (ev) {
+                                switch (ev.item.key) {
+                                    case "price":
+                                        ev.part.fee = (ev.part.number * ev.value).toFixed(2);
+                                        break;
+                                    case "number":
+                                        ev.part.fee = (ev.part.price * ev.value).toFixed(2);
+                                        break;
+                                    case "fee":
+                                        ev.part.price = (ev.value/ev.part.number).toFixed(2);
+                                        break;
+                                }
+                            },
+                            loadUnitInfo: function () {
+                                if (!this.currentItem.unitId) return;
+                                var that = this;
+                                abp.services.app.unit.getInvoiceDetail(this.currentItem.unitId).done(function (res) {
+                                    that.currentItem.unitInvoice = res;
+                                    that.columns[3].defaultData = res.buyUnitName;
+                                    that.columns[4].defaultData = res.buyUnitTaxNumber;
+                                    that.columns[5].defaultData = res.buyUnitAddress;
+                                    that.columns[6].defaultData = res.buyUnitPhone;
+                                    that.columns[7].defaultData = res.buyUnitBank;
+                                    that.columns[8].defaultData = res.buyUnitBankAccount;
+                                })
+                            },
+                            doSubmit: function (obj) {
+                                if (!this.currentItem.unitId) {
+                                    abp.message.error("请选择代理商");
+                                    return false;
+                                }
+                                if (!this.currentItem.items.length) {
+                                    abp.message.error("请录入数据");
+                                    return;
+                                }
+                                if (this.currentItem.items.filter(function (o) { return !o.content || !o.fee || !o.taxRate }).length) {
+                                    abp.message.error("开票内容、开票金额、税率不能为空");
+                                    return;
+                                }
+                                var that = this;
+                                abp.message.confirm('确认提交', function () {
+                                    var data = {
+                                        unitId: that.currentItem.unitId,
+                                        items: that.currentItem.items.map(function (o) {
+                                            o.type = "增票";
+                                            return o;
+                                        })
+                                    };
+                                    func.runAsync(abp.services.app.invoice.submit(data).done(function (res) {
+                                        abp.message.success('提交成功').done(function () { location.reload()})
+                                    }))
+                                })
                         
-                        }
-                    },
-                    mounted: function () {
-                        var that = this;
-                            layui.upload.render({
-            	            elem: '#uploadBtn',
-            	            size: 1024*20,
-                            accept: 'file',
-                            exts:'xls|xlsx',
-                            url: '/file/upload/'
-                            , before: function (obj) {
-                                loadLayerIndex = top.layer.msg('正在拼命上传中...', {
-                                    icon: 16
-                                    , shade: false, time: 0, offset: 't'
-                                });
                             }
-                            , done: function (res, index, upload) {
-                                top.layer.close(loadLayerIndex);
-            		            //获取当前触发上传的元素，一般用于 elem 绑定 class 的情况，注意：此乃 layui 2.1.0 新增
-            		            var item = this.item;
-            		            //如果上传失败
-            		            if (!res.result.success) {
-            			            layer.msg(res.result.msg, { icon: 5, anim: 6 });
-            		            }
-            		            //上传成功
-            		            else {
-                                    console.log(res);
-                                    func.runAsync(abp.services.app.invoice.doImport(res.result.filePath).done(function (data) {
-                                        console.log(data);
-                                        app.currentItem.items = data;
-                                    }));
+                        },
+                        mounted: function () {
+                            var that = this;
+                                layui.upload.render({
+            	                elem: '#uploadBtn',
+            	                size: 1024*20,
+                                accept: 'file',
+                                exts:'xls|xlsx',
+                                url: '/file/upload/'
+                                , before: function (obj) {
+                                    loadLayerIndex = top.layer.msg('正在拼命上传中...', {
+                                        icon: 16
+                                        , shade: false, time: 0, offset: 't'
+                                    });
+                                }
+                                , done: function (res, index, upload) {
+                                    top.layer.close(loadLayerIndex);
+            		                //获取当前触发上传的元素，一般用于 elem 绑定 class 的情况，注意：此乃 layui 2.1.0 新增
+            		                var item = this.item;
+            		                //如果上传失败
+            		                if (!res.result.success) {
+            			                layer.msg(res.result.msg, { icon: 5, anim: 6 });
+            		                }
+            		                //上传成功
+            		                else {
+                                        console.log(res);
+                                        func.runAsync(abp.services.app.invoice.doImport(res.result.filePath).done(function (data) {
+                                            console.log(data);
+                                            app.currentItem.items = data;
+                                        }));
                                     
-            			            //parent.upload.callback(res.result);
-            			            //parent.layer.closeAll('iframe');
+            			                //parent.upload.callback(res.result);
+            			                //parent.layer.closeAll('iframe');
 
-            		            }
-            	            }
-                        })
-                    }
+            		                }
+            	                }
+                            })
+                        }
+                    })
                 })
+                
             })
             
 

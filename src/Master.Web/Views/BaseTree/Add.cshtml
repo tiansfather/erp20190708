@@ -83,7 +83,8 @@
 				data: {
 					currentItem: {discriminator:'@ViewBag.TreeKey'}
 				},
-				mounted: function () {
+                mounted: function () {
+                    this.currentItem.category = $("select[name='Category']").val();
                     this.$nextTick(function () {
                         layui.form.render();
 						$('div[cytype="dropDownTool"]').dropDownTool();

@@ -22,7 +22,7 @@
                             <el-select v-model="materialNature" clearable size="medium" style="width:120px" placeholder="商品性质" @@change="doSearch">
                                 <el-option label="票劵" value="0"></el-option><el-option label="实物" value="1"></el-option>
                             </el-select>
-                            <unit-select nature="0" :unit.sync="unitId" :value-isid="true" size="medium" @@change="doSearch"></unit-select>
+                            <unit-select nature="0" :unit.sync="unitId" :value-isid="true" size="medium" @@change="doSearch" style="width:140px"></unit-select>
                             <el-date-picker v-model="searchDateRange"
                                             size="medium"
                                             type="datetimerange"
