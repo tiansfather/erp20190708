@@ -188,7 +188,7 @@ namespace Master
             //var pageResult = query.PageResult(request.Page, request.Limit);
             var pageResult = await GetPageResultQueryable(request);
             var dataResult = await ModuleManager.GetModuleDataListAsync(moduleInfo, pageResult.Queryable);
-            var summarys = await GetPageSummary(pageResult.Queryable);
+            var summarys = await GetPageSummary(pageResult.Queryable, request);
             var result = new ResultPageDto()
             {
                 code = 0,

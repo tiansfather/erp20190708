@@ -111,7 +111,7 @@ namespace Master
         #endregion
 
         #region 分页与数据过滤接口
-        public virtual async Task<Dictionary<string,object>> GetPageSummary(IQueryable<TEntity> queryable)
+        public virtual async Task<Dictionary<string,object>> GetPageSummary(IQueryable<TEntity> queryable, RequestPageDto requestPageDto)
         {
             return new Dictionary<string, object>();
         }
@@ -125,7 +125,7 @@ namespace Master
         {
 
             var pageResult = await GetPageResultQueryable(request);
-            var summarys = await GetPageSummary(pageResult.Queryable);
+            var summarys = await GetPageSummary(pageResult.Queryable, request);
             var result = new ResultPageDto()
             {
                 code = 0,

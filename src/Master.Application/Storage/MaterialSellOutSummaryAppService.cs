@@ -28,7 +28,7 @@ namespace Master.Storage
                 .Include(o => o.FlowSheet)
                 .Include(o => o.Material).ThenInclude(o => o.MaterialType)
                 .Where(o => o.FlowSheet.SheetNature == WorkFlow.SheetNature.正单)
-                .Where(o => o.FlowSheet.OrderStatus == null || (o.FlowSheet.OrderStatus != "待审核" && o.FlowSheet.OrderStatus != "已退货" && o.FlowSheet.OrderStatus != "已取消"))
+                .Where(o => o.FlowSheet.OrderStatus == null || (o.FlowSheet.OrderStatus != "待审核" /*&& o.FlowSheet.OrderStatus != "已退货"*/ && o.FlowSheet.OrderStatus != "已取消"))
                 ;
         }
         protected override async Task<IQueryable<MaterialSellOut>> BuildKeywordQueryAsync(string keyword, IQueryable<MaterialSellOut> query)
@@ -78,6 +78,7 @@ namespace Master.Storage
             var groupResult =await pageResult.Queryable.ToListAsync();
 
             var data = new List<object>();
+
             foreach(var group in groupResult)
             {
                 var material = group.Key.Material;

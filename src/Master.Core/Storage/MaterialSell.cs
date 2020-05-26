@@ -40,6 +40,7 @@ namespace Master.Storage
                 return SellNumber - BackNumber;
             }
         }
+
     }
 
     public class MaterialSellCart : CreationAuditedEntity<int>

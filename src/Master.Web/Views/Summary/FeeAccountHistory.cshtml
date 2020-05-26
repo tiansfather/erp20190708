@@ -9,10 +9,13 @@
 <div class="layui-fluid" id="LAY-app-message">
     <div class="layui-card">
         <div class="layui-card-body">
-            <div class="LAY-app-message-btns" style="margin-bottom: 10px;">
+            <div class="LAY-app-message-btns" style="margin-bottom: 10px;height:30px">
                 <vc:module-button module-key="FeeAccountHistory"></vc:module-button>
+				<div id="summarys">
+
+				</div>
             </div>
-            <vc:module-table param="@(new ModuleTableViewParam() {ID="FeeAccountHistory",ModuleKey="FeeAccountHistory",Height="full-110" })"></vc:module-table>
+            <vc:module-table param="@(new ModuleTableViewParam() {ID="FeeAccountHistory",ModuleKey="FeeAccountHistory",Height="full-110",ToolBar="true",DefaultToolBar="['print','exports']"})"></vc:module-table>
 
         </div>
     </div>
@@ -35,7 +38,11 @@
 			})
 		}
 		config.onTableDone = function () {
-
+			var tpl = '';
+            for (var key in summarys) {
+                tpl += '<span>'+key + ':<font color="red">' + summarys[key]+"</font>&nbsp;&nbsp;&nbsp;</span>";
+            }
+            $("#summarys").html(tpl);
 		}
 		//当编辑或删除或添加表单提交后会调用此方法
 		config.refresh = function () {

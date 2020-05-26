@@ -31,9 +31,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.file.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.file.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/File/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/File/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -295,9 +295,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.test.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.test.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Test/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/Test/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -442,9 +442,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.flowSheet.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.flowSheet.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/FlowSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/FlowSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -648,9 +648,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.flowForm.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.flowForm.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/FlowForm/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/FlowForm/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -807,9 +807,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.flowInstance.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.flowInstance.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/FlowInstance/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/FlowInstance/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -946,9 +946,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.flowScheme.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.flowScheme.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/FlowScheme/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/FlowScheme/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -1166,9 +1166,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.user.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.user.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/User/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/User/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -1337,9 +1337,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.unit.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.unit.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Unit/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/Unit/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -1476,9 +1476,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.tenant.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.tenant.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Tenant/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/Tenant/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -1624,9 +1624,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.template.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.template.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Template/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/Template/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -1817,9 +1817,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.role.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.role.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Role/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/Role/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -1957,9 +1957,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.resource.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.resource.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Resource/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/Resource/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -2104,9 +2104,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.project.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.project.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Project/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/Project/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -2236,9 +2236,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.organization.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.organization.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Organization/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/Organization/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -2382,9 +2382,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.notice.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.notice.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Notice/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/Notice/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -2521,9 +2521,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.moduleData.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.moduleData.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ModuleData/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/ModuleData/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -2726,9 +2726,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.moduleInfo.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.moduleInfo.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ModuleInfo/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/ModuleInfo/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -2896,9 +2896,9 @@ abp.services = abp.services || {};
     abp.services.app.auditLog = abp.services.app.auditLog || {};
 
     // action 'getPageSummary'
-    abp.services.app.auditLog.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.auditLog.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/AuditLog/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/AuditLog/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -3041,9 +3041,9 @@ abp.services = abp.services || {};
     abp.services.app.userLoginAttempts = abp.services.app.userLoginAttempts || {};
 
     // action 'getPageSummary'
-    abp.services.app.userLoginAttempts.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.userLoginAttempts.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/UserLoginAttempts/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/UserLoginAttempts/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -3179,9 +3179,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.language.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.language.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Language/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/Language/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -3342,9 +3342,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.cRRSheet.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.cRRSheet.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/CRRSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/CRRSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -3456,9 +3456,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.flowSheetModuleAppServiceBase.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.flowSheetModuleAppServiceBase.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/FlowSheetModuleAppServiceBase/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/FlowSheetModuleAppServiceBase/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -3570,9 +3570,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.iALSheet.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.iALSheet.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/IALSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/IALSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -3684,9 +3684,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.iASSheet.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.iASSheet.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/IASSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/IASSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -3798,9 +3798,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.iBKSheet.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.iBKSheet.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/IBKSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/IBKSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -3912,9 +3912,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.iCHSheet.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.iCHSheet.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/ICHSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/ICHSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -4026,9 +4026,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.oPYSheet.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.oPYSheet.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/OPYSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/OPYSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -4140,9 +4140,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.oSKSheet.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.oSKSheet.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/OSKSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/OSKSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -4254,9 +4254,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.pPYSheet.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.pPYSheet.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/PPYSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/PPYSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -4368,9 +4368,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.pRHSheet.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.pRHSheet.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/PRHSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/PRHSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -4482,9 +4482,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.pRRSheet.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.pRRSheet.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/PRRSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/PRRSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -4596,9 +4596,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.pSTSheet.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.pSTSheet.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/PSTSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/PSTSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -4710,9 +4710,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.sCKSheet.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.sCKSheet.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/SCKSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/SCKSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -4824,9 +4824,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.sDDSheet.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.sDDSheet.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/SDDSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/SDDSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -4956,9 +4956,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.sDRSheet.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.sDRSheet.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/SDRSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/SDRSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -5088,9 +5088,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.sDRSend.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.sDRSend.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/SDRSend/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/SDRSend/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -5220,9 +5220,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.sDRBack.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.sDRBack.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/SDRBack/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/SDRBack/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -5352,9 +5352,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.sDRVerify.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.sDRVerify.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/SDRVerify/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/SDRVerify/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -5466,9 +5466,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.sRJSheet.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.sRJSheet.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/SRJSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/SRJSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -5580,9 +5580,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.sSKSheet.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.sSKSheet.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/SSKSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/SSKSheet/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -5668,6 +5668,14 @@ abp.services = abp.services || {};
 
     abp.services.app.feeAccountHistory = abp.services.app.feeAccountHistory || {};
 
+    // action 'getPageSummary'
+    abp.services.app.feeAccountHistory.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/FeeAccountHistory/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
     // action 'getPageResult'
     abp.services.app.feeAccountHistory.getPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -5690,14 +5698,6 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/FeeAccountHistory/FormSubmit',
         type: 'POST',
         data: JSON.stringify(request)
-      }, ajaxParams));;
-    };
-
-    // action 'getPageSummary'
-    abp.services.app.feeAccountHistory.getPageSummary = function(queryable, ajaxParams) {
-      return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/FeeAccountHistory/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
-        type: 'GET'
       }, ajaxParams));;
     };
 
@@ -5782,10 +5782,34 @@ abp.services = abp.services || {};
 
     abp.services.app.invoice = abp.services.app.invoice || {};
 
-    // action 'getPageSummary'
-    abp.services.app.invoice.getPageSummary = function(queryable, ajaxParams) {
+    // action 'getUnitInvoicedFee'
+    abp.services.app.invoice.getUnitInvoicedFee = function(unitId, startDate, endDate, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Invoice/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/Invoice/GetUnitInvoicedFee' + abp.utils.buildQueryString([{ name: 'unitId', value: unitId }, { name: 'startDate', value: startDate }, { name: 'endDate', value: endDate }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getUnitStoredFee'
+    abp.services.app.invoice.getUnitStoredFee = function(unitId, startDate, endDate, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Invoice/GetUnitStoredFee' + abp.utils.buildQueryString([{ name: 'unitId', value: unitId }, { name: 'startDate', value: startDate }, { name: 'endDate', value: endDate }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getUnitInvoiceRemainFee'
+    abp.services.app.invoice.getUnitInvoiceRemainFee = function(unitId, startDate, endDate, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Invoice/GetUnitInvoiceRemainFee' + abp.utils.buildQueryString([{ name: 'unitId', value: unitId }, { name: 'startDate', value: startDate }, { name: 'endDate', value: endDate }]) + '',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'getPageSummary'
+    abp.services.app.invoice.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Invoice/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -5965,9 +5989,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.unitFee.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.unitFee.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/UnitFee/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/UnitFee/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -6096,9 +6120,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.unitFeeHistory.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.unitFeeHistory.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/UnitFeeHistory/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/UnitFeeHistory/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -6244,9 +6268,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.voucher.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.voucher.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Voucher/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/Voucher/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -6382,9 +6406,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.feeAccount.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.feeAccount.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/FeeAccount/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/FeeAccount/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -6504,9 +6528,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.feeCheck.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.feeCheck.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/FeeCheck/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/FeeCheck/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -6634,9 +6658,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.material.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.material.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Material/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/Material/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -6739,9 +6763,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.materialBuy.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.materialBuy.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MaterialBuy/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/MaterialBuy/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -6853,9 +6877,9 @@ abp.services = abp.services || {};
     abp.services.app.materialBuyBack = abp.services.app.materialBuyBack || {};
 
     // action 'getPageSummary'
-    abp.services.app.materialBuyBack.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.materialBuyBack.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MaterialBuyBack/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/MaterialBuyBack/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -6975,9 +6999,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.materialBuySummary.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.materialBuySummary.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MaterialBuySummary/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/MaterialBuySummary/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -7147,9 +7171,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.materialDIY.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.materialDIY.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MaterialDIY/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/MaterialDIY/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -7278,9 +7302,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.materialSell.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.materialSell.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MaterialSell/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/MaterialSell/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -7392,9 +7416,9 @@ abp.services = abp.services || {};
     abp.services.app.materialSellBack = abp.services.app.materialSellBack || {};
 
     // action 'getPageSummary'
-    abp.services.app.materialSellBack.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.materialSellBack.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MaterialSellBack/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/MaterialSellBack/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -7506,9 +7530,9 @@ abp.services = abp.services || {};
     abp.services.app.materialSellOut = abp.services.app.materialSellOut || {};
 
     // action 'getPageSummary'
-    abp.services.app.materialSellOut.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.materialSellOut.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MaterialSellOut/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/MaterialSellOut/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -7628,9 +7652,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.materialSellOutSummary.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.materialSellOutSummary.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MaterialSellOutSummary/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/MaterialSellOutSummary/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -7742,9 +7766,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.materialSellSummary.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.materialSellSummary.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MaterialSellSummary/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/MaterialSellSummary/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -7914,9 +7938,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.materialUnitDiscount.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.materialUnitDiscount.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/MaterialUnitDiscount/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/MaterialUnitDiscount/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -8036,9 +8060,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.store.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.store.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Store/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/Store/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -8150,9 +8174,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.storeMaterialHistory.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.storeMaterialHistory.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/StoreMaterialHistory/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/StoreMaterialHistory/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -8303,9 +8327,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.dictionary.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.dictionary.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Dictionary/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/Dictionary/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -8434,9 +8458,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.baseType.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.baseType.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/BaseType/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/BaseType/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -8573,9 +8597,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.baseTree.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.baseTree.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/BaseTree/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/BaseTree/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };
@@ -8711,9 +8735,9 @@ abp.services = abp.services || {};
     };
 
     // action 'getPageSummary'
-    abp.services.app.edition.getPageSummary = function(queryable, ajaxParams) {
+    abp.services.app.edition.getPageSummary = function(queryable, requestPageDto, ajaxParams) {
       return abp.ajax($.extend(true, {
-        url: abp.appPath + 'api/services/app/Edition/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }]) + '',
+        url: abp.appPath + 'api/services/app/Edition/GetPageSummary' + abp.utils.buildQueryString([{ name: 'queryable', value: queryable }, { name: 'page', value: requestPageDto.page }, { name: 'limit', value: requestPageDto.limit }, { name: 'where', value: requestPageDto.where }, { name: 'tableFilter', value: requestPageDto.tableFilter }, { name: 'filterField', value: requestPageDto.filterField }, { name: 'filterKey', value: requestPageDto.filterKey }, { name: 'filterColumns', value: requestPageDto.filterColumns }, { name: 'searchCondition', value: requestPageDto.searchCondition }, { name: 'filterSos', value: requestPageDto.filterSos }, { name: 'searchKeys', value: requestPageDto.searchKeys }, { name: 'keyword', value: requestPageDto.keyword }, { name: 'orderField', value: requestPageDto.orderField }, { name: 'orderType', value: requestPageDto.orderType }, { name: 'searchKeyDic', value: requestPageDto.searchKeyDic }, { name: 'moduleKey', value: requestPageDto.moduleKey }]) + '',
         type: 'GET'
       }, ajaxParams));;
     };

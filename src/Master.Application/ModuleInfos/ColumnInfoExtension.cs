@@ -16,6 +16,11 @@ namespace Master.Module
         public static Dictionary<string,object> ToLayData(this ColumnInfo columnInfo)
         {
             var dic = new Dictionary<string, object>();
+            if (columnInfo.ColumnKey == "RemainFee")
+            {
+                dic.Add("type", "space");
+                dic.Add("width", 150);
+            }
             dic.Add("title", columnInfo.ColumnName);
             dic.Add("sortNum", columnInfo.Sort);
             //模板
@@ -83,7 +88,7 @@ namespace Master.Module
                 dic.Add("style", style);
             }
             var width = columnInfo.GetData<string>("width");
-            if (!width.IsNullOrWhiteSpace())
+            if (!width.IsNullOrWhiteSpace() && !dic.ContainsKey("width"))
             {
                 dic.Add("width", width);
             }

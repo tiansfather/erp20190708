@@ -18,6 +18,12 @@
                 default: true
             }
         },
+        watch: {
+            unit: function (val, oldVal) {
+                this.myUnit = val;
+                this.changeHandle(val);
+            }
+        },
         computed: {
             placeHolder: function () {
                 if (!this.nature) {

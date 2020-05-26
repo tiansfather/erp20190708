@@ -2,17 +2,29 @@
 @{
     ViewData["Title"] = "Index";
 }
+@section styles{ 
+<style>
+    #summarys {
+        position: absolute;
+        top: 26px;
+        left: 400px
+    }
+</style>
+}
 @section MainBody{
 }
 <div class="layui-fluid" id="LAY-app-message">
     <div class="layui-card">
         <div class="layui-tab layui-tab-brief" lay-filter="invoiceTab">
-            <ul class="layui-tab-title">
+            <ul class="layui-tab-title" style="display:inline-block">
                 <li class="layui-this all" lay-id="1">@L("所有")<span class="layui-badge">0</span></li>
                 <li class="unverify" lay-id="2">@L("待审核")<span class="layui-badge">0</span></li>
                 <li class="verifed" lay-id="3">@L("已审核")<span class="layui-badge">0</span></li>
                 <li class="closed" lay-id="4">@L("已关闭")<span class="layui-badge">0</span></li>
             </ul>
+            <div id="summarys"></div>
+
+
             <div class="layui-tab-content">
                 <div class="LAY-app-message-btns" style="margin-bottom: 10px;" id="app">
                     <el-form :inline="true">
@@ -25,13 +37,15 @@
                                         end-placeholder="结束日期"
                                         @@change="doSearch">
                         </el-date-picker>
+                        <unit-select nature="0" :unit.sync="unitId" :value-isid="true" size="medium" @@change="doSearch" style="width:140px"></unit-select>
+                        <vc:module-button module-key="Invoice"></vc:module-button>
                     </el-form>
-                    <vc:module-button module-key="Invoice"></vc:module-button>
-                    <div id="summarys" style="display:inline-block"></div>
+
+
                     @*<input type="text" id="name-input" class="layui-input" style="width: 150px; display: inline-block;height: 30px;vertical-align: middle;" placeholder="输入名字检索" />
-        <button class="layui-btn  layui-btn-sm" onclick="config.reloadTable()">搜索</button>*@
+                <button class="layui-btn  layui-btn-sm" onclick="config.reloadTable()">搜索</button>*@
                 </div>
-                <vc:module-table param="@(new ModuleTableViewParam() {ID="Invoice",ModuleKey="Invoice",Height="full-200",Where="1=1",ToolBar="true",DefaultToolBar="['print','exports']"})"></vc:module-table>
+                <vc:module-table param="@(new ModuleTableViewParam() {ID="Invoice",ModuleKey="Invoice",Height="full-150",Where="1=1",ToolBar="true",DefaultToolBar="['print','exports']"})"></vc:module-table>
             </div>
         </div>
     </div>
@@ -44,7 +58,8 @@
             app = new Vue({
                 el: '#app',
                 data: {
-                    searchDateRange: null
+                    searchDateRange: null,
+                    unitId:null
                 },
                 methods: {
                     doSearch: function (data) {
@@ -60,6 +75,7 @@
             //一些事件监听
             element.on('tab(invoiceTab)', function (data) {
                 app.searchDateRange = null;
+                app.unitId = null;
                 config.reloadTable();
             });            
             
@@ -76,7 +92,7 @@
         config.onTableDone = function () {
             var tpl = '';
             for (var key in summarys) {
-                tpl += key + ':<font color="red">' + summarys[key]+"</font>&nbsp;&nbsp;&nbsp;";
+                tpl += '<span>'+key + ':<font color="red">' + summarys[key]+"</font>&nbsp;&nbsp;&nbsp;</span>";
             }
             console.log(tpl);
             $("#summarys").html(tpl);
@@ -124,15 +140,40 @@
             if (value) {
                 where.where += " and Name.Contains(\"" + value + "\")"
         }
+        var searchKeys = {};
         if (app.searchDateRange) {
             var startDate = app.searchDateRange[0].pattern('yyyy-MM-dd HH:mm:ss');
             var endDate = app.searchDateRange[1].pattern('yyyy-MM-dd HH:mm:ss');
             where.where += " and CreationTime>=\"" + startDate + "\" and CreationTime<=\"" + endDate + "\"";
+            searchKeys.startDate = startDate;
+            searchKeys.endDate = endDate;
         }
+        if (app.unitId) {
+            where.where += " and unitId=" + app.unitId;
+            searchKeys.unitId = app.unitId;
+        }
+        where.searchKeys = JSON.stringify(searchKeys);
         where.searchCondition = func.buildSearchCondition('Invoice');
         //where_cache["User"].where = where.where;
             return where;
 
+        }
+        function doVerify(id,unitId,fee) {
+            abp.message.confirm("确认审核此发票?").done(function () {
+                abp.services.app.invoice.getUnitInvoiceRemainFee(unitId).done(function (remainFee) {
+                    if (remainFee < fee) {
+                        abp.message.confirm('当前开票金额' + fee + '已超剩余可开金额' + remainFee + '，确定继续吗？').done(function () {
+                            func.runAsync(abp.services.app.invoice.verify([id]).done(function () {
+                                config.reloadTable();
+                            }))
+                        })
+                    } else {
+                        func.runAsync(abp.services.app.invoice.verify([id]).done(function () {
+                                config.reloadTable();
+                            }))
+                    }
+                })
+            })
         }
     </script>
 }

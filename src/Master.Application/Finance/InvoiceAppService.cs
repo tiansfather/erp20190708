@@ -1,4 +1,7 @@
 ﻿using Abp.AutoMapper;
+using Abp.Linq.Extensions;
+using Master.Dto;
+using Master.Storage;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using System;
@@ -16,9 +19,76 @@ namespace Master.Finance
         {
             return nameof(Invoice);
         }
-        public override async Task<Dictionary<string,object>> GetPageSummary(IQueryable<Invoice> queryable)
+        /// <summary>
+        /// 获取已开金额
+        /// </summary>
+        /// <param name="unitId"></param>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <returns></returns>
+        public virtual async Task<decimal> GetUnitInvoicedFee(int unitId,DateTime? startDate,DateTime? endDate)
+        {
+            return await Manager.GetAll().Where(o=>o.InvoiceStatus==InvoiceStatus.已审核)
+                .Where(o=>o.UnitId==unitId)
+                .WhereIf(startDate.HasValue, o => o.CreationTime >= startDate.Value)
+                .WhereIf(endDate.HasValue, o => o.CreationTime <= endDate.Value)
+                .SumAsync(o => o.Fee);
+        }
+        /// <summary>
+        /// 获取进货金额
+        /// </summary>
+        /// <param name="unitId"></param>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <returns></returns>
+        public virtual async Task<decimal> GetUnitStoredFee(int unitId, DateTime? startDate, DateTime? endDate)
+        {
+            return await Resolve<MaterialSellOutManager>().GetAll().Where(o => o.UnitId == unitId)
+                .Where(o => o.FlowSheet.SheetNature == WorkFlow.SheetNature.正单)
+                .Where(o => o.FlowSheet.OrderStatus == null || (o.FlowSheet.OrderStatus != "待审核" && o.FlowSheet.OrderStatus != "已退货" && o.FlowSheet.OrderStatus != "已取消"))
+                .WhereIf(startDate.HasValue, o => o.CreationTime >= startDate.Value)
+                .WhereIf(endDate.HasValue, o => o.CreationTime <= endDate.Value)
+                .SumAsync(o => o.Price * o.Discount*o.OutNumber);
+        }
+        /// <summary>
+        /// 获取剩余可开金额
+        /// </summary>
+        /// <param name="unitId"></param>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <returns></returns>
+        public virtual async Task<decimal> GetUnitInvoiceRemainFee(int unitId, DateTime? startDate, DateTime? endDate)
+        {
+            var remainFee= (await GetUnitStoredFee(unitId, startDate, endDate)) - (await GetUnitInvoicedFee(unitId, startDate, endDate));
+            if (remainFee < 0)
+            {
+                remainFee = 0;
+            }
+            return remainFee;
+        }
+        public override async Task<Dictionary<string,object>> GetPageSummary(IQueryable<Invoice> queryable,RequestPageDto requestPageDto)
         {
             var result = new Dictionary<string, object>();
+            var searchKeys = requestPageDto.SearchKeyDic;
+            if (searchKeys.ContainsKey("unitId"))
+            {
+                var unitId = int.Parse(searchKeys["unitId"]);
+                DateTime? startDate=null,endDate = null;
+                if (searchKeys.ContainsKey("startDate"))
+                {
+                    startDate = DateTime.Parse(searchKeys["startDate"]);
+                }
+                if (searchKeys.ContainsKey("endDate"))
+                {
+                    endDate = DateTime.Parse(searchKeys["endDate"]);
+                }
+                //如果查询中包含代理商，则需要查询出进货总额、已开总额
+                var invoicedFee = await GetUnitInvoicedFee(unitId, startDate, endDate);
+                var storedFee = await GetUnitStoredFee(unitId, startDate, endDate);
+                result.Add("进货总额", storedFee.ToString("0.00"));
+                result.Add("已开总额", invoicedFee.ToString("0.00"));
+                result.Add("剩余可开金额", (storedFee-invoicedFee).ToString("0.00"));
+            }
             result.Add("增票",(await queryable.Where(o => o.Type == "增票").SumAsync(o => o.Fee)).ToString("0.00"));
             result.Add("普票",(await queryable.Where(o => o.Type == "普票").SumAsync(o => o.Fee)).ToString("0.00"));
             return result;

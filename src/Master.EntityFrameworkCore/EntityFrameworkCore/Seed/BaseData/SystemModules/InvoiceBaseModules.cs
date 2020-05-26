@@ -25,11 +25,12 @@ namespace Master.EntityFrameworkCore.Seed.BaseData.SystemModules
             {
                 ButtonKey = "Verify",
                 ButtonName = "审核",
-                ButtonActionType = ButtonActionType.Ajax,
-                ButtonType = ButtonType.ForSelectedRows,
+                ButtonActionType = ButtonActionType.Func,
+                ButtonType = ButtonType.ForSingleRow,
                 ConfirmMsg="确认审核这些发票？",
                 //ButtonActionParam = "{\"area\": [\"80%\", \"90%\"],\"btn\":null}",
-                ButtonActionUrl = "abp.services.app.invoice.verify",
+                //ButtonActionUrl = "abp.services.app.invoice.verify",
+                ButtonActionUrl="doVerify({{d.id}},{{d.unitId}},{{d.fee}})",
                 Sort=1
             });
             btns.Add(new ModuleButton()
@@ -42,7 +43,7 @@ namespace Master.EntityFrameworkCore.Seed.BaseData.SystemModules
                 //ButtonActionParam = "{\"area\": [\"80%\", \"90%\"],\"btn\":null}",
                 ButtonActionUrl = "abp.services.app.invoice.close",
                 Sort=2,
-                ButtonClass="layui-dange"
+                ButtonClass="layui-btn-danger"
             });
             return btns;
         }
