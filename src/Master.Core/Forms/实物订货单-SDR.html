@@ -74,7 +74,7 @@
                     <th>订购数量</th>
                     <th>计量单位</th>
                     <th>适用区域</th>
-                    <template v-if="isSend">
+                    <template v-if="isSend || true">
                         <th width="120">折扣</th>
                         <th>发货单价</th>
                         <th>小计</th>
@@ -96,7 +96,7 @@
                     </td>
                     <td>{{item.measureMentUnit}}</td>
                     <td>{{item.location}}</td>
-                    <template v-if="isSend">
+                    <template v-if="isSend || true">
                         <td>
                             <el-input-number v-model="item.discount" style="width:100px" :min="0" :max="1" size="mini" :step="0.1" label="折扣" v-if="isSend &&_formOption.mode!='readonly'"></el-input-number>
                             <template v-else>
@@ -127,13 +127,13 @@
             </tbody>
         </table>
     </el-form>
-
-    <el-form :inline="true" size="mini" v-if="isSend && _formOption.mode!='readonly'">
+    <!--v-if="isSend && _formOption.mode!='readonly'"-->
+    <el-form :inline="true" size="mini">
         <el-form-item label="货款总额:">
             <el-input v-model="materialFee" readonly="true"></el-input>
         </el-form-item>
         <el-form-item label="其它费用:">
-            <el-input v-model="currentItem.otherFee" typeof="number"></el-input>
+            <numberinput :addon="false" v-model="currentItem.otherFee" typeof="number" :readonly="!isSend"></numberinput>
         </el-form-item>
         <el-form-item label="本单应收金额:">
             <el-input v-model="totalFee" readonly="true"></el-input>

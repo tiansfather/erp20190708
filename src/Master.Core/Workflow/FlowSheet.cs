@@ -116,6 +116,7 @@ namespace Master.WorkFlow
             }
         }
         public virtual string OrderStatus { get; set; }
+        public decimal Fee { get; set; }
     }
 
     /// <summary>

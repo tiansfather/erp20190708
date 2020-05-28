@@ -90,7 +90,7 @@
                     </template>
                 </el-form-item>
                 <el-form-item label="其它费用:">
-                    <el-input v-model="currentItem.otherFee" typeof="number" v-if="!_formOption.readonly"></el-input>
+                    <numberinput :addon="false" v-model="currentItem.otherFee" typeof="number" v-if="!_formOption.readonly"></numberinput>
                     <template v-else>
                         {{currentItem.otherFee}}
                     </template>

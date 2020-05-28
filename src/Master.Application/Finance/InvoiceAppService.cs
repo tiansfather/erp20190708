@@ -43,12 +43,18 @@ namespace Master.Finance
         /// <returns></returns>
         public virtual async Task<decimal> GetUnitStoredFee(int unitId, DateTime? startDate, DateTime? endDate)
         {
-            return await Resolve<MaterialSellOutManager>().GetAll().Where(o => o.UnitId == unitId)
+            //出库数量
+            var outFee= await Resolve<MaterialSellOutManager>().GetAll().Where(o => o.UnitId == unitId)
                 .Where(o => o.FlowSheet.SheetNature == WorkFlow.SheetNature.正单)
-                .Where(o => o.FlowSheet.OrderStatus == null || (o.FlowSheet.OrderStatus != "待审核" && o.FlowSheet.OrderStatus != "已退货" && o.FlowSheet.OrderStatus != "已取消"))
+                .Where(o => o.FlowSheet.OrderStatus == null || (o.FlowSheet.OrderStatus != "待审核" && o.FlowSheet.OrderStatus != "已取消"))
                 .WhereIf(startDate.HasValue, o => o.CreationTime >= startDate.Value)
                 .WhereIf(endDate.HasValue, o => o.CreationTime <= endDate.Value)
                 .SumAsync(o => o.Price * o.Discount*o.OutNumber);
+            var backFee = await Resolve<MaterialSellBackManager>().GetAll().Where(o => o.UnitId == unitId)
+                .WhereIf(startDate.HasValue, o => o.CreationTime >= startDate.Value)
+                .WhereIf(endDate.HasValue, o => o.CreationTime <= endDate.Value)
+                .SumAsync(o => o.Price * o.Discount * o.BackNumber);
+            return outFee - backFee;
         }
         /// <summary>
         /// 获取剩余可开金额

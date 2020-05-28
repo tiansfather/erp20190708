@@ -54,7 +54,7 @@
                 </el-row>
                 <el-row>
                     <el-form-item label="发生金额:" :class="{'is-error':receiveRemainFee<0}">
-                        <el-input v-model="currentItem.fee" type="number" v-if="!_formOption.readonly"></el-input>
+                        <numberinput v-model="currentItem.fee" type="number" v-if="!_formOption.readonly" style="width:180px"></numberinput>
                         <template v-else>
                             {{currentItem.fee}}
                         </template>

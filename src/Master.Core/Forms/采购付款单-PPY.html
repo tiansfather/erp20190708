@@ -56,16 +56,15 @@
                     </template>
                 </el-form-item>
                 <el-form-item :label="currentItem.payType=='0'?'现金':'转账'" v-if="currentItem.payType!='2'">
-                    <!--<template v-if="!_formOption.readonly">
-                        <el-input-number v-model="currentItem.inputedFee" :precision="2" :controls="false" style="text-align:right" @@focus="currentItem.inputedFee=''"></el-input-number>
-                        元
-                    </template>-->
+                    <template v-if="!_formOption.readonly">
+                        <numberinput v-model="currentItem.inputedFee" style="float:left;width:200px"></numberinput>
+                    </template>
                     
-                    <el-input placeholder="" v-model="currentItem.inputedFee" type="number" v-if="!_formOption.readonly">
+                    <!--<el-input placeholder="" v-model="currentItem.inputedFee" type="number" v-if="!_formOption.readonly">
                         <template slot="append">
                             元
                         </template>
-                    </el-input>
+                    </el-input>-->
                     <template v-else>
                         {{currentItem.inputedFee}}元
                     </template>

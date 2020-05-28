@@ -1063,3 +1063,37 @@
         }
     });
 </script>
+<script>
+    Vue.component('numberinput', {
+        template: '<el-input v-model="myValue" type="number"  @@focus="handleFocus" @@change="handleChange" @@blur="handleBlur"><template slot="append" v-if="myAddon">元</template></el-input>',
+        props: ['value','addon'],
+        data: function () {
+            return {
+                myValue: this.value,
+                myAddon: this.addon == null ? true : this.addon
+            }
+        },
+        methods: {
+            handleFocus: function () {
+                if (this.myValue == 0) {
+                    this.myValue = '';
+                }
+            },
+            handleChange: function () {
+                this.$emit('input', this.myValue);
+            },
+            handleBlur: function () {
+                if (!this.myValue) {
+                    this.myValue = '0.00';
+                }
+                this.myValue = (parseFloat(this.myValue)).toFixed(2);
+            }
+        },
+        created: function () {
+            if (!this.myValue) {
+                this.myValue = '0.00';
+            }
+            
+        }
+    });
+</script>

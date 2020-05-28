@@ -42,6 +42,7 @@ namespace Master.FlowHandlers
 
             flowSheet.SheetDate = sheetHeader["sheetDate"].ToObjectWithDefault<DateTime>();
             flowSheet.Remarks = sheetHeader["remarks"].ToObjectWithDefault<string>();
+            flowSheet.Fee = sheetHeader["totalFee"].ToObjectWithDefault<decimal>();
             var unitId = sheetHeader["unitId"].ToObject<int>();//代理商id
             flowSheet.UnitId = unitId;
             flowSheet.OrderStatus="待审核";
@@ -142,6 +143,7 @@ namespace Master.FlowHandlers
             var formObj = Newtonsoft.Json.JsonConvert.DeserializeObject<JObject>(flowSheet.FlowInstance.FormData);
             var sheetData = formObj["sheetData"];
             var sheetHeader = sheetData["header"];
+            flowSheet.Fee = sheetHeader["totalFee"].ToObjectWithDefault<decimal>();
             var unitId = sheetHeader["unitId"].ToObject<int>();//代理商id
             if (action == "backToCart")
             {
