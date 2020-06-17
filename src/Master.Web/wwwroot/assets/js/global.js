@@ -897,8 +897,13 @@ Vue.directive('disabled', function (el, binding) {
     }
 })
 
-Vue.filter('objEmptyStr', function (value,str) {
+Vue.filter('objEmptyStr', function (value, str) {
     if (!value) return '';
     return value[str]
-})
-
+});
+window.setInterval(function () {
+    if ($(".soul-bottom-contion").length > 0) {
+        var totalWidth = $(".soul-bottom-contion").width();
+        $(".condition-items").css("width", (totalWidth - 125) + "px");
+    }
+}, 1000);
