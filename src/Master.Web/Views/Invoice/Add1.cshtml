@@ -47,8 +47,9 @@
                             currentItem: {
                                 items: [],
                                 unitId: abp.session.user.unitId,
-                                unitInvoice: {}
+                                unitInvoice: {}                                
                             },
+                            sumFee:'0.00',
                             columns: [
                                 { type: 'text', title: '开票内容', key: 'content' },          
                                 { type: 'number', title: '数量', key: 'number' },
@@ -66,13 +67,13 @@
                             ],
                         },
                         computed: {
-                            sumFee: function () {
-                                var sum = 0;
-                                this.currentItem.items.forEach(function (o) {
-                                    o.fee && !isNaN(o.fee) && (sum+=parseFloat(o.fee));
-                                })
-                                return sum.toFixed(2);
-                            }
+                            //sumFee: function () {
+                            //    var sum = 0;
+                            //    this.currentItem.items.forEach(function (o) {
+                            //        o.fee && !isNaN(o.fee) && (sum+=parseFloat(o.fee));
+                            //    })
+                            //    return sum.toFixed(2);
+                            //}
                         },
                         methods: {            
                             change: function (ev) {
@@ -87,6 +88,11 @@
                                         ev.part.price = (ev.value/ev.part.number).toFixed(2);
                                         break;
                                 }
+                                var sum = 0;
+                                this.currentItem.items.forEach(function (o) {
+                                    o.fee && !isNaN(o.fee) && (sum+=parseFloat(o.fee));
+                                })
+                                this.sumFee = sum.toFixed(2);
                             },
                             loadUnitInfo: function () {
                                 if (!this.currentItem.unitId) return;

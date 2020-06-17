@@ -49,6 +49,7 @@
                             unitId: abp.session.user.unitId,
                             unitInvoice: {}
                         },
+                        sumFee:'0.00',
                         materialTypes:[],
                         columns: [
                             { type: 'text', title: '开票内容', key: 'content' },
@@ -84,6 +85,11 @@
                                     ev.part.price = (ev.value/ev.part.number).toFixed(2);
                                     break;
                             }
+                            var sum = 0;
+                                this.currentItem.items.forEach(function (o) {
+                                    o.fee && !isNaN(o.fee) && (sum+=parseFloat(o.fee));
+                                })
+                                this.sumFee = sum.toFixed(2);
                         },
                         loadUnitInfo: function () {
                             if (!this.currentItem.unitId) return;
