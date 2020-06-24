@@ -10,9 +10,9 @@
 	<div class="layui-card">
 		<div class="layui-card-body">
             <div class="LAY-app-message-btns" style="margin-bottom: 10px;">
-                <vc:module-button module-key="SDRSheet"></vc:module-button>
-                <button class="layui-btn  layui-btn-sm" type="button" buttonname="批量审核" modulekey="SDRSheet" params="" lay-event="Verify" confirmmsg="确认审核通过这些单据？" buttonactiontype="Ajax" buttonactionurl="abp.services.app.sDRSheet.verify" onclick="func.callModuleButtonEvent()">批量审核</button>
-                <button class="layui-btn  layui-btn-sm layui-btn-normal" type="button" buttonname="批量审核" modulekey="SDRSheet" params="" lay-event="Cancel" confirmmsg="确认取消这些单据？" buttonactiontype="Ajax" buttonactionurl="abp.services.app.sDRSheet.cancel" onclick="func.callModuleButtonEvent()">批量取消</button>
+                <vc:module-button module-key="SDRVerify"></vc:module-button>
+                <button class="layui-btn  layui-btn-sm" type="button" buttonname="批量审核" modulekey="SDRVerify" params="" lay-event="Verify" confirmmsg="确认审核通过这些单据？" buttonactiontype="Ajax" buttonactionurl="abp.services.app.sDRSheet.verify" onclick="func.callModuleButtonEvent()">批量审核</button>
+                <button class="layui-btn  layui-btn-sm layui-btn-normal" type="button" buttonname="批量审核" modulekey="SDRVerify" params="" lay-event="Cancel" confirmmsg="确认取消这些单据？" buttonactiontype="Ajax" buttonactionurl="abp.services.app.sDRSheet.cancel" onclick="func.callModuleButtonEvent()">批量取消</button>
             </div>
 			<vc:module-table param="@(new ModuleTableViewParam() {ID="SDRVerify",ShowCheckbox=true,ModuleKey=nameof(Master.WorkFlow.Modules.SDRVerify),Height="full-100",Where="OrderStatus=\"待审核\"" })"></vc:module-table>
 		</div>

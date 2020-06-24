@@ -34,7 +34,10 @@
                         </el-form>
 
                     </div>
-                    <table id="Material" lay-filter="Material"></table>
+                    <div class="model-table">
+                        <table id="Material" lay-filter="Material"></table>
+                    </div>
+                    
                 </div>
                 
 
@@ -95,7 +98,8 @@
                     table.render({
                         elem: '#Material',
                         autoSort: false,
-                        toolbar: false,
+                        toolbar: true,
+                        defaultToolbar:['print','exports'],
                         //cellMinWidth: '60',
                         height: 'full-110',
                         url: '/api/services/app/MaterialBuyBack/GetPageResult',

@@ -9,10 +9,10 @@
 <div class="layui-fluid" id="LAY-app-message">
     <div class="layui-card">
         <div class="layui-card-body">
-            <div class="LAY-app-message-btns" style="margin-bottom: 10px;">
+            <div class="LAY-app-message-btns" style="margin-bottom: 10px;height:30px">
                 <vc:module-button module-key="UnitFeeHistory"></vc:module-button>
             </div>
-            <vc:module-table param="@(new ModuleTableViewParam() {ID="UnitFeeHistory",ModuleKey="UnitFeeHistory",Height="full-110" })"></vc:module-table>
+            <vc:module-table param="@(new ModuleTableViewParam() {ID="UnitFeeHistory",ModuleKey="UnitFeeHistory",Height="full-110",ToolBar="true",DefaultToolBar="['print','exports']" })"></vc:module-table>
 
         </div>
     </div>

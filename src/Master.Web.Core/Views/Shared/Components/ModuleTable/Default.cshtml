@@ -19,7 +19,7 @@
         column.Normalize();
     }
 }
-<style>
+@*<style>
     .model-table {
         position: relative;
     }
@@ -34,7 +34,7 @@
     .soul-bottom-contion .editCondtion a{
         width:120px;
     }
-</style>
+</style>*@
 <div class="model-table">
     @*<table module="@Model.ID" autoevent="1" id="@Model.ID" lay-filter="@Model.Filter" class="layui-table @Model.ClassName" lay-data="{toolbar:true,cellMinWidth:'120',height:'@Model.Height', url:'@Model.DataUrl',where:{where:'@Model.Where',searchKeys:'@Model.SearchKeys'}, page:true,limit:@Model.ModuleInfo.DefaultLimit,limits:@Model.ModuleInfo.Limits,initSort:{field:'@Model.ModuleInfo.SortField',type:'@Model.ModuleInfo.SortType.ToString().ToLower()'}, id:'@Model.ID', even: true,done:config.onTableDone}">
             <thead>
