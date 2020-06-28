@@ -12,7 +12,7 @@ namespace Master.WorkFlow.Modules
     {
         [InterColumn(ColumnName = "调拨单编号", Templet = "<a dataid=\"{{d.id}}\" class=\"layui-btn layui-btn-xs layui-btn-normal\" buttonname=\"单据\" params=\"{&quot;btn&quot;:[]}\"   buttonactiontype=\"Form\" buttonactionurl=\"/FlowSheet/SheetView\" onclick=\"func.callModuleButtonEvent()\">{{d.sheetSN}}</a>", Sort = 1)]
         public override string SheetSN { get => base.SheetSN; set => base.SheetSN = value; }
-        [InterColumn(ColumnName = "发生金额", ValuePath = "Property", ColumnType = Module.ColumnTypes.Number, Sort = 2)]
+        [InterColumn(ColumnName = "发生金额", ValuePath = "Property", ColumnType = Module.ColumnTypes.Number, Sort = 2,DisplayFormat ="N2")]
         [NotMapped]
         public virtual decimal Fee { get; set; }
         [InterColumn(ColumnName = "调出账号", ValuePath = "Property",Sort =3,EnableDataFilter =true)]

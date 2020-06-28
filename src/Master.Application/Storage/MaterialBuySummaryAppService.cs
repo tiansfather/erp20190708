@@ -93,7 +93,7 @@ namespace Master.Storage
                     material.MeasureMentUnit,
                     MaterialNature=material.MaterialNature.ToString(),
                     buyNumber,
-                    fee,
+                    fee=fee.ToString("N2"),
                 });
             }
 

@@ -907,3 +907,33 @@ window.setInterval(function () {
         $(".condition-items").css("width", (totalWidth - 125) + "px");
     }
 }, 1000);
+
+function numFormat(a) {
+    if (!a) { return ''}
+    if (typeof (a) !== 'number') {
+        a = parseFloat(a);
+    }
+    var tmpStr = a.toString();
+    if (tmpStr.indexOf('.') == -1) { tmpStr+='.00' }
+    return a.toFixed(tmpStr.split(".")[1].length).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+    //var num = n.toString();
+    //var decimals = '';
+    //// 判断是否有小数
+    //num.indexOf('.') > -1 ? decimals = num.split('.')[1] : decimals;
+    //var len = num.length;
+    //if (len <= 3) {
+    //    return num;
+    //} else {
+    //    var temp = '';
+    //    var remainder = len % 3;
+    //    decimals ? temp = '.' + decimals : temp;
+    //    if (remainder > 0) { // 不是3的整数倍
+    //        return num.slice(0, remainder) + ',' + num.slice(remainder, len).match(/\d{3}/g).join(',') + temp;
+    //    } else { // 是3的整数倍
+    //        return num.slice(0, len).match(/\d{3}/g).join(',') + temp;
+    //    }
+    //}
+}
+function numBack(str) {
+    return str.replace(/[^0-9|.]/ig, '');
+}

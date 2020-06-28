@@ -92,7 +92,7 @@
         config.onTableDone = function () {
             var tpl = '';
             for (var key in summarys) {
-                tpl += '<span>'+key + ':<font color="red">' + summarys[key]+"</font>&nbsp;&nbsp;&nbsp;</span>";
+                tpl += '<span>' + key + ':<font color="red">' + numFormat( summarys[key]) + "</font>&nbsp;&nbsp;&nbsp;</span>";
             }
             console.log(tpl);
             $("#summarys").html(tpl);

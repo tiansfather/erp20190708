@@ -36,9 +36,9 @@
                 </el-form>
                 <el-divider></el-divider>
                 <div>
-                    <span>应收款:{{sumIn.toFixed(2)}}</span>
-                    <span>应付款:{{sumOut.toFixed(2)}}</span>
-                    <span>合计:{{sum.toFixed(2)}}</span>
+                    <span>应收款:{{numFormat(sumIn)}}</span>
+                    <span>应付款:{{numFormat(sumOut)}}</span>
+                    <span>合计:{{numFormat(sum)}}</span>
                 </div>
             </div>
             
@@ -70,15 +70,15 @@
                     sumIn: function () {
                         var sum = 0;
                         this.items.filter(function (o) { return o.remainFee < 0 }).forEach(function (o) { sum += o.remainFee });
-                        return sum;
+                        return Math.round(sum*100)/100;
                     },
                     sumOut: function () {
                         var sum = 0;
-                        this.items.filter(function (o) { return o.remainFee > 0 }).forEach(function (o) { sum += o.remainFee });
-                        return sum;
+                        this.items.filter(function (o) { return o.remainFee > 0 }).forEach(function (o) { sum += o.remainFee });                        
+                        return Math.round(sum*100)/100;
                     },
                     sum: function () {
-                        return (this.sumIn +this.sumOut);
+                        return Math.round((this.sumIn + this.sumOut)*100)/100;
                     }
 
                 },
@@ -98,7 +98,7 @@
                                 even: true,
                                 cols: [[
                                     { field: 'unitName', title: '往来单位' },
-                                    { field: 'remainFee', title: '应收款/应付款' },
+                                    { field: 'remainFee', title: '应收款/应付款', templet: function (d) { return numFormat(d.remainFee) } },
                                     { field: 'sheetSN', title: '截至时间前最后一次交易记录' },
                                     { field: 'creationTime', title: '截至时间前最后一次交易时间' },
                                 ]],

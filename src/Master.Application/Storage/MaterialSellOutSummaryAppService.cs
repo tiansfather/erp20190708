@@ -107,7 +107,7 @@ namespace Master.Storage
                     material.MeasureMentUnit,
                     MaterialNature=material.MaterialNature.ToString(),
                     outNumber=outNumber-backNumber,
-                    fee=fee-backFee,
+                    fee=(fee-backFee).ToString("N2"),
                 });
             }
 

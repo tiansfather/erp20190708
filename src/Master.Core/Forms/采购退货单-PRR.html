@@ -66,7 +66,7 @@
                             </td>
                             <td>{{(item.price*item.discount).toFixed(2)}}</td>
                             <td>
-                                {{getSum(item)}}
+                                {{numFormat(getSum(item))}}
                             </td>
                         </tr>
                     </tbody>
@@ -75,21 +75,21 @@
 
             <el-form :inline="true" size="mini" :disabled="_formOption.readonly" label-width="120px">
                 <el-form-item label="货款总额:">
-                    <el-input v-model="materialFee" readonly="true" v-if="!_formOption.readonly"></el-input>
+                    <el-input :value="numFormat(materialFee)" readonly="true" v-if="!_formOption.readonly"></el-input>
                     <template v-else>
-                        {{materialFee}}
+                        {{numFormat(materialFee)}}
                     </template>
                 </el-form-item>
                 <el-form-item label="其它费用:">
                     <numberinput :addon="false" v-model="currentItem.otherFee" typeof="number" v-if="!_formOption.readonly"></numberinput>
                     <template v-else>
-                        {{currentItem.otherFee}}
+                        {{numFormat(currentItem.otherFee)}}
                     </template>
                 </el-form-item>
                 <el-form-item label="本单应收金额:">
-                    <el-input v-model="totalFee" readonly="true" v-if="!_formOption.readonly"></el-input>
+                    <el-input :value="numFormat(totalFee)" readonly="true" v-if="!_formOption.readonly"></el-input>
                     <template v-else>
-                        {{totalFee}}
+                        {{numFormat(totalFee)}}
                     </template>
                 </el-form-item>
 
@@ -129,7 +129,7 @@
                     </tr>
                     <tr>
                         <td class="weight-font">本单应收：</td>
-                        <td>{{totalFee}}</td>
+                        <td>{{numFormat(totalFee)}}</td>
                         <td class="weight-font">备注：</td>
                         <td>{{currentItem.remarks}}</td>
                     </tr>
@@ -153,12 +153,12 @@
                         <td class="tx-r">{{item.number}}</td>
                         <td class="tx-r">{{(item.price*item.discount).toFixed(2)}}</td>
                         <td class="tx-c">{{item.measureMentUnit}}</td>
-                        <td class="tx-r">{{getSum(item)}}</td>
+                        <td class="tx-r">{{numFormat(getSum(item))}}</td>
                     </tr>
                 </table>
                 <p class="total-wrap">
-                    <span style="margin-right:30px;">货款总额：{{materialFee}}元</span>
-                    <span>其他费用：{{currentItem.otherFee}}元</span>
+                    <span style="margin-right:30px;">货款总额：{{numFormat(materialFee)}}元</span>
+                    <span>其他费用：{{numFormat(currentItem.otherFee)}}元</span>
                 </p>
                 <p class="total-wrap weight-font sign">
                     <span style="margin-right:30px;">退货人签名：</span>

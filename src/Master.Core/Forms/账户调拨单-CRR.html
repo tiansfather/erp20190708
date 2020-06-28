@@ -32,7 +32,7 @@
                 <el-form-item label="调拨金额:">
                     <numberinput v-model="currentItem.fee" type="number" v-if="!_formOption.readonly"></numberinput>
                     <template v-else>
-                        {{currentItem.fee}}
+                        {{numFormat(currentItem.fee)}}
                     </template>
                 </el-form-item>
 
@@ -72,7 +72,7 @@
 
                     <tr >
                         <td class="tx-c weight-font">调拨金额:</td>
-                        <td class="tx-l" colspan="5">{{currentItem.fee}}</td>
+                        <td class="tx-l" colspan="5">{{numFormat(currentItem.fee)}}</td>
                     </tr>
                     <tr>
                         <td class="tx-c weight-font">备注:</td>

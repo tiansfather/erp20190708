@@ -40,15 +40,15 @@
                 </el-row>
                 <el-row>
                     <el-form-item label="收款前结余(元):">
-                        <el-input v-model="currentItem.payUnit.nowFee" readonly="true" tips="负数代表对方欠我方，正数代表我方欠对方。" v-if="!_formOption.readonly"></el-input>
+                        <el-input :value="numFormat(currentItem.payUnit.nowFee)" readonly="true" tips="负数代表对方欠我方，正数代表我方欠对方。" v-if="!_formOption.readonly"></el-input>
                         <template v-else>
-                            {{currentItem.payUnit.nowFee}}
+                            {{numFormat(currentItem.payUnit.nowFee)}}
                         </template>
                     </el-form-item>
                     <el-form-item label="付款前结余(元):">
-                        <el-input v-model="currentItem.receiveUnit.nowFee" readonly="true" tips="负数代表对方欠我方，正数代表我方欠对方。" v-if="!_formOption.readonly"></el-input>
+                        <el-input :value="numFormat(currentItem.receiveUnit.nowFee)" readonly="true" tips="负数代表对方欠我方，正数代表我方欠对方。" v-if="!_formOption.readonly"></el-input>
                         <template v-else>
-                            {{currentItem.receiveUnit.nowFee}}
+                            {{numFormat(currentItem.receiveUnit.nowFee)}}
                         </template>
                     </el-form-item>
                 </el-row>
@@ -56,7 +56,7 @@
                     <el-form-item label="发生金额:" :class="{'is-error':receiveRemainFee<0}">
                         <numberinput v-model="currentItem.fee" type="number" v-if="!_formOption.readonly" style="width:180px"></numberinput>
                         <template v-else>
-                            {{currentItem.fee}}
+                            {{numFormat(currentItem.fee)}}
                         </template>
                     </el-form-item>
                     <el-form-item label="发生日期:">
@@ -68,21 +68,21 @@
                 </el-row>
                 <el-row>
                     <el-form-item label="收款后结余:">
-                        <el-input v-model="payRemainFee" readonly="true" tips="负数代表对方欠我方，正数代表我方欠对方。" v-if="!_formOption.readonly"></el-input>
+                        <el-input :value="numFormat(payRemainFee)" readonly="true" tips="负数代表对方欠我方，正数代表我方欠对方。" v-if="!_formOption.readonly"></el-input>
                         <template v-else>
-                            {{payRemainFee}}
+                            {{numFormat(payRemainFee)}}
                         </template>
                     </el-form-item>
                     <el-form-item label="付款后结余:" :class="{'is-error':receiveRemainFee<0}">
                         <template v-if="!_formOption.readonly">
-                            <el-input v-model="receiveRemainFee" readonly="true" tips="负数代表对方欠我方，正数代表我方欠对方。"></el-input>
+                            <el-input :value="numFormat(receiveRemainFee)" readonly="true" tips="负数代表对方欠我方，正数代表我方欠对方。"></el-input>
                             <div class="el-form-item__error" v-if="receiveRemainFee<0">
                                 供应商结余为负数
                             </div>
                         </template>
 
                         <template v-else>
-                            {{receiveRemainFee}}
+                            {{numFormat(receiveRemainFee)}}
                         </template>
                     </el-form-item>
                 </el-row>
@@ -124,21 +124,21 @@
                         <td class="tx-c weight-font">收款单位名称:</td>
                         <td class="tx-l">{{currentItem.receiveUnit.companyName}}</td>
                         <td class="tx-c weight-font">收款前结余(元):</td>
-                        <td class="tx-l">{{currentItem.payUnit.nowFee}}</td>
+                        <td class="tx-l">{{numFormat(currentItem.payUnit.nowFee)}}</td>
                         <td class="tx-c weight-font">付款前结余(元):</td>
-                        <td class="tx-l">{{currentItem.receiveUnit.nowFee}}</td>
+                        <td class="tx-l">{{numFormat(currentItem.receiveUnit.nowFee)}}</td>
                     </tr>
                     <tr >
                         <td class="tx-c weight-font">发生金额:</td>
-                        <td class="tx-l">{{currentItem.fee}}</td>
+                        <td class="tx-l">{{numFormat(currentItem.fee)}}</td>
                         <td class="tx-c weight-font">发生日期:</td>
                         <td class="tx-l" colspan="3">{{currentItem.sheetDate}}</td>
                     </tr>
                     <tr>
                         <td class="tx-c weight-font">收款后结余(元):</td>
-                        <td class="tx-l">{{payRemainFee}}</td>
+                        <td class="tx-l">{{numFormat(payRemainFee)}}</td>
                         <td class="tx-c weight-font">付款后结余(元):</td>
-                        <td class="tx-l" colspan="3">{{receiveRemainFee}}</td>
+                        <td class="tx-l" colspan="3">{{numFormat(receiveRemainFee)}}</td>
                     </tr>
                     <tr>
                         <td class="tx-c weight-font">备注:</td>

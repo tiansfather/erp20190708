@@ -92,8 +92,8 @@ namespace Master.Storage
                 result.Add(new
                 {
                     account.Name,
-                    totalIn,
-                    totalOut
+                    totalIn=totalIn.ToString("N2"),
+                    totalOut=totalOut.ToString("N2")
                 });
             }
             //增加合计

@@ -30,9 +30,9 @@
                     </template>
                 </el-form-item>
                 <el-form-item label="当前结余:">
-                    <el-input v-model="currentItem.unitInfo.nowFee" readonly="true" tips="负数代表对方欠我方，正数代表我方欠对方。" v-if="!_formOption.readonly"></el-input>
+                    <el-input :value="numFormat(currentItem.unitInfo.nowFee)" readonly="true" tips="负数代表对方欠我方，正数代表我方欠对方。" v-if="!_formOption.readonly"></el-input>
                     <template v-else>
-                        {{currentItem.unitInfo.nowFee}}
+                        {{numFormat(currentItem.unitInfo.nowFee)}}
                     </template>
                 </el-form-item>
 
@@ -71,7 +71,7 @@
                     <numberinput placeholder="" v-model="currentItem.inputedFee" type="number" v-if="!_formOption.readonly" style="width:200px;float:left">
                     </numberinput>
                     <template v-else>
-                        {{currentItem.inputedFee}}元
+                        {{numFormat(currentItem.inputedFee)}}元
                     </template>
                     <template v-if="!_formOption.readonly">
                         <el-select v-model="currentItem.accountId" placeholder="请选择账号" size="medium" v-if="currentItem.payType=='1'" style="float:left">
@@ -114,9 +114,9 @@
                 </el-autocomplete>-->
                     </el-form-item>
                     <el-form-item label="支票金额:">
-                        <el-input v-model="currentItem.feeCheck.checkFee" type="number" readonly="true" v-if="!_formOption.readonly"></el-input>
+                        <el-input :value="numFormat(currentItem.feeCheck.checkFee)" readonly="true" v-if="!_formOption.readonly"></el-input>
                         <template v-else>
-                            {{currentItem.feeCheck.checkFee}}
+                            {{numFormat(currentItem.feeCheck.checkFee)}}
                         </template>
                     </el-form-item>
                     <el-form-item label="开票日期:">
@@ -156,7 +156,7 @@
             </el-form>
             <el-divider></el-divider>
             <div>
-                <label>本单付款总额（元）：{{totalFee}}</label>
+                <label>本单付款总额（元）：{{numFormat(totalFee)}}</label>
             </div>
         </div>
         
@@ -188,7 +188,7 @@
                         <td class="tx-c weight-font">单位名称:</td>
                         <td class="tx-l">{{currentItem.companyName}}</td>
                         <td class="tx-c weight-font">付款总额:</td>
-                        <td class="tx-l">{{totalFee}}</td>
+                        <td class="tx-l">{{numFormat(totalFee)}}</td>
                         <td class="tx-c weight-font">付款类型:</td>
                         <td class="tx-l">{{payTypeName}}</td>
                     </tr>

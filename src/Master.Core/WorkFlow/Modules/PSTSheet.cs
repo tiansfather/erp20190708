@@ -17,7 +17,7 @@ namespace Master.WorkFlow.Modules
         [InterColumn(ColumnName = "付款单位名称", ValuePath = "Property", Sort = 3, EnableDataFilter = true)]
         [NotMapped]
         public virtual string OutCompanyName { get; set; }
-        [InterColumn(ColumnName = "发生金额", ValuePath = "Property", ColumnType = Module.ColumnTypes.Number, Sort = 4)]
+        [InterColumn(ColumnName = "发生金额", ValuePath = "Property", ColumnType = Module.ColumnTypes.Number, Sort = 4, DisplayFormat = "N2")]
         [NotMapped]
         public virtual decimal Fee { get; set; }
 

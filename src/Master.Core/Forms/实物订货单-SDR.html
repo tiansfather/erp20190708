@@ -107,7 +107,7 @@
                             {{(item.price*item.discount).toFixed(2)}}
                         </td>
                         <td>
-                            {{getSum(item)}}
+                            {{numFormat(getSum(item))}}
                         </td>
                     </template>
 
@@ -130,13 +130,13 @@
     <!--v-if="isSend && _formOption.mode!='readonly'"-->
     <el-form :inline="true" size="mini">
         <el-form-item label="货款总额:">
-            <el-input v-model="materialFee" readonly="true"></el-input>
+            <el-input :value="numFormat(materialFee)" readonly="true"></el-input>
         </el-form-item>
         <el-form-item label="其它费用:">
             <numberinput :addon="false" v-model="currentItem.otherFee" typeof="number" :readonly="!isSend"></numberinput>
         </el-form-item>
         <el-form-item label="本单应收金额:">
-            <el-input v-model="totalFee" readonly="true"></el-input>
+            <el-input :value="numFormat(totalFee)" readonly="true"></el-input>
         </el-form-item>
 
     </el-form>

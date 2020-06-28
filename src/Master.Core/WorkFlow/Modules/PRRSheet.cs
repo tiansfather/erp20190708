@@ -17,7 +17,7 @@ namespace Master.WorkFlow.Modules
         public override DateTime CreationTime { get => base.CreationTime; set => base.CreationTime = value; }
         [InterColumn(ColumnName = "经办人", DisplayPath = "CreatorUser.Name", Templet = "{{d.creatorUserId_display||'/'}}", Sort = 4, EnableDataFilter = true)]
         public override long? CreatorUserId { get; set; }
-        [InterColumn(ColumnName = "应收总额", ValuePath = "Property", ColumnType = Module.ColumnTypes.Number, Sort = 5)]
+        [InterColumn(ColumnName = "应收总额", ValuePath = "Property", ColumnType = Module.ColumnTypes.Number, Sort = 5, DisplayFormat = "N2")]
         [NotMapped]
         public virtual decimal Fee { get; set; }
         [InterColumn(ColumnName = "仓库", ValuePath = "Property", Sort = 6, EnableDataFilter = true)]

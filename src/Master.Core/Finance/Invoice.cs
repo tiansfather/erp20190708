@@ -25,7 +25,7 @@ namespace Master.Finance
         [InterColumn(ColumnName = "单价", ColumnType = Module.ColumnTypes.Number, Sort = 5)]
         [Column(TypeName = "decimal(20,2)")]
         public decimal Price { get; set; }
-        [InterColumn(ColumnName = "开票金额",ColumnType =Module.ColumnTypes.Number, Sort = 6)]
+        [InterColumn(ColumnName = "开票金额",ColumnType =Module.ColumnTypes.Number, Sort = 6,DisplayFormat ="N2")]
         [Column(TypeName ="decimal(20,2)")]
         public decimal Fee { get; set; }
         [InterColumn(ColumnName = "税率", Sort = 7, EnableDataFilter = true)]

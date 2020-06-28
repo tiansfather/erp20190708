@@ -24,7 +24,7 @@ namespace Master.Finance
         /// <summary>
         /// 变化的金额,正数为应付增加，负数为应付减少
         /// </summary>
-        [InterColumn(ColumnName ="发生金额",ColumnType =Module.ColumnTypes.Number,DisplayFormat ="0.00", Sort = 3)]
+        [InterColumn(ColumnName ="发生金额",ColumnType =Module.ColumnTypes.Number,DisplayFormat ="N2", Sort = 3)]
         [Column(TypeName = "decimal(20,2)")]
         public decimal Fee { get; set; }
         [InterColumn(ColumnName ="流向",ColumnType =Module.ColumnTypes.Select,DictionaryName ="Master.Finance.FeeDirection",Templet ="{{d.feeDirection_display}}", Sort = 4, EnableDataFilter = true)]
@@ -32,7 +32,7 @@ namespace Master.Finance
         [NotMapped]
         [InterColumn(ColumnName = "对方单位名称", ValuePath ="Property", Sort = 5, EnableDataFilter = true)]
         public string RelCompanyName { get; set; }
-        [InterColumn(ColumnName = "账户余额", ColumnType = Module.ColumnTypes.Number, DisplayFormat = "0.00", Sort = 6)]
+        [InterColumn(ColumnName = "账户余额", ColumnType = Module.ColumnTypes.Number, DisplayFormat = "N2", Sort = 6)]
         [Column(TypeName = "decimal(20,2)")]
         public decimal RemainFee { get; set; }
         [InterColumn(ColumnName ="发生时间",ColumnType =Module.ColumnTypes.DateTime,DisplayFormat ="yyyy-MM-dd HH:mm", Sort = 7)]

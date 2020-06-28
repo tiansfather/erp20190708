@@ -119,7 +119,7 @@
                             { field: 'buyNumber', title: '入库数量' },
                             { field: 'discount', title: '入库折扣' },
                             { field: '', title: '入库单价', templet: function (d) { return (d.price * d.discount).toFixed(2) } },
-                            { field: '', title: '小计', templet: function (d) { return (d.price * d.discount * d.buyNumber).toFixed(2) } },
+                            { field: '', title: '小计', templet: function (d) { return numFormat(d.price * d.discount * d.buyNumber) } },
                             { field: 'creationTime', title: '发生时间',width:'140' },
                         ]],
 

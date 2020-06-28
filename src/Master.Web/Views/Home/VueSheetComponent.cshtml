@@ -1065,7 +1065,7 @@
 </script>
 <script>
     Vue.component('numberinput', {
-        template: '<el-input v-model="myValue" type="number"  @@focus="handleFocus" @@change="handleChange" @@blur="handleBlur"><template slot="append" v-if="myAddon">元</template></el-input>',
+        template: '<el-input v-model="myValue" type="text"  @@focus="handleFocus" @@change="handleChange" @@blur="handleBlur"><template slot="append" v-if="myAddon">元</template></el-input>',
         props: ['value','addon'],
         data: function () {
             return {
@@ -1078,15 +1078,20 @@
                 if (this.myValue == 0) {
                     this.myValue = '';
                 }
+                this.myValue = numBack(this.myValue);
             },
             handleChange: function () {
+                this.myValue = numBack(this.myValue);
                 this.$emit('input', this.myValue);
             },
             handleBlur: function () {
                 if (!this.myValue) {
                     this.myValue = '0.00';
                 }
-                this.myValue = (parseFloat(this.myValue)).toFixed(2);
+                this.myValue = numBack(this.myValue);
+                //this.myValue = (parseFloat(this.myValue)).toFixed(2);
+                this.myValue = numFormat((parseFloat(this.myValue)).toFixed(2));
+                console.log(this.myValue);
             }
         },
         created: function () {

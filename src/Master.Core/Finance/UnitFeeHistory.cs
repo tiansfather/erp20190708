@@ -23,10 +23,10 @@ namespace Master.Finance
         /// <summary>
         /// 变化的金额,正数为应付增加，负数为应付减少
         /// </summary>
-        [InterColumn(ColumnName = "发生金额", ColumnType = Module.ColumnTypes.Number, DisplayFormat = "0.00", Sort = 3)]
+        [InterColumn(ColumnName = "发生金额", ColumnType = Module.ColumnTypes.Number, DisplayFormat = "N2", Sort = 3)]
         [Column(TypeName = "decimal(20,2)")]
         public decimal Fee { get; set; }
-        [InterColumn(ColumnName = "发生后结余", ColumnType = Module.ColumnTypes.Number, DisplayFormat = "0.00", Sort = 4)]
+        [InterColumn(ColumnName = "发生后结余", ColumnType = Module.ColumnTypes.Number, DisplayFormat = "N2", Sort = 4)]
         [Column(TypeName = "decimal(20,2)")]
         public decimal RemainFee { get; set; }
         [InterColumn(ColumnName = "发生环节", ValuePath = "FlowSheet.FlowInstance.FlowForm.FormName", DisplayPath = "FlowSheet.FlowInstance.FlowForm.FormName", Templet = "{{d.formName_display}}", Sort = 5, EnableDataFilter = true)]
