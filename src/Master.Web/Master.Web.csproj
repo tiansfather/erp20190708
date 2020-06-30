@@ -143,7 +143,7 @@
     <None Include="wwwroot\assets\layuiadmin\layui\lay\modules\mobile.js" />
     <None Include="wwwroot\assets\layuiadmin\layui\lay\modules\rate.js" />
     <None Include="wwwroot\assets\layuiadmin\layui\lay\modules\slider.js" />
-    <None Include="wwwroot\assets\layuiadmin\layui\lay\modules\table.js" />
+    <None Include="wwwroot\assets\layuiadmin\layui\lay\modules\table2.js" />
     <None Include="wwwroot\assets\layuiadmin\layui\lay\modules\tree.js" />
     <None Include="wwwroot\assets\layuiadmin\layui\lay\modules\upload.js" />
     <None Include="wwwroot\assets\layuiadmin\layui\lay\modules\util.js" />
