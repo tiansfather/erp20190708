@@ -1913,7 +1913,7 @@ layui.define(['laytpl', 'laypage', 'layer', 'form', 'util'], function(exports){
           table.eachCols(id, function(i3, item3){
             if(item3.field && item3.type == 'normal' && !item3.hide){
               i1 == 0 && dataTitle.push(item3.title || '');
-              vals.push('"'+ parseTempData(item3, item1[item3.field], item1, 'text') + '"');
+              vals.push('"'+ parseTempData(item3, item1[item3.field]||'', item1, 'text') + '"');
             }
           });
         }
