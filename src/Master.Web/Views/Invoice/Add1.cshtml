@@ -116,8 +116,8 @@
                                     abp.message.error("请录入数据");
                                     return;
                                 }
-                                if (this.currentItem.items.filter(function (o) { return !o.content || !o.fee || !o.taxRate }).length) {
-                                    abp.message.error("开票内容、开票金额、税率不能为空");
+                                if (this.currentItem.items.filter(function (o) { return !o.content || !o.fee || !o.taxRate || !o.price || !o.number }).length) {
+                                    abp.message.error("开票内容、数量、单价、开票金额、税率不能为空");
                                     return;
                                 }
                                 var that = this;

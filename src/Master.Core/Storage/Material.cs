@@ -32,7 +32,7 @@ namespace Master.Storage
         [InterColumn(ColumnName = "规格", Sort = 2)]
         public string Specification { get; set; }
         
-        [InterColumn(ColumnName = "分类", Renderer = "lay-materialtypechoose", DisplayPath = "MaterialType.DisplayName", Templet = "{{d.materialTypeId_display||''}}", Sort = 3, EnableDataFilter = true)]
+        [InterColumn(ColumnName = "分类", VerifyRules = "required", Renderer = "lay-materialtypechoose", DisplayPath = "MaterialType.DisplayName", Templet = "{{d.materialTypeId_display||''}}", Sort = 3, EnableDataFilter = true)]
         public int? MaterialTypeId { get; set; }
         public virtual BaseTree MaterialType { get; set; }
         /// <summary>

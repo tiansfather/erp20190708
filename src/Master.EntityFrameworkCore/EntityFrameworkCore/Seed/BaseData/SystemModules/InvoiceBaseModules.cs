@@ -30,7 +30,7 @@ namespace Master.EntityFrameworkCore.Seed.BaseData.SystemModules
                 ConfirmMsg="确认审核这些发票？",
                 //ButtonActionParam = "{\"area\": [\"80%\", \"90%\"],\"btn\":null}",
                 //ButtonActionUrl = "abp.services.app.invoice.verify",
-                ButtonActionUrl="doVerify({{d.id}},{{d.unitId}},{{d.fee}})",
+                ButtonActionUrl= "doVerify({{d.id}},{{d.unitId}},numBack('{{d.fee}}'))",
                 Sort=1
             });
             btns.Add(new ModuleButton()

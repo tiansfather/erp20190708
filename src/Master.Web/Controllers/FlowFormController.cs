@@ -64,9 +64,11 @@ namespace Master.Controllers
         /// <returns></returns>
         public async Task<IActionResult> Input(int data)
         {
+            var user = await UserManager.GetByIdAsync(AbpSession.UserId.Value);
             var form = await FormManager.GetByIdFromCacheAsync(data);
             var defaultForms= Configuration.Modules.Core().DefaultForms;
             var defaultForm = defaultForms.FirstOrDefault(o => o.FormKey == form.FormKey);
+            ViewBag.IsCenter = user.IsCenterUser;
             switch (form.FormType)
             {
                 case FormType.Html:

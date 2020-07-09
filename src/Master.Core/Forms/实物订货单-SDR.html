@@ -44,7 +44,7 @@
                 {{currentItem.remarks}}
             </template>
         </el-form-item>
-        <el-form-item label="发货仓库" v-if=" _formOption.mode!='readonly'">
+        <el-form-item label="发货仓库" v-if=" _formOption.mode!='readonly' && _formOption.isCenter">
             <el-select v-model="currentItem.storeId" placeholder="发货仓库" size="medium" style="width:120px">
                 <el-option v-for="item in currentItem.stores"
                            :key="item.id"
@@ -53,7 +53,7 @@
                 </el-option>
             </el-select>
         </el-form-item>
-        <el-form-item label="退入仓库" v-if="isBack && _formOption.mode!='readonly'">
+        <el-form-item label="退入仓库" v-if="isBack && _formOption.mode!='readonly' && _formOption.isCenter">
             <el-select v-model="currentItem.backStoreId" placeholder="退入仓库" size="medium" style="width:120px">
                 <el-option v-for="item in currentItem.stores"
                            :key="item.id"
@@ -98,7 +98,7 @@
                     <td>{{item.location}}</td>
                     <template v-if="isSend || true">
                         <td>
-                            <el-input-number v-model="item.discount" style="width:100px" :min="0" :max="1" size="mini" :step="0.1" label="折扣" v-if="isSend &&_formOption.mode!='readonly'"></el-input-number>
+                            <el-input-number v-model="item.discount" style="width:100px" :min="0" :max="1" size="mini" :step="0.1" label="折扣" v-if="isSend &&_formOption.mode!='readonly' && _formOption.isCenter"></el-input-number>
                             <template v-else>
                                 {{item.discount}}
                             </template>

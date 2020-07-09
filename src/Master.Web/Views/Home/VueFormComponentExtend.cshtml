@@ -24,7 +24,7 @@
 </script>
 <script type="text/x-template" id="layMaterialTypeChoose">
     <div class="layui-form-item layui-form-text">
-        <label class="layui-form-label">{{columnInfo.ColumnName}}</label>
+        <label class="layui-form-label">{{columnInfo.ColumnName}}<span class="my-required-span" v-if="columnInfo.VerifyRules.indexOf('required')!=-1">*</span></label>
         <div class="layui-input-block">
             <el-select v-model="value1" filterable placeholder="请选择品类">
                 <el-option v-for="item in options"
