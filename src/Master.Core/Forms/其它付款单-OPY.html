@@ -157,6 +157,7 @@
             <el-divider></el-divider>
             <div>
                 <label>本单付款总额（元）：{{numFormat(totalFee)}}</label>
+                <label style="margin-left:50px">付款后结余（元）：{{numFormat(remainFee)}}</label>
             </div>
         </div>
         
@@ -165,7 +166,7 @@
         <div id="print">
             <p class="content-right">存根联—白色&nbsp; &nbsp; &nbsp; &nbsp; 客户联—红色&nbsp; &nbsp; &nbsp; &nbsp; 记账联—黄色</p>
             <div class="content-left">
-                <h1>上海乾封贸易有限公司（付款单）</h1>
+                <h1>上海乾封贸易有限公司（其它付款单）</h1>
                 <table id="table2" cellspacing="0">
 
                     <tr>
@@ -179,16 +180,16 @@
                     <tr>
                         <td class="tx-c weight-font">收款公司:</td>
                         <td class="tx-l">{{currentItem.unitInfo.unitName}}</td>
-                        <td class="tx-c weight-font"></td>
-                        <td class="tx-l"></td>
-                        <td class="tx-c weight-font"></td>
-                        <td class="tx-l"></td>
+                        <td class="tx-c weight-font">付款总额:</td>
+                        <td class="tx-l">{{numFormat(totalFee)}}</td>
+                        <td class="tx-c weight-font">付款后结余:</td>
+                        <td class="tx-l">{{numFormat(remainFee)}}</td>
                     </tr>
                     <tr>
                         <td class="tx-c weight-font">单位名称:</td>
                         <td class="tx-l">{{currentItem.companyName}}</td>
-                        <td class="tx-c weight-font">付款总额:</td>
-                        <td class="tx-l">{{numFormat(totalFee)}}</td>
+                        <td class="tx-c weight-font">付款前结余:</td>
+                        <td class="tx-l">{{numFormat(currentItem.unitInfo.nowFee)}}</td>
                         <td class="tx-c weight-font">付款类型:</td>
                         <td class="tx-l">{{payTypeName}}</td>
                     </tr>
@@ -261,7 +262,7 @@
                     }
                 },
                 remainFee: function () {
-                    return (parseFloat(this.currentItem.unitInfo.nowFee) - parseFloat(this.totalFee)).toFixed(2);
+                    return this.currentItem.affectRemain?(parseFloat(this.currentItem.unitInfo.nowFee) - parseFloat(this.totalFee)).toFixed(2):parseFloat(this.currentItem.unitInfo.nowFee).toFixed(2);
                 },
                 payTypeName: function () {
                     if (this.currentItem.payType == '0') {

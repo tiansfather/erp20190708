@@ -178,16 +178,16 @@
                     <tr>
                         <td class="tx-c weight-font">收款公司:</td>
                         <td class="tx-l">{{currentItem.unitInfo.unitName}}</td>
-                        <td class="tx-c weight-font">付款前结余:</td>
-                        <td class="tx-l">{{numFormat(currentItem.unitInfo.nowFee)}}</td>
+                        <td class="tx-c weight-font">付款总额:</td>
+                        <td class="tx-l">{{numFormat(totalFee)}}</td>                        
                         <td class="tx-c weight-font">付款后结余:</td>
                         <td class="tx-l">{{numFormat(remainFee)}}</td>
                     </tr>
                     <tr>
                         <td class="tx-c weight-font">单位名称:</td>
                         <td class="tx-l">{{currentItem.companyName}}</td>
-                        <td class="tx-c weight-font">付款总额:</td>
-                        <td class="tx-l">{{numFormat(totalFee)}}</td>
+                        <td class="tx-c weight-font">付款前结余:</td>
+                        <td class="tx-l">{{numFormat(currentItem.unitInfo.nowFee)}}</td>
                         <td class="tx-c weight-font">付款类型:</td>
                         <td class="tx-l">{{payTypeName}}</td>
                     </tr>

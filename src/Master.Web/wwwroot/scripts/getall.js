@@ -1295,6 +1295,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'init'
+    abp.services.app.unit.init = function(filePath, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Unit/Init' + abp.utils.buildQueryString([{ name: 'filePath', value: filePath }]) + '',
+        type: 'POST'
+      }, ajaxParams));;
+    };
+
     // action 'getAccountInfo'
     abp.services.app.unit.getAccountInfo = function(id, ajaxParams) {
       return abp.ajax($.extend(true, {

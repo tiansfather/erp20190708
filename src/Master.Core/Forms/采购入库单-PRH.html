@@ -32,6 +32,7 @@
                             <th>进货单价</th>
                             <th>备注</th>
                             <th>进货数量</th>
+                            <th>入库后结余</th>
                             <th>计量单位</th>
                             <th>适用区域</th>
                             <th>特征符</th>
@@ -60,6 +61,7 @@
                                     {{item.number}}
                                 </template>
                             </td>
+                            <td>{{numFormat(item.storeNumber+item.number)}}</td>
                             <td>{{item.measureMentUnit}}</td>
                             <td>{{item.location}}</td>
                             <td>
@@ -151,6 +153,7 @@
                         <td>零售价</td>
                         <td>进货单价</td>
                         <td>进货数量</td>
+                        <td>入库后结余</td>
                         <td>计量单位</td>
                         <td>小计</td>
                     </tr>
@@ -160,6 +163,7 @@
                         <td class="tx-r">{{item.price}}</td>
                         <td class="tx-r">{{(item.price*item.discount).toFixed(2)}}</td>
                         <td class="tx-r">{{item.number}}</td>
+                        <td class="tx-r">{{numFormat(item.storeNumber+item.number)}}</td>
                         <td class="tx-c">{{item.measureMentUnit}}</td>
                         <td class="tx-r">{{getSum(item)}}</td>
                     </tr>
@@ -255,12 +259,19 @@
                     //商品信息
                     func.runAsync(abp.services.app.material.getUnitMaterialInfos(this.currentItem.unitId, params.items.map(function (o) { return o.id })).done(function (data) {
                         console.log(data);
-                        that.currentItem.items = data.map(function (o) {
-                            var number = params.items.filter(function (i) { return i.id == o.id })[0].number;
-                            var discount = o.defaultBuyDiscount || 1;
-                            var price = o.price ;
-                            return $.extend(o, { number: number, price: price.toFixed(2),discount:discount.toFixed(2),codeNumber:'' });
+                        //获取当前库存
+                        abp.services.app.material.getStoreMaterialInfos(params.storeId, params.items.map(function (o) { return o.id })).done(function (storeMaterialInfos) {
+                            console.log(storeMaterialInfos);
+                            that.currentItem.items = data.map(function (o) {
+                                console.log(o);
+                                var number = params.items.filter(function (i) { return i.id == o.id })[0].number;
+                                var storeNumber = storeMaterialInfos.filter(function (i) { return i.id == o.id })[0].storeNumber;
+                                var discount = o.defaultBuyDiscount || 1;
+                                var price = o.price;
+                                return $.extend(o, { number: number, price: price.toFixed(2), discount: discount.toFixed(2), codeNumber: '', storeNumber: storeNumber });
+                            })
                         })
+                        
                     }))
                 }
             },
