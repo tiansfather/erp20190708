@@ -108,6 +108,8 @@ namespace Master.Controllers
         /// <returns></returns>
         public async Task<IActionResult> InstanceView(int data,string mode)
         {
+            var user = await UserManager.GetByIdAsync(AbpSession.UserId.Value);
+            ViewBag.IsCenter = user.IsCenterUser;
             var instance = await FlowInstanceManager.GetAll().Include(o=>o.FlowForm).IgnoreQueryFilters().Where(o => o.Id == data).FirstOrDefaultAsync();
             if (instance == null)
             {

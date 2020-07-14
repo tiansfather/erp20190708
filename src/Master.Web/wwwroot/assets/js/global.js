@@ -909,7 +909,7 @@ window.setInterval(function () {
 }, 1000);
 
 function numFormat(a) {
-    if (!a) { return ''}
+    if (!a) { return '0.00'}
     if (typeof (a) !== 'number') {
         a = parseFloat(a);
     }

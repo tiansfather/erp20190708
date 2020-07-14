@@ -5,9 +5,11 @@ using Abp.UI;
 using Master.Authentication;
 using Master.Entity;
 using Master.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -130,6 +132,36 @@ namespace Master.Units
         #endregion
 
         #region 账户
+        public virtual async Task<int> Init(string filePath=null)
+        {
+            filePath = filePath ?? "/init.xlsx";
+            var dt=Common.ExcelHelper.ReadExcelToDataTable(Common.PathHelper.VirtualPathToAbsolutePath(filePath),out _);
+            if (dt != null)
+            {
+                var addCount = 0;
+                foreach(DataRow row in dt.Rows)
+                {
+                    var unit = new Unit()
+                    {
+                        IsActive = true,
+                        UnitName = row["往来单位名称"].ToString(),
+                        BriefName = row["往来单位名称"].ToString(),
+                        UnitNature = row["往来单位类型"].ToString() == "代理商" ? UnitNature.代理商 : UnitNature.供应商,
+                        UnitRank = 1,
+                    };
+                    if(Manager.Repository.Count(o=>o.UnitName==unit.UnitName) == 0)
+                    {
+                        await Manager.InsertAndGetIdAsync(unit);
+                        await SubmitAccountInfo(unit.Id, row["登录账号"].ToString(), "88888888");
+                        addCount++;
+                    }
+                    
+                }
+                return addCount;
+            }
+            return 0;
+            
+        }
         public virtual async Task<object> GetAccountInfo(int id){
             var user = await UserManager.GetAll().Where(o => o.UnitId == id).FirstOrDefaultAsync();
             return new
@@ -163,18 +195,20 @@ namespace Master.Units
             }
             else
             {
+                foreach (var user in users)
+                {
+                    user.UserName = userName;
+                    await UserManager.SetPassword(user, password);
+                }
                 //修改
-                if (users[0].UserName != userName)
-                {
-                    throw new UserFriendlyException("暂不支持修改往来单位账号,此单位账号固定为"+ users[0].UserName);
-                }
-                else
-                {
-                    foreach(var user in users)
-                    {
-                        await UserManager.SetPassword(user, password);
-                    }
-                }
+                //if (users[0].UserName != userName)
+                //{
+                //    throw new UserFriendlyException("暂不支持修改往来单位账号,此单位账号固定为"+ users[0].UserName);
+                //}
+                //else
+                //{
+                    
+                //}
             }
         }
         #endregion

@@ -163,7 +163,8 @@
         lastModifyTime:'@ViewBag.UpdateTime'||null,
         formData:@Html.Raw(ViewBag.FormData),
         mode: "@ViewBag.Mode",
-        orderStatus:"@Html.Raw(ViewBag.OrderStatus)",
+        orderStatus: "@Html.Raw(ViewBag.OrderStatus)",
+        isCenter:'@ViewBag.IsCenter'=='True'
     };
 </script>
 <div style="padding:20px">

@@ -6,7 +6,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">用户名</label>
         <div class="layui-input-block">
-            <input type="text" v-model="currentItem.userName" class="layui-input">
+            <input type="text" v-model="currentItem.userName" class="layui-input" id="userName">
         </div>
     </div>
     <div class="layui-form-item">
@@ -31,7 +31,7 @@
 				},
                 mounted: function () {
                     var that = this;
-                    func.runAsync(abp.services.app.unit.getAccountInfo(id).done(function (res) { that.currentItem.userName = res.userName }));
+                    func.runAsync(abp.services.app.unit.getAccountInfo(id).done(function (res) { that.currentItem.userName = res.userName; $("#userName").val(res.userName) }));
 
 				}
 			})
