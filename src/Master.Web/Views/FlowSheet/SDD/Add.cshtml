@@ -148,6 +148,10 @@
                                     return (abp.session.user.unitId ? d.defaultCount : d.totalCount)||0;
                                 }
                             },
+                            {
+                                field: 'availableStoreNumber', title: '库存能力', templet: function (d) {
+                                    return (abp.session.user.unitId ? d.defaultCount - d.soldNumber : d.totalCount - d.soldNumber) || 0;
+                                } },
                             { field: '', title: '订购数量', templet: '#editTpl' },
                             { field: 'measureMentUnit', title: '计量单位' },
                             { field: 'location', title: '适用区域' },

@@ -194,6 +194,11 @@ namespace Master.FlowHandlers
             else if (action == "send")
             {
                 flowSheet.OrderStatus = "已发货";
+                //‘收货时间’‘收货人姓名’‘联系方式’‘收货地址’
+                flowSheet.SetPropertyValue("Receiver", sheetHeader["receiver"].ToObjectWithDefault<string>());
+                flowSheet.SetPropertyValue("DeliverDate", sheetHeader["deliverDate"].ToObjectWithDefault<DateTime>());
+                flowSheet.SetPropertyValue("ReceiverMobile", sheetHeader["receiverMobile"].ToObjectWithDefault<string>());
+                flowSheet.SetPropertyValue("ReceiverAddress", sheetHeader["receiverAddress"].ToObjectWithDefault<string>());
                 var totalFee = sheetHeader["totalFee"].ToObjectWithDefault<decimal>();
                 //更改往来单位金额
                 await UnitManager.ChangeFee(unitId, null, -totalFee, flowSheet);

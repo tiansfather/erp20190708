@@ -34,10 +34,9 @@ namespace Master.Storage
             //待理商已下单的未出库数量
             var soldNumber = await Resolve<MaterialSellManager>().GetAll()
                     .Where(o => o.MaterialId == material.Id)
-                    .Where(o => o.FlowSheet.OrderStatus == "待出库" || o.FlowSheet.OrderStatus == "待审核")
-                    .SumAsync(o => o.SellNumber);
-            data["TotalCount"] = storeCountInfo.Sum(o => o.Number) - soldNumber;
-            data["DefaultCount"] = storeCountInfo.FirstOrDefault(o => o.IsDefault)?.Number - soldNumber;
+                    .Where(o => o.FlowSheet.OrderStatus == "待出库" || o.FlowSheet.OrderStatus == "待审核" || o.FlowSheet.OrderStatus=="部分出库")
+                    .SumAsync(o => o.SellNumber-o.OutNumber);
+            data["SoldNumber"] = soldNumber;
         }
         public override async Task ValidateEntity(Material entity)
         {

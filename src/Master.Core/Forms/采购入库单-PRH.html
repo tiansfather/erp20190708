@@ -32,7 +32,6 @@
                             <th>进货单价</th>
                             <th>备注</th>
                             <th>进货数量</th>
-                            <th>入库后结余</th>
                             <th>计量单位</th>
                             <th>适用区域</th>
                             <th>特征符</th>
@@ -61,7 +60,6 @@
                                     {{item.number}}
                                 </template>
                             </td>
-                            <td>{{numFormat(item.storeNumber+item.number)}}</td>
                             <td>{{item.measureMentUnit}}</td>
                             <td>{{item.location}}</td>
                             <td>
@@ -103,7 +101,12 @@
                         {{numFormat(totalFee)}}
                     </template>
                 </el-form-item>
-
+                <el-form-item label="入库后结余:">
+                    <el-input :value="numFormat(remainFee)" readonly="true" v-if="!_formOption.readonly"></el-input>
+                    <template v-else>
+                        {{numFormat(remainFee)}}
+                    </template>
+                </el-form-item>
             </el-form>
             <el-form size="mini" :disabled="_formOption.readonly">
                 <el-form-item label="备注">
@@ -136,8 +139,8 @@
                         <td>{{currentItem.unitName}}</td>
                         <td class="weight-font">收货仓库：</td>
                         <td>{{currentItem.storeName}}</td>
-                        <td class="weight-font"></td>
-                        <td></td>
+                        <td class="weight-font">入库后结余</td>
+                        <td>{{numFormat(remainFee)}}</td>
                     </tr>
                     <tr>
                         <td class="weight-font">本单应付：</td>
@@ -153,7 +156,6 @@
                         <td>零售价</td>
                         <td>进货单价</td>
                         <td>进货数量</td>
-                        <td>入库后结余</td>
                         <td>计量单位</td>
                         <td>小计</td>
                     </tr>
@@ -163,7 +165,6 @@
                         <td class="tx-r">{{item.price}}</td>
                         <td class="tx-r">{{(item.price*item.discount).toFixed(2)}}</td>
                         <td class="tx-r">{{item.number}}</td>
-                        <td class="tx-r">{{numFormat(item.storeNumber+item.number)}}</td>
                         <td class="tx-c">{{item.measureMentUnit}}</td>
                         <td class="tx-r">{{getSum(item)}}</td>
                     </tr>
@@ -210,7 +211,9 @@
                 totalFee: function () {
                     return (parseFloat(this.materialFee) + parseFloat(this.currentItem.otherFee||0)).toFixed(2);
                 },
-                
+                remainFee: function () {
+                    return (parseFloat(this.totalFee) + parseFloat(this.currentItem.unitInfo.nowFee)).toFixed(2);
+                },
             },
             methods: {
                 getSum:function(item) {

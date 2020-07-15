@@ -81,7 +81,11 @@ namespace Master.Storage
                 entity.Material?.MeasureMentUnit,
                 entity.SellNumber,
                 OutNumber=entity.OutNumber-entity.BackNumber,
-                CreationTime=entity.CreationTime.ToString("yyyy-MM-dd HH:mm")
+                CreationTime=entity.CreationTime.ToString("yyyy-MM-dd HH:mm"),
+                Receiver=entity.FlowSheet?.GetPropertyValue<string>("Receiver"),
+                DeliverDate=entity.FlowSheet?.GetPropertyValue<DateTime?>("DeliverDate")?.ToString("yyyy-MM-dd"),
+                ReceiverMobile=entity.FlowSheet?.GetPropertyValue<string>("ReceiverMobile"),
+                ReceiverAddress= entity.FlowSheet?.GetPropertyValue<string>("ReceiverAddress"),
             };
         }
         #endregion
