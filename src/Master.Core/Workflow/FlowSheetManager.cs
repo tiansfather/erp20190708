@@ -10,6 +10,8 @@ using Master.Module;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using Abp.UI;
+using Master.Configuration;
+using Master.Settings;
 
 namespace Master.WorkFlow
 {
@@ -80,6 +82,17 @@ namespace Master.WorkFlow
         {
             var flowInstanceManager = Resolve<FlowInstanceManager>();
             var flowSheet = await GetAll().Include(o => o.FlowInstance).ThenInclude(o=>o.FlowForm).Where(o => o.Id == sheetId).SingleOrDefaultAsync();
+            //检测是否超过结算时间点
+            DateTime? lastFeePointDate = null;
+            var setting = await SettingManager.GetSettingValueForApplicationAsync(SettingNames.FeePointSetting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                lastFeePointDate = (Newtonsoft.Json.JsonConvert.DeserializeObject<List<FeePointSetting>>(setting)).LastOrDefault()?.FeeDate;
+            }
+            if(lastFeePointDate.HasValue && flowSheet.CreationTime < lastFeePointDate.Value)
+            {
+                throw new UserFriendlyException("本单据已结算，不可反冲！");
+            }
             ////产生新的流程实例
             //var instance = flowSheet.FlowInstance;
             //var newInstance = new FlowInstance()
@@ -112,7 +125,7 @@ namespace Master.WorkFlow
             //flowSheet.SheetNature = SheetNature.被冲红;
             //flowSheet.RelSheetId = newSheetId;
             //flowSheet.RevertReason = revertReason;
-            
+
             var flowHandler = Resolve<IFlowHandlerFinder>().FindFlowHandler(flowSheet.FormKey);
 
             await flowHandler.CreateRevertSheet(flowSheet, revertReason);

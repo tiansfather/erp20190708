@@ -517,6 +517,13 @@
             "order": 12
           }
         ]
+      },
+      {
+        "name": "Summary.Tenancy.FeePointSetting",
+        "displayName": "结算点设定",
+        "icon": "iconfont icon-celve",
+        "order": 6,
+        "url": "/Home/Show?name=../Setting/FeePointSetting"
       }
 
     ]

@@ -129,6 +129,12 @@ namespace Master.FlowHandlers
             {
                 btns.Add(new ModuleButton()
                 {
+                    ButtonKey = "genPRH",
+                    ButtonName = "生成入库单",
+                    ConfirmMsg = "确认生成入库单？"
+                });
+                btns.Add(new ModuleButton()
+                {
                     ButtonKey = "back",
                     ButtonName = "退货",
                     ConfirmMsg = "确认退货？"

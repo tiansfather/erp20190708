@@ -7,6 +7,8 @@ using System.Text;
 using Master.Dto;
 using System.Linq;
 using System.Threading.Tasks;
+using Master.Entity;
+using Abp.Extensions;
 
 namespace Master.FlowSheets
 {
@@ -52,6 +54,16 @@ namespace Master.FlowSheets
 
             }
 
+        }
+        /// <summary>
+        /// 实物订单是否已生成入库单
+        /// </summary>
+        /// <param name="sheetId"></param>
+        /// <returns></returns>
+        public virtual async Task<bool> IsPRHGenerated(int sheetId)
+        {
+            var sheet = await Manager.GetByIdAsync(sheetId);
+            return !sheet.GetPropertyValue<string>("PRHSheetId").IsNullOrEmpty();
         }
     }
 

@@ -1,0 +1,93 @@
+﻿
+@section MainBody{
+    <div id="app" style="padding:20px">
+        <el-button type="primary" @@click="showAdd">新增</el-button>
+        <span>仅最后一次设定的结算时间点有效</span>
+        <table class="layui-table" style="width:600px">
+            <thead>
+                <tr>
+                    <td align="center">序号</td>
+                    <td align="center">结算时间点</td>
+                    <td align="center">设定时间</td>
+                    <td align="center">设定人</td>
+                    <td>操作</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(item,index) in items">
+                    <td align="center">
+                        {{items.length-index}}
+                    </td>
+                    <td align="center">{{item.feeDate}}</td>
+                    <td align="center">{{item.creationTime}}</td>
+                    <td align="center">{{item.creator}}</td>
+                    <td><el-button type="danger" icon="el-icon-delete" @@click="remove(items.length-index-1)" size="mini"></el-button></td>
+                </tr>
+            </tbody>
+        </table>
+        <el-dialog title="请输入时间点"
+                   :visible.sync="dialogVisible"
+                   width="30%">
+            <el-date-picker v-model="dateValue"
+                            type="datetime"
+                            placeholder="选择日期时间">
+            </el-date-picker>
+            <span slot="footer" class="dialog-footer">
+                <el-button @@click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @@click="doSubmit">确 定</el-button>
+            </span>
+        </el-dialog>
+    </div>
+}
+
+
+@section scripts{
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                items: [],
+                dateValue: null,
+                dialogVisible: false
+            },
+            methods: {
+                showAdd: function () {
+                    this.dialogVisible = true;
+                    this.dateValue = new Date();
+                },
+                doSubmit: function () {
+                    var that = this;
+                    func.runAsync(abp.services.app.setting.addFeePoint(that.dateValue).done(function () {
+                        that.$message.success('提交成功');                        
+                        that.load();
+                        that.dialogVisible = false;
+                        }))
+                },
+                remove: function (index) {
+                    var that = this;
+                    this.$confirm('确认删除此结算点?', '提示', {
+                      confirmButtonText: '确定',
+                      cancelButtonText: '取消',
+                      type: 'warning'
+                    }).then(() => {
+                      func.runAsync(abp.services.app.setting.removeFeePoint(index).done(function () {
+                        that.$message.success('提交成功');                        
+                        that.load();
+                        }))
+                    })
+                    
+                },
+                load: function () {
+                    var that = this;
+                    abp.services.app.setting.getFeePointSetting().done(function (res) {
+                    that.items = res;
+                })
+                }
+            },
+            mounted: function () {
+                this.load();
+                
+            }
+        })
+    </script>
+}

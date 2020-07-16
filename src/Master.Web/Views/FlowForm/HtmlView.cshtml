@@ -260,6 +260,25 @@
                         //window.open('/FlowSheet/SheetView?data=' + sheetId + "&mode=print");
                         return;
                     }
+                    //对实物订单生成入库单特殊处理
+                    if (btn.buttonKey == "genPRH") {
+                        //判断是否已生成过订货单
+                        abp.services.app.sDRSheet.isPRHGenerated(sheetId).done(function (res) {
+                            var generateFun = function () {
+                                localStorage.setItem("formdata", JSON.stringify(_formOption.formData));
+                                var href = '/FlowForm/InputByFormKey?formKey=PRH&data=' + encodeURIComponent(JSON.stringify({ fromSDR: _formOption.sheetInfo.sheetSN }));                                
+                                parent.func.callModuleButtonEvent({ buttonactiontype: 'Form', buttonactionurl: href, fornonerow: 1 });
+                                parent.layer.close(index);
+                            }
+                            if (res) {
+                                abp.message.confirm("已生成过对应进货单，您确定还要继续吗?", generateFun)
+                            } else {
+                                generateFun();
+                            }
+                            
+                        })
+                        return;
+                    }
                     var confirmMsg = btn.confirmMsg || '确认提交?';
                     abp.message.confirm(confirmMsg, function () {
                         if (btn.buttonKey == "revert") {

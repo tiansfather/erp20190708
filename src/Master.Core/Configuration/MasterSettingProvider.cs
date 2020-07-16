@@ -9,6 +9,7 @@ namespace Master.Configuration
     public static class SettingNames
     {
         public const string MenuSetting = "Menu";
+        public const string FeePointSetting = "FeePointSetting";
         public const string SoftTitle = "App.SoftTitle";
     }
     public class MasterSettingProvider : SettingProvider
@@ -28,7 +29,9 @@ namespace Master.Configuration
                 new SettingDefinition(SettingNames.SoftTitle, "管理系统",L("系统标题"),group, scopes: SettingScopes.Application , isVisibleToClients: true),
                 new SettingDefinition("HomPics", "",L("首页轮播"),group2, scopes: SettingScopes.Application , isVisibleToClients: true
                ,customData:new SettingUIInfo(){ ColumnType=Module.ColumnTypes.Text,Renderer="lay-homepics"}),
-            };
+
+                new SettingDefinition(SettingNames.FeePointSetting, "", L("结算点设置"), group: null, scopes: SettingScopes.Application)
+        };
         }
 
         private static LocalizableString L(string name)

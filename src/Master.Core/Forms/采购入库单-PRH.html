@@ -12,7 +12,11 @@
                     <!--<el-input v-model="currentItem.sheetDate" readonly="true"></el-input>-->
                 </el-form-item>
                 <el-form-item label="供货商:">
-                    {{currentItem.unitName}}
+                    <unit-select nature="1" :unit.sync="currentItem.unitId" :value-isid="true" size="mini" @change="loadUnit" v-if="!_formOption.readonly && fromSDR"></unit-select>
+                    <template v-else>
+                        {{currentItem.unitName}}
+                    </template>
+                    
                     <!--<el-input v-model="currentItem.unitName" readonly="true"></el-input>-->
                 </el-form-item>
                 <el-form-item label="收货仓库:">
@@ -36,7 +40,7 @@
                             <th>适用区域</th>
                             <th>特征符</th>
                             <th style="min-width:180px">卡号</th>
-                            <th v-if="!_formOption.readonly">操作</th>
+                            <th v-if="!_formOption.readonly && !fromSDR">操作</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -45,7 +49,7 @@
                             <td>{{item.specification}}</td>
                             <td>{{item.price}}</td>
                             <td>
-                                <el-input-number v-model="item.discount" :min="0" :max="1" :step="0.1" label="折扣" size="mini" style="width:100px" v-if="!_formOption.readonly"></el-input-number>
+                                <el-input-number v-model="item.discount" :min="0" :max="1" :step="0.1" label="折扣" size="mini" style="width:100px" v-if="!_formOption.readonly && !fromSDR"></el-input-number>
                                 <template v-else>
                                     {{item.discount}}
                                 </template>
@@ -55,7 +59,7 @@
                             </td>
                             <td>{{item.remarks}}</td>
                             <td>
-                                <el-input-number v-model="item.number" :min="1" label="进货数量" size="mini" style="width:100px" v-if="!_formOption.readonly"></el-input-number>
+                                <el-input-number v-model="item.number" :min="1" label="进货数量" size="mini" style="width:100px" v-if="!_formOption.readonly && !fromSDR"></el-input-number>
                                 <template v-else>
                                     {{item.number}}
                                 </template>
@@ -76,7 +80,7 @@
                                 </template>
 
                             </td>
-                            <td v-if="!_formOption.readonly"><a title="删除" style="cursor: pointer;" @click="currentItem.items.splice(index,1);"><i class="layui-icon layui-icon-delete"></i></a></td>
+                            <td v-if="!_formOption.readonly && !fromSDR"><a title="删除" style="cursor: pointer;" @click="currentItem.items.splice(index,1);"><i class="layui-icon layui-icon-delete"></i></a></td>
                         </tr>
                     </tbody>
                 </table>
@@ -187,6 +191,7 @@
         app = new Vue({
             el: "#app",
             data: {
+                fromSDR:false,
                 sheetInfo: {},
                 columns:[],
                 rCount:0,                
@@ -212,7 +217,7 @@
                     return (parseFloat(this.materialFee) + parseFloat(this.currentItem.otherFee||0)).toFixed(2);
                 },
                 remainFee: function () {
-                    return (parseFloat(this.totalFee) + parseFloat(this.currentItem.unitInfo.nowFee)).toFixed(2);
+                    return (parseFloat(this.totalFee) + parseFloat(this.currentItem.unitInfo.nowFee||0)).toFixed(2);
                 },
             },
             methods: {
@@ -246,36 +251,54 @@
                         break;
                     }
                     return valid;
+                },
+                loadUnit: function () {
+                    var that = this;
+                    if (!this.currentItem.unitId) { return;}
+                    abp.services.app.unit.getById(this.currentItem.unitId).done(function (data) { that.currentItem.unitName = data.unitName; that.currentItem.unitInfo = data; });
                 }
             },
             created:function() {
                 var that = this;
                 if (!_formOption.formData) {
-                    //录入模式获取数据
-                    var params = JSON.parse( $.getUrlParam("params"));
-                    this.currentItem.storeId = params.storeId;
-                    this.currentItem.unitId = params.unitId;
-                    //仓库信息
-                    abp.services.app.store.getById(params.storeId).done(function (data) { that.currentItem.storeName = data.name });
-                    //供货商信息
-                    abp.services.app.unit.getById(params.unitId).done(function (data) { that.currentItem.unitName = data.unitName; that.currentItem.unitInfo = data; });
-                    //商品信息
-                    func.runAsync(abp.services.app.material.getUnitMaterialInfos(this.currentItem.unitId, params.items.map(function (o) { return o.id })).done(function (data) {
-                        console.log(data);
-                        //获取当前库存
-                        abp.services.app.material.getStoreMaterialInfos(params.storeId, params.items.map(function (o) { return o.id })).done(function (storeMaterialInfos) {
-                            console.log(storeMaterialInfos);
-                            that.currentItem.items = data.map(function (o) {
-                                console.log(o);
-                                var number = params.items.filter(function (i) { return i.id == o.id })[0].number;
-                                var storeNumber = storeMaterialInfos.filter(function (i) { return i.id == o.id })[0].storeNumber;
-                                var discount = o.defaultBuyDiscount || 1;
-                                var price = o.price;
-                                return $.extend(o, { number: number, price: price.toFixed(2), discount: discount.toFixed(2), codeNumber: '', storeNumber: storeNumber });
-                            })
-                        })
+                    var params = JSON.parse($.getUrlParam("params"));
+                    console.log(params);
+                    //是否从实物订单过来
+                    that.fromSDR = params.fromSDR;
+                    if (that.fromSDR) {
+                        var sdrData = JSON.parse(localStorage.getItem("formdata")).sheetData;
+                        that.currentItem.storeId = sdrData.header.storeId;
+                        that.currentItem.items = sdrData.body;
+                    } else {
+                        //录入模式获取数据
                         
-                    }))
+                        this.currentItem.storeId = params.storeId;
+                        this.currentItem.unitId = params.unitId;
+                        //供货商信息
+                        this.loadUnit();
+                        //abp.services.app.unit.getById(this.currentItem.unitId).done(function (data) { that.currentItem.unitName = data.unitName; that.currentItem.unitInfo = data; });
+                        //商品信息
+                        func.runAsync(abp.services.app.material.getUnitMaterialInfos(this.currentItem.unitId, params.items.map(function (o) { return o.id })).done(function (data) {
+                            console.log(data);
+                            //获取当前库存
+                            abp.services.app.material.getStoreMaterialInfos(params.storeId, params.items.map(function (o) { return o.id })).done(function (storeMaterialInfos) {
+                                console.log(storeMaterialInfos);
+                                that.currentItem.items = data.map(function (o) {
+                                    console.log(o);
+                                    var number = params.items.filter(function (i) { return i.id == o.id })[0].number;
+                                    var storeNumber = storeMaterialInfos.filter(function (i) { return i.id == o.id })[0].storeNumber;
+                                    var discount = o.defaultBuyDiscount || 1;
+                                    var price = o.price;
+                                    return $.extend(o, { number: number, price: price.toFixed(2), discount: discount.toFixed(2), codeNumber: '', storeNumber: storeNumber });
+                                })
+                            })
+                        
+                        }))
+                    }
+                    //仓库信息
+                    abp.services.app.store.getById(this.currentItem.storeId).done(function (data) { that.currentItem.storeName = data.name });
+                    
+                    
                 }
             },
             mounted:function() {
@@ -285,6 +308,9 @@
 
     //模板中必须实现的方法，用于获取表单数据，返回一个对象，如果需要取消提交，可抛出一个异常
     function getFormData() {
+        if (!app.currentItem.unitId) {
+            throw "请选择供应商";
+        }
         var data = app.currentItem.items;
         if (!data.length) {
             throw "请至少录入一条数据";
@@ -297,7 +323,8 @@
                 unitId: app.currentItem.unitId,
                 storeName: app.currentItem.storeName,
                 storeId: app.currentItem.storeId,
-                totalFee: app.totalFee
+                totalFee: app.totalFee,
+                fromSDR: app.fromSDR
             },
             body: data
         };

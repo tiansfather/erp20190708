@@ -277,7 +277,7 @@
         }
     }
     function actionCallback(actionName, sheetId) {
-        if (actionName == "verify") {
+        if (actionName == "verify" || actionName=="send") {
             //审核后打开发货页
             //打开查看窗口
             parent.layer.open({
@@ -294,7 +294,8 @@
                     parent.layer.close(index);
                 }
             })
-        } else {
+        } 
+        else {
             parent.layer.close(index);
         }
     }

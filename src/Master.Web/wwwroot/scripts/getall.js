@@ -1754,6 +1754,30 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'getFeePointSetting'
+    abp.services.app.setting.getFeePointSetting = function(ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Setting/GetFeePointSetting',
+        type: 'GET'
+      }, ajaxParams));;
+    };
+
+    // action 'addFeePoint'
+    abp.services.app.setting.addFeePoint = function(dateTime, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Setting/AddFeePoint' + abp.utils.buildQueryString([{ name: 'dateTime', value: dateTime }]) + '',
+        type: 'POST'
+      }, ajaxParams));;
+    };
+
+    // action 'removeFeePoint'
+    abp.services.app.setting.removeFeePoint = function(index, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/Setting/RemoveFeePoint' + abp.utils.buildQueryString([{ name: 'index', value: index }]) + '',
+        type: 'DELETE'
+      }, ajaxParams));;
+    };
+
   })();
 
   // controller 'session'
@@ -4938,6 +4962,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'isPRHGenerated'
+    abp.services.app.sDRSheet.isPRHGenerated = function(sheetId, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/SDRSheet/IsPRHGenerated' + abp.utils.buildQueryString([{ name: 'sheetId', value: sheetId }]) + '',
+        type: 'POST'
+      }, ajaxParams));;
+    };
+
     // action 'getPageResult'
     abp.services.app.sDRSheet.getPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -5067,6 +5099,14 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/SDRSend/Cancel',
         type: 'POST',
         data: JSON.stringify(ids)
+      }, ajaxParams));;
+    };
+
+    // action 'isPRHGenerated'
+    abp.services.app.sDRSend.isPRHGenerated = function(sheetId, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/SDRSend/IsPRHGenerated' + abp.utils.buildQueryString([{ name: 'sheetId', value: sheetId }]) + '',
+        type: 'POST'
       }, ajaxParams));;
     };
 
@@ -5202,6 +5242,14 @@ abp.services = abp.services || {};
       }, ajaxParams));;
     };
 
+    // action 'isPRHGenerated'
+    abp.services.app.sDRBack.isPRHGenerated = function(sheetId, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/SDRBack/IsPRHGenerated' + abp.utils.buildQueryString([{ name: 'sheetId', value: sheetId }]) + '',
+        type: 'POST'
+      }, ajaxParams));;
+    };
+
     // action 'getPageResult'
     abp.services.app.sDRBack.getPageResult = function(request, ajaxParams) {
       return abp.ajax($.extend(true, {
@@ -5331,6 +5379,14 @@ abp.services = abp.services || {};
         url: abp.appPath + 'api/services/app/SDRVerify/Cancel',
         type: 'POST',
         data: JSON.stringify(ids)
+      }, ajaxParams));;
+    };
+
+    // action 'isPRHGenerated'
+    abp.services.app.sDRVerify.isPRHGenerated = function(sheetId, ajaxParams) {
+      return abp.ajax($.extend(true, {
+        url: abp.appPath + 'api/services/app/SDRVerify/IsPRHGenerated' + abp.utils.buildQueryString([{ name: 'sheetId', value: sheetId }]) + '',
+        type: 'POST'
       }, ajaxParams));;
     };
 

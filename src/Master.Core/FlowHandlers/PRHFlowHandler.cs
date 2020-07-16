@@ -1,4 +1,5 @@
-﻿using Abp.UI;
+﻿using Abp.Extensions;
+using Abp.UI;
 using Master.Entity;
 using Master.Extensions;
 using Master.Storage;
@@ -40,6 +41,18 @@ namespace Master.FlowHandlers
             flowSheet.UnitId = unitId;
             flowSheet.SetPropertyValue("StoreName", sheetHeader["storeName"].ToObjectWithDefault<string>());
             flowSheet.SetPropertyValue("Fee", totalFee);
+            //是否从实物订货过来 
+            var fromSDR = sheetHeader["fromSDR"].ToObjectWithDefault<string>();
+            if (!fromSDR.IsNullOrEmpty())
+            {
+                var SDRSheet = await FlowSheetManager.GetAll().Where(o => o.SheetSN == fromSDR).FirstOrDefaultAsync();
+                if (SDRSheet != null)
+                {
+                    //SDRSheet.SetPropertyValue("PRHSheetSN", flowSheet.SheetSN);
+                    SDRSheet.SetPropertyValue("PRHSheetId", flowSheet.Id);
+                    await FlowSheetManager.UpdateAsync(SDRSheet);
+                }
+            }
 
             //更改往来单位金额
             await UnitManager.ChangeFee(unitId, null, totalFee, flowSheet);
