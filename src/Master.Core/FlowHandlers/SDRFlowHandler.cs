@@ -78,6 +78,12 @@ namespace Master.FlowHandlers
         public override async Task<IEnumerable<ModuleButton>> GetFlowBtns(FlowSheet flowSheet)
         {
             var btns = new List<ModuleButton>();
+            btns.Add(new ModuleButton()
+            {
+                ButtonKey = "print",
+                ButtonName = "打印",
+                ButtonClass = "layui-btn-normal"
+            });
             if (flowSheet.OrderStatus == "待审核")
             {
                 //btns.Add(new ModuleButton()

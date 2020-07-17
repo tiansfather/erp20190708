@@ -12,6 +12,7 @@ using System.Linq;
 using Abp.UI;
 using Master.Configuration;
 using Master.Settings;
+using Master.Entity;
 
 namespace Master.WorkFlow
 {
@@ -136,6 +137,16 @@ namespace Master.WorkFlow
         {
             var sheet = entity as FlowSheet;
             data["Status"] = sheet.Status;
+            if (moduleInfo.ModuleKey == "SDRSheet"){
+                //实物订单需要查出对应入库单
+                var PRHSheetId = sheet.GetPropertyValue<string>("PRHSheetId");
+                if (!string.IsNullOrEmpty(PRHSheetId))
+                {
+                    var PRHSheetSN = (await GetByIdAsync(int.Parse(PRHSheetId)))?.SheetSN;
+                    data["PRHSheetSN"] = PRHSheetSN;
+                    data["PRHSheetId"] = PRHSheetId;
+                }
+            }
         }
 
         public virtual string GenerateSheetSN(string formKey)

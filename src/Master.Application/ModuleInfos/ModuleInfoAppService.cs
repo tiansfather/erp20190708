@@ -155,7 +155,12 @@ namespace Master.Module
         {
             var moduleInfo = await _moduleManager.GetModuleInfo(moduleKey);
             var columns = moduleInfo.FilterdColumnInfos(FormType.List).Select(o => o.ToLayData());
-
+            //实物订单代理商不显示对应入库单列
+            var user = await GetCurrentUserAsync();
+            if(!user.IsCenterUser && moduleKey == "SDRSheet")
+            {
+                columns = columns.Where(o => o["field"].ToString() != "PRHSheetSN");
+            }
             return new { Plugin = moduleInfo.GetPluginName(), Columns = columns };
         }
 

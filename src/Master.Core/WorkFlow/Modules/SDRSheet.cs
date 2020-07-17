@@ -25,6 +25,9 @@ namespace Master.WorkFlow.Modules
         public override string OrderStatus { get; set; }
         public override DateTime SheetDate { get => base.SheetDate; set => base.SheetDate = value; }
         public override SheetNature SheetNature { get => base.SheetNature; set => base.SheetNature = value; }
+        [InterColumn(ColumnName = "对应进货单", ValuePath = "Property", Sort = 100, EnableDataFilter = false,Templet = "{{#if(d.prhSheetId){}}<a dataid=\"{{d.prhSheetId}}\" class=\"layui-btn layui-btn-xs layui-btn-normal\" buttonname=\"单据\" params=\"{&quot;btn&quot;:[]}\"   buttonactiontype=\"Form\" buttonactionurl=\"/FlowSheet/SheetView\" onclick=\"func.callModuleButtonEvent()\">{{d.prhSheetSN}}</a>{{#}else{}}<font color=\"red\">无</font>{{#}}}")]
+        [NotMapped]
+        public virtual string PRHSheetSN { get; set; }
         [InterColumn(ColumnName = "创建时间", ColumnType = Module.ColumnTypes.DateTime, ValuePath = "CreationTime", DisplayFormat = "yyyy-MM-dd HH:mm", Sort = 999)]
         [NotMapped]
         public DateTime CreationTime2 { get; set; }
@@ -74,7 +77,7 @@ namespace Master.WorkFlow.Modules
         [InterColumn(ColumnName = "当前状态", Sort = 6, EnableDataFilter = true, Templet = "{{getStatusHtml(d.orderStatus)}}")]
         public override string OrderStatus { get; set; }
         public override DateTime SheetDate { get => base.SheetDate; set => base.SheetDate = value; }
-        public override SheetNature SheetNature { get => base.SheetNature; set => base.SheetNature = value; }
+        public override SheetNature SheetNature { get => base.SheetNature; set => base.SheetNature = value; }        
         [InterColumn(ColumnName = "创建时间", ColumnType = Module.ColumnTypes.DateTime, ValuePath = "CreationTime", DisplayFormat = "yyyy-MM-dd HH:mm", Sort = 999)]
         [NotMapped]
         public DateTime CreationTime2 { get; set; }
