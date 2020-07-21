@@ -266,31 +266,51 @@ namespace Master.Storage
             //return result;
         }
 
-        public virtual async Task<string> CheckSellMaterialInfos(IEnumerable<CheckSellMaterialInfoDto> checkSellMaterialInfoDtos,int unitId)
+        public virtual async Task<object> CheckSellMaterialInfos(IEnumerable<CheckSellMaterialInfoDto> checkSellMaterialInfoDtos,int unitId)
         {
-            var limitedMaterialIds = new List<int>();
+            var runoutMaterialIds = new List<int>();//订货数量>库存
+            var limitedMaterialIds = new List<int>();//订货数量+未出库数量>库存
             foreach(var checkSellMaterialInfoDto in checkSellMaterialInfoDtos)
             {
-                if (await LimitSellMaterialInfo(checkSellMaterialInfoDto, unitId))
+                var limitType = await LimitSellMaterialInfo(checkSellMaterialInfoDto, unitId);
+                if (limitType == 1)
+                {
+                    runoutMaterialIds.Add(checkSellMaterialInfoDto.Id);
+                }
+                else if (limitType == 2)
                 {
                     limitedMaterialIds.Add(checkSellMaterialInfoDto.Id);
                 }
             }
-            if (limitedMaterialIds.Count > 0)
+            if (runoutMaterialIds.Count > 0)
             {
-                return string.Join(',', (await Resolve<MaterialManager>().GetListByIdsAsync(limitedMaterialIds)).Select(o=>o.Name));
+                var msg = string.Join(',', (await Resolve<MaterialManager>().GetListByIdsAsync(runoutMaterialIds)).Select(o => o.Name));
+                return new
+                {
+                    msg,
+                    code = 1
+                };
+            }
+            else if (limitedMaterialIds.Count > 0)
+            {
+                var msg = string.Join(',', (await Resolve<MaterialManager>().GetListByIdsAsync(limitedMaterialIds)).Select(o => o.Name));
+                return new
+                {
+                    msg,
+                    code=2
+                };
             }
             else
             {
-                return "";
+                return new { code=0};
             }
         }
         /// <summary>
-        /// 是否待出库数量+当前订单数量已超过库存
+        /// 0:正常,1:出货数量超过库存,2:出货数量+未出库>超过库存
         /// </summary>
         /// <param name="checkSellMaterialInfoDto"></param>
         /// <returns></returns>
-        private async Task<bool> LimitSellMaterialInfo(CheckSellMaterialInfoDto checkSellMaterialInfoDto,int unitId)
+        private async Task<int> LimitSellMaterialInfo(CheckSellMaterialInfoDto checkSellMaterialInfoDto,int unitId)
         {
             var user = await GetCurrentUserAsync();
             var storeMaterialManager = Resolve<StoreMaterialManager>();
@@ -299,10 +319,10 @@ namespace Master.Storage
             var sellMode = await materialManager.GetMaterialUnitSellMode(material, unitId);
             if (sellMode == UnitSellMode.停止销售)
             {
-                return true;
+                return 1;
             }else if(sellMode == UnitSellMode.始终销售)
             {
-                return false;
+                return 0;
             }
             else
             {
@@ -313,7 +333,15 @@ namespace Master.Storage
                     .Where(o => o.MaterialId == checkSellMaterialInfoDto.Id)
                     .WhereIf(!user.IsCenterUser, o => MasterDbContext.GetJsonValueString(o.FlowSheet.Property, "$.OrderType") == "代理商自助下单")
                     .SumAsync(o => o.SellNumber - o.OutNumber);
-                return checkSellMaterialInfoDto.Number + toOutNumber > storeNumber;
+                if (checkSellMaterialInfoDto.Number > storeNumber)
+                {
+                    return 1;
+                }
+                else if(checkSellMaterialInfoDto.Number + toOutNumber > storeNumber)
+                {
+                    return 2;
+                }
+                return 0;
             }
             
         }

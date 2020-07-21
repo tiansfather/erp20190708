@@ -126,7 +126,7 @@
                         <td class="tx-l">{{sheetInfo.creatorUserName}}</td>
                     </tr>
                     <tr>
-                        <td class="tx-c weight-font">收款公司:</td>
+                        <td class="tx-c weight-font">付款公司:</td>
                         <td class="tx-l">{{currentItem.unitInfo.unitName}}</td>
                         <td class="tx-c weight-font">收款总额:</td>
                         <td class="tx-l">{{numFormat(totalFee)}}</td>                       
@@ -156,7 +156,7 @@
                         <td class="tx-l" colspan="3">{{currentItem.feeCheck.checkCompany}}</td>
                     </tr>
                     <tr v-if="currentItem.payType=='1'">
-                        <td class="tx-c weight-font">付款账户:</td>
+                        <td class="tx-c weight-font">收款账户:</td>
                         <td class="tx-l" colspan="5">{{accountName}}</td>
                     </tr>
                     <tr >
