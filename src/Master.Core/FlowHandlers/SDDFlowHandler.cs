@@ -26,7 +26,7 @@ namespace Master.FlowHandlers
         public MaterialManager MaterialManager { get; set; }
         public MaterialSellManager MaterialSellManager { get; set; }
         public UnitManager UnitManager { get; set; }
-       
+        public StoreMaterialManager StoreMaterialManager { get; set; }
         public IRepository<MaterialSellCart,int> CartRepository { get; set; }
 
         public override async Task Handle(FlowSheet flowSheet)
@@ -50,9 +50,16 @@ namespace Master.FlowHandlers
 
             foreach (var sheetItem in sheetData["body"])
             {
-                var materialId = Convert.ToInt32(sheetItem["id"]);//对应的物料Id
-                
+                var materialId = Convert.ToInt32(sheetItem["id"]);//对应的物料Id                
                 var number= sheetItem["number"].ToObjectWithDefault<int>();//订购数量
+                //检测库存
+                var material = await MaterialManager.GetByIdAsync(materialId);
+                var sellMode = await MaterialManager.GetMaterialUnitSellMode(material, unitId);
+                var storeNumber = await StoreMaterialManager.GetMaterialNumber(materialId);
+                if (sellMode==UnitSellMode.售完为止 && number > storeNumber)
+                {
+                    throw new UserFriendlyException($"产品\"{material.Name}\"库存数量不足，无法下单");
+                }
                 //记录销售
                 var materialSell = new MaterialSell()
                 {

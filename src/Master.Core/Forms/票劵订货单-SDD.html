@@ -114,11 +114,12 @@
             var param = app.currentItem.items.map(function (o) { return { id: o.id, number: o.number } });
             func.runAsync(abp.services.app.materialSell.checkSellMaterialInfos(param, app.currentItem.unitId).done(function (res) {
                 if (res.code > 0) {
-                    if (res.code == 1) {
-                        abp.message.error('产品"' + res.msg + '"库存数量不足,无法下单');
-                        return false;
-                    }
-                    else if (res.code == 2) {
+                    //if (res.code == 1) {
+                    //    abp.message.error('产品"' + res.msg + '"库存数量不足,无法下单');
+                    //    return false;
+                    //}
+                    //else
+                        if (res.code == 2) {
                         abp.message.info('产品"' + res.msg + '"库存数量较少，可能只能部分发货').done(function () {
                                 submitFn(formData);
                             })

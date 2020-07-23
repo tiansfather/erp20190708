@@ -362,27 +362,27 @@
             sheetData: sheetData
         };
     }
-    function getAsyncFormData(submitFn) {
-        //检测库存
-        try {
-            var formData = getFormData();
+    //function getAsyncFormData(submitFn) {
+    //    //检测库存
+    //    try {
+    //        var formData = getFormData();
 
-            var param = app.currentItem.items.map(function (o) { return { id: o.id, number: o.number } });
-            func.runAsync(abp.services.app.materialSell.checkSellMaterialInfos(param, app.currentItem.unitId).done(function (res) {
-                if (res) {
-                    abp.message.info('产品"' + res + '"库存数量较少，可能只能部分发货').done(function () {
-                        submitFn(formData);
-                    })
-                } else {
-                    submitFn(formData);
-                }
+    //        var param = app.currentItem.items.map(function (o) { return { id: o.id, number: o.number } });
+    //        func.runAsync(abp.services.app.materialSell.checkSellMaterialInfos(param, app.currentItem.unitId).done(function (res) {
+    //            if (res) {
+    //                abp.message.info('产品"' + res + '"库存数量较少，可能只能部分发货').done(function () {
+    //                    submitFn(formData);
+    //                })
+    //            } else {
+    //                submitFn(formData);
+    //            }
                 
-            }))
-        } catch (err) {
-            abp.message.error(err.message || err);
-            return false;
-        }
-    }
+    //        }))
+    //    } catch (err) {
+    //        abp.message.error(err.message || err);
+    //        return false;
+    //    }
+    //}
     function actionCallback(actionName, sheetId) {
         if (actionName == "verify" || actionName=="send") {
             //审核后打开发货页

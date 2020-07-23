@@ -42,7 +42,7 @@ namespace Master.Storage
             else
             {
                 var storeMaterialCount = GetStoreMaterialNumber(storeId, materialId).Result;
-                message = $"出库失败,产品{material.Name}库存数量仅剩{storeMaterialCount.ToString("0.00")}，请调整出库数量后再次出库";
+                message = $"出库失败,产品{material.Name}库存数量仅剩{storeMaterialCount.ToString("0")}，请调整出库数量后再次出库";
                 return storeMaterialCount >= outNumber;
             }
         }
