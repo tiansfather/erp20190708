@@ -337,9 +337,9 @@
         if (!data.length) {
             throw "请至少录入一条数据";
         }
-        if (!_formOption.readonly && data.filter(function (o) { return !o.canSell }).length > 0) {
-            throw "库存不足，无法提交";
-        }
+        //if (!_formOption.readonly && data.filter(function (o) { return !o.canSell }).length > 0) {
+        //    throw "库存不足，无法提交";
+        //}
         var sheetData = {
             header: {
                 sheetDate: app.currentItem.sheetDate,

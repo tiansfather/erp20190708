@@ -53,13 +53,13 @@ namespace Master.FlowHandlers
                 var materialId = Convert.ToInt32(sheetItem["id"]);//对应的物料Id                
                 var number= sheetItem["number"].ToObjectWithDefault<int>();//订购数量
                 //检测库存
-                var material = await MaterialManager.GetByIdAsync(materialId);
-                var sellMode = await MaterialManager.GetMaterialUnitSellMode(material, unitId);
-                var storeNumber = await StoreMaterialManager.GetMaterialNumber(materialId);
-                if (sellMode==UnitSellMode.售完为止 && number > storeNumber)
-                {
-                    throw new UserFriendlyException($"产品\"{material.Name}\"库存数量不足，无法下单");
-                }
+                //var material = await MaterialManager.GetByIdAsync(materialId);
+                //var sellMode = await MaterialManager.GetMaterialUnitSellMode(material, unitId);
+                //var storeNumber = await StoreMaterialManager.GetMaterialNumber(materialId);
+                //if (sellMode==UnitSellMode.售完为止 && number > storeNumber)
+                //{
+                //    throw new UserFriendlyException($"产品\"{material.Name}\"库存数量不足，无法下单");
+                //}
                 //记录销售
                 var materialSell = new MaterialSell()
                 {
